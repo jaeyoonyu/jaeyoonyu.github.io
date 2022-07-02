@@ -7,6 +7,9 @@ title: "Code"
 * [Download Compustat from WRDS](https://github.com/yjaeyoon/blog-posting/blob/master/wrds-download-compustat.ipynb)<br/>
 * [Yearly distribution of loss firms](https://github.com/yjaeyoon/blog-posting/blob/master/compustat-loss-firm-distribution.ipynb)<br/>
 * [SEC filing distribution](https://github.com/yjaeyoon/sec-archives/blob/master/SEC_filings_dist.ipynb)<br/>
+* [Does the earning kink exist at zero? Maybe not any more.](https://github.com/yjaeyoon/sec-archives/blob/master/is-there-kink-around-zero.ipynb)<br/>
+
+
 
 <!-- Yearly distribution of Audit Analytics<br/>
 Distribution of Critical Audit Matters<br/>
