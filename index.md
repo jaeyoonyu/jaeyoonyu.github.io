@@ -3,8 +3,4 @@ layout: page
 title: ""
 ---
 
-I'm an assistant professor in the [Linguistics Department](https://www.ling.upenn.edu) at the University of Pennsylvania and the director of the [Child Language Lab](http://childlanglab.com/). 
-
-I teach graduate seminars in [psycholinguistics](/ling607) and [neurolinguistics](/neurolinguistics) and an undergraduate course in [language and the brain](/ling104). Occasionally, I also teach [LING 1](/ling001), Penn's Introduction to Linguistics.
-
-This semester I'm teaching a new undergraduate course (with Colin Twomey): [Data Science for Studying Language and the Mind](/ling172).
+Welcome to my website! I'm an assistant professor in Accounting at the Erasmus School of Economics, Erasmus University Rotterdam in the Netherlands. My research interests include auditing, capital market, corporate finance (IPOs and SEOs), and corporate governance. My research has been published in excellent journals such as <em>Auditing: A Journal of Practice & Theory</em> and <em>European Accounting Review</em>.
