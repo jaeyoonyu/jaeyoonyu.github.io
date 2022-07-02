@@ -17,6 +17,8 @@ show_sidebar: false        # show a sidebar instead of the usual header
 
 navigation:                # accepts {file, title, url, icon, sidebaricon}
   - {file: "index.md"}
+  - {file:  "Research.md", title: Research}
+  - {file:  "Teaching.md", title: Teaching}
   - {file:  "CV.md", title: CV}
   - {file: "python-code.md", title: Code}
 
