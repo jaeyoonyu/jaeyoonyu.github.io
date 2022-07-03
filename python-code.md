@@ -3,7 +3,8 @@ layout: page
 title: "Code"
 ---
 
-### I share some python code for accounting and finance research here. Please open a link in a new window if you'd like to stay on this page. When possible, a code file includes interesting figures.<br/>
+I share some **python code** for accounting and finance research here. Please open a link in a new window if you'd like to stay on this page. When possible, a code file includes interesting figures.<br/>
+
 * [WRDS in Python.](https://github.com/yjaeyoon/blog-posting/blob/master/wrds-intro.ipynb)<br/>
 * [Download data from WRDS: Compustat case.](https://github.com/yjaeyoon/blog-posting/blob/master/wrds-download-compustat.ipynb)<br/>
 * [Yearly distribution of loss firms: More than half are loss firms in 2020.](https://github.com/yjaeyoon/blog-posting/blob/master/compustat-loss-firm-distribution.ipynb) <br/>
@@ -16,6 +17,14 @@ title: "Code"
 
 
 
-<!-- Yearly distribution of Audit Analytics<br/>
-Distribution of Critical Audit Matters<br/>
-Yearly distribution of going-concern opinions<br/> -->
+<!-- Yearly distribution of Audit Analytics <br/>
+Distribution of Critical Audit Matters <br/>
+Yearly distribution of going-concern opinions <br/> 
+Introduction to matplotlib <br/> 
+Introduction to seaborn <br/> 
+Introduction to financedatareader <br/> 
+Introduction to bokeh <br/> 
+Introduction to plotly <br/> 
+Visualization with hovering function: https://plotly.com/python/hover-text-and-formatting/ <br/>
+-->
+
