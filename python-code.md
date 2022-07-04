@@ -30,4 +30,3 @@ Introduction to bokeh <br/>
 Introduction to plotly <br/> 
 Visualization with hovering function: https://plotly.com/python/hover-text-and-formatting/ <br/>
 -->
-
