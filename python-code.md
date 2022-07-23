@@ -17,6 +17,14 @@ I share some **python code** for accounting and finance research here. Open a li
 * [Introduction to SQL: Part II.](https://github.com/jaeyoonyu/blog-posting/blob/master/intro-to-sql-part2.ipynb)<br/>
 
 
+This dynamic visualization shows the yearly distribution of clients by big audit firms. 
+{% include auditor-dist.html %}
+
+
+
+
+
+
 <!-- To render HTML and get a link:
 https://raw.githack.com/
 -->
