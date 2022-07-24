@@ -14,8 +14,7 @@ I share some **python code** for accounting and finance research here. Open a li
 * [SEC filing distribution provided by SEC EDGAR.](https://github.com/jaeyoonyu/sec-archives/blob/master/SEC_filings_dist.ipynb)<br/>
 * [Does the earning kink exist at zero? Maybe not any more.](https://github.com/jaeyoonyu/blog-posting/blob/master/is-there-kink-around-zero.ipynb)<br/>
 * [Navigate data with plotly, allowing us to identify outliers visually: Scatter plot of ROA-leverage.](https://rawcdn.githack.com/jaeyoonyu/blog-posting/6bfcbbd164951cd69941ee2a33b779f5d519c769/plotly-hovering.html)<br/>
-* [Introduction to SQL: Part I.](https://github.com/jaeyoonyu/blog-posting/blob/master/intro-to-sql-part1.ipynb)<br/>
-* [Introduction to SQL: Part II.](https://github.com/jaeyoonyu/blog-posting/blob/master/intro-to-sql-part2.ipynb)<br/>
+
 
 
 ---

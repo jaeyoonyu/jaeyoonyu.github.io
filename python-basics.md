@@ -4,11 +4,11 @@ title: "Python Code - Basics"
 ---
 
 I share some **python code** snippets that are useful, especially for those who would like to study **Python for Data Analytics and Accounting Research**. This page is not designed to walk you through Python basics. Rather, I organize and share code snippets that I use often (and I forget). The snippets are mainly relevant to the following topics: 
-* Data wrangling with Numpy and Pandas
-* Visualization with Matplotlib, Seaborn, and Plotly
-* Regular expression with Regex
+* Data wrangling
+* Visualization
+* Regular expression
 * Textual analysis
-* Web-scraping with Requests, Beautifulsoup, and Selenium
+* Web-scraping
 <br/>
 
 ---
@@ -21,5 +21,8 @@ Check anything you're interested in:
 * [Pandas method - pivot_table](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/tree/main/_code/python-basics/pandas-method-pivot_table.ipynb): useful when preparing frequency table. <br/>
 * [Pandas method - cut](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/tree/main/_code/python-basics/pandas-method-cut.ipynb): useful when segmenting and sorting data values into bins. <br/>
 * [Pandas method - melt](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/tree/main/_code/python-basics/pandas-method-melt.ipynb): wide-form to long-form. <br/>
-* [Introduction to SQL: Part I.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/tree/main/_code/python-basics/intro-to-sql-part1.ipynb)
-* [Introduction to SQL: Part II.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/tree/main/_code/python-basics/intro-to-sql-part2.ipynb)
+* [Introduction to SQL: Part I.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/python-basics/intro-to-sql-part1.ipynb)<br/>
+* [Introduction to SQL: Part II.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/python-basics/intro-to-sql-part2.ipynb)<br/>
+* [Webscraping - Dow Jones 30 from Wikipedia](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/tree/main/_code/python-basics/dj30.ipynb)<br/>
+* [Webscraping - S&P500 from Wikipedia](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/tree/main/_code/python-basics/sp500.ipynb)<br/>
+
