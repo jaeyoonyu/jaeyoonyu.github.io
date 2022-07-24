@@ -20,7 +20,8 @@ navigation:                # accepts {file, title, url, icon, sidebaricon}
 #  - {file:  "Research.md", title: Research}
 #  - {file:  "Teaching.md", title: Teaching}
   - {file:  "CV.md", title: CV}
-  - {file: "python-code.md", title: Code}
+  - {file: "python-basics.md", title: Python-Basics}
+  - {file: "python-code.md", title: Python-Applications}
 
 
 external:                  # shows a footer with social links - for available icons see fontawesome.com/icons

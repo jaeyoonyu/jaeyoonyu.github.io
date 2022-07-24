@@ -1,9 +1,10 @@
 ---
 layout: page
-title: "Code"
+title: "Python Code - Applications"
 ---
 
 I share some **python code** for accounting and finance research here. Open a link in a new window if you'd like to stay on this page. When possible, a code file includes interesting figures.<br/>
+
 
 * [WRDS in Python.](https://github.com/jaeyoonyu/blog-posting/blob/master/wrds-intro.ipynb)<br/>
 * [Download data from WRDS: Compustat case.](https://github.com/jaeyoonyu/blog-posting/blob/master/wrds-download-compustat.ipynb)<br/>
@@ -17,7 +18,8 @@ I share some **python code** for accounting and finance research here. Open a li
 * [Introduction to SQL: Part II.](https://github.com/jaeyoonyu/blog-posting/blob/master/intro-to-sql-part2.ipynb)<br/>
 
 
-This dynamic visualization shows the yearly distribution of clients by big audit firms. 
+---
+Click the play button below to see the dynamic visualization!
 {% include auditor-dist.html %}
 
 
