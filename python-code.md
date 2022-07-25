@@ -8,7 +8,10 @@ I share some **python code** for accounting and finance research here. Open a li
 
 * [WRDS in Python.](https://github.com/jaeyoonyu/blog-posting/blob/master/wrds-intro.ipynb)<br/>
 * [Download data from WRDS: Compustat case.](https://github.com/jaeyoonyu/blog-posting/blob/master/wrds-download-compustat.ipynb)<br/>
-* [Yearly distribution of loss firms: More than half are loss firms in 2020.](https://github.com/jaeyoonyu/blog-posting/blob/master/compustat-loss-firm-distribution.ipynb) <br/>
+* Yearly distribution of loss firms: More than half are loss firms in 2020.<br>
+    * [Version 1. Using matplotlib after aggregating data method](https://github.com/jaeyoonyu/blog-posting/blob/master/compustat-loss-firm-distribution.ipynb) <br>
+    * [Version 2. Using seaborn and raw data method](https://github.com/jaeyoonyu/blog-posting/blob/master/compustat-loss-firm-distribution.ipynb) <br>
+
 * [Seaborn allows to visualize data with multiple dimensions: See the scatterplot of firm size, profitability, and auditor size.](https://github.com/jaeyoonyu/blog-posting/blob/master/sctterplot-ROA-size-Big4.ipynb)<br/>
 * [Can we get IPO years from Compustat? Yes we can. Check the distribution of IPO years.](https://github.com/jaeyoonyu/blog-posting/blob/master/Compustat-ipodate.ipynb)<br/>
 * [SEC filing distribution provided by SEC EDGAR.](https://github.com/jaeyoonyu/sec-archives/blob/master/SEC_filings_dist.ipynb)<br/>
@@ -20,6 +23,9 @@ I share some **python code** for accounting and finance research here. Open a li
 ---
 Click the play button below to see the dynamic visualization!
 {% include auditor-dist.html %}
+
+Click the play button below to see the dynamic visualization!
+{% include dynamic-plot.html %}
 
 
 
