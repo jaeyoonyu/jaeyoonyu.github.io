@@ -23,26 +23,16 @@ I share some **python code** for accounting and finance research here. Open a li
 
 ---
 Click the play button below to see the dynamic visualization!
-{% include auditor-dist.html %}
+{% include client-dist-figure.html %}
 
 Click the play button below to see the dynamic visualization!
-{% include dynamic-plot.html %}
-
-
-
-
+{% include dynamic-scatter-mv-at.html %}
 
 
 <!-- To render HTML and get a link:
 https://raw.githack.com/
 -->
-<!-- Yearly distribution of Audit Analytics <br/>
-Distribution of Critical Audit Matters <br/>
-Yearly distribution of going-concern opinions <br/> 
-Introduction to matplotlib <br/> 
-Introduction to seaborn <br/> 
-Introduction to financedatareader <br/> 
-Introduction to bokeh <br/> 
-Introduction to plotly <br/> 
-Visualization with hovering function: https://plotly.com/python/hover-text-and-formatting/ <br/>
+
+<!-- To render .ipynb with dynamic plots:
+Use nbviewer
 -->
