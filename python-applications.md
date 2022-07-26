@@ -18,7 +18,7 @@ I share some **python code** for accounting and finance research here. Open a li
 * Does the <b>earning kink at zero</b> still exist? Maybe not any more. [Check the distribution.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/is-there-kink-around-zero.ipynb)<br/>
 * <b>plotly</b>, allowing us to identify outliers visually: [Scatter plot of ROA-leverage.](https://rawcdn.githack.com/jaeyoonyu/blog-posting/6bfcbbd164951cd69941ee2a33b779f5d519c769/plotly-hovering.html)<br/>
 * <b>Plotly for animated visualization</b><br>
-    * Bubble plot for [auditors' client distribution](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/client-dist.ipynb).
+    * Bubble plot for [auditors' client distribution](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/auditor-client-distribution.ipynb).
     * Bubble plot for [asset, sales, and market value](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/compustat-bubble-plot-animation.ipynb).
 
 
