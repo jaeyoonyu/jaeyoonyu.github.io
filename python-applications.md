@@ -33,12 +33,12 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
 
 ---
 <h1>Examples of interactive plots</h1> 
-<h3> Example 1. How many clients for each audit firm? 
+<h3> 1. How many clients for each audit firm? 
 {% include client-dist-figure.html %}
 
 <br>
 <br>
-<h3> Example 2. Scatter plots
+<h3> 2. Scatter plots
 {% include dynamic-scatter-mv-at.html %}
 
 
