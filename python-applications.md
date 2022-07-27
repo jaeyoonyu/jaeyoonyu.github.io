@@ -21,8 +21,8 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
 * Does the <b>earning kink at zero</b> still exist? Maybe not any more. [Check the distribution.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/is-there-kink-around-zero.ipynb)<br/>
 * <b>Seaborn</b> allows to visualize data with multiple dimensions: [scatterplot of firm size, profitability, and auditor size.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/sctterplot-ROA-size-Big4.ipynb)<br/>
 * <b>Plotly for animated visualization</b><br>
-    * [auditors' client distribution](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/audit-analytics-client-distribution.ipynb).<br/>
-    * Dynamic scatter plot: [ROA & Sales over time](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/compustat-bubble-plot-animation.ipynb).
+    * [auditors' client distribution](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/audit-analytics-client-distribution.html).<br/>
+    * Dynamic scatter plot: [ROA & Sales over time](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/compustat-bubble-plot-animation.html).
 <br>
 
 ---
@@ -35,13 +35,13 @@ What you can try with the plots:<br>
 <h3> 1. How many clients for each audit firm? </h3>
 
 {% include client-dist-figure.html %}
-Click here for the [Code](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/audit-analytics-client-distribution.ipynb).
+Click here for the [Code](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/audit-analytics-client-distribution.html).
 
 <h3> 2. Scatter plots: ROA & SALES </h3>
 
 {% include dynamic-scatter-plot.html %}
 
-Click here for the [Code](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/compustat-bubble-plot-animation.ipynb).
+Click here for the [Code](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/compustat-bubble-plot-animation.html).
  
  
 <!-- To render HTML and get a link:
