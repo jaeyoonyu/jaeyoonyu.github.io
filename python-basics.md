@@ -3,7 +3,8 @@ layout: page
 title: "Python Code - Basics"
 ---
 
-I share some **python code** snippets that are useful, especially for those who would like to study **Python for Data Analytics and Accounting Research**. This page is not designed to walk you through Python basics. Rather, I organize and share code snippets that I use often (and I forget). The snippets are mainly relevant to the following topics: 
+Python is a powerful tool for **accounting research** and **data analytics**. 
+On this webpage, I share some python code **snippets that I use often (and I forget)**. The snippets are mainly relevant to the following topics: 
 * Data wrangling
 * Visualization
 * Regular expression
@@ -20,7 +21,7 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
 * [Pandas method - agg](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-agg.ipynb): useful when aggregating variables by groups. <br/>
 * [Pandas method - crosstab](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-crosstab.ipynb): useful when preparing frequency table. <br/>
 * [Pandas method - pivot_table](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-pivot_table.ipynb): useful when preparing frequency table. <br/>
-* [Pandas method - cut](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-cut.ipynb): useful when segmenting and sorting data values into bins. Notably, **bin widths don't have to be constant**. <br/>
+* [Pandas method - cut](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-cut.ipynb): useful when segmenting and sorting data values into bins. Notably, **bin widths don't have to be the same**. <br/>
 * [Pandas method - melt](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-melt.ipynb): wide-form to long-form. <br/>
 * [Pandas - Imbalanced to balanced panel](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/imbalanced-to-balanced-df.ipynb).<br/>
 
