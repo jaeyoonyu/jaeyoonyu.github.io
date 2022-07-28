@@ -14,7 +14,7 @@ What you can try with the plots:<br>
 
 {% include earnings-kink-dynamic.html %}
 
-<img src="_includes/earnings-kink-static.jpg" class="inline">
+<img src="assets/images/earnings-kink-static.jpg" class="inline">
 
 <h3> 2. How many clients for each audit firm? </h3>
 

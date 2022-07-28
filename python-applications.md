@@ -25,23 +25,23 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
     * Dynamic scatter plot: [ROA & Sales over time](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/compustat-bubble-plot-animation.html).
 <br>
 
----
-<h1>Examples of interactive plots using plotly</h1> 
-What you can try with the plots:<br>
-* click the play button.<br>
-* hover over an observation.<br>
-* zoom in and out.<br>
+<!------->
+<!--<h1>Examples of interactive plots using plotly</h1> -->
+<!--What you can try with the plots:<br>-->
+<!--* click the play button.<br>-->
+<!--* hover over an observation.<br>-->
+<!--* zoom in and out.<br>-->
 
-<h3> 1. How many clients for each audit firm? </h3>
+<!--<h3> 1. How many clients for each audit firm? </h3>-->
 
-{% include client-dist-figure.html %}
-Click here for the [Code](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/audit-analytics-client-distribution.html).
+<!--{% include client-dist-figure.html %}-->
+<!--Click here for the [Code](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/audit-analytics-client-distribution.html).-->
 
-<h3> 2. Scatter plots: ROA & SALES </h3>
+<!--<h3> 2. Scatter plots: ROA & SALES </h3>-->
 
-{% include dynamic-scatter-plot.html %}
+<!--{% include dynamic-scatter-plot.html %}-->
 
-Click here for the [Code](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/compustat-bubble-plot-animation.html).
+<!--Click here for the [Code](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/compustat-bubble-plot-animation.html).-->
  
  
 <!-- To render HTML and get a link:
