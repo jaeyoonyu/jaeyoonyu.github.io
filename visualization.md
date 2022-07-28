@@ -3,25 +3,24 @@ layout: page
 title: "Visualization"
 ---
 
-<h1>Examples of interactive plots using plotly</h1> 
-What you can try with the plots:<br>
-* click the play button.<br>
-* hover over an observation.<br>
-* zoom in and out.<br>
-
-
-<h3> 1. Earnings kink at zero: Does it still exist?  </h3>
+<h2> 1. Earnings kink at zero: Does it still exist?  </h2>
 
 {% include earnings-kink-dynamic.html %}
+<br>
+<img src="/assets/images/earnings-kink-static.jpg" class="inline">
 
-<img src="/_includes/earnings-kink-static.jpg" class="inline">
+Click here for the [Code](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/is-there-kink-around-zero.ipynb)<br/>
 
-<h3> 2. How many clients for each audit firm? </h3>
+---
+<h2> 2. How many clients for each audit firm? </h2>
 
 {% include client-dist-figure.html %}
 Click here for the [Code](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/audit-analytics-client-distribution.html).
 
-<h3> 3. Scatter plots: ROA & SALES </h3>
+<br>
+
+---
+<h2> 3. Scatter plots: ROA & SALES </h2>
 
 {% include dynamic-scatter-plot.html %}
 
