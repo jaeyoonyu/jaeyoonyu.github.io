@@ -2,6 +2,7 @@
 layout: page
 title: "Visualization"
 ---
+Note: This webpage might not work properly on your mobile device.
 
 <h2> 1. Earnings kink at zero: Does it still exist?  </h2>
 
