@@ -7,4 +7,4 @@ title: "About me"
 
 
 Jaeyoon Yu  
-[yu@ese.eur.nl](mailto: yjaeyoon@gmail.com)
+[yu@ese.eur.nl](mailto: yu@ese.eur.nl)
