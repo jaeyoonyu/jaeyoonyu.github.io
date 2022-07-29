@@ -21,7 +21,7 @@ My teaching interests include financial accounting, data analytics for accountin
 * University teaching qualifications, Erasmus University Rotterdam and Risbo <br>
 
 
-<H3>Coursera course certificates for data anlytics</H3>
+<H3>Data analytics course certificates, Coursera</H3>
 * Accounting Data Analytics, UIUC <br>
 * Python for Data Sciences, AI & Development, IBM <br>
 * Data analysis with Python, IBM <br>

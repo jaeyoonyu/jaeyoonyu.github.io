@@ -7,7 +7,7 @@ My research interests include auditing, capital market, corporate finance (IPOs 
 <br>
 
 <H3>Working Papers</H3>
-* The Importance of Partners’ Cultural Backgrounds to Clients’ Earnings Comparability. <br>
+* The importance of partners’ cultural backgrounds to clients’ earnings comparability. <br>
     * R&R at <em>The Accounting Review</em> (ABDC list A*).  
 * General counsel in top management and auditors’ going-concern audit opinions. <br>
     * R&R at <em>Auditing: A Journal of Practice and Theory</em> (ABDC list A*). <br>
