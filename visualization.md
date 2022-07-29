@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Visualization"
+title: "Graphics"
 ---
 On this webpage, I share some figures that I've generated using Python. Note that this page might not work properly on your mobile device.
 <br>

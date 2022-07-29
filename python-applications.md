@@ -1,6 +1,6 @@
 ---
 layout: page
-title: "Python Code - Applications"
+title: "Python Code - Applied"
 ---
 Python is a powerful tool for **accounting research** and **data analytics**. On this webpage, I share some python code to demonstrate **how I use Python for accounting research** with a focus on the following topics: <br>
 * how to get data from WRDS;<br>
