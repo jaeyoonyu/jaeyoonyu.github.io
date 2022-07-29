@@ -16,7 +16,7 @@ On this webpage, I share some python code **snippets that I use often (and I for
 ---
 All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code" target="_blank">here</a>. Check anything you're interested in:
 * [Python function - map](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/function-map.ipynb): useful when executing a function for multiple iterable objects.<br/>
-* [Python function - zip](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/function-zip.ipynb): useful when turning (a1,a2,..) and (b1,b2..) into ((a1,b1), (a2, b2),..). <br/>
+* [Python function - zip](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/function-zip.ipynb): useful when turning (a1,a2,..), (b1,b2..),... into ((a1,b1), (a2, b2),..). <br/>
 * [Pandas method - apply](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-apply.ipynb): useful when executing a function for multiple columns. <br/>
 * [Pandas method - agg](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-agg.ipynb): useful when aggregating variables by groups. <br/>
 * [Pandas method - crosstab](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-crosstab.ipynb): useful when preparing frequency table. <br/>
