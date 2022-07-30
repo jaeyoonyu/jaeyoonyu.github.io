@@ -3,7 +3,7 @@ layout: page
 title: "Teaching"
 ---
 
-My teaching interests include financial accounting, data analytics for accounting, and accounting information systems.
+My teaching interests include accounting information systems, data analytics, and financial accounting.
 
 
 <H3>Current Teaching at Erasmus School of Economics</H3>
