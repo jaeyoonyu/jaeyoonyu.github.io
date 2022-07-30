@@ -3,7 +3,7 @@ layout: page
 title: "Research"
 ---
 
-My research interests include auditing, capital market, corporate finance (IPOs and SEOs), corporate governance, and financial reporting.
+My research interests include auditing, capital market, corporate finance (IPOs and SEOs), corporate governance, financial reporting, and regulations.
 <br>
 
 <H3>Working Papers</H3>
@@ -15,6 +15,11 @@ My research interests include auditing, capital market, corporate finance (IPOs 
     * R&R at <em>Auditing: A Journal of Practice and Theory</em> (ABDC list A*). <br>
 * Knowledge spillover benefits of non-audit services: Evidence from audit hours and billing rates.
     * Being revised for submission.
+ 
+<H3>Work-in-progresses</H3> 
+* SEOs and financial reporting.
+* IPOs and auditing.
+* Internal control audits under SOX404.
  
 <H3>Published Papers</H3>
 * The downside of the network ties between CEO/CFOs and auditors through external directorships: Evidence from auditor selection and subsequent audit quality. <br>

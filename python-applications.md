@@ -3,9 +3,9 @@ layout: page
 title: "Python Code - Applied"
 ---
 Python is a powerful tool for **accounting research** and **data analytics**. On this webpage, I share some python code to demonstrate **how I use Python for accounting research** with a focus on the following topics: <br>
-* how to get data from WRDS;<br>
-* how to handle data using Pandas and Numpy;<br>
-* how to visualize data, either static or dynamic.<br>
+* How to get data from WRDS;<br>
+* How to handle data using Pandas and Numpy;<br>
+* How to visualize data, either static or dynamic.<br>
 
 ---
 
@@ -21,7 +21,7 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
 * Does the <b>earning kink at zero</b> still exist? Maybe not any more. [Check the distribution.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/is-there-kink-around-zero.ipynb)<br/>
 * <b>Seaborn</b> allows to visualize data with multiple dimensions: [scatterplot of firm size, profitability, and auditor size.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/sctterplot-ROA-size-Big4.ipynb)<br/>
 * <b>Plotly for animated visualization</b><br>
-    * [auditors' client distribution](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/audit-analytics-client-distribution.html).<br/>
+    * [Auditors' client distribution](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/audit-analytics-client-distribution.html).<br/>
     * Dynamic scatter plot: [ROA & Sales over time](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/compustat-bubble-plot-animation.html).
 <br>
 
