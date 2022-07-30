@@ -3,7 +3,7 @@ layout: page
 title: "Research"
 ---
 
-My primary research interests include auditing, financial reporting, and regulation. In addition, I am interested in capital market, corporate finance (IPOs and SEOs), and corporate governance research.
+My primary research interests include auditing, financial reporting, and regulations. In addition, I am interested in capital market, corporate finance (IPOs and SEOs), and corporate governance research.
 <br>
 
 <H3>Working Papers</H3>
