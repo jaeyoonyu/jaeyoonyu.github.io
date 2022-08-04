@@ -18,7 +18,7 @@ My teaching interests include accounting information systems, data analytics, an
 * Financial Statement Analysis (Tutor), KAIST. <br>
 
 <H3>Teaching Certificates</H3>
-* University teaching qualifications, Erasmus University Rotterdam and Risbo. <br>
+* University Teaching Qualifications, Erasmus University Rotterdam and Risbo. <br>
 
 
 <H3>Data Analytics Course Certificates, Coursera</H3>
@@ -27,5 +27,4 @@ My teaching interests include accounting information systems, data analytics, an
 * Data Analysis with Python, IBM. <br>
 * Data Visualization with Python, IBM. <br>
 * Databases and SQL for Data Science with Python, IBM. <br>
-    
     
