@@ -7,7 +7,8 @@ On this webpage, I share some figures that I've generated using Python. Note tha
 - click the <b>play button</b> to see how the figure changes;
 - <b>mouse over the data point</b> you're interested in.
 <br>
-<br>
+
+---
 
 <h2> 1. Correlation heatmap  </h2>
 
@@ -41,8 +42,7 @@ Click here for the [Code](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github
 <h2> 4. How many clients for each audit firm? </h2>
 
 {% include client-dist-figure.html %}
-Click here for the [Code](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/audit-analytics-client-distribution.html).
-
+Click here for the [Code](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/audit-analytics-client-distribution.html).  
 <br>
 
 ---
