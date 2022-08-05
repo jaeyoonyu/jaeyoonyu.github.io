@@ -21,7 +21,7 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
 * [Pandas method - agg](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-agg.ipynb): useful when aggregating variables by groups. <br/>
 * [Pandas method - crosstab](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-crosstab.ipynb): useful when preparing frequency table. <br/>
 * [Pandas method - value_counts](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-crosstab.ipynb): useful when preparing frequency table. <br/>
-* [Pandas method - pivot_table](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-value_counts.ipynb): useful when preparing frequency table. <br/>
+* [Pandas method - pivot_table](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-pivot_table.ipynb): useful when preparing frequency table. <br/>
 * [Pandas method - cut](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-cut.ipynb): useful when segmenting and sorting data values into bins. Notably, **bin widths don't have to be the same**. <br/>
 * [Pandas method - melt](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-melt.ipynb): wide-form to long-form. <br/>
 * [Pandas - Imbalanced to balanced panel](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/imbalanced-to-balanced-df.ipynb).<br/>
