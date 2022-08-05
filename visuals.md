@@ -29,7 +29,11 @@ Click here for the [Code](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github
 
 <img src="/assets/images/earnings-ann-date-dist.jpg" class="inline">
 
+<b>The Q1 distribution is more dispersed</b> as many firms prepare 10-K and are subject to year-end audits.
+
 Click here for the [Code](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/earnings-ann-date-dist.ipynb).<br/>
+
+
 
 ---
 <h2> 4. How many clients for each audit firm? </h2>
