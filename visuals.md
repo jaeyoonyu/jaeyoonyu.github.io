@@ -24,7 +24,15 @@ Click here for the [Code](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github
 Click here for the [Code](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/is-there-kink-around-zero.ipynb).<br/>
 
 ---
-<h2> 3. How many clients for each audit firm? </h2>
+
+<h2> 3. Distribution of earnings announcement date  </h2>
+
+<img src="/assets/images/earnings-ann-date-dist.jpg" class="inline">
+
+Click here for the [Code](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/earnings-ann-date-dist.ipynb).<br/>
+
+---
+<h2> 4. How many clients for each audit firm? </h2>
 
 {% include client-dist-figure.html %}
 Click here for the [Code](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/audit-analytics-client-distribution.html).
@@ -32,7 +40,7 @@ Click here for the [Code](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/
 <br>
 
 ---
-<h2> 4. Scatter plots: ROA & SALES </h2>
+<h2> 5. Scatter plots: ROA & SALES </h2>
 
 {% include dynamic-scatter-plot.html %}
 
