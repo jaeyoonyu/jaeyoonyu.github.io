@@ -5,7 +5,7 @@ title: "Visuals"
 I share some figures that I've generated using Python. Note that this page might not work properly on your mobile device. For <b>dynamic plots</b>, you can
 - zoom in and out;
 - click the <b>play button</b> to see how the figure changes;
-- <b>mouse over the data point</b> you're interested in.
+- <b>mouse over a data point</b> you're interested in.
 <br>
 
 ---
