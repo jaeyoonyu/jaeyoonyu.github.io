@@ -51,3 +51,13 @@ Click here for the [Code](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/
 {% include dynamic-scatter-plot.html %}
 
 Click here for the [Code](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/compustat-bubble-plot-animation.html).
+
+---
+
+<h2> 6. Yearly distribution of bankruptcies  </h2>
+
+<img src="/assets/images/bankruptcy-dist.jpg" class="inline">
+
+Click here for the [Code](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-AuditAnalytics-bankrupt.ipynb).<br/>
+
+---
