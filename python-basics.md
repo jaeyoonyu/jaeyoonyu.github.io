@@ -16,6 +16,8 @@ On this webpage, I share some python code **snippets that I use often (and I for
 ---
 All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code" target="_blank">here</a>. Check anything you're interested in:
 
+* [Python function - zip](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/function-zip.ipynb): useful when turning (a1,a2,..), (b1,b2..),... into ((a1,b1), (a2, b2),..). <br/>
+* Regular expression (regex) - coming soon.
 * [Pandas method - agg](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-agg.ipynb): useful when aggregating variables by groups. <br/>
 * [Pandas method - apply](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-apply.ipynb): useful when executing a function for multiple columns. <br/>
 * [Pandas method - crosstab](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-crosstab.ipynb): useful when preparing frequency table. <br/>
@@ -27,11 +29,9 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
 * [Pandas method - pivot_table](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-pivot_table.ipynb): useful when preparing frequency table. <br/>
 * [Pandas method - value_counts](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-crosstab.ipynb): useful when preparing frequency table. <br/>
 * Pandas-method - zfill (coming soon).
-* [Python function - zip](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/function-zip.ipynb): useful when turning (a1,a2,..), (b1,b2..),... into ((a1,b1), (a2, b2),..). <br/>
 * [Pandas - Imbalanced to balanced panel](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/imbalanced-to-balanced-df.ipynb).<br/>
 * [Introduction to SQL: Part I.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/intro-to-sql-part1.ipynb)<br/>
 * [Introduction to SQL: Part II.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/intro-to-sql-part2.ipynb)<br/>
-* regex (coming soon).
 * [Webscraping - Dow Jones 30 from Wikipedia.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/DJ30.ipynb)<br/>
 * [Webscraping - S&P500 from Wikipedia.](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/SP500.html)<br/>
 * Visualization.

@@ -19,7 +19,7 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
     * Compustat: [funda (10-K)](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-compustat.ipynb); [fundq (10-Q)](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-compustat-fundq.ipynb); Company.
     * CRSP (coming soon).
     * Audit Analytics: [Audit Opinions](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-compustat.ipynb); [CAMs](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-AuditAnalytics-CAM.ipynb); [IPOs](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-AuditAnalytics-ipo.ipynb); [SOX404](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-AuditAnalytics-sox404.ipynb); [Bankrupt](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-AuditAnalytics-bankrupt.ipynb); [Data breach](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/audit-analytics-cyber-security.ipynb).<br/>
-    * BoardEx (coming soon).
+    * BoardEx: [board chars](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-boardex-bdchars.ipynb).<br/>
     * IBES: [surpsumu (surprise, unadjusted)](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-ibes.ipynb).
 * Can we get <b>IPO years from Compustat</b>? Yes we can. Check [the distribution.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/Compustat-ipodate.ipynb)<br/>
 * Yearly distribution of <b>loss firms</b>: More than half are loss firms in 2020.<br>
@@ -31,9 +31,8 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
 * <b>Seaborn</b> allows to visualize data with multiple dimensions: [scatterplot of firm size, profitability, and auditor size.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/sctterplot-ROA-size-Big4.ipynb)<br/>
 * <b>Plotly for animated visualization</b><br>
     * [Auditors' client distribution](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/audit-analytics-client-distribution.html).<br/>
-    * Dynamic scatter plot: [ROA & Sales over time](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/compustat-bubble-plot-animation.html).
-<br>
-
+    * Dynamic scatter plot: [ROA & Sales over time](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/compustat-bubble-plot-animation.html).<br>
+* WRDS processes some BoardEx datasets and provides <b>the processed ones</b> as well as raw ones. <b>Are they reliable?</b> Check [here](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-boardex-bdchars.ipynb).<br>
  
 <!-- To render HTML and get a link:
 https://raw.githack.com/
