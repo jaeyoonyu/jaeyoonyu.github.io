@@ -32,6 +32,7 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
 * [Pandas - Imbalanced to balanced panel](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/imbalanced-to-balanced-df.ipynb).<br/>
 * [Introduction to SQL: Part I.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/intro-to-sql-part1.ipynb)<br/>
 * [Introduction to SQL: Part II.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/intro-to-sql-part2.ipynb)<br/>
+* [Webscraping - Industry list (SIC) from SEC.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/sec-sic-classification.ipynb)<br/>
 * [Webscraping - Dow Jones 30 from Wikipedia.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/DJ30.ipynb)<br/>
 * [Webscraping - S&P500 from Wikipedia.](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/SP500.html)<br/>
 * Visualization.
