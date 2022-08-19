@@ -16,13 +16,13 @@ On this webpage, I share some python code **snippets that I use often (and I for
 ---
 All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code" target="_blank">here</a>. Check anything you're interested in:
 
-* Python functions
+* **Python functions.**
     * [zip()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/function-zip.ipynb): useful when turning (a1,a2,..), (b1,b2..),... into ((a1,b1), (a2, b2),..). <br/>
     * [map()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/function-map.ipynb): useful when executing a function for multiple iterable objects.<br/>
     
-* Regular expression (regex) - coming soon.
+* **Regular expression (regex)** - coming soon.
 
-* Pandas
+* **Pandas.**
     * [agg()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-agg.ipynb): useful when aggregating variables by groups. <br/>
     * [apply()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-apply.ipynb): useful when executing a function for multiple columns. <br/>
     * [crosstab()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-crosstab.ipynb): useful when preparing frequency table. <br/>
@@ -35,14 +35,14 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
     * [value_counts()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-crosstab.ipynb): useful when preparing frequency table. <br/>
     * zfill() (coming soon).
     * [Reshaping: imbalanced to balanced panel](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/imbalanced-to-balanced-df.ipynb).<br/>
-* SQL in Python (sqlite3)
+* **SQL in Python (sqlite3).**
     * [Introduction to SQL: Part I.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/intro-to-sql-part1.ipynb)<br/>
     * [Introduction to SQL: Part II.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/intro-to-sql-part2.ipynb)<br/>
-* Webscraping.
+* **Webscraping.**
     * [Industry list (SIC) from SEC.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/sec-sic-classification.ipynb)<br/>
     * [Dow Jones 30 from Wikipedia.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/DJ30.ipynb)<br/>
     * [S&P500 from Wikipedia.](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/SP500.html)<br/>
-* Visualization.
+* **Visualization.**
     * barplot() (coming soon).
     * countplot() (coming soon).
     * [lineplot().](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/visual-lineplot.ipynb)
