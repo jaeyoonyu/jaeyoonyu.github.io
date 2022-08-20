@@ -26,7 +26,7 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
     * [crosstab()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-crosstab.ipynb): useful when preparing frequency table. <br/>
     * [cut()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-cut.ipynb): useful when segmenting and sorting data values into bins. Notably, **bin widths don't have to be the same**. <br/>
     * fillna(): (coming soon). <br/>
-    * groupby(): (coming soon). <br/>
+    * [groupby()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-groupby.ipynb). <br/>
     * [melt()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-melt.ipynb): wide-form to long-form. <br/>
     * pivot (coming soon).
     * [pivot_table()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-pivot_table.ipynb): useful when preparing frequency table. <br/>
