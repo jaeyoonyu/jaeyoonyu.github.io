@@ -33,8 +33,11 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
     * [value_counts()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-crosstab.ipynb): useful when preparing frequency table. <br/>
     * zfill(): (coming soon).
     * [Reshaping: imbalanced to balanced panel](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/imbalanced-to-balanced-df.ipynb).<br/>
-* [sidetable](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/sidetable.ipynb): useful when displaying cumulative distributions.
     
+* [sidetable](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/sidetable.ipynb): useful when displaying cumulative distributions.
+
+*[FinanceDataReader](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/intro-FinanceDataReader.ipynb): to download historical stock return data of US firms, etc.
+
 * **SQL in Python (sqlite3).**
     * [Introduction to SQL: Part I.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/intro-to-sql-part1.ipynb)<br/>
     * [Introduction to SQL: Part II.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/intro-to-sql-part2.ipynb)<br/>
