@@ -25,14 +25,15 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
     * [apply()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-apply.ipynb): useful when executing a function for multiple columns. <br/>
     * [crosstab()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-crosstab.ipynb): useful when preparing frequency table. <br/>
     * [cut()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-cut.ipynb): useful when segmenting and sorting data values into bins. Notably, **bin widths don't have to be the same**. <br/>
-    * fillna() (coming soon).
-
+    * fillna(): (coming soon). <br/>
+    * groupby(): (coming soon). <br/>
     * [melt()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-melt.ipynb): wide-form to long-form. <br/>
     * pivot (coming soon).
     * [pivot_table()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-pivot_table.ipynb): useful when preparing frequency table. <br/>
     * [value_counts()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-crosstab.ipynb): useful when preparing frequency table. <br/>
-    * zfill() (coming soon).
+    * zfill(): (coming soon).
     * [Reshaping: imbalanced to balanced panel](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/imbalanced-to-balanced-df.ipynb).<br/>
+* [sidetable](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/sidetable.ipynb): useful when displaying cumulative distributions.
     
 * **SQL in Python (sqlite3).**
     * [Introduction to SQL: Part I.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/intro-to-sql-part1.ipynb)<br/>
@@ -40,11 +41,15 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
 
 * **Regular expression (regex)** - coming soon.    
 
+* **geopandas** - coming soon.    
+
 * **Webscraping.**
     * pandas.read_html().
         * [Industry list (SIC) from SEC.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/sec-sic-classification.ipynb)<br/>
         * [Dow Jones 30 from Wikipedia.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/DJ30.ipynb)<br/>
         * [S&P500 from Wikipedia.](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/SP500.html)<br/>
+        * [S&P1500 from Wikipedia.](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/SP1500.html)<br/>        
+        * [Russell1000 from Wikipedia.](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/Russell1000.html)<br/>        
      * requests (coming soon).
      * beautifulsoup (coming soon).
      * selenium (coming soon).
