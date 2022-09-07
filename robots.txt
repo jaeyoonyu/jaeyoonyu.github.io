@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jaeyoonyu.github.io/apt-deal-info/sitemap.xml
+Sitemap: https://jaeyoonyu.github.io/sitemap.xml
