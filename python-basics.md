@@ -28,6 +28,7 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
     * fillna(): (coming soon). <br/>
     * [groupby()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-groupby.ipynb). <br/>
     * [melt()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-melt.ipynb): wide-form to long-form. <br/>
+    * [options and settings](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-options.ipynb): e.g., the maximum columns and rows to display.
     * pivot (coming soon).
     * [pivot_table()](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pandas-method-pivot_table.ipynb): useful when preparing frequency table. <br/>
     * [sidetable](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/sidetable.ipynb): useful when displaying cumulative distributions.
