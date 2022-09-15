@@ -18,11 +18,25 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
     * [Download AP filings](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pcaob-auditorsearch-download.ipynb).<br/>
     * [Cleanse AP filings](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/pcaob-auditorsearch-cleanse.ipynb).<br/>    
 * [How to get access to WRDS using Python.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-intro.ipynb)<br/>
-    * Compustat: [funda (10-K)](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-compustat.ipynb); [fundq (10-Q)](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-compustat-fundq.ipynb); Company; [Segment files](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/compustat-preview-segment-data.ipynb).
-    * CRSP (coming soon).
-    * Audit Analytics: [Client info (auditcblock)](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-AuditAnalytics-auditcblock.ipynb); [Audit Opinions](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-AuditAnalytics-auditopin.ipynb); [CAMs](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-AuditAnalytics-CAM.ipynb); [IPOs](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-AuditAnalytics-ipo.ipynb); [SOX404](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-AuditAnalytics-sox404.ipynb); [Bankrupt](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-AuditAnalytics-bankrupt.ipynb); [Data breach](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-AuditAnalytics-cyber-security.ipynb).<br/>
-    * BoardEx: [board chars](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-boardex-bdchars.ipynb).<br/>
-    * IBES: [surpsumu (surprise, unadjusted)](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-ibes.ipynb).
+    * Compustat: Preview.  
+        * Company.
+        * [funda (10-K)](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-compustat.ipynb).
+        * [fundq (10-Q)](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-compustat-fundq.ipynb).
+        * [Segment files](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/compustat-preview-segment-data.ipynb).
+    * CRSP: Preview.
+        * Monthly files: msf; msi; mse.
+        * Daily files: dsf; dsi; dse.
+        * CRSP-Compustat Merged (CCM).
+        * CRSP-IBES Link.
+    * IBES: Preview.
+        * ID files: [id](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-ibes/wrds-download-ibes-id.ipynb); [idsum](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-ibes/wrds-download-ibes-id.ipynb).
+        * [surpsumu (surprise, unadjusted)](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-ibes.ipynb).        
+    * Audit Analytics: Preview.
+        * [Client info (auditcblock)](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-AuditAnalytics-auditcblock.ipynb)
+        * Panel sets: [Audit Opinions](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-AuditAnalytics-auditopin.ipynb); [SOX404](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-AuditAnalytics-sox404.ipynb); Sox302; Accelerated filers.
+        * Event sets: [CAMs](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-AuditAnalytics-CAM.ipynb); [IPOs](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-AuditAnalytics-ipo.ipynb);  [Bankrupt](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-AuditAnalytics-bankrupt.ipynb); [Data breach](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-AuditAnalytics-cyber-security.ipynb); Restatements; Late filings.
+    * BoardEx: Preview.
+        * [board chars](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-boardex-bdchars.ipynb).
 * Financial data for one company: [UBER](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/check-one-company-uber.ipynb).
 * Can we get <b>IPO years from Compustat</b>? Yes we can. Check [the distribution.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/Compustat-ipodate.ipynb)<br/>
 * Yearly distribution of <b>loss firms</b>: More than half are loss firms in 2020.<br>
