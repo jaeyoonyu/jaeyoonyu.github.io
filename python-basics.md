@@ -61,6 +61,7 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
      
 * **Visualization.**
     * barplot() (coming soon).
+    * [stacked barplot using pandas](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-crsp-dsedelist.ipynb) - useful for yearly distribution by groups (the code need replacing with a simpler one).
     * countplot() (coming soon).
     * [lineplot().](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/visual-lineplot.ipynb)
     * [areaplot().](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/visual-areaplot.ipynb)
