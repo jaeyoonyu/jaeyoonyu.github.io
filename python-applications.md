@@ -25,7 +25,7 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
         * [Segment files](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/compustat-preview-segment-data.ipynb).
     * CRSP
         * Monthly files: [msf](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-crsp-msf.ipynb); [msi](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-crsp-msi.ipynb); mse.
-        * Daily files: dsf; dsi; [dsedelist](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-crsp-msf.ipynb); [msi](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-crsp-dsedilist.ipynb).
+        * Daily files: dsf; dsi; dse; [dsedelist](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-crsp-dsedelist.ipynb).
         * CRSP-Compustat Merged (CCM).
         * CRSP-IBES Link.
     * IBES
