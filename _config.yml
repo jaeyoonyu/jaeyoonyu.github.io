@@ -22,7 +22,6 @@ navigation:                # accepts {file, title, url, icon, sidebaricon}
   - {file: "python-basics.md", title: Python-Basic}
   - {file: "python-applications.md", title: Python-Applied}
   - {file: "visuals.md", title: Visuals}
-  - {file: "cmu.md", title:}
 
 
 external:                  # shows a footer with social links - for available icons see fontawesome.com/icons
