@@ -15,10 +15,10 @@ My primary research interests include auditing, financial reporting, and regulat
     * R&R at <ins><em>Auditing: A Journal of Practice and Theory (ABDC list A*)</em></ins>. <br>
 * SEC Rule 10b-5 duty to disclose and managers' earnings warning decisions. <br>
     * R&R at <ins><em>Journal of Accounting and Public Policy (ABDC list A)</em></ins>. <br>
-* Knowledge spillover benefits of non-audit services: Evidence from audit hours and billing rates.
-    * Being revised for submission.
-* CEO succession planning disclosure and stock market reactions to CEO turnover announcements.
-    * Being revised for submission.
+* CEO succession planning disclosure and stock market reactions to CEO turnover announcements. <br>
+    * R&R at <ins><em>Finance Research Letters (ABDC list A)</em></ins>. <br>
+* Knowledge spillover benefits of non-audit services: Evidence from audit hours and billing rates. <br>
+    * Being revised for submission. <br>
 
 
 <H3>Published Papers</H3>
