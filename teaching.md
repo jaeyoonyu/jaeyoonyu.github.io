@@ -6,7 +6,11 @@ title: "Teaching"
 My teaching interests include data analytics, accounting information systems, auditing and financial accounting.
 
 
-<H3>Current Teaching at Erasmus School of Economics</H3>
+<H3>Teaching at Central Michigan University</H3>
+* Introduction to Financial Accounting. <br>
+* Data Analytics for Accounting. <br>
+
+<H3>Teaching at Erasmus School of Economics</H3>
 * Advanced Financial Accounting. <br>
 * Seminar Auditing. <br>
 * Master Thesis Supervision. <br>
