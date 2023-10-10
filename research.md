@@ -9,12 +9,13 @@ My primary research interests include auditing, financial reporting, and regulat
 <H3>Working Papers</H3>
 * General counsel in top management and auditors’ going-concern audit opinions. <br>
 * Internal competition among audit partners. <br>
-* SEC Rule 10b-5 duty to disclose and managers' earnings warning decisions. <br>
 * The importance of partners’ cultural backgrounds to clients’ earnings comparability. <br>
 * Knowledge spillover benefits of non-audit services: Evidence from audit hours and billing rates. <br>
 
 
 <H3>Published Papers</H3>
+* Misstatement Verifiability and Managers’ Earnings Warning Decisions. <br>
+    * <ins><em>Journal of Accounting and Public Policy (ABDC list A)</em></ins>, Accepted. <br>
 * CEO succession planning disclosure and stock market reactions to CEO turnover announcements. <br>
     * <ins><em>Finance Research Letters (ABDC list A)</em></ins>, 2023. <br>
 * The downside of the network ties between CEO/CFOs and auditors through external directorships: Evidence from auditor selection and subsequent audit quality. <br>
