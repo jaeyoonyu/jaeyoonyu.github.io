@@ -8,12 +8,16 @@ My primary research interests include auditing, financial reporting, and regulat
 
 <H3>Working Papers</H3>
 * General counsel in top management and auditors’ going-concern audit opinions. <br>
-* Internal competition among audit partners. <br>
+    * <ins><em>Under Review<br>
 * The importance of partners’ cultural backgrounds to clients’ earnings comparability. <br>
+    * <ins><em>Under Review<br>
 * Knowledge spillover benefits of non-audit services: Evidence from audit hours and billing rates. <br>
+    * <ins><em>Under Revise & Resubmit<br>
 
 
 <H3>Published Papers</H3>
+* Internal competition among audit partners. <br>
+    * <ins><em>Auditing: A Journal of Practice and Theory (ABDC list A*)</em></ins>, Conditionally accepted. <br>
 * Misstatement Verifiability and Managers’ Earnings Warning Decisions. <br>
     * <ins><em>Journal of Accounting and Public Policy (ABDC list A)</em></ins>, Accepted. <br>
 * CEO succession planning disclosure and stock market reactions to CEO turnover announcements. <br>
