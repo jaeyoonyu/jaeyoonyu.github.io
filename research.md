@@ -17,7 +17,7 @@ My primary research interests include auditing, financial reporting, and regulat
 
 <H3>Published Papers</H3>
 * Internal competition among audit partners. <br>
-    * <ins><em>Auditing: A Journal of Practice and Theory (ABDC list A*)</em></ins>, Conditionally accepted. <br>
+    * <ins><em>Auditing: A Journal of Practice and Theory (ABDC list A*)</em></ins>, Accepted. <br>
 * Misstatement Verifiability and Managers’ Earnings Warning Decisions. <br>
     * <ins><em>Journal of Accounting and Public Policy (ABDC list A)</em></ins>, Accepted. <br>
 * CEO succession planning disclosure and stock market reactions to CEO turnover announcements. <br>
