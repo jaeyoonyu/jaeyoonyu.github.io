@@ -7,19 +7,19 @@ My primary research interests include auditing, financial reporting, and regulat
 <br>
 
 <H3>Working Papers</H3>
-* General counsel in top management and auditors’ going-concern audit opinions. <br>
+* Knowledge spillover benefits of non-audit services: Evidence from audit hours and billing rates. <br>
     * <ins><em>Under Review<br>
 * The importance of partners’ cultural backgrounds to clients’ earnings comparability. <br>
     * <ins><em>Under Review<br>
-* Knowledge spillover benefits of non-audit services: Evidence from audit hours and billing rates. <br>
-    * <ins><em>Under Revise & Resubmit<br>
+* General counsel in top management and auditors’ going-concern audit opinions. <br>
+    * <ins><em>Being revised for submission<br>
 
 
 <H3>Published Papers</H3>
 * Does internal competition among audit partners affect audit pricing decisions? <br>
     * <ins><em>Auditing: A Journal of Practice and Theory (ABDC list A*)</em></ins>, Accepted. <br>
 * Misstatement verifiability and managers’ earnings warning decisions. <br>
-    * <ins><em>Journal of Accounting and Public Policy (ABDC list A)</em></ins>, Accepted. <br>
+    * <ins><em>Journal of Accounting and Public Policy (ABDC list A)</em></ins>, 2023. <br>
 * CEO succession planning disclosure and stock market reactions to CEO turnover announcements. <br>
     * <ins><em>Finance Research Letters (ABDC list A)</em></ins>, 2023. <br>
 * The downside of the network ties between CEO/CFOs and auditors through external directorships: Evidence from auditor selection and subsequent audit quality. <br>

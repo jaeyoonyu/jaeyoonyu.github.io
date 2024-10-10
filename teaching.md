@@ -26,6 +26,7 @@ My teaching interests include data analytics, accounting information systems, au
 
 
 <H3>Data Analytics Course Certificates, Coursera</H3>
+* Microsoft Excel Fundamentals + Data Analytics Certificate, Becker Professional Education. <br>
 * Accounting Data Analytics, UIUC. <br>
 * Python for Data Sciences, AI & Development, IBM. <br>
 * Data Analysis with Python, IBM. <br>
