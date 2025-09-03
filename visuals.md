@@ -22,8 +22,12 @@ Click here for the [Code](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github
 
 <img src="/assets/images/earnings-kink-static.jpg" class="inline">
 <br>
-{% include earnings-kink-dynamic.html %}
 
+<div style="width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;">
+    <div style="min-width: 600px;">
+        {% include earnings-kink-dynamic.html %}
+    </div>
+</div>
 
 Click here for the [Code](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/is-there-kink-around-zero.ipynb).<br/>
 
@@ -40,15 +44,22 @@ Click here for the [Code](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github
 ---
 
 <h2> 4. How many clients for each audit firm? </h2>
+<div style="width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;">
+    <div style="min-width: 600px;">
+        {% include client-dist-figure.html %}
+    </div>
+</div>
 
-{% include client-dist-figure.html %}
 Click here for the [Code](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/audit-analytics-client-distribution.html).  
 <br>
 
 ---
 <h2> 5. Scatter plots: ROA & SALES </h2>
-
-{% include dynamic-scatter-plot.html %}
+<div style="width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch;">
+    <div style="min-width: 600px;">
+        {% include dynamic-scatter-plot.html %}
+    </div>
+</div>
 
 Click here for the [Code](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/compustat-bubble-plot-animation.html).
 
