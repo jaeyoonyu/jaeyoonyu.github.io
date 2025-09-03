@@ -1,0 +1,370 @@
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Benford's Law Analyzer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body class="p-4 sm:p-8">
+
+    <div class="max-w-4xl mx-auto bg-white p-6 sm:p-8 rounded-xl shadow-lg">
+
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-center mb-6 text-gray-800">Benford's Law Analyzer</h1>
+        <p class="text-center text-gray-600 mb-8">
+            Paste your numbers below and click "Analyze" to see if your data follows Benford's Law.
+        </p>
+
+        <!-- Input Section -->
+        <div class="mb-8">
+            <label for="dataInput" class="block text-sm font-medium text-gray-700 mb-2">Enter your numbers (separated by
+                spaces, commas, or new lines):</label>
+            <textarea id="dataInput" rows="8"
+                class="w-full p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all shadow-sm"
+                placeholder="e.g., 1024, 55, 345, 987, ..."></textarea>
+            <button id="analyzeBtn"
+                class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition-colors shadow-md">
+                Analyze Data
+            </button>
+        </div>
+
+        <!-- Message Box -->
+        <div id="messageBox" class="hidden bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative"
+            role="alert">
+            <span id="messageText" class="block sm:inline"></span>
+        </div>
+
+        <!-- Results Container -->
+        <div id="resultsContainer" class="hidden">
+            <!-- Data Summary -->
+            <div class="bg-gray-50 p-6 rounded-xl shadow-inner mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Data Summary</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
+                    <div class="p-4 bg-white rounded-lg shadow-sm">
+                        <p class="text-sm text-gray-500">Total Numbers</p>
+                        <p id="totalCount" class="text-xl font-bold text-gray-900"></p>
+                    </div>
+                    <div class="p-4 bg-white rounded-lg shadow-sm">
+                        <p class="text-sm text-gray-500">Average Value</p>
+                        <p id="averageValue" class="text-xl font-bold text-gray-900"></p>
+                    </div>
+                    <div class="p-4 bg-white rounded-lg shadow-sm">
+                        <p class="text-sm text-gray-500">Minimum Value</p>
+                        <p id="minValue" class="text-xl font-bold text-gray-900"></p>
+                    </div>
+                    <div class="p-4 bg-white rounded-lg shadow-sm">
+                        <p class="text-sm text-gray-500">Maximum Value</p>
+                        <p id="maxValue" class="text-xl font-bold text-gray-900"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benford's Law Table & Chart -->
+            <div class="bg-gray-50 p-6 rounded-xl shadow-inner mb-8">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Benford's Law Comparison</h2>
+                <div class="overflow-x-auto mb-6">
+                    <table class="w-full text-left table-auto border-collapse">
+                        <thead>
+                            <tr class="bg-gray-200">
+                                <th class="p-3 font-semibold text-sm rounded-tl-lg">Leading Digit</th>
+                                <th class="p-3 font-semibold text-sm">Benford's Expected (%)</th>
+                                <th class="p-3 font-semibold text-sm rounded-tr-lg">Actual (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comparisonTableBody" class="bg-white">
+                            <!-- Table rows will be inserted here by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="chart-container">
+                    <canvas id="benfordChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Statistical Conclusion -->
+            <div class="bg-gray-50 p-6 rounded-xl shadow-inner">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">Statistical Conclusion</h2>
+                <div class="mb-4 p-4 bg-white rounded-lg shadow-sm">
+                    <p class="text-lg font-semibold">Chi-Squared Statistic: <span id="chiSquaredValue"
+                            class="font-bold text-blue-600"></span></p>
+                </div>
+                <div class="mb-4 p-4 bg-white rounded-lg shadow-sm">
+                    <p class="text-lg font-semibold">P-value: <span id="pValue"
+                            class="font-bold text-blue-600"></span></p>
+                </div>
+                <div class="p-4 rounded-lg shadow-sm" id="conclusionBox">
+                    <p id="conclusionText" class="text-xl font-bold"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Utility function to show an alert message
+        function showMessage(text) {
+            const messageBox = document.getElementById('messageBox');
+            const messageText = document.getElementById('messageText');
+            messageText.textContent = text;
+            messageBox.classList.remove('hidden');
+            setTimeout(() => {
+                messageBox.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Benford's Law expected percentages
+        const benfordPercentages = {
+            1: 30.1,
+            2: 17.6,
+            3: 12.5,
+            4: 9.7,
+            5: 7.9,
+            6: 6.7,
+            7: 5.8,
+            8: 5.1,
+            9: 4.6
+        };
+
+        const benfordProbabilities = {
+            1: 0.301,
+            2: 0.176,
+            3: 0.125,
+            4: 0.097,
+            5: 0.079,
+            6: 0.067,
+            7: 0.058,
+            8: 0.051,
+            9: 0.046
+        };
+
+        const chiSquaredCriticalValue = 15.51; // for alpha=0.05, df=8
+
+        // Chart.js instance variable
+        let benfordChart = null;
+
+        document.getElementById('analyzeBtn').addEventListener('click', analyzeData);
+
+        function analyzeData() {
+            const dataInput = document.getElementById('dataInput').value;
+            const numbers = dataInput.split(/[\s,]+/).filter(n => n.length > 0 && !isNaN(Number(n))).map(Number);
+            const resultsContainer = document.getElementById('resultsContainer');
+            const messageBox = document.getElementById('messageBox');
+            messageBox.classList.add('hidden');
+
+            // 1. Basic validation and data summary
+            if (numbers.length === 0) {
+                showMessage('Please enter at least one valid number.');
+                resultsContainer.classList.add('hidden');
+                return;
+            }
+
+            const totalCount = numbers.length;
+            const sum = numbers.reduce((acc, curr) => acc + curr, 0);
+            const average = sum / totalCount;
+            const min = Math.min(...numbers);
+            const max = Math.max(...numbers);
+
+            document.getElementById('totalCount').textContent = totalCount;
+            document.getElementById('averageValue').textContent = average.toFixed(2);
+            document.getElementById('minValue').textContent = min;
+            document.getElementById('maxValue').textContent = max;
+
+            // 2. Calculate actual leading digit frequencies
+            const leadingDigitCounts = {
+                1: 0,
+                2: 0,
+                3: 0,
+                4: 0,
+                5: 0,
+                6: 0,
+                7: 0,
+                8: 0,
+                9: 0
+            };
+            numbers.forEach(num => {
+                // Get the first significant digit of the number
+                const firstDigit = parseInt(String(Math.abs(num)).replace(/[^1-9]+/, '')[0], 10);
+                if (firstDigit >= 1 && firstDigit <= 9) {
+                    leadingDigitCounts[firstDigit]++;
+                }
+            });
+
+            const actualPercentages = {};
+            for (let i = 1; i <= 9; i++) {
+                actualPercentages[i] = (leadingDigitCounts[i] / totalCount) * 100;
+            }
+
+            // 3. Populate the table
+            const tableBody = document.getElementById('comparisonTableBody');
+            tableBody.innerHTML = '';
+            for (let i = 1; i <= 9; i++) {
+                const row = document.createElement('tr');
+                row.className = 'border-b last:border-b-0 transition-colors hover:bg-gray-100';
+                row.innerHTML = `
+                    <td class="p-3 text-sm font-semibold">${i}</td>
+                    <td class="p-3 text-sm">${benfordPercentages[i].toFixed(1)}%</td>
+                    <td class="p-3 text-sm">${actualPercentages[i].toFixed(1)}%</td>
+                `;
+                tableBody.appendChild(row);
+            }
+
+            // 4. Calculate Chi-squared statistic
+            let chiSquared = 0;
+            for (let i = 1; i <= 9; i++) {
+                const expectedCount = totalCount * benfordProbabilities[i];
+                if (expectedCount > 0) {
+                    chiSquared += Math.pow(leadingDigitCounts[i] - expectedCount, 2) / expectedCount;
+                }
+            }
+
+            // Simple P-value estimation (not a precise library)
+            const pValue = 1 - (chiSquared / (chiSquared + chiSquaredCriticalValue)); // A rough approximation for display
+
+            document.getElementById('chiSquaredValue').textContent = chiSquared.toFixed(4);
+            document.getElementById('pValue').textContent = pValue.toFixed(4);
+
+            // 5. Determine conclusion based on Chi-squared test
+            const conclusionBox = document.getElementById('conclusionBox');
+            const conclusionText = document.getElementById('conclusionText');
+
+            if (chiSquared < chiSquaredCriticalValue) {
+                conclusionBox.className = 'p-4 rounded-lg shadow-sm bg-green-100 border border-green-400';
+                conclusionText.textContent = 'Your data likely follows Benford\'s Law.';
+            } else {
+                conclusionBox.className = 'p-4 rounded-lg shadow-sm bg-red-100 border border-red-400';
+                conclusionText.textContent = 'Your data does not likely follow Benford\'s Law.';
+            }
+
+            // 6. Create or update the chart
+            const ctx = document.getElementById('benfordChart').getContext('2d');
+            const significantBars = [];
+            const labels = [];
+
+            for (let i = 1; i <= 9; i++) {
+                labels.push(String(i));
+                
+                const expectedCount = totalCount * benfordProbabilities[i];
+                const chiSquaredContribution = (Math.pow(leadingDigitCounts[i] - expectedCount, 2) / expectedCount);
+                if (chiSquaredContribution > chiSquaredCriticalValue / 9) { // rough avg contribution
+                    significantBars.push(true);
+                } else {
+                    significantBars.push(false);
+                }
+            }
+
+            // Destroy the old chart if it exists
+            if (benfordChart) {
+                benfordChart.destroy();
+            }
+
+            benfordChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Benford\'s Expected %',
+                        data: Object.values(benfordPercentages),
+                        backgroundColor: 'rgba(209, 213, 219, 0.8)',
+                        borderColor: 'rgba(156, 163, 175, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'Actual Data %',
+                        data: Object.values(actualPercentages),
+                        backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                        borderColor: 'rgb(59, 130, 246)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Percentage (%)',
+                                font: {
+                                    weight: 'bold'
+                                }
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Leading Digit',
+                                font: {
+                                    weight: 'bold'
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        // Plugin to draw the red dashed box
+                        beforeDraw: (chart) => {
+                            const ctx = chart.ctx;
+                            const significantBarIndices = significantBars.map((isSignificant, index) => isSignificant ? index : -1).filter(index => index !== -1);
+                            
+                            significantBarIndices.forEach(index => {
+                                const meta = chart.getDatasetMeta(1).data[index];
+                                if (meta) {
+                                    const {
+                                        x,
+                                        y,
+                                        base
+                                    } = meta;
+                                    const barWidth = meta.width;
+
+                                    ctx.save();
+                                    ctx.strokeStyle = 'red';
+                                    ctx.lineWidth = 2;
+                                    ctx.setLineDash([5, 5]);
+
+                                    const rectX = x;
+                                    const rectY = y;
+                                    const rectHeight = base - y;
+
+                                    // Adjust x-coordinate for the second bar in the group
+                                    // This is a bit of a hack based on Chart.js internal drawing logic
+                                    const rectXAdjusted = rectX - (chart.getDatasetMeta(0).data[index].width / 2);
+
+                                    ctx.strokeRect(rectXAdjusted, rectY, barWidth, rectHeight);
+                                    ctx.restore();
+                                }
+                            });
+                        }
+                    }
+                }
+            });
+
+            // Show results
+            resultsContainer.classList.remove('hidden');
+        }
+    </script>
+</body>
+
+</html>
