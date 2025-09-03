@@ -9,6 +9,6 @@ Whether you are curious about financial data patterns or preparing for professio
 
 For more information on Benford's Law, you can refer to the [Wikipedia article](https://en.wikipedia.org/wiki/Benford%27s_law).
 
-<iframe src="assets/tools/benford-analyzer.html" width="100%" height="800px" frameborder="0"></iframe>
+<iframe src="assets/benford-analyzer.html" width="100%" height="800px" frameborder="0"></iframe>
 
 
