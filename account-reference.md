@@ -3,7 +3,7 @@ layout: page
 title: "Account-reference"
 ---
 
-<img src="/assets/images/relationship-between-FS.jpg" class="inline">
+<img src="/assets/images/Relationship-between-FS.jpg" class="inline">
 ---
 
 This interactive accounting reference includes basic account types and journal entry examples for beginners studying accounting.
