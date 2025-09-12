@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Accounting Reference</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        .search-container {
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid #eee;
+        }
+
+        .search-box {
+            position: relative;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid #ddd;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .search-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 1.2rem;
+        }
+
+        .clear-btn {
+            position: absolute;
+            right: 50px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: none;
+        }
+
+        .content {
+            padding: 30px;
+            min-height: 400px;
+        }
+
+        .definitions-view {
+            display: block;
+        }
+
+        .journal-entry-view {
+            display: none;
+        }
+
+        .account-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .account-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .account-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .account-card.asset { border-left-color: #27ae60; }
+        .account-card.liability { border-left-color: #e74c3c; }
+        .account-card.equity { border-left-color: #3498db; }
+        .account-card.revenue { border-left-color: #f39c12; }
+        .account-card.expense { border-left-color: #9b59b6; }
+
+        .account-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .account-type {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .account-type.asset { background: #d5f4e6; color: #27ae60; }
+        .account-type.liability { background: #fadbd8; color: #e74c3c; }
+        .account-type.equity { background: #d6eaf8; color: #3498db; }
+        .account-type.revenue { background: #fdeaa7; color: #f39c12; }
+        .account-type.expense { background: #e8daef; color: #9b59b6; }
+
+        .account-definition {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .journal-entry {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .journal-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .journal-account-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .journal-description {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .example-section {
+            margin-bottom: 40px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .example-header {
+            padding: 15px 20px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .example-header.increase { background: #27ae60; }
+        .example-header.decrease { background: #e74c3c; }
+
+        .example-content {
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .scenario {
+            color: #555;
+            font-style: italic;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .journal-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .journal-table th {
+            background: #34495e;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .journal-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .journal-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .debit {
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        .credit {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+
+        .journal-table .indent {
+            padding-left: 45px;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #666;
+            font-size: 1.2rem;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2rem; }
+            .account-grid { grid-template-columns: 1fr; }
+            .container { margin: 10px; border-radius: 15px; }
+            .content { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Accounting Accounts Reference</h1>
+            <p>Click on any account card or search to view journal entry examples</p>
+        </div>
+        
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" class="search-input" placeholder="Search for an account (e.g., Cash, Accounts Payable)..." id="searchInput">
+                <span class="search-icon">🔍</span>
+                <button class="clear-btn" id="clearBtn">✕</button>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="definitions-view" id="definitionsView">
+                <div class="account-grid" id="accountGrid"></div>
+            </div>
+            
+            <div class="journal-entry-view" id="journalView">
+                <div class="journal-entry" id="journalEntry"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================================
+        // ACCOUNT DEFINITIONS - Edit these as needed
+        // ============================================================================
+        
+        const ACCOUNT_DEFINITIONS = {
+            // ASSETS
+            'Cash': 'Physical currency and coins, as well as checking and savings account balances. The most liquid asset representing immediate purchasing power.',
+            'Accounts Receivable': 'Money owed to the company by customers for goods or services provided on credit. Represents future cash inflows from sales transactions.',
+            'Inventory': 'Goods held for sale in the ordinary course of business, including raw materials, work-in-process, and finished goods.',
+            'Prepaid Expenses': 'Expenses paid in advance that will benefit future periods, such as prepaid rent, insurance, or supplies.',
+            'Equipment': 'Long-term tangible assets used in business operations to generate revenue, such as machinery, computers, and office furniture.',
+            'Buildings': 'Real estate properties owned by the company and used for business operations, excluding the land on which they sit.',
+            'Land': 'Real estate property owned by the company. Unlike buildings, land is not depreciated as it typically maintains or increases its value.',
+            
+            // LIABILITIES
+            'Accounts Payable': 'Money owed to suppliers and vendors for goods or services purchased on credit. Represents short-term obligations to be paid.',
+            'Notes Payable': 'Formal written promises to pay specific amounts by certain dates, typically involving interest charges.',
+            'Accrued liabilities': 'Liabilities resulting from expenses that have been incurred but not yet paid or recorded, such as wages, utilities, or interest.',
+            'Deferred Revenue': 'Money received from customers for goods or services not yet delivered. Represents an obligation to provide future services.',
+            'Bonds Payable': 'Long-term debt securities issued to investors, representing a contractual obligation to pay interest and principal.',
+            
+            // EQUITY
+            'Common Stock': 'Represents ownership shares in a corporation. Common stockholders have voting rights and may receive dividends.',
+            'Retained Earnings': 'Accumulated profits that have been retained in the business rather than distributed as dividends to shareholders.',
+            
+            // REVENUES
+            'Sales Revenue': 'Income earned from selling goods or services to customers. Increases equity through profitable operations.',
+            'Service Revenue': 'Income earned from providing services to clients. Revenue is recognized when services are performed.',
+            
+            // EXPENSES
+            'Rent Expense': 'Cost of renting or leasing property, equipment, or other assets for business operations.',
+            'Wages Expense': 'Cost of employee compensation including salaries, wages, and benefits for work performed.',
+            'Utilities Expense': 'Cost of electricity, gas, water, telephone, and internet services used in business operations.',
+            'Depreciation Expense': 'Allocation of the cost of long-term assets over their useful lives as they lose value through use and time.',
+            'Interest Expense': 'Cost of borrowing money, including interest on loans, bonds, and other debt obligations.'
+        };
+
+        // ============================================================================
+        // ACCOUNT TYPE MAPPING
+        // ============================================================================
+
+        const ACCOUNT_TYPES = {
+            // ASSETS
+            'Cash': 'asset',
+            'Accounts Receivable': 'asset',
+            'Inventory': 'asset',
+            'Prepaid Expenses': 'asset',
+            'Equipment': 'asset',
+            'Buildings': 'asset',
+            'Land': 'asset',
+            // LIABILITIES
+            'Accounts Payable': 'liability',
+            'Notes Payable': 'liability',
+            'Accrued liabilities': 'liability',
+            'Deferred Revenue': 'liability',
+            'Bonds Payable': 'liability',
+            // EQUITY
+            'Common Stock': 'equity',
+            'Retained Earnings': 'equity',
+            // REVENUES
+            'Sales Revenue': 'revenue',
+            'Service Revenue': 'revenue',
+            // EXPENSES
+            'Rent Expense': 'expense',
+            'Wages Expense': 'expense',
+            'Utilities Expense': 'expense',
+            'Depreciation Expense': 'expense',
+            'Interest Expense': 'expense'
+        };
+
+        // ============================================================================
+        // JOURNAL ENTRY EXAMPLES - Edit these as needed
+        // ============================================================================
+
+        const JOURNAL_EXAMPLES = {
+            // ASSETS
+            'Cash': {
+                increase: {
+                    scenario: 'Receiving $2,500 cash payment from customer for outstanding invoice',
+                    entries: [
+                        { account: 'Cash', debit: '$2,500', credit: '', indent: false },
+                        { account: 'Accounts Receivable', debit: '', credit: '$2,500', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Paying $1,800 cash for monthly office rent',
+                    entries: [
+                        { account: 'Rent Expense', debit: '$1,800', credit: '', indent: false },
+                        { account: 'Cash', debit: '', credit: '$1,800', indent: true }
+                    ]
+                }
+            },
+            'Accounts Receivable': {
+                increase: {
+                    scenario: 'Selling $4,200 worth of merchandise to customer on 30-day credit terms',
+                    entries: [
+                        { account: 'Accounts Receivable', debit: '$4,200', credit: '', indent: false },
+                        { account: 'Sales Revenue', debit: '', credit: '$4,200', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Receiving $3,750 payment from customer for outstanding balance',
+                    entries: [
+                        { account: 'Cash', debit: '$3,750', credit: '', indent: false },
+                        { account: 'Accounts Receivable', debit: '', credit: '$3,750', indent: true }
+                    ]
+                }
+            },
+            'Inventory': {
+                increase: {
+                    scenario: 'Purchasing $8,500 of raw materials from supplier on credit',
+                    entries: [
+                        { account: 'Raw Materials Inventory', debit: '$8,500', credit: '', indent: false },
+                        { account: 'Accounts Payable', debit: '', credit: '$8,500', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Recording cost of goods sold of $6,200 for inventory sold',
+                    entries: [
+                        { account: 'Cost of Goods Sold', debit: '$6,200', credit: '', indent: false },
+                        { account: 'Finished Goods Inventory', debit: '', credit: '$6,200', indent: true }
+                    ]
+                }
+            },
+            'Prepaid Expenses': {
+                increase: {
+                    scenario: 'Paying $7,200 for 12 months of business insurance coverage in advance',
+                    entries: [
+                        { account: 'Prepaid Insurance', debit: '$7,200', credit: '', indent: false },
+                        { account: 'Cash', debit: '', credit: '$7,200', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Recording $600 of prepaid insurance expense for current month',
+                    entries: [
+                        { account: 'Insurance Expense', debit: '$600', credit: '', indent: false },
+                        { account: 'Prepaid Insurance', debit: '', credit: '$600', indent: true }
+                    ]
+                }
+            },
+            'Equipment': {
+                increase: {
+                    scenario: 'Purchasing $24,000 manufacturing equipment, paying $10,000 cash and financing $14,000',
+                    entries: [
+                        { account: 'Manufacturing Equipment', debit: '$24,000', credit: '', indent: false },
+                        { account: 'Cash', debit: '', credit: '$10,000', indent: true },
+                        { account: 'Equipment Loan Payable', debit: '', credit: '$14,000', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Recording monthly depreciation of $800 on office equipment',
+                    entries: [
+                        { account: 'Depreciation Expense - Equipment', debit: '$800', credit: '', indent: false },
+                        { account: 'Accumulated Depreciation - Equipment', debit: '', credit: '$800', indent: true }
+                    ]
+                }
+            },
+            'Buildings': {
+                increase: {
+                    scenario: 'Purchasing office building for $350,000 cash',
+                    entries: [
+                        { account: 'Buildings', debit: '$350,000', credit: '', indent: false },
+                        { account: 'Cash', debit: '', credit: '$350,000', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Recording annual depreciation of $12,000 on office building',
+                    entries: [
+                        { account: 'Depreciation Expense - Building', debit: '$12,000', credit: '', indent: false },
+                        { account: 'Accumulated Depreciation - Building', debit: '', credit: '$12,000', indent: true }
+                    ]
+                }
+            },
+            'Land': {
+                increase: {
+                    scenario: 'Purchasing land for future expansion for $125,000 cash',
+                    entries: [
+                        { account: 'Land', debit: '$125,000', credit: '', indent: false },
+                        { account: 'Cash', debit: '', credit: '$125,000', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Selling unused land for $180,000 cash (original cost $150,000)',
+                    entries: [
+                        { account: 'Cash', debit: '$180,000', credit: '', indent: false },
+                        { account: 'Land', debit: '', credit: '$150,000', indent: true },
+                        { account: 'Gain on Sale of Land', debit: '', credit: '$30,000', indent: true }
+                    ]
+                }
+            },
+
+            // LIABILITIES
+            'Accounts Payable': {
+                increase: {
+                    scenario: 'Purchasing $3,200 worth of office supplies from vendor on credit',
+                    entries: [
+                        { account: 'Office Supplies', debit: '$3,200', credit: '', indent: false },
+                        { account: 'Accounts Payable', debit: '', credit: '$3,200', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Paying $2,800 to vendor for previously purchased inventory',
+                    entries: [
+                        { account: 'Accounts Payable', debit: '$2,800', credit: '', indent: false },
+                        { account: 'Cash', debit: '', credit: '$2,800', indent: true }
+                    ]
+                }
+            },
+            'Notes Payable': {
+                increase: {
+                    scenario: 'Borrowing $35,000 from bank with 6-month promissory note at 8% annual interest',
+                    entries: [
+                        { account: 'Cash', debit: '$35,000', credit: '', indent: false },
+                        { account: 'Notes Payable', debit: '', credit: '$35,000', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Making $5,000 principal payment on note payable plus $280 interest',
+                    entries: [
+                        { account: 'Notes Payable', debit: '$5,000', credit: '', indent: false },
+                        { account: 'Interest Expense', debit: '$280', credit: '', indent: false },
+                        { account: 'Cash', debit: '', credit: '$5,280', indent: true }
+                    ]
+                }
+            },
+            'Accrued liabilities': {
+                increase: {
+                    scenario: 'Recording $6,400 in accrued wages for employees at month-end (not yet paid)',
+                    entries: [
+                        { account: 'Wages Expense', debit: '$6,400', credit: '', indent: false },
+                        { account: 'Accrued Wages Payable', debit: '', credit: '$6,400', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Paying $6,400 in previously accrued wages to employees',
+                    entries: [
+                        { account: 'Accrued Wages Payable', debit: '$6,400', credit: '', indent: false },
+                        { account: 'Cash', debit: '', credit: '$6,400', indent: true }
+                    ]
+                }
+            },
+            'Deferred Revenue': {
+                increase: {
+                    scenario: 'Receiving $9,000 advance payment from customer for 6-month consulting contract',
+                    entries: [
+                        { account: 'Cash', debit: '$9,000', credit: '', indent: false },
+                        { account: 'Deferred Revenue', debit: '', credit: '$9,000', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Earning $1,500 of previously deferred revenue by completing one month of consulting',
+                    entries: [
+                        { account: 'Deferred Revenue', debit: '$1,500', credit: '', indent: false },
+                        { account: 'Consulting Revenue', debit: '', credit: '$1,500', indent: true }
+                    ]
+                }
+            },
+            'Bonds Payable': {
+                increase: {
+                    scenario: 'Issuing $500,000 in 10-year corporate bonds at face value with 7% annual interest',
+                    entries: [
+                        { account: 'Cash', debit: '$500,000', credit: '', indent: false },
+                        { account: 'Bonds Payable', debit: '', credit: '$500,000', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Retiring $100,000 of bonds at maturity by paying bondholders',
+                    entries: [
+                        { account: 'Bonds Payable', debit: '$100,000', credit: '', indent: false },
+                        { account: 'Cash', debit: '', credit: '$100,000', indent: true }
+                    ]
+                }
+            },
+
+            // EQUITY
+            'Common Stock': {
+                increase: {
+                    scenario: 'Issuing 1,000 shares of common stock at $25 per share to new investors',
+                    entries: [
+                        { account: 'Cash', debit: '$25,000', credit: '', indent: false },
+                        { account: 'Common Stock', debit: '', credit: '$25,000', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Repurchasing 200 shares of treasury stock at $30 per share',
+                    entries: [
+                        { account: 'Treasury Stock', debit: '$6,000', credit: '', indent: false },
+                        { account: 'Cash', debit: '', credit: '$6,000', indent: true }
+                    ]
+                }
+            },
+            'Retained Earnings': {
+                increase: {
+                    scenario: 'Closing net income of $45,000 to retained earnings at year-end',
+                    entries: [
+                        { account: 'Income Summary', debit: '$45,000', credit: '', indent: false },
+                        { account: 'Retained Earnings', debit: '', credit: '$45,000', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Declaring cash dividends of $12,000 to shareholders',
+                    entries: [
+                        { account: 'Retained Earnings', debit: '$12,000', credit: '', indent: false },
+                        { account: 'Dividends Payable', debit: '', credit: '$12,000', indent: true }
+                    ]
+                }
+            },
+
+            // REVENUES
+            'Sales Revenue': {
+                increase: {
+                    scenario: 'Recording cash sales of $8,500 to customers',
+                    entries: [
+                        { account: 'Cash', debit: '$8,500', credit: '', indent: false },
+                        { account: 'Sales Revenue', debit: '', credit: '$8,500', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Processing sales returns of $750 for defective merchandise',
+                    entries: [
+                        { account: 'Sales Returns and Allowances', debit: '$750', credit: '', indent: false },
+                        { account: 'Cash', debit: '', credit: '$750', indent: true }
+                    ]
+                }
+            },
+            'Service Revenue': {
+                increase: {
+                    scenario: 'Completing $4,200 consulting services for client, billed on credit',
+                    entries: [
+                        { account: 'Accounts Receivable', debit: '$4,200', credit: '', indent: false },
+                        { account: 'Service Revenue', debit: '', credit: '$4,200', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Providing credit adjustment of $300 for unsatisfactory service',
+                    entries: [
+                        { account: 'Service Revenue', debit: '$300', credit: '', indent: false },
+                        { account: 'Accounts Receivable', debit: '', credit: '$300', indent: true }
+                    ]
+                }
+            },
+
+            // EXPENSES
+            'Rent Expense': {
+                increase: {
+                    scenario: 'Recording monthly office rent payment of $3,500',
+                    entries: [
+                        { account: 'Rent Expense', debit: '$3,500', credit: '', indent: false },
+                        { account: 'Cash', debit: '', credit: '$3,500', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Receiving $600 rent refund due to maintenance issues',
+                    entries: [
+                        { account: 'Cash', debit: '$600', credit: '', indent: false },
+                        { account: 'Rent Expense', debit: '', credit: '$600', indent: true }
+                    ]
+                }
+            },
+            'Wages Expense': {
+                increase: {
+                    scenario: 'Recording bi-weekly payroll of $18,400 for all employees',
+                    entries: [
+                        { account: 'Wages Expense', debit: '$18,400', credit: '', indent: false },
+                        { account: 'Cash', debit: '', credit: '$18,400', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Correcting overpayment of $320 in wages from previous period',
+                    entries: [
+                        { account: 'Cash', debit: '$320', credit: '', indent: false },
+                        { account: 'Wages Expense', debit: '', credit: '$320', indent: true }
+                    ]
+                }
+            },
+            'Utilities Expense': {
+                increase: {
+                    scenario: 'Paying monthly utility bills totaling $1,250 for electricity and gas',
+                    entries: [
+                        { account: 'Utilities Expense', debit: '$1,250', credit: '', indent: false },
+                        { account: 'Cash', debit: '', credit: '$1,250', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Receiving $180 credit from utility company for overcharge',
+                    entries: [
+                        { account: 'Cash', debit: '$180', credit: '', indent: false },
+                        { account: 'Utilities Expense', debit: '', credit: '$180', indent: true }
+                    ]
+                }
+            },
+            'Depreciation Expense': {
+                increase: {
+                    scenario: 'Recording monthly depreciation of $2,100 on office equipment and vehicles',
+                    entries: [
+                        { account: 'Depreciation Expense - Equipment', debit: '$1,400', credit: '', indent: false },
+                        { account: 'Depreciation Expense - Vehicles', debit: '$700', credit: '', indent: false },
+                        { account: 'Accumulated Depreciation - Equipment', debit: '', credit: '$1,400', indent: true },
+                        { account: 'Accumulated Depreciation - Vehicles', debit: '', credit: '$700', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Adjusting depreciation by $250 due to asset disposal during month',
+                    entries: [
+                        { account: 'Accumulated Depreciation - Equipment', debit: '$250', credit: '', indent: false },
+                        { account: 'Depreciation Expense - Equipment', debit: '', credit: '$250', indent: true }
+                    ]
+                }
+            },
+            'Interest Expense': {
+                increase: {
+                    scenario: 'Recording monthly interest expense of $1,850 on outstanding loans and bonds',
+                    entries: [
+                        { account: 'Interest Expense', debit: '$1,850', credit: '', indent: false },
+                        { account: 'Interest Payable', debit: '', credit: '$1,850', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'Adjusting interest expense by $125 due to early loan payment discount',
+                    entries: [
+                        { account: 'Interest Payable', debit: '$125', credit: '', indent: false },
+                        { account: 'Interest Expense', debit: '', credit: '$125', indent: true }
+                    ]
+                }
+            }
+        };
+
+        // ============================================================================
+        // MAIN APPLICATION CODE
+        // ============================================================================
+
+        const searchInput = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('clearBtn');
+        const definitionsView = document.getElementById('definitionsView');
+        const journalView = document.getElementById('journalView');
+        const accountGrid = document.getElementById('accountGrid');
+        const journalEntry = document.getElementById('journalEntry');
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', displayAllAccounts);
+        displayAllAccounts();
+
+        // Search functionality
+        searchInput.addEventListener('input', function() {
+            const query = this.value.trim();
+            
+            if (query === '') {
+                clearBtn.style.display = 'none';
+                showDefinitionsView();
+                displayAllAccounts();
+            } else {
+                clearBtn.style.display = 'block';
+                const matchedAccount = findAccount(query);
+                
+                if (matchedAccount) {
+                    showJournalView(matchedAccount);
+                } else {
+                    showNoResults();
+                }
+            }
+        });
+
+        clearBtn.addEventListener('click', function() {
+            searchInput.value = '';
+            clearBtn.style.display = 'none';
+            showDefinitionsView();
+            displayAllAccounts();
+            searchInput.focus();
+        });
+
+        function displayAllAccounts() {
+            accountGrid.innerHTML = '';
+            
+            for (const accountName in ACCOUNT_DEFINITIONS) {
+                const card = createAccountCard(accountName);
+                accountGrid.appendChild(card);
+            }
+        }
+
+        function createAccountCard(accountName) {
+            const accountType = ACCOUNT_TYPES[accountName];
+            const definition = ACCOUNT_DEFINITIONS[accountName];
+            
+            const card = document.createElement('div');
+            card.className = `account-card ${accountType}`;
+            
+            card.innerHTML = `
+                <div class="account-name">${accountName}</div>
+                <div class="account-type ${accountType}">${accountType}</div>
+                <div class="account-definition">${definition}</div>
+            `;
+            
+            // Make card clickable
+            card.addEventListener('click', function() {
+                searchInput.value = accountName;
+                clearBtn.style.display = 'block';
+                showJournalView(accountName);
+            });
+            
+            return card;
+        }
+
+        function findAccount(query) {
+            const lowerQuery = query.toLowerCase();
+            
+            for (const accountName in ACCOUNT_DEFINITIONS) {
+                if (accountName.toLowerCase() === lowerQuery || 
+                    accountName.toLowerCase().includes(lowerQuery)) {
+                    return accountName;
+                }
+            }
+            return null;
+        }
+
+        function showDefinitionsView() {
+            definitionsView.style.display = 'block';
+            journalView.style.display = 'none';
+        }
+
+        function showJournalView(accountName) {
+            definitionsView.style.display = 'none';
+            journalView.style.display = 'block';
+            
+            const accountType = ACCOUNT_TYPES[accountName];
+            const definition = ACCOUNT_DEFINITIONS[accountName];
+            const examples = JOURNAL_EXAMPLES[accountName];
+            
+            if (!examples) {
+                journalEntry.innerHTML = `
+                    <div class="journal-header">
+                        <div class="journal-account-name">${accountName}</div>
+                        <div class="account-type ${accountType}">${accountType}</div>
+                        <div class="journal-description">${definition}</div>
+                    </div>
+                    <p style="color: #e74c3c; text-align: center; margin-top: 30px;">Journal examples coming soon for this account.</p>
+                `;
+                return;
+            }
+            
+            journalEntry.innerHTML = `
+                <div class="journal-header">
+                    <div class="journal-account-name">${accountName}</div>
+                    <div class="account-type ${accountType}">${accountType}</div>
+                    <div class="journal-description">${definition}</div>
+                </div>
+                
+                <div class="example-section">
+                    <div class="example-header increase">
+                        ${accountType.toUpperCase()} INCREASE - Example 1
+                    </div>
+                    <div class="example-content">
+                        <div class="scenario">${examples.increase.scenario}</div>
+                        <table class="journal-table">
+                            <thead>
+                                <tr>
+                                    <th>Account</th>
+                                    <th>Debit</th>
+                                    <th>Credit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${examples.increase.entries.map(entry => `
+                                    <tr>
+                                        <td${entry.indent ? ' class="indent"' : ''}>${entry.account}</td>
+                                        <td class="debit">${entry.debit}</td>
+                                        <td class="credit">${entry.credit}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="example-section">
+                    <div class="example-header decrease">
+                        ${accountType.toUpperCase()} DECREASE - Example 2
+                    </div>
+                    <div class="example-content">
+                        <div class="scenario">${examples.decrease.scenario}</div>
+                        <table class="journal-table">
+                            <thead>
+                                <tr>
+                                    <th>Account</th>
+                                    <th>Debit</th>
+                                    <th>Credit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${examples.decrease.entries.map(entry => `
+                                    <tr>
+                                        <td${entry.indent ? ' class="indent"' : ''}>${entry.account}</td>
+                                        <td class="debit">${entry.debit}</td>
+                                        <td class="credit">${entry.credit}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function showNoResults() {
+            definitionsView.style.display = 'block';
+            journalView.style.display = 'none';
+            accountGrid.innerHTML = '<div class="no-results">No accounts found matching your search.</div>';
+        }
+    </script>
+</body>
+</html>
