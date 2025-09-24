@@ -111,60 +111,258 @@
             display: none;
         }
 
+        .three-section-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .main-section {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            padding: 8px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #34495e, #2c3e50);
+            color: white;
+        }
+
+        .debit-credit-split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            height: 100%;
+        }
+
+        .debit-side, .credit-side {
+            padding: 10px;
+            border-radius: 8px;
+        }
+
+        .debit-side {
+            background: rgba(39, 174, 96, 0.1);
+            border-left: 3px solid #27ae60;
+        }
+
+        .credit-side {
+            background: rgba(231, 76, 60, 0.1);
+            border-left: 3px solid #e74c3c;
+        }
+
+        .side-header {
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding: 6px;
+            border-radius: 6px;
+            color: white;
+        }
+
+        .debit-header {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+
+        .credit-header {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .framework-instructions {
+            text-align: center;
+            color: #555;
+            font-style: italic;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(52, 73, 94, 0.1);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .concept-text {
+            text-align: center;
+            color: #333;
+            padding: 20px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* DEBIT ACCOUNTS - Bluish/Greenish Colors */
+        .asset-color {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .expense-color {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .dividend-color {
+            background: linear-gradient(135deg, #8bc34a, #9ccc65);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        /* CREDIT ACCOUNTS - Reddish Colors */
+        .liability-color {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .equity-color {
+            background: linear-gradient(135deg, #e91e63, #f06292);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .revenue-color {
+            background: linear-gradient(135deg, #d35400, #e67e22);
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .account-category {
+            margin-bottom: 15px;
+        }
+
+        .category-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            padding: 6px 10px;
+            border-radius: 6px;
+            text-align: center;
+            color: white;
+        }
+
+        /* DEBIT ACCOUNTS - Bluish/Greenish Colors */
+        .asset-category {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+
+        .expense-category {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+
+        .dividend-category {
+            background: linear-gradient(135deg, #8bc34a, #9ccc65);
+        }
+
+        /* CREDIT ACCOUNTS - Reddish Colors */
+        .liability-category {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .equity-category {
+            background: linear-gradient(135deg, #e91e63, #f06292);
+        }
+
+        .revenue-category {
+            background: linear-gradient(135deg, #d35400, #e67e22);
+        }
+
+        .empty-section {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 20px;
+            font-size: 0.85rem;
+        }
+
         .account-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
         }
 
         .account-card {
             background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            border-left: 5px solid;
+            border-radius: 6px;
+            padding: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            border-left: 2px solid;
             transition: all 0.3s ease;
             cursor: pointer;
             user-select: none;
         }
 
         .account-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
+        /* DEBIT ACCOUNTS - Bluish/Greenish Colors */
         .account-card.asset { border-left-color: #27ae60; }
+        .account-card.expense { border-left-color: #3498db; }
+        .account-card.dividend { border-left-color: #8bc34a; }
+
+        /* CREDIT ACCOUNTS - Reddish Colors */
         .account-card.liability { border-left-color: #e74c3c; }
-        .account-card.equity { border-left-color: #3498db; }
-        .account-card.revenue { border-left-color: #f39c12; }
-        .account-card.expense { border-left-color: #9b59b6; }
+        .account-card.equity { border-left-color: #e91e63; }
+        .account-card.revenue { border-left-color: #d35400; }
 
         .account-name {
-            font-size: 1.3rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            margin-bottom: 10px;
             color: #2c3e50;
+            margin-bottom: 6px;
         }
 
         .account-type {
             display: inline-block;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 12px;
+            font-size: 0.6rem;
             font-weight: 600;
             text-transform: uppercase;
-            margin-bottom: 15px;
+            margin: 0;
         }
 
-        .account-type.asset { background: #d5f4e6; color: #27ae60; }
-        .account-type.liability { background: #fadbd8; color: #e74c3c; }
-        .account-type.equity { background: #d6eaf8; color: #3498db; }
-        .account-type.revenue { background: #fdeaa7; color: #f39c12; }
-        .account-type.expense { background: #e8daef; color: #9b59b6; }
+        /* DEBIT ACCOUNTS - Bluish/Greenish Colors */
+        .account-type.asset { background: rgba(39, 174, 96, 0.2); color: #27ae60; }
+        .account-type.expense { background: rgba(52, 152, 219, 0.2); color: #3498db; }
+        .account-type.dividend { background: rgba(139, 195, 74, 0.2); color: #8bc34a; }
+        
+        /* CREDIT ACCOUNTS - Reddish Colors */
+        .account-type.liability { background: rgba(231, 76, 60, 0.2); color: #e74c3c; }
+        .account-type.equity { background: rgba(233, 30, 99, 0.2); color: #e91e63; }
+        .account-type.revenue { background: rgba(211, 84, 0, 0.2); color: #d35400; }
 
         .account-definition {
-            color: #555;
-            line-height: 1.6;
+            color: #666;
+            line-height: 1.3;
+            font-size: 0.75rem;
+        }
+
+        .account-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
         }
 
         .journal-entry {
@@ -272,9 +470,47 @@
 
         @media (max-width: 768px) {
             .header h1 { font-size: 2rem; }
-            .account-grid { grid-template-columns: 1fr; }
             .container { margin: 10px; border-radius: 15px; }
-            .content { padding: 20px; }
+            .content { padding: 15px; }
+            
+            .three-section-layout {
+                gap: 20px;
+            }
+            
+            .debit-credit-split {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .section-title {
+                font-size: 1.1rem;
+            }
+            
+            .side-header {
+                font-size: 0.9rem;
+            }
+            
+            .category-title {
+                font-size: 0.8rem;
+            }
+            
+            .account-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+            
+            .account-name {
+                font-size: 0.75rem;
+            }
+            
+            .account-definition {
+                font-size: 0.65rem;
+            }
+            
+            .concept-text {
+                font-size: 0.8rem;
+                padding: 15px;
+            }
         }
     </style>
 </head>
@@ -295,7 +531,91 @@
         
         <div class="content">
             <div class="definitions-view" id="definitionsView">
-                <div class="account-grid" id="accountGrid"></div>
+                <div class="three-section-layout">
+                    <!-- Section 1: Debit vs Credit Concept -->
+                    <div class="main-section">
+                        <div class="section-title">DEBIT vs CREDIT FRAMEWORK</div>
+                        <div class="framework-instructions">
+                            Use this framework to determine which side of a journal entry each account belongs. Find the account type (A, L, SE, R, E, D) and see whether the transaction increases or decreases that account.
+                        </div>
+                        <div class="debit-credit-split">
+                            <div class="debit-side">
+                                <div class="side-header debit-header">DEBIT</div>
+                                <div class="concept-text">
+                                    <strong>Increases:</strong> <span class="asset-color">A</span>, <span class="expense-color">E</span>, <span class="dividend-color">D</span><br>
+                                    <strong>Decreases:</strong> <span class="liability-color">L</span>, <span class="equity-color">SE</span>, <span class="revenue-color">R</span>
+                                </div>
+                            </div>
+                            <div class="credit-side">
+                                <div class="side-header credit-header">CREDIT</div>
+                                <div class="concept-text">
+                                    <strong>Increases:</strong> <span class="liability-color">L</span>, <span class="equity-color">SE</span>, <span class="revenue-color">R</span><br>
+                                    <strong>Decreases:</strong> <span class="asset-color">A</span>, <span class="expense-color">E</span>, <span class="dividend-color">D</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Balance SEet Accounts -->
+                    <div class="main-section">
+                        <div class="section-title">BALANCE SEET ACCOUNTS</div>
+                        <div class="debit-credit-split">
+                            <div class="debit-side">
+                                <div class="account-category">
+                                    <div class="category-title asset-category">Assets (A)</div>
+                                    <div class="account-grid" id="assetsGrid"></div>
+                                </div>
+                            </div>
+                            <div class="credit-side">
+                                <div class="account-category">
+                                    <div class="category-title liability-category">Liabilities (L)</div>
+                                    <div class="account-grid" id="liabilitiesGrid"></div>
+                                </div>
+                                <div class="account-category">
+                                    <div class="category-title equity-category">Shareholders' Equity (SE)</div>
+                                    <div class="account-grid" id="equityGrid"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Income Statement Accounts -->
+                    <div class="main-section">
+                        <div class="section-title">INCOME STATEMENT ACCOUNTS</div>
+                        <div class="debit-credit-split">
+                            <div class="debit-side">
+                                <div class="account-category">
+                                    <div class="category-title expense-category">Expenses (E)</div>
+                                    <div class="account-grid" id="expensesGrid"></div>
+                                </div>
+                            </div>
+                            <div class="credit-side">
+                                <div class="account-category">
+                                    <div class="category-title revenue-category">Revenues (R)</div>
+                                    <div class="account-grid" id="revenuesGrid"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Statement of Retained Earnings -->
+                    <div class="main-section">
+                        <div class="section-title">STATEMENT OF RETAINED EARNINGS</div>
+                        <div class="debit-credit-split">
+                            <div class="debit-side">
+                                <div class="account-category">
+                                    <div class="category-title dividend-category">Dividends (D)</div>
+                                    <div class="account-grid" id="dividendsGrid"></div>
+                                </div>
+                            </div>
+                            <div class="credit-side">
+                                <div class="empty-section">
+                                    Retained Earnings increases appear here through closing entries
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="journal-entry-view" id="journalView">
@@ -313,33 +633,32 @@
             // ASSETS
             'Cash': 'Physical currency and coins, as well as checking and savings account balances. The most liquid asset representing immediate purchasing power.',
             'Accounts Receivable': 'Money owed to the company by customers for goods or services provided on credit. Represents future cash inflows from sales transactions.',
-            'Inventory': 'Goods held for sale in the ordinary course of business, including raw materials, work-in-process, and finished goods.',
-            'Prepaid Expenses': 'Expenses paid in advance that will benefit future periods, such as prepaid rent, insurance, or supplies.',
-            'Equipment': 'Long-term tangible assets used in business operations to generate revenue, such as machinery, computers, and office furniture.',
-            'Buildings': 'Real estate properties owned by the company and used for business operations, excluding the land on which they sit.',
-            'Land': 'Real estate property owned by the company. Unlike buildings, land is not depreciated as it typically maintains or increases its value.',
+            'Supplies': 'Materials and items used in daily business operations, such as office supplies, that will be consumed within a year.',
+            'Prepaid Rent': 'Rent payments made in advance that will benefit future periods. An asset until the rental period is used.',
+            'Equipment': 'Long-term tangible assets used in business operations to generate revenue, such as computers, machinery, and office furniture.',
+            'Logo and Trademarks': 'Intangible assets representing the company\'s brand identity, logos, and trademark rights that provide long-term value.',
+            'Software': 'Intangible assets including computer programs, applications, and digital tools used in business operations.',
             
             // LIABILITIES
             'Accounts Payable': 'Money owed to suppliers and vendors for goods or services purchased on credit. Represents short-term obligations to be paid.',
-            'Notes Payable': 'Formal written promises to pay specific amounts by certain dates, typically involving interest charges.',
-            'Accrued liabilities': 'Liabilities resulting from expenses that have been incurred but not yet paid or recorded, such as wages, utilities, or interest.',
             'Deferred Revenue': 'Money received from customers for goods or services not yet delivered. Represents an obligation to provide future services.',
-            'Bonds Payable': 'Long-term debt securities issued to investors, representing a contractual obligation to pay interest and principal.',
+            'Notes Payable': 'Formal written promises to pay specific amounts by certain dates, typically involving interest charges and longer-term repayment.',
             
             // EQUITY
             'Common Stock': 'Represents ownership shares in a corporation. Common stockholders have voting rights and may receive dividends.',
             'Retained Earnings': 'Accumulated profits that have been retained in the business rather than distributed as dividends to shareholders.',
             
             // REVENUES
-            'Sales Revenue': 'Income earned from selling goods or services to customers. Increases equity through profitable operations.',
-            'Service Revenue': 'Income earned from providing services to clients. Revenue is recognized when services are performed.',
+            'Sales Revenues': 'Income earned from selling goods or products to customers. Increases equity through profitable sales operations.',
+            'Service Revenues': 'Income earned from providing services to clients. Increases equity through profitable service operations.',
             
             // EXPENSES
-            'Rent Expense': 'Cost of renting or leasing property, equipment, or other assets for business operations.',
-            'Wages Expense': 'Cost of employee compensation including salaries, wages, and benefits for work performed.',
-            'Utilities Expense': 'Cost of electricity, gas, water, telephone, and internet services used in business operations.',
-            'Depreciation Expense': 'Allocation of the cost of long-term assets over their useful lives as they lose value through use and time.',
-            'Interest Expense': 'Cost of borrowing money, including interest on loans, bonds, and other debt obligations.'
+            'Wages Expense': 'Cost of employee compensation including salaries, wages, and benefits for work performed during the period.',
+            'Advertising Expenses': 'Costs incurred for promoting the company\'s products or services, including online ads, marketing campaigns, and promotional materials.',
+            'Utility Expenses': 'Cost of electricity, gas, water, telephone, and internet services used in business operations.',
+            
+            // DIVIDENDS
+            'Dividends': 'Distributions of company profits to shareholders. Reduces retained earnings and represents a return on investment to stockholders.'
         };
 
         // ============================================================================
@@ -350,29 +669,27 @@
             // ASSETS
             'Cash': 'asset',
             'Accounts Receivable': 'asset',
-            'Inventory': 'asset',
-            'Prepaid Expenses': 'asset',
+            'Supplies': 'asset',
+            'Prepaid Rent': 'asset',
             'Equipment': 'asset',
-            'Buildings': 'asset',
-            'Land': 'asset',
+            'Logo and Trademarks': 'asset',
+            'Software': 'asset',
             // LIABILITIES
             'Accounts Payable': 'liability',
-            'Notes Payable': 'liability',
-            'Accrued liabilities': 'liability',
             'Deferred Revenue': 'liability',
-            'Bonds Payable': 'liability',
+            'Notes Payable': 'liability',
             // EQUITY
             'Common Stock': 'equity',
             'Retained Earnings': 'equity',
             // REVENUES
-            'Sales Revenue': 'revenue',
-            'Service Revenue': 'revenue',
+            'Sales Revenues': 'revenue',
+            'Service Revenues': 'revenue',
             // EXPENSES
-            'Rent Expense': 'expense',
             'Wages Expense': 'expense',
-            'Utilities Expense': 'expense',
-            'Depreciation Expense': 'expense',
-            'Interest Expense': 'expense'
+            'Advertising Expenses': 'expense',
+            'Utility Expenses': 'expense',
+            // DIVIDENDS
+            'Dividends': 'dividend'
         };
 
         // ============================================================================
@@ -383,198 +700,143 @@
             // ASSETS
             'Cash': {
                 increase: {
-                    scenario: 'Receiving $2,500 cash payment from customer for outstanding invoice',
+                    scenario: 'ABC Corp received $10,000 cash from two owners contributing $5,000 each',
                     entries: [
-                        { account: 'Cash', debit: '$2,500', credit: '', indent: false },
-                        { account: 'Accounts Receivable', debit: '', credit: '$2,500', indent: true }
+                        { account: 'Cash (+A)', debit: '$10,000', credit: '', indent: false },
+                        { account: 'Common Stock (+SE)', debit: '', credit: '$10,000', indent: true }
                     ]
                 },
                 decrease: {
-                    scenario: 'Paying $1,800 cash for monthly office rent',
+                    scenario: 'ABC Corp paid $7,800 cash for employee wages in September',
                     entries: [
-                        { account: 'Rent Expense', debit: '$1,800', credit: '', indent: false },
-                        { account: 'Cash', debit: '', credit: '$1,800', indent: true }
+                        { account: 'Wages Expense (+E, -SE)', debit: '$7,800', credit: '', indent: false },
+                        { account: 'Cash (-A)', debit: '', credit: '$7,800', indent: true }
+                    ]
+                }
+            },
+            'Supplies': {
+                increase: {
+                    scenario: 'ABC Corp received $600 of supplies on account',
+                    entries: [
+                        { account: 'Supplies (+A)', debit: '$600', credit: '', indent: false },
+                        { account: 'Accounts Payable (+L)', debit: '', credit: '$600', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'ABC Corp used $150 of supplies during the month',
+                    entries: [
+                        { account: 'Supplies Expense (+E, -SE)', debit: '$150', credit: '', indent: false },
+                        { account: 'Supplies (-A)', debit: '', credit: '$150', indent: true }
                     ]
                 }
             },
             'Accounts Receivable': {
                 increase: {
-                    scenario: 'Selling $4,200 worth of merchandise to customer on 30-day credit terms',
+                    scenario: 'ABC Corp sold $9,000 of apps in the App Store, cash to be collected later',
                     entries: [
-                        { account: 'Accounts Receivable', debit: '$4,200', credit: '', indent: false },
-                        { account: 'Sales Revenue', debit: '', credit: '$4,200', indent: true }
+                        { account: 'Accounts Receivable (+A)', debit: '$9,000', credit: '', indent: false },
+                        { account: 'Sales Revenues (+R, +SE)', debit: '', credit: '$9,000', indent: true }
                     ]
                 },
                 decrease: {
-                    scenario: 'Receiving $3,750 payment from customer for outstanding balance',
+                    scenario: 'ABC Corp received $8,500 cash from Apple and Google on account',
                     entries: [
-                        { account: 'Cash', debit: '$3,750', credit: '', indent: false },
-                        { account: 'Accounts Receivable', debit: '', credit: '$3,750', indent: true }
+                        { account: 'Cash (+A)', debit: '$8,500', credit: '', indent: false },
+                        { account: 'Accounts Receivable (-A)', debit: '', credit: '$8,500', indent: true }
                     ]
                 }
             },
-            'Inventory': {
+            'Prepaid Rent': {
                 increase: {
-                    scenario: 'Purchasing $8,500 of raw materials from supplier on credit',
+                    scenario: 'ABC Corp paid $7,200 in advance for September, October, and November rent',
                     entries: [
-                        { account: 'Raw Materials Inventory', debit: '$8,500', credit: '', indent: false },
-                        { account: 'Accounts Payable', debit: '', credit: '$8,500', indent: true }
+                        { account: 'Prepaid Rent (+A)', debit: '$7,200', credit: '', indent: false },
+                        { account: 'Cash (-A)', debit: '', credit: '$7,200', indent: true }
                     ]
                 },
                 decrease: {
-                    scenario: 'Recording cost of goods sold of $6,200 for inventory sold',
+                    scenario: 'ABC Corp recorded $2,400 of rent expense for September (1/3 of prepaid amount)',
                     entries: [
-                        { account: 'Cost of Goods Sold', debit: '$6,200', credit: '', indent: false },
-                        { account: 'Finished Goods Inventory', debit: '', credit: '$6,200', indent: true }
+                        { account: 'Rent Expense (+E, -SE)', debit: '$2,400', credit: '', indent: false },
+                        { account: 'Prepaid Rent (-A)', debit: '', credit: '$2,400', indent: true }
                     ]
                 }
             },
-            'Prepaid Expenses': {
+            'Logo and Trademarks': {
                 increase: {
-                    scenario: 'Paying $7,200 for 12 months of business insurance coverage in advance',
+                    scenario: 'ABC Corp paid $300 cash to create the company logo',
                     entries: [
-                        { account: 'Prepaid Insurance', debit: '$7,200', credit: '', indent: false },
-                        { account: 'Cash', debit: '', credit: '$7,200', indent: true }
+                        { account: 'Logo and Trademarks (+A)', debit: '$300', credit: '', indent: false },
+                        { account: 'Cash (-A)', debit: '', credit: '$300', indent: true }
                     ]
                 },
-                decrease: {
-                    scenario: 'Recording $600 of prepaid insurance expense for current month',
-                    entries: [
-                        { account: 'Insurance Expense', debit: '$600', credit: '', indent: false },
-                        { account: 'Prepaid Insurance', debit: '', credit: '$600', indent: true }
-                    ]
-                }
             },
             'Equipment': {
                 increase: {
-                    scenario: 'Purchasing $24,000 manufacturing equipment, paying $10,000 cash and financing $14,000',
+                    scenario: 'ABC Corp purchased $9,600 in equipment (computers) on account',
                     entries: [
-                        { account: 'Manufacturing Equipment', debit: '$24,000', credit: '', indent: false },
-                        { account: 'Cash', debit: '', credit: '$10,000', indent: true },
-                        { account: 'Equipment Loan Payable', debit: '', credit: '$14,000', indent: true }
+                        { account: 'Equipment (+A)', debit: '$9,600', credit: '', indent: false },
+                        { account: 'Accounts Payable (+L)', debit: '', credit: '$9,600', indent: true }
                     ]
                 },
-                decrease: {
-                    scenario: 'Recording monthly depreciation of $800 on office equipment',
-                    entries: [
-                        { account: 'Depreciation Expense - Equipment', debit: '$800', credit: '', indent: false },
-                        { account: 'Accumulated Depreciation - Equipment', debit: '', credit: '$800', indent: true }
-                    ]
-                }
             },
-            'Buildings': {
+            'Software': {
                 increase: {
-                    scenario: 'Purchasing office building for $350,000 cash',
+                    scenario: 'ABC Corp received $9,000 of game app code, paid $4,000 cash and promised $5,000',
                     entries: [
-                        { account: 'Buildings', debit: '$350,000', credit: '', indent: false },
-                        { account: 'Cash', debit: '', credit: '$350,000', indent: true }
+                        { account: 'Software (+A)', debit: '$9,000', credit: '', indent: false },
+                        { account: 'Cash (-A)', debit: '', credit: '$4,000', indent: true },
+                        { account: 'Accounts Payable (+L)', debit: '', credit: '$5,000', indent: true }
                     ]
                 },
-                decrease: {
-                    scenario: 'Recording annual depreciation of $12,000 on office building',
-                    entries: [
-                        { account: 'Depreciation Expense - Building', debit: '$12,000', credit: '', indent: false },
-                        { account: 'Accumulated Depreciation - Building', debit: '', credit: '$12,000', indent: true }
-                    ]
-                }
-            },
-            'Land': {
-                increase: {
-                    scenario: 'Purchasing land for future expansion for $125,000 cash',
-                    entries: [
-                        { account: 'Land', debit: '$125,000', credit: '', indent: false },
-                        { account: 'Cash', debit: '', credit: '$125,000', indent: true }
-                    ]
-                },
-                decrease: {
-                    scenario: 'Selling unused land for $180,000 cash (original cost $150,000)',
-                    entries: [
-                        { account: 'Cash', debit: '$180,000', credit: '', indent: false },
-                        { account: 'Land', debit: '', credit: '$150,000', indent: true },
-                        { account: 'Gain on Sale of Land', debit: '', credit: '$30,000', indent: true }
-                    ]
-                }
             },
 
             // LIABILITIES
             'Accounts Payable': {
                 increase: {
-                    scenario: 'Purchasing $3,200 worth of office supplies from vendor on credit',
+                    scenario: 'ABC Corp received a $500 bill for online advertising to be paid in October',
                     entries: [
-                        { account: 'Office Supplies', debit: '$3,200', credit: '', indent: false },
-                        { account: 'Accounts Payable', debit: '', credit: '$3,200', indent: true }
+                        { account: 'Advertising Expenses (+E, -SE)', debit: '$500', credit: '', indent: false },
+                        { account: 'Accounts Payable (+L)', debit: '', credit: '$500', indent: true }
                     ]
                 },
                 decrease: {
-                    scenario: 'Paying $2,800 to vendor for previously purchased inventory',
+                    scenario: 'ABC Corp paid the $500 bill to the advertising company',
                     entries: [
-                        { account: 'Accounts Payable', debit: '$2,800', credit: '', indent: false },
-                        { account: 'Cash', debit: '', credit: '$2,800', indent: true }
+                        { account: 'Accounts Payable (-L)', debit: '$500', credit: '', indent: false },
+                        { account: 'Cash (-A)', debit: '', credit: '$500', indent: true }
                     ]
                 }
             },
             'Notes Payable': {
                 increase: {
-                    scenario: 'Borrowing $35,000 from bank with 6-month promissory note at 8% annual interest',
+                    scenario: 'ABC Corp received $20,000 cash in exchange for a 2-year promissory note',
                     entries: [
-                        { account: 'Cash', debit: '$35,000', credit: '', indent: false },
-                        { account: 'Notes Payable', debit: '', credit: '$35,000', indent: true }
+                        { account: 'Cash (+A)', debit: '$20,000', credit: '', indent: false },
+                        { account: 'Notes Payable (+L)', debit: '', credit: '$20,000', indent: true }
                     ]
                 },
                 decrease: {
-                    scenario: 'Making $5,000 principal payment on note payable plus $280 interest',
+                    scenario: 'ABC Corp made a $20,000 principal payment on the note payable',
                     entries: [
-                        { account: 'Notes Payable', debit: '$5,000', credit: '', indent: false },
-                        { account: 'Interest Expense', debit: '$280', credit: '', indent: false },
-                        { account: 'Cash', debit: '', credit: '$5,280', indent: true }
-                    ]
-                }
-            },
-            'Accrued liabilities': {
-                increase: {
-                    scenario: 'Recording $6,400 in accrued wages for employees at month-end (not yet paid)',
-                    entries: [
-                        { account: 'Wages Expense', debit: '$6,400', credit: '', indent: false },
-                        { account: 'Accrued Wages Payable', debit: '', credit: '$6,400', indent: true }
-                    ]
-                },
-                decrease: {
-                    scenario: 'Paying $6,400 in previously accrued wages to employees',
-                    entries: [
-                        { account: 'Accrued Wages Payable', debit: '$6,400', credit: '', indent: false },
-                        { account: 'Cash', debit: '', credit: '$6,400', indent: true }
+                        { account: 'Notes Payable (-L)', debit: '$20,000', credit: '', indent: false },
+                        { account: 'Cash (-A)', debit: '', credit: '$20,000', indent: true }
                     ]
                 }
             },
             'Deferred Revenue': {
                 increase: {
-                    scenario: 'Receiving $9,000 advance payment from customer for 6-month consulting contract',
+                    scenario: 'ABC Corp issued three $100 gift cards for $300 total cash',
                     entries: [
-                        { account: 'Cash', debit: '$9,000', credit: '', indent: false },
-                        { account: 'Deferred Revenue', debit: '', credit: '$9,000', indent: true }
+                        { account: 'Cash (+A)', debit: '$300', credit: '', indent: false },
+                        { account: 'Deferred Revenue (+L)', debit: '', credit: '$300', indent: true }
                     ]
                 },
                 decrease: {
-                    scenario: 'Earning $1,500 of previously deferred revenue by completing one month of consulting',
+                    scenario: 'ABC Corp recognized $100 revenue when a gift card was redeemed',
                     entries: [
-                        { account: 'Deferred Revenue', debit: '$1,500', credit: '', indent: false },
-                        { account: 'Consulting Revenue', debit: '', credit: '$1,500', indent: true }
-                    ]
-                }
-            },
-            'Bonds Payable': {
-                increase: {
-                    scenario: 'Issuing $500,000 in 10-year corporate bonds at face value with 7% annual interest',
-                    entries: [
-                        { account: 'Cash', debit: '$500,000', credit: '', indent: false },
-                        { account: 'Bonds Payable', debit: '', credit: '$500,000', indent: true }
-                    ]
-                },
-                decrease: {
-                    scenario: 'Retiring $100,000 of bonds at maturity by paying bondholders',
-                    entries: [
-                        { account: 'Bonds Payable', debit: '$100,000', credit: '', indent: false },
-                        { account: 'Cash', debit: '', credit: '$100,000', indent: true }
+                        { account: 'Deferred Revenue (-L)', debit: '$100', credit: '', indent: false },
+                        { account: 'Sales Revenues (+R, +SE)', debit: '', credit: '$100', indent: true }
                     ]
                 }
             },
@@ -582,151 +844,59 @@
             // EQUITY
             'Common Stock': {
                 increase: {
-                    scenario: 'Issuing 1,000 shares of common stock at $25 per share to new investors',
+                    scenario: 'ABC Corp issued stock to two owners who each contributed $5,000',
                     entries: [
-                        { account: 'Cash', debit: '$25,000', credit: '', indent: false },
-                        { account: 'Common Stock', debit: '', credit: '$25,000', indent: true }
-                    ]
-                },
-                decrease: {
-                    scenario: 'Repurchasing 200 shares of treasury stock at $30 per share',
-                    entries: [
-                        { account: 'Treasury Stock', debit: '$6,000', credit: '', indent: false },
-                        { account: 'Cash', debit: '', credit: '$6,000', indent: true }
-                    ]
-                }
-            },
-            'Retained Earnings': {
-                increase: {
-                    scenario: 'Closing net income of $45,000 to retained earnings at year-end',
-                    entries: [
-                        { account: 'Income Summary', debit: '$45,000', credit: '', indent: false },
-                        { account: 'Retained Earnings', debit: '', credit: '$45,000', indent: true }
-                    ]
-                },
-                decrease: {
-                    scenario: 'Declaring cash dividends of $12,000 to shareholders',
-                    entries: [
-                        { account: 'Retained Earnings', debit: '$12,000', credit: '', indent: false },
-                        { account: 'Dividends Payable', debit: '', credit: '$12,000', indent: true }
+                        { account: 'Cash (+A)', debit: '$10,000', credit: '', indent: false },
+                        { account: 'Common Stock (+SE)', debit: '', credit: '$10,000', indent: true }
                     ]
                 }
             },
 
             // REVENUES
-            'Sales Revenue': {
+            'Sales Revenues': {
                 increase: {
-                    scenario: 'Recording cash sales of $8,500 to customers',
+                    scenario: 'ABC Corp sold $3,000 of apps online and collected cash in September',
                     entries: [
-                        { account: 'Cash', debit: '$8,500', credit: '', indent: false },
-                        { account: 'Sales Revenue', debit: '', credit: '$8,500', indent: true }
-                    ]
-                },
-                decrease: {
-                    scenario: 'Processing sales returns of $750 for defective merchandise',
-                    entries: [
-                        { account: 'Sales Returns and Allowances', debit: '$750', credit: '', indent: false },
-                        { account: 'Cash', debit: '', credit: '$750', indent: true }
+                        { account: 'Cash (+A)', debit: '$3,000', credit: '', indent: false },
+                        { account: 'Sales Revenues (+R, +SE)', debit: '', credit: '$3,000', indent: true }
                     ]
                 }
             },
-            'Service Revenue': {
+            'Service Revenues': {
                 increase: {
-                    scenario: 'Completing $4,200 consulting services for client, billed on credit',
+                    scenario: 'ABC Corp provided $2,500 consulting services and billed the client',
                     entries: [
-                        { account: 'Accounts Receivable', debit: '$4,200', credit: '', indent: false },
-                        { account: 'Service Revenue', debit: '', credit: '$4,200', indent: true }
-                    ]
-                },
-                decrease: {
-                    scenario: 'Providing credit adjustment of $300 for unsatisfactory service',
-                    entries: [
-                        { account: 'Service Revenue', debit: '$300', credit: '', indent: false },
-                        { account: 'Accounts Receivable', debit: '', credit: '$300', indent: true }
+                        { account: 'Accounts Receivable (+A)', debit: '$2,500', credit: '', indent: false },
+                        { account: 'Service Revenues (+R, +SE)', debit: '', credit: '$2,500', indent: true }
                     ]
                 }
             },
 
             // EXPENSES
-            'Rent Expense': {
-                increase: {
-                    scenario: 'Recording monthly office rent payment of $3,500',
-                    entries: [
-                        { account: 'Rent Expense', debit: '$3,500', credit: '', indent: false },
-                        { account: 'Cash', debit: '', credit: '$3,500', indent: true }
-                    ]
-                },
-                decrease: {
-                    scenario: 'Receiving $600 rent refund due to maintenance issues',
-                    entries: [
-                        { account: 'Cash', debit: '$600', credit: '', indent: false },
-                        { account: 'Rent Expense', debit: '', credit: '$600', indent: true }
-                    ]
-                }
-            },
             'Wages Expense': {
                 increase: {
-                    scenario: 'Recording bi-weekly payroll of $18,400 for all employees',
+                    scenario: 'ABC Corp paid $7,800 in wages to employees for September work',
                     entries: [
-                        { account: 'Wages Expense', debit: '$18,400', credit: '', indent: false },
-                        { account: 'Cash', debit: '', credit: '$18,400', indent: true }
-                    ]
-                },
-                decrease: {
-                    scenario: 'Correcting overpayment of $320 in wages from previous period',
-                    entries: [
-                        { account: 'Cash', debit: '$320', credit: '', indent: false },
-                        { account: 'Wages Expense', debit: '', credit: '$320', indent: true }
+                        { account: 'Wages Expense (+E, -SE)', debit: '$7,800', credit: '', indent: false },
+                        { account: 'Cash (-A)', debit: '', credit: '$7,800', indent: true }
                     ]
                 }
             },
-            'Utilities Expense': {
+            'Advertising Expenses': {
                 increase: {
-                    scenario: 'Paying monthly utility bills totaling $1,250 for electricity and gas',
+                    scenario: 'ABC Corp displayed online ads in September and received a $500 bill for October payment',
                     entries: [
-                        { account: 'Utilities Expense', debit: '$1,250', credit: '', indent: false },
-                        { account: 'Cash', debit: '', credit: '$1,250', indent: true }
-                    ]
-                },
-                decrease: {
-                    scenario: 'Receiving $180 credit from utility company for overcharge',
-                    entries: [
-                        { account: 'Cash', debit: '$180', credit: '', indent: false },
-                        { account: 'Utilities Expense', debit: '', credit: '$180', indent: true }
+                        { account: 'Advertising Expenses (+E, -SE)', debit: '$500', credit: '', indent: false },
+                        { account: 'Accounts Payable (+L)', debit: '', credit: '$500', indent: true }
                     ]
                 }
             },
-            'Depreciation Expense': {
+            'Utility Expenses': {
                 increase: {
-                    scenario: 'Recording monthly depreciation of $2,100 on office equipment and vehicles',
+                    scenario: 'ABC Corp bank automatically paid $600 to utility company for September electricity',
                     entries: [
-                        { account: 'Depreciation Expense - Equipment', debit: '$1,400', credit: '', indent: false },
-                        { account: 'Depreciation Expense - Vehicles', debit: '$700', credit: '', indent: false },
-                        { account: 'Accumulated Depreciation - Equipment', debit: '', credit: '$1,400', indent: true },
-                        { account: 'Accumulated Depreciation - Vehicles', debit: '', credit: '$700', indent: true }
-                    ]
-                },
-                decrease: {
-                    scenario: 'Adjusting depreciation by $250 due to asset disposal during month',
-                    entries: [
-                        { account: 'Accumulated Depreciation - Equipment', debit: '$250', credit: '', indent: false },
-                        { account: 'Depreciation Expense - Equipment', debit: '', credit: '$250', indent: true }
-                    ]
-                }
-            },
-            'Interest Expense': {
-                increase: {
-                    scenario: 'Recording monthly interest expense of $1,850 on outstanding loans and bonds',
-                    entries: [
-                        { account: 'Interest Expense', debit: '$1,850', credit: '', indent: false },
-                        { account: 'Interest Payable', debit: '', credit: '$1,850', indent: true }
-                    ]
-                },
-                decrease: {
-                    scenario: 'Adjusting interest expense by $125 due to early loan payment discount',
-                    entries: [
-                        { account: 'Interest Payable', debit: '$125', credit: '', indent: false },
-                        { account: 'Interest Expense', debit: '', credit: '$125', indent: true }
+                        { account: 'Utility Expenses (+E, -SE)', debit: '$600', credit: '', indent: false },
+                        { account: 'Cash (-A)', debit: '', credit: '$600', indent: true }
                     ]
                 }
             }
@@ -740,7 +910,12 @@
         const clearBtn = document.getElementById('clearBtn');
         const definitionsView = document.getElementById('definitionsView');
         const journalView = document.getElementById('journalView');
-        const accountGrid = document.getElementById('accountGrid');
+        const assetsGrid = document.getElementById('assetsGrid');
+        const liabilitiesGrid = document.getElementById('liabilitiesGrid');
+        const equityGrid = document.getElementById('equityGrid');
+        const revenuesGrid = document.getElementById('revenuesGrid');
+        const expensesGrid = document.getElementById('expensesGrid');
+        const dividendsGrid = document.getElementById('dividendsGrid');
         const journalEntry = document.getElementById('journalEntry');
 
         // Initialize the page
@@ -776,11 +951,39 @@
         });
 
         function displayAllAccounts() {
-            accountGrid.innerHTML = '';
+            // Clear all grids
+            assetsGrid.innerHTML = '';
+            liabilitiesGrid.innerHTML = '';
+            equityGrid.innerHTML = '';
+            revenuesGrid.innerHTML = '';
+            expensesGrid.innerHTML = '';
+            dividendsGrid.innerHTML = '';
             
+            // Organize accounts by type
             for (const accountName in ACCOUNT_DEFINITIONS) {
+                const accountType = ACCOUNT_TYPES[accountName];
                 const card = createAccountCard(accountName);
-                accountGrid.appendChild(card);
+                
+                switch(accountType) {
+                    case 'asset':
+                        assetsGrid.appendChild(card);
+                        break;
+                    case 'liability':
+                        liabilitiesGrid.appendChild(card);
+                        break;
+                    case 'equity':
+                        equityGrid.appendChild(card);
+                        break;
+                    case 'revenue':
+                        revenuesGrid.appendChild(card);
+                        break;
+                    case 'expense':
+                        expensesGrid.appendChild(card);
+                        break;
+                    case 'dividend':
+                        dividendsGrid.appendChild(card);
+                        break;
+                }
             }
         }
 
@@ -793,7 +996,6 @@
             
             card.innerHTML = `
                 <div class="account-name">${accountName}</div>
-                <div class="account-type ${accountType}">${accountType}</div>
                 <div class="account-definition">${definition}</div>
             `;
             
@@ -851,6 +1053,7 @@
                     <div class="journal-description">${definition}</div>
                 </div>
                 
+                ${examples.increase ? `
                 <div class="example-section">
                     <div class="example-header increase">
                         ${accountType.toUpperCase()} INCREASE - Example 1
@@ -877,10 +1080,12 @@
                         </table>
                     </div>
                 </div>
+                ` : ''}
                 
+                ${examples.decrease ? `
                 <div class="example-section">
                     <div class="example-header decrease">
-                        ${accountType.toUpperCase()} DECREASE - Example 2
+                        ${accountType.toUpperCase()} DECREASE - Example ${examples.increase ? '2' : '1'}
                     </div>
                     <div class="example-content">
                         <div class="scenario">${examples.decrease.scenario}</div>
@@ -904,13 +1109,32 @@
                         </table>
                     </div>
                 </div>
+                ` : ''}
             `;
         }
 
         function showNoResults() {
             definitionsView.style.display = 'block';
             journalView.style.display = 'none';
-            accountGrid.innerHTML = '<div class="no-results">No accounts found matching your search.</div>';
+            
+            // Clear all grids and show no results message
+            assetsGrid.innerHTML = '';
+            liabilitiesGrid.innerHTML = '';
+            equityGrid.innerHTML = '';
+            revenuesGrid.innerHTML = '';
+            expensesGrid.innerHTML = '';
+            dividendsGrid.innerHTML = '';
+            
+            // Add no results message to the main layout
+            const mainLayout = document.querySelector('.main-layout');
+            mainLayout.innerHTML = '<div class="no-results" style="grid-column: 1 / -1; text-align: center; color: #666; font-size: 1.2rem; margin-top: 50px;">No accounts found matching your search.</div>';
+            
+            // Restore the original layout after showing no results
+            setTimeout(() => {
+                if (searchInput.value.trim() === '') {
+                    location.reload(); // Simple way to restore the layout
+                }
+            }, 100);
         }
     </script>
 </body>
