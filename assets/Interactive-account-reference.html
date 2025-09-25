@@ -205,7 +205,7 @@
         }
 
         .expense-color {
-            background: linear-gradient(135deg, #3498db, #2980b9);
+            background: linear-gradient(135deg, #0d7377, #0a5d61);
             color: white;
             padding: 2px 6px;
             border-radius: 4px;
@@ -265,7 +265,7 @@
         }
 
         .expense-category {
-            background: linear-gradient(135deg, #3498db, #2980b9);
+            background: linear-gradient(135deg, #0d7377, #0a5d61);
         }
 
         .dividend-category {
@@ -317,7 +317,7 @@
 
         /* DEBIT ACCOUNTS - Bluish/Greenish Colors */
         .account-card.asset { border-left-color: #27ae60; }
-        .account-card.expense { border-left-color: #3498db; }
+        .account-card.expense { border-left-color: #0d7377; }
         .account-card.dividend { border-left-color: #8bc34a; }
 
         /* CREDIT ACCOUNTS - Reddish Colors */
@@ -344,7 +344,7 @@
 
         /* DEBIT ACCOUNTS - Bluish/Greenish Colors */
         .account-type.asset { background: rgba(39, 174, 96, 0.2); color: #27ae60; }
-        .account-type.expense { background: rgba(52, 152, 219, 0.2); color: #3498db; }
+        .account-type.expense { background: rgba(13, 115, 119, 0.2); color: #0d7377; }
         .account-type.dividend { background: rgba(139, 195, 74, 0.2); color: #8bc34a; }
         
         /* CREDIT ACCOUNTS - Reddish Colors */
@@ -406,8 +406,23 @@
             font-size: 1.1rem;
         }
 
-        .example-header.increase { background: #27ae60; }
-        .example-header.decrease { background: #e74c3c; }
+        /* Debit accounts (A, E, D): Increase = Green, Decrease = Red */
+        .example-header.increase.asset,
+        .example-header.increase.expense,
+        .example-header.increase.dividend { background: #27ae60; }
+        
+        .example-header.decrease.asset,
+        .example-header.decrease.expense,
+        .example-header.decrease.dividend { background: #e74c3c; }
+        
+        /* Credit accounts (L, SE, R): Increase = Red, Decrease = Green */
+        .example-header.increase.liability,
+        .example-header.increase.equity,
+        .example-header.increase.revenue { background: #e74c3c; }
+        
+        .example-header.decrease.liability,
+        .example-header.decrease.equity,
+        .example-header.decrease.revenue { background: #27ae60; }
 
         .example-content {
             padding: 20px;
@@ -556,7 +571,7 @@
                         </div>
                     </div>
 
-                    <!-- Section 2: Balance Sheet Accounts -->
+                    <!-- Section 2: Balance SHEET Accounts -->
                     <div class="main-section">
                         <div class="section-title">BALANCE SHEET ACCOUNTS</div>
                         <div class="debit-credit-split">
@@ -609,8 +624,9 @@
                                 </div>
                             </div>
                             <div class="credit-side">
-                                <div class="empty-section">
-                                    Retained Earnings increases appear here through closing entries
+                                <div class="account-category">
+                                    <div class="category-title equity-category">Retained Earnings (SE)</div>
+                                    <div class="account-grid" id="retainedEarningsGrid"></div>
                                 </div>
                             </div>
                         </div>
@@ -916,6 +932,7 @@
         const revenuesGrid = document.getElementById('revenuesGrid');
         const expensesGrid = document.getElementById('expensesGrid');
         const dividendsGrid = document.getElementById('dividendsGrid');
+        const retainedEarningsGrid = document.getElementById('retainedEarningsGrid');
         const journalEntry = document.getElementById('journalEntry');
 
         // Initialize the page
@@ -958,6 +975,7 @@
             revenuesGrid.innerHTML = '';
             expensesGrid.innerHTML = '';
             dividendsGrid.innerHTML = '';
+            retainedEarningsGrid.innerHTML = '';
             
             // Organize accounts by type
             for (const accountName in ACCOUNT_DEFINITIONS) {
@@ -973,6 +991,10 @@
                         break;
                     case 'equity':
                         equityGrid.appendChild(card);
+                        if (accountName === 'Retained Earnings') {
+                            const retainedEarningsCard = createAccountCard(accountName);
+                            retainedEarningsGrid.appendChild(retainedEarningsCard);
+                        }
                         break;
                     case 'revenue':
                         revenuesGrid.appendChild(card);
@@ -1055,7 +1077,7 @@
                 
                 ${examples.increase ? `
                 <div class="example-section">
-                    <div class="example-header increase">
+                    <div class="example-header increase ${accountType}">
                         ${accountType.toUpperCase()} INCREASE - Example 1
                     </div>
                     <div class="example-content">
@@ -1084,7 +1106,7 @@
                 
                 ${examples.decrease ? `
                 <div class="example-section">
-                    <div class="example-header decrease">
+                    <div class="example-header decrease ${accountType}">
                         ${accountType.toUpperCase()} DECREASE - Example ${examples.increase ? '2' : '1'}
                     </div>
                     <div class="example-content">
