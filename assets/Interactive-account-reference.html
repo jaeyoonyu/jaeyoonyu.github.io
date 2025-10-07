@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Accounting Reference</title>
+    <title>Dynamic Accounting Reference System</title>
     <style>
         * {
             margin: 0;
@@ -532,8 +532,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Accounting Accounts Reference</h1>
-            <p>Click on any account card or search to view journal entry examples</p>
+            <h1>Dynamic Accounting Reference System</h1>
+            <h2>Click on any account card or search to view journal entry examples</h2>
         </div>
         
         <div class="search-container">
@@ -551,7 +551,7 @@
                     <div class="main-section">
                         <div class="section-title">DEBIT vs CREDIT FRAMEWORK</div>
                         <div class="framework-instructions">
-                            Use this framework to determine which side of a journal entry each account belongs. Find the account type (A, L, SE, R, E, D) and see whether the transaction increases or decreases that account.
+                            Use this framework to determine the appropriate side of the journal entry for each account. Identify the account type (A, L, SE, R, E, or D) and assess whether the transaction results in an increase or decrease to that account.
                         </div>
                         <div class="debit-credit-split">
                             <div class="debit-side">
@@ -648,33 +648,43 @@
         const ACCOUNT_DEFINITIONS = {
             // ASSETS
             'Cash': 'Physical currency and coins, as well as checking and savings account balances. The most liquid asset representing immediate purchasing power.',
-            'Accounts Receivable': 'Money owed to the company by customers for goods or services provided on credit. Represents future cash inflows from sales transactions.',
+            'Accounts Receivable': 'Money owed to the company by customers for goods or services provided on credit. Represents future cash inflows from sales transactions.',            
+            'Inventory': 'Goods available for sale or in the production process. An asset until sold or used.',
             'Supplies': 'Materials and items used in daily business operations, such as office supplies, that will be consumed within a year.',
-            'Prepaid Rent': 'Rent payments made in advance that will benefit future periods. An asset until the rental period is used.',
+            'Prepaid Rent': 'Rent payments made in advance that will benefit future periods. An asset until the rental period ends.',
             'Equipment': 'Long-term tangible assets used in business operations to generate revenue, such as computers, machinery, and office furniture.',
             'Logo and Trademarks': 'Intangible assets representing the company\'s brand identity, logos, and trademark rights that provide long-term value.',
             'Software': 'Intangible assets including computer programs, applications, and digital tools used in business operations.',
             
+            
             // LIABILITIES
             'Accounts Payable': 'Money owed to suppliers and vendors for goods or services purchased on credit. Represents short-term obligations to be paid.',
-            'Deferred Revenue': 'Money received from customers for goods or services not yet delivered. Represents an obligation to provide future services.',
-            'Notes Payable': 'Formal written promises to pay specific amounts by certain dates, typically involving interest charges and longer-term repayment.',
+            'Deferred Revenue': 'Cash received in advance from customers for goods or services to be delivered in the future. Represents an obligation until the performance obligation is satisfied.',
+            'Notes Payable': 'Formal written promises to pay specific amounts by certain dates, involving interest charges. Represent longer-term financing arrangements than accounts payable.',
+            'Interest Payable': 'Amount of interest owed to lenders or creditors. Represents the liability of the company to pay interest to lenders or creditors.',
+            'Income Tax Payable': 'Amount of income tax owed to government authorities. Represents the liability of the company to pay income taxes to the government.',
             
             // EQUITY
             'Common Stock': 'Represents ownership shares in a corporation. Common stockholders have voting rights and may receive dividends.',
-            'Retained Earnings': 'Accumulated profits that have been retained in the business rather than distributed as dividends to shareholders.',
+            'Retained Earnings': 'Accumulated profits that have been retained in the business after dividends are distributed to shareholders.',
             
             // REVENUES
-            'Sales Revenues': 'Income earned from selling goods or products to customers. Increases equity through profitable sales operations.',
-            'Service Revenues': 'Income earned from providing services to clients. Increases equity through profitable service operations.',
+            'Sales Revenues': 'Money earned from selling goods or products to customers.',
+            'Service Revenues': 'Money earned from providing services to customers.',
             
             // EXPENSES
+            'Cost of Goods Sold': 'Expense incurred to produce or purchase goods sold to customers.  Represents the cost of inventory sold during the period.',
             'Wages Expense': 'Cost of employee compensation including salaries, wages, and benefits for work performed during the period.',
             'Advertising Expenses': 'Costs incurred for promoting the company\'s products or services, including online ads, marketing campaigns, and promotional materials.',
             'Utility Expenses': 'Cost of electricity, gas, water, telephone, and internet services used in business operations.',
-            
+            'Rent Expenses': 'Cost of renting a property or building for business operations.  Represents the expense incurred for the use of a property or building.',
+            'Depreciation Expense': 'Expense recognized for the wear and tear of long-term assets over their useful lives. Represents the decrease in value of assets due to usage or age.',
+            'Amortization Expense': 'Expense recognized for the gradual reduction in value of intangible assets over their useful lives. Represents the decrease in value of intangible assets due to usage or age.',
+            'Interest Expense': 'Expense recognized for the interest payable to lenders or creditors. Represents the amount of interest owed based on the outstanding balance of loans or bonds.',
+            'Income Tax Expense': 'Expense recognized for the income taxes payable to government authorities. Represents the amount of income tax owed based on taxable income.',
+            'Bad Debt Expense': 'Expense recognized for the portion of accounts receivable that are deemed uncollectible. Represents the loss of revenue from accounts receivable that are not expected to be collected.',
             // DIVIDENDS
-            'Dividends': 'Distributions of company profits to shareholders. Reduces retained earnings and represents a return on investment to stockholders.'
+            'Dividends': 'Distributions of a corporation’s earnings to its shareholders.  Reduces retained earnings and represents a return on investment to stockholders.'
         };
 
         // ============================================================================
@@ -684,6 +694,7 @@
         const ACCOUNT_TYPES = {
             // ASSETS
             'Cash': 'asset',
+            'Inventory': 'asset',
             'Accounts Receivable': 'asset',
             'Supplies': 'asset',
             'Prepaid Rent': 'asset',
@@ -694,6 +705,8 @@
             'Accounts Payable': 'liability',
             'Deferred Revenue': 'liability',
             'Notes Payable': 'liability',
+            'Interest Payable': 'liability',
+            'Income Tax Payable': 'liability',
             // EQUITY
             'Common Stock': 'equity',
             'Retained Earnings': 'equity',
@@ -701,9 +714,16 @@
             'Sales Revenues': 'revenue',
             'Service Revenues': 'revenue',
             // EXPENSES
+            'Cost of Goods Sold': 'expense',
             'Wages Expense': 'expense',
             'Advertising Expenses': 'expense',
             'Utility Expenses': 'expense',
+            'Rent Expenses': 'expense',
+            'Bad Debt Expense': 'expense',            
+            'Depreciation Expense': 'expense',
+            'Amortization Expense': 'expense',
+            'Interest Expense': 'expense',
+            'Income Tax Expense': 'expense',
             // DIVIDENDS
             'Dividends': 'dividend'
         };
@@ -730,6 +750,26 @@
                     ]
                 }
             },
+
+            'Inventory': {
+                increase: {
+                    scenario: 'ABC Corp purchased $5,000 of inventory on account',
+                    entries: [
+                        { account: 'Inventory (+A)', debit: '$5,000', credit: '', indent: false },
+                        { account: 'Accounts Payable (+L)', debit: '', credit: '$5,000', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'ABC Corp sold $8,000 of inventory on account.  The cost of the inventory sold was $5,000.',
+                    entries: [
+                        { account: 'Accounts Receivable (+A)', debit: '$8,000', credit: '', indent: false },
+                        { account: 'Sales Revenues (+R, +SE)', debit: '', credit: '$8,000', indent: true },
+                        { account: 'Cost of Goods Sold (+E, -SE)', debit: '$5,000', credit: '', indent: false },
+                        { account: 'Inventory (-A)', debit: '', credit: '$5,000', indent: true }
+                    ]
+                }
+            },
+
             'Supplies': {
                 increase: {
                     scenario: 'ABC Corp received $600 of supplies on account',
@@ -840,6 +880,39 @@
                     ]
                 }
             },
+
+            'Interest Payable': {
+                increase: {
+                    scenario: 'Interest expense of $1,000 accrued on the note payable',
+                    entries: [
+                        { account: 'Interest Payable (+L)', debit: '$1,000', credit: '', indent: false },
+                        { account: 'Interest Expense (+E, -SE)', debit: '', credit: '$1,000', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'ABC Corp paid $1,000 of interest on the note payable',
+                    entries: [
+                        { account: 'Interest Payable (-L)', debit: '$1,000', credit: '', indent: false },
+                        { account: 'Cash (-A)', debit: '', credit: '$1,000', indent: true }
+                    ]
+                }
+            },
+            'Income Tax Payable': {
+                increase: {
+                    scenario: 'Income tax expense of $1,000 accrued',
+                    entries: [
+                        { account: 'Income Tax Payable (+L)', debit: '$1,000', credit: '', indent: false },
+                        { account: 'Income Tax Expense (+E, -SE)', debit: '', credit: '$1,000', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'ABC Corp paid $1,000 of income tax',
+                    entries: [
+                        { account: 'Income Tax Payable (-L)', debit: '$1,000', credit: '', indent: false },
+                        { account: 'Cash (-A)', debit: '', credit: '$1,000', indent: true }
+                    ]
+                }
+            },
             'Deferred Revenue': {
                 increase: {
                     scenario: 'ABC Corp issued three $100 gift cards for $300 total cash',
@@ -868,6 +941,28 @@
                 }
             },
 
+            'Retained Earnings': {
+                // Closing entries: close one revenue and two expenses to Retained Earnings
+                increase: {
+                    scenario: 'Closing entries: Close revenues and expenses to Retained Earnings at period end (Revenues: $3,000, Wages Expense: $1,000, Advertising Expenses: $1,500)',
+                    entries: [
+                        { account: 'Sales Revenues (-R, -SE)', debit: '$3,000', credit: '', indent: false },
+                        { account: 'Wages Expense (-E, +SE)', debit: '', credit: '$1,000', indent: true },
+                        { account: 'Advertising Expenses (-E, +SE)', debit: '', credit: '$1,500', indent: true },
+                        { account: 'Retained Earnings (+SE)', debit: '', credit: '$500', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'ABC Corp declared $500 in dividends to shareholders',
+                    entries: [
+                        { account: 'Retained Earnings (-SE)', debit: '$500', credit: '', indent: false },
+                        { account: 'Dividends (+D, -SE)', debit: '', credit: '$500', indent: true }
+                    ]
+                }
+            },
+
+
+
             // REVENUES
             'Sales Revenues': {
                 increase: {
@@ -888,7 +983,22 @@
                 }
             },
 
+            
+
             // EXPENSES
+
+            'Cost of Goods Sold': {
+                increase: {
+                    scenario: 'ABC Corp sold $8,000 of inventory on account.  The cost of the inventory sold was $5,000.',
+                    entries: [
+                        { account: 'Accounts Receivable (+A)', debit: '$8,000', credit: '', indent: false },
+                        { account: 'Sales Revenues (+R, +SE)', debit: '', credit: '$8,000', indent: true },
+                        { account: 'Cost of Goods Sold (+E, -SE)', debit: '$5,000', credit: '', indent: false },
+                        { account: 'Inventory (-A)', debit: '', credit: '$5,000', indent: true }
+                    ]
+                }
+            },
+
             'Wages Expense': {
                 increase: {
                     scenario: 'ABC Corp paid $7,800 in wages to employees for September work',
@@ -913,6 +1023,65 @@
                     entries: [
                         { account: 'Utility Expenses (+E, -SE)', debit: '$600', credit: '', indent: false },
                         { account: 'Cash (-A)', debit: '', credit: '$600', indent: true }
+                    ]
+                }
+            },
+            'Rent Expenses': {
+                increase: {
+                    scenario: 'ABC Corp paid $1,000 for rent for September',
+                    entries: [
+                        { account: 'Rent Expenses (+E, -SE)', debit: '$1,000', credit: '', indent: false },
+                        { account: 'Cash (-A)', debit: '', credit: '$1,000', indent: true }
+                    ]
+                }
+            },
+
+            'Depreciation Expense': {
+                increase: {
+                    scenario: 'ABC Corp recognized $1,000 of depreciation expense for September',
+                    entries: [
+                        { account: 'Depreciation Expense (+E, -SE)', debit: '$1,000', credit: '', indent: false },
+                        { account: 'Accumulated Depreciation (+xA, -A)', debit: '', credit: '$1,000', indent: true }
+                    ]
+                }
+            },
+
+            'Amortization Expense': {
+                increase: {
+                    scenario: 'ABC Corp recognized $1,000 of amortization expense for September',
+                    entries: [
+                        { account: 'Amortization Expense (+E, -SE)', debit: '$1,000', credit: '', indent: false },
+                        { account: 'Accumulated Amortization (+xA, -A)', debit: '', credit: '$1,000', indent: true }
+                    ]
+                }
+            },
+
+            'Interest Expense': {
+                increase: {
+                    scenario: 'ABC Corp recognized $1,000 of interest expense for September',
+                    entries: [
+                        { account: 'Interest Expense (+E, -SE)', debit: '$1,000', credit: '', indent: false },
+                        { account: 'Interest Payable (+L)', debit: '', credit: '$1,000', indent: true }
+                    ]
+                }
+            },
+
+            'Income Tax Expense': {
+                increase: {
+                    scenario: 'ABC Corp recognized $1,000 of income tax expense for September',
+                    entries: [
+                        { account: 'Income Tax Expense (+E, -SE)', debit: '$1,000', credit: '', indent: false },
+                        { account: 'Income Tax Payable (+L)', debit: '', credit: '$1,000', indent: true }
+                    ]
+                }
+            },
+
+            'Bad Debt Expense': {
+                increase: {
+                    scenario: 'ABC Corp recognized $1,000 of bad debt expense for September',
+                    entries: [
+                        { account: 'Bad Debt Expense (+E, -SE)', debit: '$1,000', credit: '', indent: false },
+                        { account: 'Allowance for Doubtful Accounts (+xA, -A)', debit: '', credit: '$1,000', indent: true }
                     ]
                 }
             }
