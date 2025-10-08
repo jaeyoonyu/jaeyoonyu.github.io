@@ -17,8 +17,9 @@ show_sidebar: false       # show a sidebar instead of the usual header
 navigation:                # accepts {file, title, url, icon, sidebaricon}
   - {file: "index.md", title: Home}
   #  - {file:  "CV.md", title: CV}
-  - {file: "Benford-analyzer.md", title: Benford-analyzer}
   - {file: "account-reference.md", title: Account-reference}
+  - {file: "Benford-analyzer.md", title: Benford-analyzer}
+  - {file: "Grade-analyzer.md", title: Grade-analyzer}
   - {file: "python-basics.md", title: Python-Basic}
   - {file: "python-applications.md", title: Python-Applied}
   - {file: "visuals.md", title: Visuals}
