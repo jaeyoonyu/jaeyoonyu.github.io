@@ -663,6 +663,7 @@
             'Notes Payable': 'Formal written promises to pay specific amounts by certain dates, involving interest charges. Represent longer-term financing arrangements than accounts payable.',
             'Interest Payable': 'Amount of interest owed to lenders or creditors. Represents the liability of the company to pay interest to lenders or creditors.',
             'Income Tax Payable': 'Amount of income tax owed to government authorities. Represents the liability of the company to pay income taxes to the government.',
+            'Dividends Payable': 'Amount of dividends owed to shareholders. Represents the liability of the company to pay dividends to shareholders.',
             
             // EQUITY
             'Common Stock': 'Represents ownership shares in a corporation. Common stockholders have voting rights and may receive dividends.',
@@ -678,8 +679,8 @@
             'Advertising Expenses': 'Costs incurred for promoting the company\'s products or services, including online ads, marketing campaigns, and promotional materials.',
             'Utility Expenses': 'Cost of electricity, gas, water, telephone, and internet services used in business operations.',
             'Rent Expenses': 'Cost of renting a property or building for business operations.  Represents the expense incurred for the use of a property or building.',
-            'Depreciation Expense': 'Expense recognized for the wear and tear of long-term assets over their useful lives. Represents the decrease in value of assets due to usage or age.',
-            'Amortization Expense': 'Expense recognized for the gradual reduction in value of intangible assets over their useful lives. Represents the decrease in value of intangible assets due to usage or age.',
+            'Depreciation Expense': 'Depreciation expense is the systematic allocation of the cost of a tangible fixed asset over its useful life.',
+            'Amortization Expense': 'Amortization expense is the systematic allocation of the cost of an intangible asset over its useful life.',
             'Interest Expense': 'Expense recognized for the interest payable to lenders or creditors. Represents the amount of interest owed based on the outstanding balance of loans or bonds.',
             'Income Tax Expense': 'Expense recognized for the income taxes payable to government authorities. Represents the amount of income tax owed based on taxable income.',
             'Bad Debt Expense': 'Expense recognized for the portion of accounts receivable that are deemed uncollectible. Represents the loss of revenue from accounts receivable that are not expected to be collected.',
@@ -707,6 +708,7 @@
             'Notes Payable': 'liability',
             'Interest Payable': 'liability',
             'Income Tax Payable': 'liability',
+            'Dividends Payable': 'liability',
             // EQUITY
             'Common Stock': 'equity',
             'Retained Earnings': 'equity',
@@ -885,8 +887,8 @@
                 increase: {
                     scenario: 'Interest expense of $1,000 accrued on the note payable',
                     entries: [
-                        { account: 'Interest Payable (+L)', debit: '$1,000', credit: '', indent: false },
-                        { account: 'Interest Expense (+E, -SE)', debit: '', credit: '$1,000', indent: true }
+                        { account: 'Interest Expense (+E, -SE)', debit: '$1,000', credit: '', indent: false },
+                        { account: 'Interest Payable (+L)', debit: '', credit: '$1,000', indent: true }
                     ]
                 },
                 decrease: {
@@ -901,8 +903,8 @@
                 increase: {
                     scenario: 'Income tax expense of $1,000 accrued',
                     entries: [
-                        { account: 'Income Tax Payable (+L)', debit: '$1,000', credit: '', indent: false },
-                        { account: 'Income Tax Expense (+E, -SE)', debit: '', credit: '$1,000', indent: true }
+                        { account: 'Income Tax Expense (+E, -SE)', debit: '$1,000', credit: '', indent: false },
+                        { account: 'Income Tax Payable (+L)', debit: '', credit: '$1,000', indent: true }
                     ]
                 },
                 decrease: {
@@ -910,6 +912,22 @@
                     entries: [
                         { account: 'Income Tax Payable (-L)', debit: '$1,000', credit: '', indent: false },
                         { account: 'Cash (-A)', debit: '', credit: '$1,000', indent: true }
+                    ]
+                }
+            },
+            'Dividends Payable': {
+                increase: {
+                    scenario: 'ABC Corp declared $500 in dividends to shareholders on Feb 5',
+                    entries: [
+                        { account: 'Dividends (+D, -SE)', debit: '$500', credit: '', indent: false },
+                        { account: 'Dividends Payable (+L)', debit: '', credit: '$500', indent: true }
+                    ]
+                },
+                decrease: {
+                    scenario: 'ABC Corp paid $500 in dividends that were declared on Feb 5',
+                    entries: [
+                        { account: 'Dividends Payable (-L)', debit: '$500', credit: '', indent: false },
+                        { account: 'Cash (-A)', debit: '', credit: '$500', indent: true }
                     ]
                 }
             },
@@ -944,19 +962,18 @@
             'Retained Earnings': {
                 // Closing entries: close one revenue and two expenses to Retained Earnings
                 increase: {
-                    scenario: 'Closing entries: Close revenues and expenses to Retained Earnings at period end (Revenues: $3,000, Wages Expense: $1,000, Advertising Expenses: $1,500)',
+                    scenario: 'Closing entry: Close revenue accounts to Retained Earnings at period end (Sales Revenues: $3,000)',
                     entries: [
-                        { account: 'Sales Revenues (-R, -SE)', debit: '$3,000', credit: '', indent: false },
-                        { account: 'Wages Expense (-E, +SE)', debit: '', credit: '$1,000', indent: true },
-                        { account: 'Advertising Expenses (-E, +SE)', debit: '', credit: '$1,500', indent: true },
-                        { account: 'Retained Earnings (+SE)', debit: '', credit: '$500', indent: true }
+                        { account: 'Sales Revenues (-R)', debit: '$3,000', credit: '', indent: false },
+                        { account: 'Retained Earnings (+SE)', debit: '', credit: '$3,000', indent: true }
                     ]
                 },
                 decrease: {
-                    scenario: 'ABC Corp declared $500 in dividends to shareholders',
+                    scenario: 'Closing entry: Close expense accounts to Retained Earnings at period end (Wages Expense: $1,000, Advertising Expenses: $1,500)',
                     entries: [
-                        { account: 'Retained Earnings (-SE)', debit: '$500', credit: '', indent: false },
-                        { account: 'Dividends (+D, -SE)', debit: '', credit: '$500', indent: true }
+                        { account: 'Retained Earnings (-SE)', debit: '$2,500', credit: '', indent: false },
+                        { account: 'Wages Expense (-E)', debit: '', credit: '$1,000', indent: true },
+                        { account: 'Advertising Expenses (-E)', debit: '', credit: '$1,500', indent: true }
                     ]
                 }
             },
@@ -1084,7 +1101,18 @@
                         { account: 'Allowance for Doubtful Accounts (+xA, -A)', debit: '', credit: '$1,000', indent: true }
                     ]
                 }
+            },
+
+            'Dividends': {
+                increase: {
+                    scenario: 'ABC Corp declared $500 in dividends to shareholders on Feb 5',
+                    entries: [
+                        { account: 'Dividends (+D, -SE)', debit: '$500', credit: '', indent: false },
+                        { account: 'Dividends Payable (+L)', debit: '', credit: '$500', indent: true }
+                    ]
+                }
             }
+
         };
 
         // ============================================================================
