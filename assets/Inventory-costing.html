@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIFO/LIFO Inventory Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+
+        .controls {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .control-group label {
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .slicer-container {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .slicer-button {
+            padding: 12px 24px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            color: #555;
+            transition: all 0.3s;
+            flex: 1;
+            min-width: 100px;
+            text-align: center;
+        }
+
+        .slicer-button:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .slicer-button.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            font-weight: 600;
+        }
+
+        .slicer-button:active {
+            transform: scale(0.98);
+        }
+
+        .scenario-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 4px solid #667eea;
+        }
+
+        .scenario-info h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .scenario-info ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .scenario-info li {
+            padding: 8px 0;
+            color: #555;
+        }
+
+        .visualization-container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 2px solid #e9ecef;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .visualization-container > .inventory-grid {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .comparison-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .comparison-panel {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 15px;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .comparison-panel h3 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+            font-size: 1.2em;
+            width: 100%;
+        }
+
+        .comparison-panel .inventory-grid {
+            width: 100%;
+        }
+
+        .inventory-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .box-row {
+            display: flex;
+            gap: 3px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .box {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #333;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .box.selected {
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.5);
+            border-color: #dc3545;
+            border-width: 3px;
+        }
+
+        .box.batch-1 {
+            background-color: #b3d9ff;
+        }
+
+        .box.batch-2 {
+            background-color: #b3ffb3;
+        }
+
+        .box.batch-3 {
+            background-color: #ffcc99;
+        }
+
+        .note {
+            text-align: center;
+            font-weight: 600;
+            color: #333;
+            margin-top: 20px;
+            font-size: 16px;
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .calculations {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .calculations h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+
+        .calc-section {
+            margin-bottom: 20px;
+        }
+
+        .calc-section h4 {
+            color: #555;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+
+        .calc-item {
+            padding: 8px 0;
+            color: #666;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .calc-item.total {
+            font-weight: 700;
+            color: #333;
+            border-top: 2px solid #ddd;
+            padding-top: 12px;
+            margin-top: 8px;
+            font-size: 1.1em;
+        }
+
+        .comparison-table-container {
+            margin-top: 30px;
+            overflow-x: auto;
+        }
+
+        .comparison-summary {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+        }
+
+        .comparison-summary th,
+        .comparison-summary td {
+            padding: 12px;
+            text-align: right;
+            border: 1px solid #ddd;
+        }
+
+        .comparison-summary th {
+            background-color: #667eea;
+            color: white;
+            font-weight: 600;
+        }
+
+        .comparison-summary td:first-child,
+        .comparison-summary th:first-child {
+            text-align: left;
+        }
+
+        .comparison-summary tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .comparison-summary .difference {
+            background-color: #fff3cd;
+            font-weight: 600;
+        }
+
+        .comparison-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 992px) {
+            .comparison-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-details {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .box {
+                width: 35px;
+                height: 35px;
+                font-size: 11px;
+            }
+            
+            .slicer-button {
+                min-width: 80px;
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .comparison-panel {
+                padding: 10px;
+            }
+            
+            .box {
+                width: 30px;
+                height: 30px;
+                font-size: 10px;
+            }
+            
+            .slicer-container {
+                flex-direction: column;
+            }
+            
+            .slicer-button {
+                min-width: 100%;
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Inventory Costing: FIFO vs LIFO</h1>
+        <div style="text-align: center; color: #666; font-style: italic; margin-bottom: 20px; font-size: 16px;">
+            ABC Electronics | Periodic Inventory System Assumed
+        </div>
+
+        <div class="controls">
+            <div class="control-group">
+                <label>Select Scenario:</label>
+                <div class="slicer-container">
+                    <button class="slicer-button active" data-scenario="june">One</button>
+                    <button class="slicer-button" data-scenario="july">Two</button>
+                    <button class="slicer-button" data-scenario="january">Three</button>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>Select Method:</label>
+                <div class="slicer-container">
+                    <button class="slicer-button active" data-method="">Description</button>
+                    <button class="slicer-button" data-method="fifo">FIFO</button>
+                    <button class="slicer-button" data-method="lifo">LIFO</button>
+                    <button class="slicer-button" data-method="compare">Compare FIFO vs LIFO</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="scenario-info" id="scenarioInfo"></div>
+
+        <div class="visualization-container" id="visualizationContainer">
+            <div class="inventory-grid" id="inventoryGrid"></div>
+            <div class="note" id="note"></div>
+        </div>
+
+        <div class="calculations" id="calculations"></div>
+    </div>
+
+    <script>
+        const scenarios = {
+            june: {
+                name: "Scenario One",
+                description: "ABC Electronics sells keyboards. The following are the transactions for the month of January.",
+                batches: [
+                    { date: "January 1", units: 12, cost: 8, label: "Beginning Inventory" },
+                    { date: "January 8", units: 38, cost: 9, label: "Purchase" },
+                    { date: "January 15", units: 20, cost: 11, label: "Purchase" }
+                ],
+                unitsSold: 46,
+                boxSize: 1
+            },
+            july: {
+                name: "Scenario Two",
+                description: "ABC Electronics sells keyboards. The following are the transactions for the month of January.",
+                batches: [
+                    { date: "January 1", units: 50, cost: 10, label: "Beginning Inventory" },
+                    { date: "January 15", units: 250, cost: 13, label: "Purchase" }
+                ],
+                unitsSold: 100,
+                boxSize: 10
+            },
+            january: {
+                name: "Scenario Three",
+                description: "ABC Electronics sells keyboards. The following are the transactions for the month of January.",
+                batches: [
+                    { date: "January 1", units: 300, cost: 7, label: "Beginning Inventory" },
+                    { date: "January 10", units: 450, cost: 8, label: "Purchase" },
+                    { date: "January 20", units: 750, cost: 9, label: "Purchase" }
+                ],
+                unitsSold: 600,
+                boxSize: 10
+            }
+        };
+
+        let currentScenario = 'june';
+        let currentMethod = '';
+
+        function init() {
+            // Scenario slicer buttons
+            document.querySelectorAll('[data-scenario]').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    // Remove active class from all scenario buttons
+                    document.querySelectorAll('[data-scenario]').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    e.target.classList.add('active');
+                    
+                    currentScenario = e.target.dataset.scenario;
+                    
+                    // Reset to Description when changing scenarios
+                    currentMethod = '';
+                    
+                    // Reset method buttons to Description
+                    document.querySelectorAll('[data-method]').forEach(btn => {
+                        btn.classList.remove('active');
+                        if (btn.dataset.method === '') {
+                            btn.classList.add('active');
+                        }
+                    });
+                    
+                    render();
+                });
+            });
+
+            // Method slicer buttons
+            document.querySelectorAll('[data-method]').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    // Remove active class from all method buttons
+                    document.querySelectorAll('[data-method]').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    e.target.classList.add('active');
+                    
+                    currentMethod = e.target.dataset.method;
+                    render();
+                });
+            });
+
+            render();
+        }
+
+        function render() {
+            const scenario = scenarios[currentScenario];
+            renderScenarioInfo(scenario);
+            
+            if (currentMethod === 'compare') {
+                renderComparison(scenario);
+            } else {
+                renderSingleView(scenario);
+            }
+        }
+
+        function renderScenarioInfo(scenario) {
+            const totalUnits = scenario.batches.reduce((sum, batch) => sum + batch.units, 0);
+            const totalCost = scenario.batches.reduce((sum, batch) => sum + (batch.units * batch.cost), 0);
+            const endingInventory = totalUnits - scenario.unitsSold;
+
+            let html = `
+                <h3>${scenario.name}</h3>
+                <p><strong>${scenario.description}</strong></p>
+                <ul>
+                    ${scenario.batches.map(batch => 
+                        `<li><strong>${batch.date}:</strong> ${batch.label} - ${batch.units} units @ $${batch.cost} each</li>`
+                    ).join('')}
+                    <li><strong>Units Sold:</strong> ${scenario.unitsSold} units</li>
+                    <li><strong>Ending Inventory:</strong> ${endingInventory} units</li>
+                </ul>
+            `;
+
+            document.getElementById('scenarioInfo').innerHTML = html;
+        }
+
+        function renderSingleView(scenario) {
+            const container = document.getElementById('visualizationContainer');
+            
+            if (currentMethod === '') {
+                // Show basic visualization and available for sale info when Description is selected
+                container.innerHTML = `
+                    <div class="inventory-grid" id="inventoryGrid"></div>
+                    <div class="note" id="note"></div>
+                `;
+                
+                renderInventoryGrid(scenario, 'inventoryGrid', '');
+                
+                const note = document.getElementById('note');
+                note.innerHTML = `<strong>One box = ${scenario.boxSize} unit${scenario.boxSize > 1 ? 's' : ''}</strong>`;
+                
+                renderAvailableForSale(scenario);
+            } else {
+                // Show visualization and calculations for selected method
+                container.innerHTML = `
+                    <div class="inventory-grid" id="inventoryGrid"></div>
+                    <div class="note" id="note"></div>
+                `;
+                
+                renderInventoryGrid(scenario, 'inventoryGrid', currentMethod);
+                
+                const note = document.getElementById('note');
+                note.innerHTML = `<strong>One box = ${scenario.boxSize} unit${scenario.boxSize > 1 ? 's' : ''}</strong>`;
+                
+                renderCalculations(scenario);
+            }
+        }
+
+        function renderInventoryGrid(scenario, elementId, method) {
+            const grid = document.getElementById(elementId);
+            if (!grid) return;
+            
+            grid.innerHTML = '';
+            grid.className = 'inventory-grid';
+
+            const boxSize = scenario.boxSize;
+            const selectedBoxes = method ? getSelectedBoxesForMethod(scenario, method) : [];
+
+            // Create all boxes in a continuous array
+            let allBoxes = [];
+            let boxIndex = 0;
+            
+            scenario.batches.forEach((batch, batchIndex) => {
+                const numBoxes = Math.ceil(batch.units / boxSize);
+                for (let i = 0; i < numBoxes; i++) {
+                    allBoxes.push({
+                        cost: batch.cost,
+                        batchIndex: batchIndex,
+                        selected: selectedBoxes.includes(boxIndex)
+                    });
+                    boxIndex++;
+                }
+            });
+
+            // Create rows of 10 boxes each
+            const boxesPerRow = 10;
+            const numRows = Math.ceil(allBoxes.length / boxesPerRow);
+
+            for (let row = 0; row < numRows; row++) {
+                const rowDiv = document.createElement('div');
+                rowDiv.className = 'box-row';
+                
+                const startIdx = row * boxesPerRow;
+                const endIdx = Math.min(startIdx + boxesPerRow, allBoxes.length);
+                
+                for (let i = startIdx; i < endIdx; i++) {
+                    const boxData = allBoxes[i];
+                    const box = document.createElement('div');
+                    box.className = `box batch-${boxData.batchIndex + 1}`;
+                    if (boxData.selected) {
+                        box.classList.add('selected');
+                    }
+                    box.textContent = `$${boxData.cost}`;
+                    rowDiv.appendChild(box);
+                }
+                
+                grid.appendChild(rowDiv);
+            }
+        }
+
+        function getSelectedBoxesForMethod(scenario, method) {
+            const boxSize = scenario.boxSize;
+            const totalBoxes = scenario.batches.reduce((sum, batch) => 
+                sum + Math.ceil(batch.units / boxSize), 0);
+            const soldBoxes = Math.ceil(scenario.unitsSold / boxSize);
+
+            if (method === 'fifo') {
+                return Array.from({ length: soldBoxes }, (_, i) => i);
+            } else if (method === 'lifo') {
+                return Array.from({ length: soldBoxes }, (_, i) => totalBoxes - soldBoxes + i);
+            }
+
+            return [];
+        }
+
+        function calculateFIFO(scenario) {
+            let remaining = scenario.unitsSold;
+            let cogs = 0;
+            const cogsDetails = [];
+            const endingInventory = [];
+
+            scenario.batches.forEach(batch => {
+                if (remaining > 0) {
+                    const unitsFromBatch = Math.min(remaining, batch.units);
+                    cogs += unitsFromBatch * batch.cost;
+                    cogsDetails.push({
+                        units: unitsFromBatch,
+                        cost: batch.cost,
+                        total: unitsFromBatch * batch.cost
+                    });
+                    remaining -= unitsFromBatch;
+
+                    if (batch.units > unitsFromBatch) {
+                        endingInventory.push({
+                            units: batch.units - unitsFromBatch,
+                            cost: batch.cost,
+                            total: (batch.units - unitsFromBatch) * batch.cost
+                        });
+                    }
+                } else {
+                    endingInventory.push({
+                        units: batch.units,
+                        cost: batch.cost,
+                        total: batch.units * batch.cost
+                    });
+                }
+            });
+
+            const endingInventoryTotal = endingInventory.reduce((sum, item) => sum + item.total, 0);
+
+            return { cogs, cogsDetails, endingInventory, endingInventoryTotal };
+        }
+
+        function calculateLIFO(scenario) {
+            let remaining = scenario.unitsSold;
+            let cogs = 0;
+            const cogsDetails = [];
+            const endingInventory = [];
+
+            for (let i = scenario.batches.length - 1; i >= 0; i--) {
+                const batch = scenario.batches[i];
+                if (remaining > 0) {
+                    const unitsFromBatch = Math.min(remaining, batch.units);
+                    cogs += unitsFromBatch * batch.cost;
+                    cogsDetails.unshift({
+                        units: unitsFromBatch,
+                        cost: batch.cost,
+                        total: unitsFromBatch * batch.cost
+                    });
+                    remaining -= unitsFromBatch;
+
+                    if (batch.units > unitsFromBatch) {
+                        endingInventory.unshift({
+                            units: batch.units - unitsFromBatch,
+                            cost: batch.cost,
+                            total: (batch.units - unitsFromBatch) * batch.cost
+                        });
+                    }
+                } else {
+                    endingInventory.unshift({
+                        units: batch.units,
+                        cost: batch.cost,
+                        total: batch.units * batch.cost
+                    });
+                }
+            }
+
+            const endingInventoryTotal = endingInventory.reduce((sum, item) => sum + item.total, 0);
+
+            return { cogs, cogsDetails, endingInventory, endingInventoryTotal };
+        }
+
+        function renderAvailableForSale(scenario) {
+            const calcDiv = document.getElementById('calculations');
+            
+            const totalUnits = scenario.batches.reduce((sum, batch) => sum + batch.units, 0);
+            const totalCost = scenario.batches.reduce((sum, batch) => sum + (batch.units * batch.cost), 0);
+
+            let html = `
+                <h3>📊 Available for Sale</h3>
+                
+                <div class="calc-section">
+                    <h4>Cost of Goods Available for Sale Calculation</h4>
+                    ${scenario.batches.map(batch => `
+                        <div class="calc-item">
+                            <span>${batch.date}: ${batch.units} units @ $${batch.cost}</span>
+                            <span>$${(batch.units * batch.cost).toLocaleString()}</span>
+                        </div>
+                    `).join('')}
+                    <div class="calc-item total">
+                        <span>Total Cost of Goods Available for Sale:</span>
+                        <span>$${totalCost.toLocaleString()}</span>
+                    </div>
+                </div>
+                
+                <div class="calc-section">
+                    <div class="calc-item">
+                        <span>Total Units Available for Sale:</span>
+                        <span>${totalUnits} units</span>
+                    </div>
+                </div>
+            `;
+
+            calcDiv.innerHTML = html;
+        }
+
+        function renderCalculations(scenario) {
+            const calcDiv = document.getElementById('calculations');
+
+            // Don't show calculations if no method selected
+            if (currentMethod === '') {
+                calcDiv.innerHTML = '';
+                return;
+            }
+
+            let html = `
+                <h3>📈 Calculations</h3>
+            `;
+
+            if (currentMethod === 'fifo') {
+                const fifo = calculateFIFO(scenario);
+                html += `
+                    <div class="calc-section">
+                        <h4>FIFO - Cost of Goods Sold</h4>
+                        ${fifo.cogsDetails.map(item => `
+                            <div class="calc-item">
+                                <span>${item.units} units @ $${item.cost}</span>
+                                <span>$${item.total.toLocaleString()}</span>
+                            </div>
+                        `).join('')}
+                        <div class="calc-item total">
+                            <span>Total COGS:</span>
+                            <span>$${fifo.cogs.toLocaleString()}</span>
+                        </div>
+                    </div>
+
+                    <div class="calc-section">
+                        <h4>FIFO - Ending Inventory</h4>
+                        ${fifo.endingInventory.map(item => `
+                            <div class="calc-item">
+                                <span>${item.units} units @ $${item.cost}</span>
+                                <span>$${item.total.toLocaleString()}</span>
+                            </div>
+                        `).join('')}
+                        <div class="calc-item total">
+                            <span>Total Ending Inventory:</span>
+                            <span>$${fifo.endingInventoryTotal.toLocaleString()}</span>
+                        </div>
+                    </div>
+                `;
+            } else if (currentMethod === 'lifo') {
+                const lifo = calculateLIFO(scenario);
+                html += `
+                    <div class="calc-section">
+                        <h4>LIFO - Cost of Goods Sold</h4>
+                        ${lifo.cogsDetails.map(item => `
+                            <div class="calc-item">
+                                <span>${item.units} units @ $${item.cost}</span>
+                                <span>$${item.total.toLocaleString()}</span>
+                            </div>
+                        `).join('')}
+                        <div class="calc-item total">
+                            <span>Total COGS:</span>
+                            <span>$${lifo.cogs.toLocaleString()}</span>
+                        </div>
+                    </div>
+
+                    <div class="calc-section">
+                        <h4>LIFO - Ending Inventory</h4>
+                        ${lifo.endingInventory.map(item => `
+                            <div class="calc-item">
+                                <span>${item.units} units @ $${item.cost}</span>
+                                <span>$${item.total.toLocaleString()}</span>
+                            </div>
+                        `).join('')}
+                        <div class="calc-item total">
+                            <span>Total Ending Inventory:</span>
+                            <span>$${lifo.endingInventoryTotal.toLocaleString()}</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            calcDiv.innerHTML = html;
+        }
+
+        function renderComparison(scenario) {
+            const fifo = calculateFIFO(scenario);
+            const lifo = calculateLIFO(scenario);
+            
+            // Render side-by-side visualizations
+            const vizContainer = document.getElementById('visualizationContainer');
+            vizContainer.innerHTML = `
+                <div class="comparison-container">
+                    <div class="comparison-panel">
+                        <h3>🔵 FIFO</h3>
+                        <div id="fifoGrid"></div>
+                    </div>
+                    <div class="comparison-panel">
+                        <h3>🔴 LIFO</h3>
+                        <div id="lifoGrid"></div>
+                    </div>
+                </div>
+                <div class="note"><strong>One box = ${scenario.boxSize} unit${scenario.boxSize > 1 ? 's' : ''}</strong></div>
+            `;
+
+            // Render FIFO grid
+            renderInventoryGrid(scenario, 'fifoGrid', 'fifo');
+            
+            // Render LIFO grid
+            renderInventoryGrid(scenario, 'lifoGrid', 'lifo');
+
+            // Render comparison calculations
+            renderComparisonCalculations(scenario, fifo, lifo);
+        }
+
+        function renderComparisonCalculations(scenario, fifo, lifo) {
+            const calcDiv = document.getElementById('calculations');
+            
+            const totalUnits = scenario.batches.reduce((sum, batch) => sum + batch.units, 0);
+            const totalCost = scenario.batches.reduce((sum, batch) => sum + (batch.units * batch.cost), 0);
+            
+            let html = `
+                <h3>📊 Comparison Analysis</h3>
+                
+                <div class="comparison-table-container">
+                    <table class="comparison-summary">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>FIFO</th>
+                                <th>LIFO</th>
+                                <th>Difference</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Units Available for Sale</td>
+                                <td>${totalUnits}</td>
+                                <td>${totalUnits}</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>Cost of Goods Available</td>
+                                <td>$${totalCost.toLocaleString()}</td>
+                                <td>$${totalCost.toLocaleString()}</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td>Units Sold</td>
+                                <td>${scenario.unitsSold}</td>
+                                <td>${scenario.unitsSold}</td>
+                                <td>-</td>
+                            </tr>
+                            <tr class="difference">
+                                <td><strong>Cost of Goods Sold</strong></td>
+                                <td><strong>$${fifo.cogs.toLocaleString()}</strong></td>
+                                <td><strong>$${lifo.cogs.toLocaleString()}</strong></td>
+                                <td><strong>$${Math.abs(fifo.cogs - lifo.cogs).toLocaleString()}</strong></td>
+                            </tr>
+                            <tr class="difference">
+                                <td><strong>Ending Inventory</strong></td>
+                                <td><strong>$${fifo.endingInventoryTotal.toLocaleString()}</strong></td>
+                                <td><strong>$${lifo.endingInventoryTotal.toLocaleString()}</strong></td>
+                                <td><strong>$${Math.abs(fifo.endingInventoryTotal - lifo.endingInventoryTotal).toLocaleString()}</strong></td>
+                            </tr>
+            `;
+
+            html += `
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="comparison-details">
+                    <div class="calc-section">
+                        <h4>FIFO - Cost of Goods Sold Details</h4>
+                        ${fifo.cogsDetails.map(item => `
+                            <div class="calc-item">
+                                <span>${item.units} units @ $${item.cost}</span>
+                                <span>$${item.total.toLocaleString()}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="calc-section">
+                        <h4>LIFO - Cost of Goods Sold Details</h4>
+                        ${lifo.cogsDetails.map(item => `
+                            <div class="calc-item">
+                                <span>${item.units} units @ $${item.cost}</span>
+                                <span>$${item.total.toLocaleString()}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            calcDiv.innerHTML = html;
+        }
+
+        init();
+    </script>
+</body>
+</html>
