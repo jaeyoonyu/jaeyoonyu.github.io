@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Depreciation Methods Calculator</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .input-section {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .input-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+        
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-group label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 1.05em;
+        }
+        
+        .input-group input {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1.1em;
+            transition: all 0.3s;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .calculate-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+        
+        .results-section {
+            display: none;
+        }
+        
+        .results-section.active {
+            display: block;
+        }
+        
+        .table-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .table-container h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+        }
+        
+        .depreciation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .depreciation-table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .depreciation-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        .depreciation-table th.center {
+            text-align: center;
+        }
+        
+        .depreciation-table tbody tr {
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .depreciation-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .depreciation-table td {
+            padding: 12px 15px;
+        }
+        
+        .depreciation-table td.center {
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .method-column {
+            background: #f8f9fa;
+        }
+        
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        .chart-wrapper {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .chart-wrapper h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 1.3em;
+        }
+        
+        .implications {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        
+        .implications h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+        
+        .implications ul {
+            margin-left: 20px;
+            color: #856404;
+        }
+        
+        .implications li {
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .note {
+            background: #d1ecf1;
+            border-left: 5px solid #17a2b8;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            color: #0c5460;
+        }
+        
+        .note strong {
+            font-size: 1.1em;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+            
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .charts-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .formula-box {
+            background: #e7f3ff;
+            border-left: 5px solid #2196F3;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .formula-box strong {
+            color: #1976D2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 Depreciation Methods Calculator</h1>
+        </div>
+        
+        <div class="content">
+            <div class="input-section">
+                <h2>📊 Asset Information</h2>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="cost">Asset Cost ($)</label>
+                        <input type="number" id="cost" value="66000" min="0" step="1000">
+                    </div>
+                    <div class="input-group">
+                        <label for="residual">Residual Value ($)</label>
+                        <input type="number" id="residual" value="0" min="0" step="1000">
+                    </div>
+                    <div class="input-group">
+                        <label for="life">Useful Life (years)</label>
+                        <input type="number" id="life" value="3" min="1" max="30">
+                    </div>
+                </div>
+                <button class="calculate-btn" onclick="calculate()">Calculate Depreciation</button>
+            </div>
+            
+            <div class="results-section" id="results">
+                <div class="table-container">
+                    <h3>📋 Depreciation Schedule Comparison</h3>
+                    <table class="depreciation-table" id="scheduleTable">
+                        <thead>
+                            <tr>
+                                <th class="center">Year</th>
+                                <th colspan="2" class="center" style="background: #3b82f6;">Straight-Line Method</th>
+                                <th colspan="2" class="center" style="background: #ef4444;">Double-Declining Balance</th>
+                                <th colspan="2" class="center" style="background: #10b981;">Book Value</th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th class="center" style="background: #93c5fd;">DepExp</th>
+                                <th class="center" style="background: #93c5fd;">AccDep</th>
+                                <th class="center" style="background: #fca5a5;">DepExp</th>
+                                <th class="center" style="background: #fca5a5;">AccDep</th>
+                                <th class="center" style="background: #86efac;">Straight-Line</th>
+                                <th class="center" style="background: #86efac;">DDB</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scheduleBody">
+                        </tbody>
+                    </table>
+                    
+                    <div class="formula-box">
+                        <strong>Straight-Line Formula:</strong> (Cost - Residual Value) / Useful Life
+                    </div>
+                    
+                    <div class="formula-box">
+                        <strong>Double-Declining Balance Rate:</strong> (2 / Useful Life) × Book Value at Beginning of Year
+                    </div>
+                </div>
+                
+                <div class="charts-container">
+                    <div class="chart-wrapper">
+                        <h3>📊 Annual Depreciation Expense</h3>
+                        <canvas id="expenseChart"></canvas>
+                    </div>
+                    <div class="chart-wrapper">
+                        <h3>📈 Accumulated Depreciation</h3>
+                        <canvas id="accumulatedChart"></canvas>
+                    </div>
+                    <div class="chart-wrapper">
+                        <h3>📉 Book Value Over Time</h3>
+                        <canvas id="bookValueChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="implications">
+                    <h3>💡 Key Implications</h3>
+                    <ul>
+                        <li><strong>Total Depreciation:</strong> The sum of depreciation expenses over the asset's useful life equals the depreciable cost (Cost - Residual Value), regardless of the method used.</li>
+                        <li><strong>Double-Declining Balance Pattern:</strong>
+                            <ul style="margin-top: 8px;">
+                                <li>Depreciation expense is highest in the first year</li>
+                                <li>Depreciation expense decreases each subsequent year</li>
+                                <li>The final year is adjusted to ensure the book value equals the residual value</li>
+                            </ul>
+                        </li>
+                        <li><strong>Method Selection Impact:</strong> While both methods depreciate the same total amount, the timing differs. DDB accelerates expense recognition, which can affect:
+                            <ul style="margin-top: 8px;">
+                                <li>Net income in early years (lower with DDB)</li>
+                                <li>Tax liabilities (potentially lower in early years with DDB)</li>
+                                <li>Book value of assets on the balance sheet</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="note">
+                    <strong>Note:</strong> Under the double-declining-balance method, the depreciation calculation for the final year is adjusted to ensure that the ending book value equals the residual value. This means the final year's depreciation is simply the remaining depreciable amount needed to reach the residual value, rather than applying the standard DDB formula.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let expenseChart, accumulatedChart, bookValueChart;
+        
+        function calculate() {
+            const cost = parseFloat(document.getElementById('cost').value);
+            const residual = parseFloat(document.getElementById('residual').value);
+            const life = parseInt(document.getElementById('life').value);
+            
+            if (isNaN(cost) || isNaN(residual) || isNaN(life) || cost <= 0 || residual < 0 || life <= 0) {
+                alert('Please enter valid values for all fields.');
+                return;
+            }
+            
+            if (residual >= cost) {
+                alert('Residual value must be less than asset cost.');
+                return;
+            }
+            
+            const depreciableCost = cost - residual;
+            const slDepreciation = depreciableCost / life;
+            const ddbRate = 2 / life;
+            
+            // Calculate schedules
+            const years = [];
+            const slDepExp = [];
+            const slAccDep = [];
+            const ddbDepExp = [];
+            const ddbAccDep = [];
+            const slBookValue = [];
+            const ddbBookValue = [];
+            
+            let slAcc = 0;
+            let ddbAcc = 0;
+            let ddbBookVal = cost;
+            
+            for (let year = 1; year <= life; year++) {
+                years.push(year);
+                
+                // Straight-line
+                slDepExp.push(slDepreciation);
+                slAcc += slDepreciation;
+                slAccDep.push(slAcc);
+                slBookValue.push(cost - slAcc);
+                
+                // Double-declining balance
+                let ddbExp = ddbBookVal * ddbRate;
+                
+                // Adjust last year to not go below residual value
+                if (year === life) {
+                    ddbExp = ddbBookVal - residual;
+                } else if (ddbAcc + ddbExp > depreciableCost) {
+                    ddbExp = depreciableCost - ddbAcc;
+                }
+                
+                ddbDepExp.push(ddbExp);
+                ddbAcc += ddbExp;
+                ddbAccDep.push(ddbAcc);
+                ddbBookVal -= ddbExp;
+                ddbBookValue.push(ddbBookVal);
+            }
+            
+            // Update table
+            const tableBody = document.getElementById('scheduleBody');
+            tableBody.innerHTML = '';
+            
+            for (let i = 0; i < life; i++) {
+                const row = tableBody.insertRow();
+                row.innerHTML = `
+                    <td class="center"><strong>${years[i]}</strong></td>
+                    <td class="center">$${Math.round(slDepExp[i]).toLocaleString('en-US')}</td>
+                    <td class="center">$${Math.round(slAccDep[i]).toLocaleString('en-US')}</td>
+                    <td class="center">$${Math.round(ddbDepExp[i]).toLocaleString('en-US')}</td>
+                    <td class="center">$${Math.round(ddbAccDep[i]).toLocaleString('en-US')}</td>
+                    <td class="center">$${Math.round(slBookValue[i]).toLocaleString('en-US')}</td>
+                    <td class="center">$${Math.round(ddbBookValue[i]).toLocaleString('en-US')}</td>
+                `;
+            }
+            
+            // Update charts
+            updateCharts(years, slDepExp, ddbDepExp, slAccDep, ddbAccDep, slBookValue, ddbBookValue, cost);
+            
+            // Show results
+            document.getElementById('results').classList.add('active');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        function updateCharts(years, slDepExp, ddbDepExp, slAccDep, ddbAccDep, slBookValue, ddbBookValue, cost) {
+            // Destroy existing charts
+            if (expenseChart) expenseChart.destroy();
+            if (accumulatedChart) accumulatedChart.destroy();
+            if (bookValueChart) bookValueChart.destroy();
+            
+            const chartOptions = {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return '$' + value.toLocaleString('en-US');
+                            }
+                        }
+                    }
+                }
+            };
+            
+            // Depreciation Expense Chart
+            const ctxExpense = document.getElementById('expenseChart').getContext('2d');
+            expenseChart = new Chart(ctxExpense, {
+                type: 'bar',
+                data: {
+                    labels: years,
+                    datasets: [
+                        {
+                            label: 'Straight-Line',
+                            data: slDepExp,
+                            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'Double-Declining',
+                            data: ddbDepExp,
+                            backgroundColor: 'rgba(239, 68, 68, 0.7)',
+                            borderColor: 'rgba(239, 68, 68, 1)',
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: chartOptions
+            });
+            
+            // Accumulated Depreciation Chart
+            const ctxAccumulated = document.getElementById('accumulatedChart').getContext('2d');
+            
+            // Add initial point at year 0
+            const yearsWithZero = [0, ...years];
+            const slAccDepWithZero = [0, ...slAccDep];
+            const ddbAccDepWithZero = [0, ...ddbAccDep];
+            
+            accumulatedChart = new Chart(ctxAccumulated, {
+                type: 'line',
+                data: {
+                    labels: yearsWithZero,
+                    datasets: [
+                        {
+                            label: 'Straight-Line',
+                            data: slAccDepWithZero,
+                            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.1,
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        },
+                        {
+                            label: 'Double-Declining',
+                            data: ddbAccDepWithZero,
+                            backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                            borderColor: 'rgba(239, 68, 68, 1)',
+                            borderWidth: 3,
+                            borderDash: [5, 5],
+                            fill: true,
+                            tension: 0.1,
+                            pointRadius: 5,
+                            pointHoverRadius: 7,
+                            pointStyle: 'rect'
+                        }
+                    ]
+                },
+                options: chartOptions
+            });
+            
+            // Book Value Chart
+            const ctxBookValue = document.getElementById('bookValueChart').getContext('2d');
+            
+            // Add initial point at year 0
+            const slBookValueWithInitial = [cost, ...slBookValue];
+            const ddbBookValueWithInitial = [cost, ...ddbBookValue];
+            
+            bookValueChart = new Chart(ctxBookValue, {
+                type: 'line',
+                data: {
+                    labels: yearsWithZero,
+                    datasets: [
+                        {
+                            label: 'Straight-Line',
+                            data: slBookValueWithInitial,
+                            backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                            borderColor: 'rgba(16, 185, 129, 1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.1,
+                            pointRadius: 5,
+                            pointHoverRadius: 7
+                        },
+                        {
+                            label: 'Double-Declining',
+                            data: ddbBookValueWithInitial,
+                            backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                            borderColor: 'rgba(245, 158, 11, 1)',
+                            borderWidth: 3,
+                            borderDash: [5, 5],
+                            fill: true,
+                            tension: 0.1,
+                            pointRadius: 5,
+                            pointHoverRadius: 7,
+                            pointStyle: 'rect'
+                        }
+                    ]
+                },
+                options: chartOptions
+            });
+        }
+        
+        // Calculate on page load with default values
+        window.addEventListener('load', function() {
+            calculate();
+        });
+    </script>
+</body>
+</html>
