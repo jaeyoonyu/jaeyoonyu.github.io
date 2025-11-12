@@ -19,6 +19,7 @@ navigation:                # accepts {file, title, url, icon, sidebaricon}
   #  - {file:  "CV.md", title: CV}
   - {file: "account-reference.md", title: Account-reference}
   - {file: "Inventory-costing.md", title: Inventory-costing}
+  - {file: "Depreciation.md", title: Depreciation}
   - {file: "Benford-analyzer.md", title: Benford-analyzer}
   - {file: "Grade-analyzer.md", title: Grade-analyzer}
   - {file: "python-basics.md", title: Python-Basic}
