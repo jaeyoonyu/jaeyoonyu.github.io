@@ -300,18 +300,17 @@
                         <thead>
                             <tr>
                                 <th class="center">Year</th>
-                                <th colspan="2" class="center" style="background: #3b82f6;">Straight-Line Method</th>
-                                <th colspan="2" class="center" style="background: #ef4444;">Double-Declining Balance</th>
-                                <th colspan="2" class="center" style="background: #10b981;">Book Value</th>
+                                <th colspan="3" class="center" style="background: #3b82f6;">Straight-Line</th>
+                                <th colspan="3" class="center" style="background: #ef4444;">Double-Declining</th>
                             </tr>
                             <tr>
                                 <th></th>
                                 <th class="center" style="background: #93c5fd;">DepExp</th>
                                 <th class="center" style="background: #93c5fd;">AccDep</th>
+                                <th class="center" style="background: #93c5fd;">BookValue</th>
                                 <th class="center" style="background: #fca5a5;">DepExp</th>
                                 <th class="center" style="background: #fca5a5;">AccDep</th>
-                                <th class="center" style="background: #86efac;">Straight-Line</th>
-                                <th class="center" style="background: #86efac;">DDB</th>
+                                <th class="center" style="background: #fca5a5;">BookValue</th>
                             </tr>
                         </thead>
                         <tbody id="scheduleBody">
@@ -356,7 +355,6 @@
                         <li><strong>Method Selection Impact:</strong> While both methods depreciate the same total amount, the timing differs. DDB accelerates expense recognition, which can affect:
                             <ul style="margin-top: 8px;">
                                 <li>Net income in early years (lower with DDB)</li>
-                                <li>Tax liabilities (potentially lower in early years with DDB)</li>
                                 <li>Book value of assets on the balance sheet</li>
                             </ul>
                         </li>
@@ -441,9 +439,9 @@
                     <td class="center"><strong>${years[i]}</strong></td>
                     <td class="center">$${Math.round(slDepExp[i]).toLocaleString('en-US')}</td>
                     <td class="center">$${Math.round(slAccDep[i]).toLocaleString('en-US')}</td>
+                    <td class="center">$${Math.round(slBookValue[i]).toLocaleString('en-US')}</td>
                     <td class="center">$${Math.round(ddbDepExp[i]).toLocaleString('en-US')}</td>
                     <td class="center">$${Math.round(ddbAccDep[i]).toLocaleString('en-US')}</td>
-                    <td class="center">$${Math.round(slBookValue[i]).toLocaleString('en-US')}</td>
                     <td class="center">$${Math.round(ddbBookValue[i]).toLocaleString('en-US')}</td>
                 `;
             }
@@ -565,8 +563,8 @@
                         {
                             label: 'Straight-Line',
                             data: slBookValueWithInitial,
-                            backgroundColor: 'rgba(16, 185, 129, 0.2)',
-                            borderColor: 'rgba(16, 185, 129, 1)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
                             borderWidth: 3,
                             fill: true,
                             tension: 0.1,
@@ -576,8 +574,8 @@
                         {
                             label: 'Double-Declining',
                             data: ddbBookValueWithInitial,
-                            backgroundColor: 'rgba(245, 158, 11, 0.2)',
-                            borderColor: 'rgba(245, 158, 11, 1)',
+                            backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                            borderColor: 'rgba(239, 68, 68, 1)',
                             borderWidth: 3,
                             borderDash: [5, 5],
                             fill: true,
