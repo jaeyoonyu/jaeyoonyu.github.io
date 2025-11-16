@@ -11,3 +11,5 @@ Please click here to view my <a href="https://drive.google.com/file/d/1jsByv92KT
 
 Jaeyoon Yu  
 [yu10j@cmich.edu](mailto: yu10j@cmich.edu)
+
+(This website is currently under construction and is primarily designed to share teaching-related materials with students.)
