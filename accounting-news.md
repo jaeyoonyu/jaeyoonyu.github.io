@@ -2,7 +2,9 @@
 layout: page
 title: "Acctg-news"
 ---
+<a href="/assets/Cases.pdf" target="_blank">View PDF</a>
 
-<object data="assets/Cases.pdf" type="application/pdf" width="100%" height="800px">
-    <p>It looks like you don't have a PDF plugin installed. You can <a href="assets/Cases.pdf">download the PDF file here.</a></p>
-</object>
+<iframe src="assets/Cases.pdf" width="100%" height="800px">
+    <p>Your browser does not support iframes.</p>
+</iframe>
+
