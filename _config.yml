@@ -21,8 +21,8 @@ navigation:                # accepts {file, title, url, icon, sidebaricon}
   - {file: "account-reference.md", title: AccReference}
   - {file: "Inventory-costing.md", title: InvCosting}
   - {file: "Depreciation.md", title: DepExp}
-  - {file: "Benford-analyzer.md", title: BenfordAnalyzer}
-  - {file: "Grade-analyzer.md", title: GradeAnalyzer}
+  - {file: "Benford-analyzer.md", title: Benford-Analyzer}
+  - {file: "Grade-analyzer.md", title: Grade-Analyzer}
   - {file: "python-basics.md", title: Python-Basic}
   - {file: "python-applications.md", title: Python-Applied}
   - {file: "visuals.md", title: Visuals}
