@@ -1,0 +1,11 @@
+/* Targets the main menu list to enable wrapping */
+.menu-list {
+  flex-wrap: wrap;
+  /* Ensures the container height adjusts to fit two rows */
+  height: auto;
+}
+
+/* Optional: Adds a small margin for better spacing between wrapped items */
+.menu-list li {
+  margin-bottom: 5px;
+}
