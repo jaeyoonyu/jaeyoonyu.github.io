@@ -23,8 +23,8 @@ navigation:                # accepts {file, title, url, icon, sidebaricon}
   - {file: "Depreciation.md", title: DepExp}
   - {file: "Benford-analyzer.md", title: BenfordAnalyzer}
   - {file: "Grade-analyzer.md", title: GradeAnalyzer}
-  - {file: "python-basics.md", title: PythonBasic}
-  - {file: "python-applications.md", title: PythonApplied}
+  - {file: "python-basics.md", title: Python-Basic}
+  - {file: "python-applications.md", title: Python-Applied}
   - {file: "visuals.md", title: Visuals}
 
 
