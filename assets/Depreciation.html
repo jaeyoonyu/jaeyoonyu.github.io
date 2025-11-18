@@ -451,7 +451,10 @@
             
             // Show results
             document.getElementById('results').classList.add('active');
-            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Only scroll if user clicked the button (not on page load)
+            if (arguments[0] !== false) {
+                document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
         }
         
         function updateCharts(years, slDepExp, ddbDepExp, slAccDep, ddbAccDep, slBookValue, ddbBookValue, cost) {
@@ -590,9 +593,9 @@
             });
         }
         
-        // Calculate on page load with default values
+        // Calculate on page load with default values (but don't scroll)
         window.addEventListener('load', function() {
-            calculate();
+            calculate(false);
         });
     </script>
 </body>
