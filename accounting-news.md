@@ -10,4 +10,4 @@ The attached file includes accounting cases that I use in my courses. Examples i
 * Oracle's Remaining Performance Obligations
 * MicroStrategy's cryptocurrency accounting
 
-<a href="/assets/Cases.pdf" target="_blank">View PDF</a>
+<a href="https://drive.google.com/file/d/1ucxYVMXXmSHiMc3bIX4H8oViMytQj_XA/view?usp=sharing" target="_blank">View PDF</a>
