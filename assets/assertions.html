@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Management Assertions: PCAOB vs AICPA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .intro {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 5px solid #2a5298;
+        }
+
+        .intro h2 {
+            color: #1e3c72;
+            margin-bottom: 15px;
+        }
+
+        .example-section {
+            background: #fff9e6;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            border-left: 5px solid #ffc107;
+            display: none;
+        }
+
+        .example-section.show {
+            display: block;
+            animation: slideIn 0.4s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .example-section h3 {
+            color: #f57c00;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .assertion-badge {
+            background: #f57c00;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.7em;
+            font-weight: 600;
+        }
+
+        .example-content {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: #333;
+        }
+
+        .example-label {
+            font-weight: 700;
+            color: #f57c00;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .mapping-section {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            border: 3px solid #4caf50;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .mapping-section h3 {
+            color: #1b5e20;
+            font-size: 2em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .mapping-subtitle {
+            text-align: center;
+            color: #2e7d32;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .mapping-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .mapping-table th {
+            background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%);
+            color: white;
+            padding: 18px 15px;
+            text-align: left;
+            font-size: 1.1em;
+            font-weight: 700;
+        }
+
+        .mapping-table td {
+            padding: 20px 15px;
+            border-bottom: 2px solid #e8f5e9;
+            vertical-align: middle;
+        }
+
+        .mapping-table tbody tr {
+            transition: all 0.2s ease;
+        }
+
+        .mapping-table tbody tr:hover {
+            background: #f1f8f4;
+        }
+
+        .pcaob-label {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            display: inline-block;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(30, 60, 114, 0.3);
+        }
+
+        .pcaob-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.4);
+        }
+
+        .aicpa-label {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            display: inline-block;
+            margin: 5px 5px 5px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .aicpa-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .focus-description {
+            color: #555;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .assertions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .framework-toggle {
+                flex-direction: column;
+            }
+
+            .toggle-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Management Assertions</h1>
+            <p>Understanding PCAOB and AICPA Assertion Frameworks</p>
+        </div>
+
+        <div class="content">
+            <div class="intro">
+                <h2>What are Management Assertions?</h2>
+                <p>Management assertions are claims made by company management about the financial statements. Auditors use these assertions to design audit procedures and gather evidence. Both PCAOB (for public companies) and AICPA (for private companies) provide frameworks for categorizing these assertions. <strong>Click on any assertion below to see practical examples!</strong></p>
+            </div>
+
+            <div class="mapping-section">
+                <h3>🔄 PCAOB vs AICPA Assertion Mapping</h3>
+                <p class="mapping-subtitle">Click on any AICPA assertion label (purple badges) to see detailed examples. AICPA provides more granular assertions with specific examples for different transaction types and account balances.</p>
+                <table class="mapping-table">
+                    <thead>
+                        <tr>
+                            <th>PCAOB Assertion</th>
+                            <th>AICPA Assertion(s)</th>
+                            <th>Focus</th>
+                        </tr>
+                    </thead>
+                    <tbody id="mapping-tbody">
+                        <!-- Will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="example-section" class="example-section">
+                <h3>
+                    📚 Practical Example
+                    <span class="assertion-badge" id="assertion-badge"></span>
+                </h3>
+                <div class="example-content" id="example-content">
+                    <!-- Example content will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const assertionsData = {
+            "Existence": {
+                title: "Existence",
+                category: "Account Balances",
+                framework: "AICPA",
+                description: "Assets, liabilities, and equity interests exist at a given date.",
+                example: `<strong>Scenario:</strong> ABC Company reports $500,000 in inventory on its balance sheet.
+                
+<p class="example-label">Assertion:</p>
+Management asserts that the $500,000 of inventory physically exists in the company's warehouse on December 31, 2024.
+
+<p class="example-label">Audit Procedure:</p>
+The auditor performs a physical inventory count, observing and testing that the inventory items listed on the balance sheet are actually present in the warehouse. The auditor might select 30 items from the inventory listing and verify their physical presence.
+
+<p class="example-label">What could go wrong:</p>
+Inventory could be overstated if management includes items that don't exist, have been sold but not removed from records, or are obsolete but still recorded.`
+            },
+            "Occurrence": {
+                title: "Occurrence",
+                category: "Transactions & Events",
+                framework: "AICPA",
+                description: "Transactions and events that have been recorded have actually occurred and pertain to the entity.",
+                example: `<strong>Scenario:</strong> XYZ Corporation records $2,000,000 in sales revenue for the year.
+
+<p class="example-label">Assertion:</p>
+Management asserts that all recorded sales transactions actually occurred and represent legitimate business activities.
+
+<p class="example-label">Audit Procedure:</p>
+The auditor selects a sample of sales transactions and traces them to supporting documentation such as customer orders, shipping documents, and invoices. They verify that goods were actually shipped or services were rendered.
+
+<p class="example-label">What could go wrong:</p>
+Revenue could be overstated through fictitious sales, recording sales before shipment (bill-and-hold schemes), or channel stuffing where goods are shipped but with right of return.`
+            },
+            "Completeness": {
+                title: "Completeness",
+                category: "Transactions & Account Balances",
+                framework: "AICPA",
+                description: "All transactions, events, assets, liabilities, and equity interests that should have been recorded have been recorded.",
+                example: `<strong>Scenario:</strong> DEF Company has accounts payable of $300,000 on its balance sheet.
+
+<p class="example-label">Assertion:</p>
+Management asserts that ALL liabilities owed to vendors and suppliers are included in the $300,000 accounts payable balance—nothing is missing.
+
+<p class="example-label">Audit Procedure:</p>
+The auditor performs a search for unrecorded liabilities by examining vendor invoices received after year-end (subsequent period), reviewing cash disbursements made after year-end for goods/services received before year-end, and sending confirmation letters to major vendors.
+
+<p class="example-label">What could go wrong:</p>
+Liabilities could be understated if management deliberately delays recording invoices received before year-end, or fails to accrue for services received but not yet billed.`
+            },
+            "Accuracy": {
+                title: "Accuracy",
+                category: "Transactions",
+                framework: "AICPA",
+                description: "Amounts and other data relating to recorded transactions have been recorded appropriately.",
+                example: `<strong>Scenario:</strong> GHI Manufacturing records employee salary expense of $1,200,000 for the year.
+
+<p class="example-label">Assertion:</p>
+Management asserts that the salary amounts recorded are mathematically correct and properly calculated based on employee hours, pay rates, and payroll taxes.
+
+<p class="example-label">Audit Procedure:</p>
+The auditor selects a sample of payroll transactions and recalculates gross pay, tax withholdings, and net pay. They verify pay rates to employment contracts, check hours worked to time records, and test the mathematical accuracy of payroll registers.
+
+<p class="example-label">What could go wrong:</p>
+Payroll could be misstated due to calculation errors, incorrect pay rates, unauthorized overtime, or errors in tax withholding calculations.`
+            },
+            "Valuation & Allocation": {
+                title: "Valuation & Allocation",
+                category: "Account Balances",
+                framework: "AICPA",
+                description: "Assets, liabilities, and equity interests are included in the financial statements at appropriate amounts, and any resulting valuation or allocation adjustments are appropriately recorded.",
+                example: `<strong>Scenario:</strong> JKL Bank reports loans receivable of $10,000,000 with an allowance for loan losses of $500,000.
+
+<p class="example-label">Assertion:</p>
+Management asserts that the net value of loans receivable ($9,500,000) represents the amount expected to be collected, with appropriate reserves for uncollectible loans.
+
+<p class="example-label">Audit Procedure:</p>
+The auditor evaluates management's methodology for estimating loan losses, reviews historical collection rates, analyzes aging of loans, examines credit quality indicators, and assesses whether the allowance is adequate based on current economic conditions.
+
+<p class="example-label">What could go wrong:</p>
+Loans could be overvalued if management underestimates credit losses, fails to identify problem loans, or uses overly optimistic assumptions about collectibility.`
+            },
+            "Rights & Obligations": {
+                title: "Rights & Obligations",
+                category: "Account Balances",
+                framework: "AICPA",
+                description: "The entity holds or controls the rights to assets, and liabilities are the obligations of the entity.",
+                example: `<strong>Scenario:</strong> MNO Company reports equipment with a cost of $800,000 on its balance sheet.
+
+<p class="example-label">Assertion:</p>
+Management asserts that the company legally owns the equipment and has the right to use it, and that it's not subject to any liens or restrictions that haven't been disclosed.
+
+<p class="example-label">Audit Procedure:</p>
+The auditor examines purchase agreements, invoices, and titles to verify ownership. They review financing agreements to identify any liens or security interests. They may also physically inspect major equipment items and confirm their location and condition.
+
+<p class="example-label">What could go wrong:</p>
+The company could record assets it doesn't own (e.g., equipment on consignment, items subject to repurchase agreements, or assets pledged as collateral with restrictions not disclosed).`
+            },
+            "Classification": {
+                title: "Classification",
+                category: "Presentation & Disclosure",
+                framework: "AICPA",
+                description: "Transactions and events have been recorded in the proper accounts.",
+                example: `<strong>Scenario:</strong> PQR Corporation reports current assets of $5,000,000 and long-term assets of $15,000,000.
+
+<p class="example-label">Assertion:</p>
+Management asserts that assets are properly classified between current (will be converted to cash within one year) and long-term (will be held longer than one year) categories.
+
+<p class="example-label">Audit Procedure:</p>
+The auditor reviews the nature and expected conversion timeline of each asset category. For example, they examine inventory turnover rates, review accounts receivable aging, verify that prepaid expenses are short-term, and confirm that property and equipment are properly classified as long-term.
+
+<p class="example-label">What could go wrong:</p>
+Management could misclassify long-term assets as current to improve working capital ratios, or classify capital expenditures as repairs and maintenance to avoid depreciation.`
+            },
+            "Presentation": {
+                title: "Presentation",
+                category: "Presentation & Disclosure",
+                framework: "AICPA",
+                description: "Transactions and events are appropriately aggregated or disaggregated and clearly described, and related disclosures are relevant and understandable in the context of applicable financial reporting framework.",
+                example: `<strong>Scenario:</strong> STU Enterprises has complex related party transactions and presents them in the footnotes.
+
+<p class="example-label">Assertion:</p>
+Management asserts that all required disclosures about related party transactions are presented clearly, with appropriate detail, and in compliance with accounting standards.
+
+<p class="example-label">Audit Procedure:</p>
+The auditor reviews the financial statement presentation and footnotes to ensure that related party transactions are properly disclosed with adequate detail about the nature, terms, and amounts. They verify compliance with disclosure requirements under US GAAP or IFRS.
+
+<p class="example-label">What could go wrong:</p>
+Management could fail to disclose significant related party transactions, provide insufficient detail about the terms and conditions, or present information in a way that obscures the economic substance of transactions.`
+            }
+        };
+
+        const mappingData = [
+            {
+                pcaob: "Existence or Occurrence",
+                aicpa: ["Existence", "Occurrence"],
+                focus: "Assets/liabilities exist; transactions occurred"
+            },
+            {
+                pcaob: "Completeness",
+                aicpa: ["Completeness"],
+                focus: "All transactions and accounts are recorded"
+            },
+            {
+                pcaob: "Rights & Obligations",
+                aicpa: ["Rights & Obligations"],
+                focus: "Entity has rights to assets and obligations for liabilities"
+            },
+            {
+                pcaob: "Valuation or Allocation",
+                aicpa: ["Valuation & Allocation", "Accuracy"],
+                focus: "Assets, liabilities, and transactions are properly valued"
+            },
+            {
+                pcaob: "Presentation & Disclosure",
+                aicpa: ["Classification", "Presentation"],
+                focus: "Proper classification and disclosure of financial information"
+            }
+        ];
+
+        function initializeMappingTable() {
+            const tbody = document.getElementById('mapping-tbody');
+            tbody.innerHTML = mappingData.map((row, rowIndex) => `
+                <tr data-row="${rowIndex}">
+                    <td>
+                        <span class="pcaob-label">${row.pcaob}</span>
+                    </td>
+                    <td>
+                        ${row.aicpa.map((assertion, idx) => 
+                            `<span class="aicpa-label" onclick="showAssertion('${assertion}')">${assertion}</span>`
+                        ).join(' ')}
+                    </td>
+                    <td class="focus-description">${row.focus}</td>
+                </tr>
+            `).join('');
+        }
+
+        function showAssertion(assertionName) {
+            const assertion = assertionsData[assertionName];
+            
+            if (!assertion) {
+                console.error('Assertion not found:', assertionName);
+                return;
+            }
+
+            // Update example section
+            const exampleSection = document.getElementById('example-section');
+            const exampleContent = document.getElementById('example-content');
+            const assertionBadge = document.getElementById('assertion-badge');
+
+            assertionBadge.textContent = assertion.title;
+            exampleContent.innerHTML = `
+                <div style="margin-bottom: 20px;">
+                    <strong style="color: #667eea; font-size: 1.1em;">${assertion.category}</strong>
+                    <p style="margin-top: 10px; font-size: 1.05em; color: #555;">${assertion.description}</p>
+                </div>
+                ${assertion.example}
+            `;
+
+            exampleSection.classList.add('show');
+
+            // Smooth scroll to example
+            setTimeout(() => {
+                exampleSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 100);
+        }
+
+        // Initialize on page load
+        initializeMappingTable();
+    </script>
+</body>
+</html>
