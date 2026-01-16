@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>U.S. Accounting & Auditing Framework</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 50px;
+            font-size: 1.1em;
+        }
+
+        .framework-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 40px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .chain {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .chain-title {
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #2d3748;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .node {
+            width: 100%;
+            max-width: 280px;
+            padding: 25px 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 600;
+            border: 3px solid transparent;
+            position: relative;
+        }
+
+        .node:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+        }
+
+        .node.selected {
+            border-color: #2d3748;
+            box-shadow: 0 0 0 4px rgba(45, 55, 72, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .node-title {
+            font-size: 1.4em;
+            margin-bottom: 8px;
+        }
+
+        .node-subtitle {
+            font-size: 0.85em;
+            opacity: 0.9;
+            font-weight: 400;
+        }
+
+        .arrow {
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 25px solid #cbd5e0;
+            margin: -10px 0;
+        }
+
+        /* Color schemes for each chain */
+        .chain1 .node {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .chain1 .arrow {
+            border-top-color: #667eea;
+        }
+
+        .chain2 .node {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .chain2 .arrow {
+            border-top-color: #f093fb;
+        }
+
+        .chain3 .node {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .chain3 .arrow {
+            border-top-color: #4facfe;
+        }
+
+        .info-panel {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            min-height: 180px;
+            border-left: 5px solid #4299e1;
+        }
+
+        .info-panel h2 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+
+        .info-panel ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-panel li {
+            color: #4a5568;
+            line-height: 1.8;
+            margin-bottom: 12px;
+            padding-left: 25px;
+            position: relative;
+            font-size: 1.05em;
+        }
+
+        .info-panel li:before {
+            content: "▸";
+            position: absolute;
+            left: 0;
+            color: #4299e1;
+            font-weight: bold;
+        }
+
+        .definitions {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .definitions h2 {
+            color: #2d3748;
+            margin-bottom: 25px;
+            font-size: 1.6em;
+            text-align: center;
+        }
+
+        .definition-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .definition-card {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #4299e1;
+        }
+
+        .definition-card h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .definition-card p {
+            color: #4a5568;
+            line-height: 1.7;
+            font-size: 1em;
+        }
+
+        .definition-card.highlight {
+            border-left-color: #48bb78;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.4s ease;
+        }
+
+        .welcome-message {
+            text-align: center;
+            color: #718096;
+            font-size: 1.1em;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏛️ U.S. Accounting & Auditing Framework</h1>
+        <p class="subtitle">Three Key Regulatory Chains</p>
+
+        <div class="framework-container">
+            <!-- Chain 1: SEC - PCAOB - Auditing Standards for Issuers -->
+            <div class="chain chain1">
+                <div class="chain-title">Auditing Standards<br>for Issuers</div>
+                <div class="node" onclick="selectNode('sec')" id="node-sec">
+                    <div class="node-title">SEC</div>
+                    <div class="node-subtitle">Securities and Exchange Commission</div>
+                </div>
+                <div class="arrow"></div>
+                <div class="node" onclick="selectNode('pcaob')" id="node-pcaob">
+                    <div class="node-title">PCAOB</div>
+                    <div class="node-subtitle">Public Company Accounting Oversight Board</div>
+                </div>
+                <div class="arrow"></div>
+                <div class="node" onclick="selectNode('pcaob-standards')" id="node-pcaob-standards">
+                    <div class="node-title">PCAOB Standards</div>
+                    <div class="node-subtitle">Auditing Standards for Issuers</div>
+                </div>
+            </div>
+
+            <!-- Chain 2: AICPA - ASB - Auditing Standards for Non-issuers -->
+            <div class="chain chain2">
+                <div class="chain-title">Auditing Standards<br>for Non-issuers</div>
+                <div class="node" onclick="selectNode('aicpa')" id="node-aicpa">
+                    <div class="node-title">AICPA</div>
+                    <div class="node-subtitle">American Institute of CPAs</div>
+                </div>
+                <div class="arrow"></div>
+                <div class="node" onclick="selectNode('asb')" id="node-asb">
+                    <div class="node-title">ASB</div>
+                    <div class="node-subtitle">Auditing Standards Board</div>
+                </div>
+                <div class="arrow"></div>
+                <div class="node" onclick="selectNode('asb-standards')" id="node-asb-standards">
+                    <div class="node-title">GAAS</div>
+                    <div class="node-subtitle">Auditing Standards for Non-issuers</div>
+                </div>
+            </div>
+
+            <!-- Chain 3: FASB - US GAAP -->
+            <div class="chain chain3">
+                <div class="chain-title">Accounting Standards<br>for Issuers and (most) Non-issuers</div>
+                <div class="node" onclick="selectNode('fasb')" id="node-fasb">
+                    <div class="node-title">FASB</div>
+                    <div class="node-subtitle">Financial Accounting Standards Board</div>
+                </div>
+                <div class="arrow"></div>
+                <div class="node" onclick="selectNode('gaap')" id="node-gaap">
+                    <div class="node-title">U.S. GAAP</div>
+                    <div class="node-subtitle">Generally Accepted Accounting Principles</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-panel fade-in" id="infoPanel">
+            <p class="welcome-message">👆 Click on any element above to learn more</p>
+        </div>
+
+        <div class="definitions">
+            <h2>📚 Key Definitions</h2>
+            <div class="definition-grid">
+                <div class="definition-card">
+                    <h3>Issuers</h3>
+                    <p>Companies that have registered securities with the SEC and are publicly traded on stock exchanges. Also known as <strong>public companies</strong>. These entities must comply with stricter regulatory requirements and are subject to PCAOB auditing standards.</p>
+                </div>
+                <div class="definition-card highlight">
+                    <h3>Non-issuers</h3>
+                    <p>Companies that are <strong>not publicly traded</strong> and have not registered securities with the SEC. This includes private companies, partnerships, and nonprofit organizations. These entities follow GAAS established by the AICPA's Auditing Standards Board.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const entityInfo = {
+            sec: {
+                name: 'SEC - Securities and Exchange Commission',
+                bullets: [
+                    'Federal agency that protects investors and maintains fair, orderly securities markets',
+                    'Has ultimate authority over financial reporting and auditing for public companies',
+                    'Created the PCAOB through the Sarbanes-Oxley Act of 2002'
+                ]
+            },
+            pcaob: {
+                name: 'PCAOB - Public Company Accounting Oversight Board',
+                bullets: [
+                    'Oversees audits of public companies (issuers) to protect investors',
+                    'Sets auditing standards (PCAOB Standards) that registered firms must follow',
+                    'Inspects and disciplines registered public accounting firms'
+                ]
+            },
+            'pcaob-standards': {
+                name: 'PCAOB Standards - Auditing Standards for Issuers',
+                bullets: [
+                    'Mandatory auditing standards for all public company (issuer) audits',
+                    'Include standards on audit planning, risk assessment, and reporting',
+                    'More stringent than standards for non-issuers due to public interest'
+                ]
+            },
+            aicpa: {
+                name: 'AICPA - American Institute of CPAs',
+                bullets: [
+                    'Professional organization representing over 400,000 CPAs in the United States',
+                    'Establishes ethical standards for the CPA profession',
+                    'Houses the Auditing Standards Board (ASB) for non-issuer audits'
+                ]
+            },
+            asb: {
+                name: 'ASB - Auditing Standards Board',
+                bullets: [
+                    'Senior committee of the AICPA that sets auditing standards for non-issuers',
+                    'Develops Statements on Auditing Standards (SASs)',
+                    'Standards apply to private companies, nonprofits, and other non-public entities'
+                ]
+            },
+            'asb-standards': {
+                name: 'GAAS - Generally Accepted Auditing Standards (Non-issuers)',
+                bullets: [
+                    'Framework of auditing standards for private company and nonprofit audits',
+                    'Includes general standards, fieldwork standards, and reporting standards',
+                    'Provides flexibility compared to PCAOB standards while maintaining quality'
+                ]
+            },
+            fasb: {
+                name: 'FASB - Financial Accounting Standards Board',
+                bullets: [
+                    'Independent organization that establishes accounting standards in the U.S.',
+                    'Recognized by the SEC as the authoritative accounting standard-setter',
+                    'Issues standards through the Accounting Standards Codification (ASC)'
+                ]
+            },
+            gaap: {
+                name: 'U.S. GAAP - Generally Accepted Accounting Principles',
+                bullets: [
+                    'Required for all issuers (public companies); widely adopted by non-issuers',
+                    'Common set of accounting rules for preparing financial statements',
+                    'Ensures consistency, comparability, and transparency in financial reporting'
+                ]
+            }
+        };
+
+        let selectedNode = null;
+
+        function selectNode(nodeId) {
+            // Remove previous selection
+            document.querySelectorAll('.node').forEach(n => n.classList.remove('selected'));
+            
+            // Add selection to clicked node
+            const node = document.getElementById(`node-${nodeId}`);
+            if (node) {
+                node.classList.add('selected');
+                selectedNode = nodeId;
+                
+                // Update info panel
+                const info = entityInfo[nodeId];
+                const panel = document.getElementById('infoPanel');
+                panel.classList.remove('fade-in');
+                
+                setTimeout(() => {
+                    panel.innerHTML = `
+                        <h2>${info.name}</h2>
+                        <ul>
+                            ${info.bullets.map(bullet => `<li>${bullet}</li>`).join('')}
+                        </ul>
+                    `;
+                    panel.classList.add('fade-in');
+                }, 50);
+            }
+        }
+    </script>
+</body>
+</html>
