@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audit Process Overview - Interactive Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 5px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 25px;
+            font-size: 1em;
+        }
+        
+        .process-overview {
+            background: linear-gradient(135deg, #f6f8fb 0%, #e9ecef 100%);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .main-flow {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 0;
+        }
+        
+        .stage-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            text-align: center;
+            min-width: 120px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+            position: relative;
+        }
+        
+        .stage-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .stage-box.active {
+            transform: scale(1.05);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.5);
+            border: 3px solid white;
+        }
+        
+        .stage-box .stage-number {
+            display: block;
+            font-size: 0.75em;
+            opacity: 0.9;
+            margin-bottom: 3px;
+        }
+        
+        .stage-box .stage-name {
+            font-size: 0.95em;
+        }
+        
+        .stage-box-1 {
+            background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+        }
+        
+        .stage-box-2 {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+        }
+        
+        .stage-box-3 {
+            background: linear-gradient(135deg, #34d399, #10b981);
+        }
+        
+        .stage-box-4 {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+        }
+        
+        .stage-box-5 {
+            background: linear-gradient(135deg, #f87171, #ef4444);
+        }
+        
+        .detail-panel {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            animation: slideIn 0.3s ease;
+        }
+        
+        .detail-panel.active {
+            display: block;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .detail-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .detail-header .icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            margin-right: 15px;
+            color: white;
+        }
+        
+        .detail-header h2 {
+            color: #2d3748;
+            font-size: 1.5em;
+        }
+        
+        .key-activities {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .key-activities h3 {
+            color: #2d3748;
+            margin-bottom: 12px;
+            font-size: 1.2em;
+        }
+        
+        .activity-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .activity-list li {
+            color: #4a5568;
+            line-height: 1.7;
+            padding: 6px 0;
+            padding-left: 25px;
+            position: relative;
+            font-size: 0.95em;
+        }
+        
+        .activity-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .activity-list li strong {
+            color: #2d3748;
+        }
+        
+        .stage-importance {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 3px solid #f59e0b;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .stage-importance h4 {
+            color: #92400e;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+        
+        .stage-importance p {
+            color: #78350f;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+        
+        .close-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .info-card {
+            background: #e0f2fe;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #0284c7;
+        }
+        
+        .info-card h4 {
+            color: #075985;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+        
+        .info-card p {
+            color: #0c4a6e;
+            line-height: 1.6;
+            font-size: 0.9em;
+        }
+        
+        .info-card ul {
+            color: #0c4a6e;
+            margin-left: 20px;
+            line-height: 1.7;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .main-flow {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .stage-box {
+                width: 100%;
+            }
+            
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Audit Process Overview</h1>
+        <p class="subtitle">Interactive Guide to the Five Stages of an Audit Engagement</p>
+        
+        <div class="process-overview">
+            <div class="main-flow">
+                <div class="stage-box stage-box-1" onclick="showStage(1)">
+                    <span class="stage-number">Stage 1</span>
+                    <span class="stage-name">Obtain/Retain<br/>Engagement</span>
+                </div>
+                <svg width="45" height="45" viewBox="0 0 45 45">
+                    <defs>
+                        <marker id="arrow1" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L7,3 z" fill="#2d3748" />
+                        </marker>
+                    </defs>
+                    <line x1="5" y1="22" x2="38" y2="22" stroke="#2d3748" stroke-width="3" marker-end="url(#arrow1)" />
+                </svg>
+                
+                <div class="stage-box stage-box-2" onclick="showStage(2)">
+                    <span class="stage-number">Stage 2</span>
+                    <span class="stage-name">Engagement<br/>Planning</span>
+                </div>
+                <svg width="45" height="45" viewBox="0 0 45 45">
+                    <defs>
+                        <marker id="arrow2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L7,3 z" fill="#2d3748" />
+                        </marker>
+                    </defs>
+                    <line x1="5" y1="22" x2="38" y2="22" stroke="#2d3748" stroke-width="3" marker-end="url(#arrow2)" />
+                </svg>
+                
+                <div class="stage-box stage-box-3" onclick="showStage(3)">
+                    <span class="stage-number">Stage 3</span>
+                    <span class="stage-name">Risk<br/>Assessment</span>
+                </div>
+                <svg width="45" height="45" viewBox="0 0 45 45">
+                    <defs>
+                        <marker id="arrow3" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L7,3 z" fill="#2d3748" />
+                        </marker>
+                    </defs>
+                    <line x1="5" y1="22" x2="38" y2="22" stroke="#2d3748" stroke-width="3" marker-end="url(#arrow3)" />
+                </svg>
+                
+                <div class="stage-box stage-box-4" onclick="showStage(4)">
+                    <span class="stage-number">Stage 4</span>
+                    <span class="stage-name">Audit<br/>Evidence</span>
+                </div>
+                <svg width="45" height="45" viewBox="0 0 45 45">
+                    <defs>
+                        <marker id="arrow4" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path d="M0,0 L0,6 L7,3 z" fill="#2d3748" />
+                        </marker>
+                    </defs>
+                    <line x1="5" y1="22" x2="38" y2="22" stroke="#2d3748" stroke-width="3" marker-end="url(#arrow4)" />
+                </svg>
+                
+                <div class="stage-box stage-box-5" onclick="showStage(5)">
+                    <span class="stage-number">Stage 5</span>
+                    <span class="stage-name">Reporting</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stage 1: Obtain/Retain Engagement -->
+        <div id="stage-1" class="detail-panel">
+            <div class="detail-header">
+                <div class="icon" style="background: linear-gradient(135deg, #a78bfa, #8b5cf6);">📋</div>
+                <h2>Stage 1: Obtain/Retain Engagement</h2>
+            </div>
+            
+            <div class="key-activities">
+                <h3>Key Activities</h3>
+                <ul class="activity-list">
+                    <li><strong>Evaluate Client Acceptance/Continuance:</strong> Assess client integrity, financial stability, and engagement risks</li>
+                    <li><strong>Assess Independence & Ethics:</strong> Ensure audit firm maintains independence and ethical compliance</li>
+                    <li><strong>Evaluate Competence & Capabilities:</strong> Confirm audit team has necessary skills and resources</li>
+                    <li><strong>Understand Terms of Engagement:</strong> Establish audit scope, responsibilities, and reporting requirements</li>
+                    <li><strong>Prepare Engagement Letter:</strong> Document agreement including objectives, scope, and responsibilities</li>
+                </ul>
+            </div>
+            
+            <div class="stage-importance">
+                <h4>💡 Why This Stage Matters</h4>
+                <p>This initial stage is critical for risk management. Accepting the wrong client or failing to properly assess risks can lead to audit failure, reputational damage, and legal liability. The engagement letter provides legal protection and sets clear expectations.</p>
+            </div>
+            
+            <button class="close-btn" onclick="closeStage()">Close Details</button>
+        </div>
+        
+        <!-- Stage 2: Engagement Planning -->
+        <div id="stage-2" class="detail-panel">
+            <div class="detail-header">
+                <div class="icon" style="background: linear-gradient(135deg, #60a5fa, #3b82f6);">📊</div>
+                <h2>Stage 2: Engagement Planning</h2>
+            </div>
+            
+            <div class="key-activities">
+                <h3>Key Activities</h3>
+                <ul class="activity-list">
+                    <li><strong>Understand Client's Business & Industry:</strong> Analyze operations, industry trends, regulatory environment, and competitive landscape</li>
+                    <li><strong>Identify Related Parties & Transactions:</strong> Identify entities and individuals with significant influence or relationships</li>
+                    <li><strong>Determine Materiality:</strong> Establish quantitative thresholds for material misstatement</li>
+                    <li><strong>Develop Audit Strategy:</strong> Create overall approach including scope, timing, direction, and resource allocation</li>
+                    <li><strong>Prepare Detailed Audit Plan:</strong> Document specific procedures, timing, and team member assignments</li>
+                </ul>
+            </div>
+            
+            <div class="two-column">
+                <div class="info-card">
+                    <h4>Planning Considerations</h4>
+                    <ul>
+                        <li>Industry-specific risks</li>
+                        <li>Regulatory requirements</li>
+                        <li>Use of specialists</li>
+                        <li>IT environment complexity</li>
+                        <li>Previous audit findings</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h4>Materiality Factors</h4>
+                    <ul>
+                        <li>Company size & complexity</li>
+                        <li>Financial statement users</li>
+                        <li>Industry benchmarks</li>
+                        <li>Regulatory thresholds</li>
+                        <li>Qualitative factors</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="stage-importance">
+                <h4>💡 Why This Stage Matters</h4>
+                <p>Proper planning ensures audit efficiency and effectiveness. Understanding the business context allows auditors to identify where misstatements are most likely to occur and design appropriate procedures. Poor planning leads to inefficient audits and potential audit failures.</p>
+            </div>
+            
+            <button class="close-btn" onclick="closeStage()">Close Details</button>
+        </div>
+        
+        <!-- Stage 3: Risk Assessment -->
+        <div id="stage-3" class="detail-panel">
+            <div class="detail-header">
+                <div class="icon" style="background: linear-gradient(135deg, #34d399, #10b981);">⚠️</div>
+                <h2>Stage 3: Risk Assessment</h2>
+            </div>
+            
+            <div class="key-activities">
+                <h3>Key Activities</h3>
+                <ul class="activity-list">
+                    <li><strong>Identify Risks of Material Misstatement (RMM):</strong> Determine where and how F/S could be materially misstated (RMM = IR × CR)</li>
+                    <li><strong>Assess Inherent Risk (IR):</strong> Evaluate susceptibility of assertions to misstatement before considering controls</li>
+                    <li><strong>Understand Internal Controls:</strong> Document and evaluate design and implementation of client's control environment</li>
+                    <li><strong>Assess Control Risk (CR):</strong> Evaluate likelihood that controls will fail to prevent or detect misstatements</li>
+                    <li><strong>Assess Fraud Risks:</strong> Identify and evaluate risks related to fraudulent financial reporting and asset misappropriation</li>
+                    <li><strong>Design Audit Responses:</strong> Develop specific audit procedures to address identified risks</li>
+                </ul>
+            </div>
+            
+            <div class="two-column">
+                <div class="info-card" style="background: #fef3c7; border-left-color: #f59e0b;">
+                    <h4 style="color: #92400e;">Risk Model: RMM = IR × CR</h4>
+                    <p style="color: #78350f;"><strong>Inherent Risk (IR):</strong> Unavoidable risks based on nature of account/transaction</p>
+                    <p style="color: #78350f; margin-top: 8px;"><strong>Control Risk (CR):</strong> Risk that controls fail to prevent/detect misstatement</p>
+                    <p style="color: #78350f; margin-top: 8px;"><strong>Result:</strong> Higher RMM = More evidence needed</p>
+                </div>
+                <div class="info-card" style="background: #fee2e2; border-left-color: #dc2626;">
+                    <h4 style="color: #991b1b;">Common High-Risk Areas</h4>
+                    <ul style="color: #7f1d1d;">
+                        <li>Revenue recognition</li>
+                        <li>Inventory valuation</li>
+                        <li>Complex estimates</li>
+                        <li>Related party transactions</li>
+                        <li>Management override</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="stage-importance">
+                <h4>💡 Why This Stage Matters</h4>
+                <p>Risk assessment drives the entire audit approach. By identifying where risks are highest, auditors can focus their efforts on areas most likely to contain material misstatements. This makes audits more effective and efficient. Failure to properly assess risks is a leading cause of audit deficiencies.</p>
+            </div>
+            
+            <button class="close-btn" onclick="closeStage()">Close Details</button>
+        </div>
+        
+        <!-- Stage 4: Audit Evidence -->
+        <div id="stage-4" class="detail-panel">
+            <div class="detail-header">
+                <div class="icon" style="background: linear-gradient(135deg, #fbbf24, #f59e0b);">🔍</div>
+                <h2>Stage 4: Audit Evidence</h2>
+            </div>
+            
+            <div class="key-activities">
+                <h3>Key Activities</h3>
+                <ul class="activity-list">
+                    <li><strong>Test Internal Controls:</strong> Perform tests of controls to evaluate operating effectiveness (if relying on them)</li>
+                    <li><strong>Perform Substantive Procedures:</strong> Execute tests of details and analytical procedures to detect material misstatements</li>
+                    <li><strong>Obtain Confirmations:</strong> Secure direct external confirmation of balances and transactions</li>
+                    <li><strong>Perform Physical Inspections:</strong> Observe and inspect tangible assets (inventory, property, equipment)</li>
+                    <li><strong>Review Documentation:</strong> Examine contracts, invoices, bank statements, and other supporting documents</li>
+                    <li><strong>Conduct Analytical Procedures:</strong> Analyze financial relationships and trends to identify unusual items</li>
+                    <li><strong>Evaluate Accounting Estimates:</strong> Assess reasonableness of management's significant estimates and judgments</li>
+                </ul>
+            </div>
+            
+            <div class="two-column">
+                <div class="info-card">
+                    <h4>Evidence Must Be:</h4>
+                    <p><strong>Sufficient (Quantity):</strong> Enough evidence to support conclusions - determined by risk assessment and materiality</p>
+                    <p style="margin-top: 10px;"><strong>Appropriate (Quality):</strong> Evidence must be both relevant and reliable</p>
+                </div>
+                <div class="info-card" style="background: #f0fdf4; border-left-color: #10b981;">
+                    <h4 style="color: #166534;">Reliability Hierarchy</h4>
+                    <p style="color: #15803d;">1. Direct personal knowledge (Most Reliable)</p>
+                    <p style="color: #15803d;">2. External evidence from third parties</p>
+                    <p style="color: #15803d;">3. Internal evidence from client (Least Reliable)</p>
+                </div>
+            </div>
+            
+            <div class="stage-importance">
+                <h4>💡 Why This Stage Matters</h4>
+                <p>This is where auditors actually "do the audit" - gathering evidence to support their opinion. The quality and quantity of evidence directly determine the strength of audit conclusions. More evidence and more reliable evidence = Lower detection risk = More confidence in the audit opinion.</p>
+            </div>
+            
+            <button class="close-btn" onclick="closeStage()">Close Details</button>
+        </div>
+        
+        <!-- Stage 5: Reporting -->
+        <div id="stage-5" class="detail-panel">
+            <div class="detail-header">
+                <div class="icon" style="background: linear-gradient(135deg, #f87171, #ef4444);">📝</div>
+                <h2>Stage 5: Reporting</h2>
+            </div>
+            
+            <div class="key-activities">
+                <h3>Key Activities</h3>
+                <ul class="activity-list">
+                    <li><strong>Evaluate Audit Findings:</strong> Assess all evidence collected and determine if sufficient appropriate evidence was obtained</li>
+                    <li><strong>Assess Going Concern:</strong> Evaluate whether the entity can continue as a going concern for at least 12 months</li>
+                    <li><strong>Review for Subsequent Events:</strong> Identify events occurring after balance sheet date requiring adjustment or disclosure</li>
+                    <li><strong>Obtain Management Representations:</strong> Secure written representations from management on key matters</li>
+                    <li><strong>Determine Appropriate Opinion:</strong> Decide on type of opinion: Unqualified, Qualified, Adverse, or Disclaimer</li>
+                    <li><strong>Issue Audit Report:</strong> Prepare and deliver formal written audit opinion to stakeholders</li>
+                </ul>
+            </div>
+            
+            <div class="two-column">
+                <div class="info-card" style="background: #f0fdf4; border-left-color: #10b981;">
+                    <h4 style="color: #166534;">✓ Unqualified Opinion</h4>
+                    <p style="color: #15803d;">F/S are presented fairly, in all material respects, in accordance with GAAP. This is the desired outcome.</p>
+                </div>
+                <div class="info-card" style="background: #fff7ed; border-left-color: #f59e0b;">
+                    <h4 style="color: #9a3412;">⚠️ Qualified Opinion</h4>
+                    <p style="color: #78350f;">F/S are fairly presented <strong>except for</strong> specific issues. Used when issues are material but not pervasive.</p>
+                </div>
+            </div>
+            
+            <div class="two-column" style="margin-top: 15px;">
+                <div class="info-card" style="background: #fee2e2; border-left-color: #dc2626;">
+                    <h4 style="color: #991b1b;">✗ Adverse Opinion</h4>
+                    <p style="color: #7f1d1d;">F/S are NOT fairly presented in accordance with GAAP. Material misstatements are pervasive.</p>
+                </div>
+                <div class="info-card" style="background: #f3f4f6; border-left-color: #6b7280;">
+                    <h4 style="color: #374151;">— Disclaimer of Opinion</h4>
+                    <p style="color: #1f2937;">Cannot express an opinion due to insufficient evidence or scope limitations.</p>
+                </div>
+            </div>
+            
+            <div class="stage-importance">
+                <h4>💡 Why This Stage Matters</h4>
+                <p>The audit report is the culmination of the entire audit process and communicates the auditor's professional judgment to financial statement users. The opinion provides assurance (or lack thereof) that stakeholders rely on when making critical business and investment decisions. The audit report carries significant legal and professional responsibility.</p>
+            </div>
+            
+            <button class="close-btn" onclick="closeStage()">Close Details</button>
+        </div>
+    </div>
+    
+    <script>
+        function showStage(stageNumber) {
+            // Close all panels
+            document.querySelectorAll('.detail-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            // Remove active class from all stage boxes
+            document.querySelectorAll('.stage-box').forEach(box => {
+                box.classList.remove('active');
+            });
+            
+            // Show selected panel
+            document.getElementById('stage-' + stageNumber).classList.add('active');
+            
+            // Add active class to selected stage box
+            document.querySelector('.stage-box-' + stageNumber).classList.add('active');
+            
+            // Scroll to detail panel
+            setTimeout(() => {
+                document.getElementById('stage-' + stageNumber).scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 100);
+        }
+        
+        function closeStage() {
+            document.querySelectorAll('.detail-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.stage-box').forEach(box => {
+                box.classList.remove('active');
+            });
+            
+            // Scroll back to top
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+</html>
