@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COSO Internal Control Framework - Interactive Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c5f2d 0%, #00405d 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 5px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 20px;
+            font-size: 1em;
+        }
+        
+        .framework-intro {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .framework-intro h2 {
+            color: #065f46;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .framework-intro p {
+            color: #047857;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+        
+        .coso-cube {
+            background: linear-gradient(135deg, #f6f8fb, #e9ecef);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .cube-title {
+            text-align: center;
+            color: #2d3748;
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .component-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            border-left: 5px solid #10b981;
+            position: relative;
+        }
+        
+        .component-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        
+        .component-card.active {
+            transform: scale(1.03);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+            border-left-width: 8px;
+        }
+        
+        .component-card.control-environment {
+            border-left-color: #3b82f6;
+        }
+        
+        .component-card.risk-assessment {
+            border-left-color: #8b5cf6;
+        }
+        
+        .component-card.control-activities {
+            border-left-color: #f59e0b;
+        }
+        
+        .component-card.information {
+            border-left-color: #10b981;
+        }
+        
+        .component-card.monitoring {
+            border-left-color: #ef4444;
+        }
+        
+        .component-number {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #10b981;
+            color: white;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        
+        .component-card.control-environment .component-number {
+            background: #3b82f6;
+        }
+        
+        .component-card.risk-assessment .component-number {
+            background: #8b5cf6;
+        }
+        
+        .component-card.control-activities .component-number {
+            background: #f59e0b;
+        }
+        
+        .component-card.information .component-number {
+            background: #10b981;
+        }
+        
+        .component-card.monitoring .component-number {
+            background: #ef4444;
+        }
+        
+        .component-card h3 {
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+        
+        .component-card p {
+            color: #4a5568;
+            font-size: 0.85em;
+            line-height: 1.5;
+        }
+        
+        .detail-panel {
+            display: none;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+            animation: slideIn 0.3s ease;
+        }
+        
+        .detail-panel.active {
+            display: block;
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .detail-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .detail-header .icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            margin-right: 15px;
+            color: white;
+        }
+        
+        .detail-header h2 {
+            color: #2d3748;
+            font-size: 1.5em;
+        }
+        
+        .principles-section {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .principles-section h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .principles-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .principles-list li {
+            color: #4a5568;
+            line-height: 1.7;
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 0.95em;
+        }
+        
+        .principles-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .principles-list li strong {
+            color: #2d3748;
+        }
+        
+        .key-points {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 3px solid #f59e0b;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .key-points h4 {
+            color: #92400e;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+        
+        .key-points p {
+            color: #78350f;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+        
+        .close-btn {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .close-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+        
+        .objectives-note {
+            background: #e0f2fe;
+            border-left: 3px solid #0284c7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .objectives-note h4 {
+            color: #075985;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+        
+        .objectives-note ul {
+            color: #0c4a6e;
+            margin-left: 20px;
+            line-height: 1.7;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .components-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>COSO Internal Control Framework</h1>
+        <p class="subtitle">Committee of Sponsoring Organizations of the Treadway Commission</p>
+        
+        <div class="framework-intro">
+            <h2>What is COSO?</h2>
+            <p>The COSO framework provides a comprehensive approach to internal control, helping organizations achieve objectives in operations, reporting, and compliance. It consists of <strong>5 components</strong> and <strong>17 principles</strong> that work together to establish effective internal control systems.</p>
+        </div>
+        
+        <div class="coso-cube">
+            <div class="cube-title">Five Components of Internal Control</div>
+            <p style="text-align: center; color: #4a5568; margin-bottom: 20px; font-size: 0.9em;">Click on each component to explore its principles</p>
+            
+            <div class="components-grid">
+                <div class="component-card control-environment" onclick="showComponent(1)">
+                    <div class="component-number">1</div>
+                    <h3>Control Environment</h3>
+                    <p>The foundation - sets tone of organization</p>
+                </div>
+                
+                <div class="component-card risk-assessment" onclick="showComponent(2)">
+                    <div class="component-number">2</div>
+                    <h3>Risk Assessment</h3>
+                    <p>Identify and analyze risks to achieving objectives</p>
+                </div>
+                
+                <div class="component-card control-activities" onclick="showComponent(3)">
+                    <div class="component-number">3</div>
+                    <h3>Control Activities</h3>
+                    <p>Policies and procedures to mitigate risks</p>
+                </div>
+                
+                <div class="component-card information" onclick="showComponent(4)">
+                    <div class="component-number">4</div>
+                    <h3>Information & Communication</h3>
+                    <p>Generate and communicate relevant information</p>
+                </div>
+                
+                <div class="component-card monitoring" onclick="showComponent(5)">
+                    <div class="component-number">5</div>
+                    <h3>Monitoring Activities</h3>
+                    <p>Ongoing evaluations of control effectiveness</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="objectives-note">
+            <h4>Three Categories of Objectives</h4>
+            <ul>
+                <li><strong>Operations:</strong> Effectiveness and efficiency of operations</li>
+                <li><strong>Reporting:</strong> Reliability of financial and non-financial reporting</li>
+                <li><strong>Compliance:</strong> Adherence to applicable laws and regulations</li>
+            </ul>
+        </div>
+        
+        <!-- Component 1: Control Environment -->
+        <div id="component-1" class="detail-panel">
+            <div class="detail-header">
+                <div class="icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">🏛️</div>
+                <h2>Component 1: Control Environment</h2>
+            </div>
+            
+            <div class="principles-section">
+                <h3>5 Principles</h3>
+                <ul class="principles-list">
+                    <li><strong>Principle 1:</strong> The organization demonstrates a commitment to integrity and ethical values</li>
+                    <li><strong>Principle 2:</strong> The board of directors demonstrates independence from management and exercises oversight of internal control</li>
+                    <li><strong>Principle 3:</strong> Management establishes, with board oversight, structures, reporting lines, and appropriate authorities and responsibilities</li>
+                    <li><strong>Principle 4:</strong> The organization demonstrates a commitment to attract, develop, and retain competent individuals</li>
+                    <li><strong>Principle 5:</strong> The organization holds individuals accountable for their internal control responsibilities</li>
+                </ul>
+            </div>
+            
+            <div class="key-points">
+                <h4>💡 Why This Matters</h4>
+                <p>The control environment is the foundation of all other components. It sets the tone at the top and establishes the discipline and structure for the entire organization. Without a strong control environment, other control activities may be ineffective. This includes organizational culture, ethical values, management's operating style, and the competence of personnel.</p>
+            </div>
+            
+            <button class="close-btn" onclick="closeComponent()">Close Details</button>
+        </div>
+        
+        <!-- Component 2: Risk Assessment -->
+        <div id="component-2" class="detail-panel">
+            <div class="detail-header">
+                <div class="icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">⚠️</div>
+                <h2>Component 2: Risk Assessment</h2>
+            </div>
+            
+            <div class="principles-section">
+                <h3>4 Principles</h3>
+                <ul class="principles-list">
+                    <li><strong>Principle 6:</strong> The organization specifies objectives with sufficient clarity to enable identification and assessment of risks</li>
+                    <li><strong>Principle 7:</strong> The organization identifies risks to achievement of its objectives and analyzes risks as a basis for determining how the risks should be managed</li>
+                    <li><strong>Principle 8:</strong> The organization considers the potential for fraud in assessing risks to achievement of objectives</li>
+                    <li><strong>Principle 9:</strong> The organization identifies and assesses changes that could significantly impact the system of internal control</li>
+                </ul>
+            </div>
+            
+            <div class="key-points">
+                <h4>💡 Why This Matters</h4>
+                <p>Risk assessment is a dynamic, iterative process that identifies and assesses risks to achieving organizational objectives. It forms the basis for determining how risks should be managed. Organizations must consider both internal and external factors, including the risk of fraud. Understanding risks allows management to determine which controls are necessary and how resources should be allocated.</p>
+            </div>
+            
+            <button class="close-btn" onclick="closeComponent()">Close Details</button>
+        </div>
+        
+        <!-- Component 3: Control Activities -->
+        <div id="component-3" class="detail-panel">
+            <div class="detail-header">
+                <div class="icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">⚙️</div>
+                <h2>Component 3: Control Activities</h2>
+            </div>
+            
+            <div class="principles-section">
+                <h3>3 Principles</h3>
+                <ul class="principles-list">
+                    <li><strong>Principle 10:</strong> The organization selects and develops control activities that contribute to mitigation of risks to acceptable levels</li>
+                    <li><strong>Principle 11:</strong> The organization selects and develops general control activities over technology to support achievement of objectives</li>
+                    <li><strong>Principle 12:</strong> The organization deploys control activities through policies that establish expectations and procedures that put policies into action</li>
+                </ul>
+            </div>
+            
+            <div class="objectives-note">
+                <h4>Common Types of Control Activities</h4>
+                <ul>
+                    <li><strong>Authorization and Approval:</strong> Proper authorization for transactions</li>
+                    <li><strong>Segregation of Duties:</strong> Separating incompatible functions</li>
+                    <li><strong>Physical Controls:</strong> Securing assets and records</li>
+                    <li><strong>Reconciliations:</strong> Comparing records and taking corrective action</li>
+                    <li><strong>Reviews of Performance:</strong> Analyzing results vs. expectations</li>
+                    <li><strong>Information Processing:</strong> IT controls including access and change management</li>
+                </ul>
+            </div>
+            
+            <div class="key-points">
+                <h4>💡 Why This Matters</h4>
+                <p>Control activities are the actions established through policies and procedures that help ensure management directives to mitigate risks are carried out. They occur throughout the organization, at all levels and in all functions. Effective control activities are appropriate to the risk, selected to operate at the required level of precision, and consistently applied.</p>
+            </div>
+            
+            <button class="close-btn" onclick="closeComponent()">Close Details</button>
+        </div>
+        
+        <!-- Component 4: Information & Communication -->
+        <div id="component-4" class="detail-panel">
+            <div class="detail-header">
+                <div class="icon" style="background: linear-gradient(135deg, #10b981, #059669);">💬</div>
+                <h2>Component 4: Information & Communication</h2>
+            </div>
+            
+            <div class="principles-section">
+                <h3>3 Principles</h3>
+                <ul class="principles-list">
+                    <li><strong>Principle 13:</strong> The organization obtains or generates and uses relevant, quality information to support the functioning of internal control</li>
+                    <li><strong>Principle 14:</strong> The organization internally communicates information, including objectives and responsibilities for internal control, necessary to support functioning of internal control</li>
+                    <li><strong>Principle 15:</strong> The organization communicates with external parties regarding matters affecting the functioning of internal control</li>
+                </ul>
+            </div>
+            
+            <div class="objectives-note">
+                <h4>Key Aspects of Information & Communication</h4>
+                <ul>
+                    <li><strong>Quality Information:</strong> Accurate, timely, relevant, and accessible</li>
+                    <li><strong>Internal Communication:</strong> Up, down, and across the organization</li>
+                    <li><strong>External Communication:</strong> With customers, suppliers, regulators, and shareholders</li>
+                    <li><strong>Communication Channels:</strong> Multiple channels to ensure message delivery</li>
+                    <li><strong>Reporting Lines:</strong> Separate lines for reporting control deficiencies</li>
+                </ul>
+            </div>
+            
+            <div class="key-points">
+                <h4>💡 Why This Matters</h4>
+                <p>Information is necessary for the organization to carry out internal control responsibilities and support achievement of objectives. Communication occurs both internally and externally and provides the organization with the information needed to conduct day-to-day controls. Quality information and effective communication enable personnel to understand their roles and how their activities relate to the work of others.</p>
+            </div>
+            
+            <button class="close-btn" onclick="closeComponent()">Close Details</button>
+        </div>
+        
+        <!-- Component 5: Monitoring Activities -->
+        <div id="component-5" class="detail-panel">
+            <div class="detail-header">
+                <div class="icon" style="background: linear-gradient(135deg, #ef4444, #dc2626);">📊</div>
+                <h2>Component 5: Monitoring Activities</h2>
+            </div>
+            
+            <div class="principles-section">
+                <h3>2 Principles</h3>
+                <ul class="principles-list">
+                    <li><strong>Principle 16:</strong> The organization selects, develops, and performs ongoing and/or separate evaluations to ascertain whether components of internal control are present and functioning</li>
+                    <li><strong>Principle 17:</strong> The organization evaluates and communicates internal control deficiencies in a timely manner to those parties responsible for taking corrective action, including senior management and the board of directors, as appropriate</li>
+                </ul>
+            </div>
+            
+            <div class="objectives-note">
+                <h4>Types of Monitoring Activities</h4>
+                <ul>
+                    <li><strong>Ongoing Evaluations:</strong> Built into business processes, performed in real-time</li>
+                    <li><strong>Separate Evaluations:</strong> Conducted periodically by internal audit or external parties</li>
+                    <li><strong>Management's Self-Assessment:</strong> Managers evaluate controls in their area</li>
+                    <li><strong>Automated Monitoring:</strong> System-generated reports and exception reports</li>
+                    <li><strong>External Audits:</strong> Independent assessment by external auditors</li>
+                </ul>
+            </div>
+            
+            <div class="key-points">
+                <h4>💡 Why This Matters</h4>
+                <p>Monitoring ensures that internal controls continue to operate effectively over time. It involves assessing the quality of internal control performance on an ongoing basis and identifying and reporting control deficiencies in a timely manner. Without monitoring, controls may deteriorate or become ineffective due to changing conditions. Deficiencies should be communicated to those responsible for corrective action and to senior management and the board as appropriate.</p>
+            </div>
+            
+            <button class="close-btn" onclick="closeComponent()">Close Details</button>
+        </div>
+    </div>
+    
+    <script>
+        function showComponent(componentNumber) {
+            // Close all panels
+            document.querySelectorAll('.detail-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            // Remove active class from all component cards
+            document.querySelectorAll('.component-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Show selected panel
+            document.getElementById('component-' + componentNumber).classList.add('active');
+            
+            // Add active class to selected component card
+            const cards = document.querySelectorAll('.component-card');
+            cards[componentNumber - 1].classList.add('active');
+            
+            // Scroll to detail panel
+            setTimeout(() => {
+                document.getElementById('component-' + componentNumber).scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 100);
+        }
+        
+        function closeComponent() {
+            document.querySelectorAll('.detail-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+            
+            document.querySelectorAll('.component-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            
+            // Scroll back to top
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
+</body>
+</html>

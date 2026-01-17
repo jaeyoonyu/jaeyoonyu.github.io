@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditing Revenue Cycle - Interactive Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 5px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 20px;
+            font-size: 1em;
+        }
+        
+        .cycle-intro {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .cycle-intro h2 {
+            color: #1e40af;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .cycle-intro p {
+            color: #1e3a8a;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #4a5568;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+        
+        .tab-btn:hover {
+            border-color: #3b82f6;
+            color: #3b82f6;
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        .process-flow {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .process-flow h3 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            text-align: center;
+        }
+        
+        .flow-steps {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .flow-step {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            text-align: center;
+            min-width: 120px;
+            box-shadow: 0 3px 10px rgba(59, 130, 246, 0.3);
+            font-size: 0.9em;
+        }
+        
+        .flow-step .step-number {
+            display: block;
+            font-size: 0.75em;
+            opacity: 0.9;
+            margin-bottom: 3px;
+        }
+        
+        .accounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .account-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        
+        .account-card h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .account-card .icon {
+            font-size: 1.3em;
+        }
+        
+        .account-card p {
+            color: #4a5568;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        
+        .risks-section {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .risks-section h3 {
+            color: #991b1b;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .risk-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .risk-list li {
+            color: #7f1d1d;
+            line-height: 1.7;
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 0.95em;
+        }
+        
+        .risk-list li::before {
+            content: '⚠️';
+            position: absolute;
+            left: 0;
+            font-size: 1em;
+        }
+        
+        .risk-list li strong {
+            color: #991b1b;
+        }
+        
+        .assertions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .assertion-card {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border-left: 4px solid #10b981;
+            padding: 18px;
+            border-radius: 10px;
+        }
+        
+        .assertion-card h4 {
+            color: #065f46;
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+        
+        .assertion-card p {
+            color: #047857;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        
+        .procedures-section {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .procedures-section h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .procedure-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .procedure-list li {
+            color: #4a5568;
+            line-height: 1.7;
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 0.95em;
+        }
+        
+        .procedure-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .procedure-list li strong {
+            color: #2d3748;
+        }
+        
+        .controls-section {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .controls-section h3 {
+            color: #92400e;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .control-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .control-list li {
+            color: #78350f;
+            line-height: 1.7;
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 0.95em;
+        }
+        
+        .control-list li::before {
+            content: '🔒';
+            position: absolute;
+            left: 0;
+            font-size: 1em;
+        }
+        
+        .control-list li strong {
+            color: #92400e;
+        }
+        
+        .info-box {
+            background: #e0f2fe;
+            border-left: 3px solid #0284c7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .info-box h4 {
+            color: #075985;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+        
+        .info-box p {
+            color: #0c4a6e;
+            line-height: 1.6;
+            font-size: 0.9em;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            .flow-steps {
+                flex-direction: column;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+            
+            .tab-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Auditing the Revenue Cycle</h1>
+        <p class="subtitle">Sales, Accounts Receivable, and Cash Receipts</p>
+        
+        <div class="cycle-intro">
+            <h2>Revenue Cycle Overview</h2>
+            <p>The revenue cycle encompasses all business activities related to providing goods and services to customers and collecting payment. It is one of the most significant areas in any audit due to its materiality and susceptibility to fraud. Auditors must thoroughly understand the revenue recognition process and assess controls over sales transactions, accounts receivable, and cash collections.</p>
+        </div>
+        
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="showTab('process')">Process Flow</button>
+            <button class="tab-btn" onclick="showTab('accounts')">Key Accounts</button>
+            <button class="tab-btn" onclick="showTab('risks')">Key Risks</button>
+            <button class="tab-btn" onclick="showTab('assertions')">Assertions</button>
+            <button class="tab-btn" onclick="showTab('procedures')">Audit Procedures</button>
+            <button class="tab-btn" onclick="showTab('controls')">Internal Controls</button>
+        </div>
+        
+        <!-- Tab 1: Process Flow -->
+        <div id="tab-process" class="tab-content active">
+            <div class="process-flow">
+                <h3>Revenue Cycle Process Flow</h3>
+                <div class="flow-steps">
+                    <div class="flow-step">
+                        <span class="step-number">Step 1</span>
+                        <span>Customer<br/>Order</span>
+                    </div>
+                    <svg width="45" height="45" viewBox="0 0 45 45">
+                        <defs>
+                            <marker id="arrow1" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L7,3 z" fill="#2d3748" />
+                            </marker>
+                        </defs>
+                        <line x1="5" y1="22" x2="38" y2="22" stroke="#2d3748" stroke-width="3" marker-end="url(#arrow1)" />
+                    </svg>
+                    
+                    <div class="flow-step">
+                        <span class="step-number">Step 2</span>
+                        <span>Credit<br/>Approval</span>
+                    </div>
+                    <svg width="45" height="45" viewBox="0 0 45 45">
+                        <defs>
+                            <marker id="arrow2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L7,3 z" fill="#2d3748" />
+                            </marker>
+                        </defs>
+                        <line x1="5" y1="22" x2="38" y2="22" stroke="#2d3748" stroke-width="3" marker-end="url(#arrow2)" />
+                    </svg>
+                    
+                    <div class="flow-step">
+                        <span class="step-number">Step 3</span>
+                        <span>Shipment/<br/>Delivery</span>
+                    </div>
+                    <svg width="45" height="45" viewBox="0 0 45 45">
+                        <defs>
+                            <marker id="arrow3" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L7,3 z" fill="#2d3748" />
+                            </marker>
+                        </defs>
+                        <line x1="5" y1="22" x2="38" y2="22" stroke="#2d3748" stroke-width="3" marker-end="url(#arrow3)" />
+                    </svg>
+                    
+                    <div class="flow-step">
+                        <span class="step-number">Step 4</span>
+                        <span>Billing/<br/>Invoicing</span>
+                    </div>
+                    <svg width="45" height="45" viewBox="0 0 45 45">
+                        <defs>
+                            <marker id="arrow4" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L7,3 z" fill="#2d3748" />
+                            </marker>
+                        </defs>
+                        <line x1="5" y1="22" x2="38" y2="22" stroke="#2d3748" stroke-width="3" marker-end="url(#arrow4)" />
+                    </svg>
+                    
+                    <div class="flow-step">
+                        <span class="step-number">Step 5</span>
+                        <span>Cash<br/>Collection</span>
+                    </div>
+                    <svg width="45" height="45" viewBox="0 0 45 45">
+                        <defs>
+                            <marker id="arrow5" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L7,3 z" fill="#2d3748" />
+                            </marker>
+                        </defs>
+                        <line x1="5" y1="22" x2="38" y2="22" stroke="#2d3748" stroke-width="3" marker-end="url(#arrow5)" />
+                    </svg>
+                    
+                    <div class="flow-step">
+                        <span class="step-number">Step 6</span>
+                        <span>Recording<br/>& Posting</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <h4>💡 Key Point: Revenue Recognition</h4>
+                <p>Revenue should be recognized when performance obligations are satisfied - typically when goods are shipped or services are rendered, and collection is reasonably assured. The timing of revenue recognition is critical and must comply with ASC 606 (IFRS 15).</p>
+            </div>
+        </div>
+        
+        <!-- Tab 2: Key Accounts -->
+        <div id="tab-accounts" class="tab-content">
+            <div class="accounts-grid">
+                <div class="account-card" style="border-left: 4px solid #3b82f6;">
+                    <h4><span class="icon">💰</span> Sales Revenue</h4>
+                    <p><strong>Nature:</strong> Income statement account representing revenue from sales of goods or services.</p>
+                    <p style="margin-top: 8px;"><strong>Risk:</strong> High risk for overstatement due to management pressure to meet targets.</p>
+                </div>
+                
+                <div class="account-card" style="border-left: 4px solid #10b981;">
+                    <h4><span class="icon">📊</span> Accounts Receivable</h4>
+                    <p><strong>Nature:</strong> Asset account representing amounts owed by customers for credit sales.</p>
+                    <p style="margin-top: 8px;"><strong>Risk:</strong> Overstatement through fictitious sales or inadequate allowance for doubtful accounts.</p>
+                </div>
+                
+                <div class="account-card" style="border-left: 4px solid #f59e0b;">
+                    <h4><span class="icon">💵</span> Cash</h4>
+                    <p><strong>Nature:</strong> Asset account for cash received from customers.</p>
+                    <p style="margin-top: 8px;"><strong>Risk:</strong> Misappropriation through lapping schemes or unrecorded collections.</p>
+                </div>
+                
+                <div class="account-card" style="border-left: 4px solid #ef4444;">
+                    <h4><span class="icon">📉</span> Allowance for Doubtful Accounts</h4>
+                    <p><strong>Nature:</strong> Contra-asset account estimating uncollectible receivables.</p>
+                    <p style="margin-top: 8px;"><strong>Risk:</strong> Understatement to inflate assets and income.</p>
+                </div>
+                
+                <div class="account-card" style="border-left: 4px solid #8b5cf6;">
+                    <h4><span class="icon">📝</span> Sales Returns & Allowances</h4>
+                    <p><strong>Nature:</strong> Contra-revenue account for returns and price reductions.</p>
+                    <p style="margin-top: 8px;"><strong>Risk:</strong> Understatement to inflate revenue or improper cutoff.</p>
+                </div>
+                
+                <div class="account-card" style="border-left: 4px solid #06b6d4;">
+                    <h4><span class="icon">📦</span> Unearned Revenue</h4>
+                    <p><strong>Nature:</strong> Liability account for cash received before revenue is earned.</p>
+                    <p style="margin-top: 8px;"><strong>Risk:</strong> Premature recognition of revenue or understatement of liability.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tab 3: Key Risks -->
+        <div id="tab-risks" class="tab-content">
+            <div class="risks-section">
+                <h3>Key Risks in Revenue Cycle</h3>
+                <ul class="risk-list">
+                    <li><strong>Fictitious Sales:</strong> Recording sales that never occurred to inflate revenue (channel stuffing, side agreements)</li>
+                    <li><strong>Premature Revenue Recognition:</strong> Recognizing revenue before performance obligations are satisfied</li>
+                    <li><strong>Improper Cutoff:</strong> Recording sales in the wrong accounting period to manipulate results</li>
+                    <li><strong>Overstatement of Accounts Receivable:</strong> Failing to write off uncollectible accounts or adequately reserve</li>
+                    <li><strong>Inadequate Allowance for Doubtful Accounts:</strong> Underestimating bad debt expense to inflate earnings</li>
+                    <li><strong>Cash Misappropriation:</strong> Theft of cash receipts through lapping, skimming, or other schemes</li>
+                    <li><strong>Unauthorized Sales Transactions:</strong> Sales made without proper authorization or credit approval</li>
+                    <li><strong>Incorrect Pricing or Terms:</strong> Billing errors due to wrong prices, discounts, or payment terms</li>
+                    <li><strong>Unrecorded Sales Returns:</strong> Failing to record returns to overstate revenue and receivables</li>
+                    <li><strong>Related Party Transactions:</strong> Sales to related parties at non-arm's length terms</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <h4>💡 Why Revenue is High Risk</h4>
+                <p>Revenue is presumed to be a fraud risk in auditing standards (AU-C 240) due to management's incentive to meet earnings targets and analyst expectations. The subjective nature of revenue recognition and the complexity of some arrangements increase the risk of material misstatement.</p>
+            </div>
+        </div>
+        
+        <!-- Tab 4: Assertions -->
+        <div id="tab-assertions" class="tab-content">
+            <h3 style="color: #2d3748; margin-bottom: 15px; font-size: 1.3em;">Management Assertions for Revenue Cycle</h3>
+            
+            <div class="assertions-grid">
+                <div class="assertion-card">
+                    <h4>Occurrence / Existence</h4>
+                    <p><strong>Revenue:</strong> Sales transactions actually occurred and pertain to the entity.</p>
+                    <p style="margin-top: 8px;"><strong>A/R:</strong> Accounts receivable actually exist and represent valid claims.</p>
+                </div>
+                
+                <div class="assertion-card">
+                    <h4>Completeness</h4>
+                    <p><strong>Revenue:</strong> All sales transactions that should be recorded are recorded.</p>
+                    <p style="margin-top: 8px;"><strong>A/R:</strong> All accounts receivable are included in the financial statements.</p>
+                </div>
+                
+                <div class="assertion-card">
+                    <h4>Accuracy / Valuation</h4>
+                    <p><strong>Revenue:</strong> Sales are recorded at correct amounts.</p>
+                    <p style="margin-top: 8px;"><strong>A/R:</strong> Receivables are stated at net realizable value (gross less allowance).</p>
+                </div>
+                
+                <div class="assertion-card">
+                    <h4>Cutoff</h4>
+                    <p><strong>Revenue:</strong> Sales are recorded in the proper accounting period.</p>
+                    <p style="margin-top: 8px;"><strong>A/R:</strong> Receivables and cash receipts are recorded in correct period.</p>
+                </div>
+                
+                <div class="assertion-card">
+                    <h4>Classification</h4>
+                    <p><strong>Revenue:</strong> Sales transactions are properly classified (e.g., operating vs. non-operating).</p>
+                    <p style="margin-top: 8px;"><strong>A/R:</strong> Receivables properly classified as current or non-current.</p>
+                </div>
+                
+                <div class="assertion-card">
+                    <h4>Rights & Obligations</h4>
+                    <p><strong>A/R:</strong> The entity has legal right to the receivables.</p>
+                    <p style="margin-top: 8px;"><strong>Cash:</strong> The entity has legal ownership of cash received.</p>
+                </div>
+                
+                <div class="assertion-card">
+                    <h4>Presentation & Disclosure</h4>
+                    <p>Revenue and receivables are properly presented in financial statements with adequate disclosure of accounting policies, significant concentrations, and related party transactions.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tab 5: Audit Procedures -->
+        <div id="tab-procedures" class="tab-content">
+            <div class="procedures-section">
+                <h3>Substantive Audit Procedures for Revenue</h3>
+                <ul class="procedure-list">
+                    <li><strong>Analytical Procedures:</strong> Compare revenue to prior periods, budget, and industry trends; analyze gross margin ratios</li>
+                    <li><strong>Cutoff Testing:</strong> Examine sales transactions before and after year-end to ensure proper period recognition</li>
+                    <li><strong>Vouching Sales Transactions:</strong> Trace recorded sales to supporting documents (sales orders, shipping documents, customer orders)</li>
+                    <li><strong>Review Sales Returns:</strong> Analyze returns after year-end that may relate to year-end sales</li>
+                    <li><strong>Test Revenue Recognition:</strong> Verify that revenue recognition criteria are met per ASC 606</li>
+                    <li><strong>Related Party Transactions:</strong> Identify and evaluate sales to related parties</li>
+                    <li><strong>Journal Entry Testing:</strong> Test unusual or non-standard revenue journal entries</li>
+                </ul>
+            </div>
+            
+            <div class="procedures-section">
+                <h3>Substantive Audit Procedures for Accounts Receivable</h3>
+                <ul class="procedure-list">
+                    <li><strong>Confirmation of Receivables:</strong> Send positive confirmations to a sample of customers to verify balances</li>
+                    <li><strong>Aging Analysis:</strong> Review aging of receivables and assess adequacy of allowance for doubtful accounts</li>
+                    <li><strong>Test Subsequent Collections:</strong> Examine cash receipts after year-end to verify collectibility</li>
+                    <li><strong>Evaluate Allowance:</strong> Assess management's estimate of uncollectible accounts for reasonableness</li>
+                    <li><strong>Recalculate Allowance:</strong> Independently calculate allowance based on aging and historical data</li>
+                    <li><strong>Review Credit Memos:</strong> Examine credit memos issued after year-end</li>
+                    <li><strong>Investigate Large/Old Balances:</strong> Scrutinize unusual or aged receivables</li>
+                </ul>
+            </div>
+            
+            <div class="procedures-section">
+                <h3>Substantive Audit Procedures for Cash Receipts</h3>
+                <ul class="procedure-list">
+                    <li><strong>Bank Reconciliation:</strong> Examine and test bank reconciliations for all cash accounts</li>
+                    <li><strong>Bank Confirmation:</strong> Confirm cash balances directly with banks</li>
+                    <li><strong>Cutoff Bank Statement:</strong> Obtain bank statement for period after year-end to verify reconciling items</li>
+                    <li><strong>Test Cash Receipts:</strong> Trace cash receipts to bank deposits and receivable credits</li>
+                    <li><strong>Proof of Cash:</strong> Prepare proof of cash for high-risk situations</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <h4>💡 Tests of Controls</h4>
+                <p>If relying on internal controls, auditors also perform tests of controls such as: testing authorization of sales, examining evidence of credit approval, verifying segregation of duties, testing accuracy of billings, and observing cash handling procedures.</p>
+            </div>
+        </div>
+        
+        <!-- Tab 6: Internal Controls -->
+        <div id="tab-controls" class="tab-content">
+            <div class="controls-section">
+                <h3>Key Internal Controls Over Revenue Cycle</h3>
+                <ul class="control-list">
+                    <li><strong>Segregation of Duties:</strong> Separate authorization, recording, and custody functions (e.g., person recording sales ≠ person handling cash)</li>
+                    <li><strong>Credit Approval:</strong> Require independent credit approval before extending credit to customers</li>
+                    <li><strong>Prenumbered Documents:</strong> Use prenumbered sales orders, invoices, and shipping documents to ensure completeness</li>
+                    <li><strong>Matching Documents:</strong> Match sales orders, shipping documents, and invoices before recording revenue</li>
+                    <li><strong>Authorization of Sales:</strong> Require proper authorization for sales transactions, especially unusual terms</li>
+                    <li><strong>Independent Reconciliations:</strong> Regularly reconcile subsidiary ledgers to general ledger</li>
+                    <li><strong>Physical Controls:</strong> Restrict access to inventory, shipping areas, and accounting records</li>
+                    <li><strong>Monthly Statements:</strong> Send monthly statements to customers and investigate discrepancies</li>
+                    <li><strong>Aging Reports:</strong> Prepare and review aged trial balance of accounts receivable regularly</li>
+                    <li><strong>Cash Controls:</strong> Deposit cash daily, restrictively endorse checks immediately, use lockbox systems</li>
+                    <li><strong>Write-off Approval:</strong> Require senior management approval for write-offs of receivables</li>
+                    <li><strong>IT Controls:</strong> Implement system controls such as edit checks, automated matching, and access controls</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <h4>💡 Control Environment</h4>
+                <p>Strong controls over revenue also require an appropriate control environment including: tone at the top emphasizing ethical behavior, compensation structures that don't create excessive pressure to meet targets, and clear communication of expectations regarding revenue recognition policies.</p>
+            </div>
+            
+            <div class="info-box" style="background: #fef2f2; border-left-color: #ef4444;">
+                <h4 style="color: #991b1b;">⚠️ Red Flags for Revenue Fraud</h4>
+                <p style="color: #7f1d1d;">Unusual sales near period-end, significant sales returns after year-end, sales to new customers with no credit history, side agreements or special terms, revenue from related parties, inability to confirm receivables, significant write-offs, and departure from industry norms.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById('tab-' + tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

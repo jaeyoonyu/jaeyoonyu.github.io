@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fraud Risk in Auditing - Interactive Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #7f1d1d 0%, #991b1b 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 5px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 20px;
+            font-size: 1em;
+        }
+        
+        .intro-section {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 4px solid #dc2626;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .intro-section h2 {
+            color: #991b1b;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .intro-section p {
+            color: #7f1d1d;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #4a5568;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+        
+        .tab-btn:hover {
+            border-color: #dc2626;
+            color: #dc2626;
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .triangle-section {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px 0;
+        }
+        
+        .triangle-section h3 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            text-align: center;
+        }
+        
+        .triangle-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+        }
+        
+        .triangle-container {
+            position: relative;
+            width: 400px;
+            height: 350px;
+        }
+        
+        .triangle-point {
+            position: absolute;
+            background: linear-gradient(135deg, #dc2626, #991b1b);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            font-weight: bold;
+            text-align: center;
+            min-width: 160px;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+        }
+        
+        .triangle-point h4 {
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+        
+        .triangle-point p {
+            font-size: 0.85em;
+            opacity: 0.95;
+            line-height: 1.4;
+        }
+        
+        .point-top {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .point-left {
+            bottom: 0;
+            left: 0;
+        }
+        
+        .point-right {
+            bottom: 0;
+            right: 0;
+        }
+        
+        .triangle-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border: 3px solid #dc2626;
+            color: #991b1b;
+            padding: 15px;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            text-align: center;
+        }
+        
+        .fraud-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .fraud-card {
+            background: white;
+            border: 3px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .fraud-card h3 {
+            color: #991b1b;
+            margin-bottom: 12px;
+            font-size: 1.3em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .fraud-card .icon {
+            font-size: 1.5em;
+        }
+        
+        .fraud-card p {
+            color: #4a5568;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            font-size: 0.95em;
+        }
+        
+        .fraud-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .fraud-card ul li {
+            color: #4a5568;
+            line-height: 1.6;
+            padding: 6px 0;
+            padding-left: 25px;
+            position: relative;
+            font-size: 0.9em;
+        }
+        
+        .fraud-card ul li::before {
+            content: '⚠️';
+            position: absolute;
+            left: 0;
+        }
+        
+        .risk-factors {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .risk-factors h3 {
+            color: #991b1b;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .risk-factors h4 {
+            color: #991b1b;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+        
+        .risk-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .risk-list li {
+            color: #7f1d1d;
+            line-height: 1.7;
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 0.95em;
+        }
+        
+        .risk-list li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #dc2626;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .risk-list li strong {
+            color: #991b1b;
+        }
+        
+        .responsibilities {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .responsibilities h3 {
+            color: #1e40af;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .resp-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .resp-list li {
+            color: #1e3a8a;
+            line-height: 1.7;
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 0.95em;
+        }
+        
+        .resp-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .resp-list li strong {
+            color: #1e40af;
+        }
+        
+        .procedures-section {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .procedures-section h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .procedure-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .procedure-list li {
+            color: #4a5568;
+            line-height: 1.7;
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 0.95em;
+        }
+        
+        .procedure-list li::before {
+            content: '🔍';
+            position: absolute;
+            left: 0;
+        }
+        
+        .procedure-list li strong {
+            color: #2d3748;
+        }
+        
+        .info-box {
+            background: #e0f2fe;
+            border-left: 3px solid #0284c7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .info-box h4 {
+            color: #075985;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+        
+        .info-box p {
+            color: #0c4a6e;
+            line-height: 1.6;
+            font-size: 0.9em;
+        }
+        
+        .warning-box {
+            background: #fef2f2;
+            border-left: 3px solid #ef4444;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .warning-box h4 {
+            color: #991b1b;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+        
+        .warning-box p {
+            color: #7f1d1d;
+            line-height: 1.6;
+            font-size: 0.9em;
+        }
+        
+        .red-flags {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 4px solid #dc2626;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .red-flags h3 {
+            color: #991b1b;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .red-flags-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .red-flag-card {
+            background: white;
+            border-left: 3px solid #ef4444;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .red-flag-card h4 {
+            color: #991b1b;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+        
+        .red-flag-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .red-flag-card ul li {
+            color: #7f1d1d;
+            line-height: 1.5;
+            padding: 4px 0;
+            font-size: 0.85em;
+        }
+        
+        .red-flag-card ul li::before {
+            content: '• ';
+            color: #dc2626;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            h1 { font-size: 1.5em; }
+            .nav-tabs { flex-direction: column; }
+            .tab-btn { width: 100%; }
+            .triangle-container { width: 100%; height: auto; }
+            .triangle-point { position: relative; margin: 10px 0; }
+            .triangle-center { position: relative; transform: none; margin: 10px auto; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fraud Risk in Auditing</h1>
+        <p class="subtitle">AU-C 240: Consideration of Fraud in a Financial Statement Audit</p>
+        
+        <div class="intro-section">
+            <h2>Understanding Fraud in Financial Reporting</h2>
+            <p>Fraud is an intentional act by one or more individuals involving the use of deception to obtain an unjust or illegal advantage. In financial statement auditing, fraud can significantly impact the reliability of financial information. Auditors are required to assess fraud risk and design procedures to detect material misstatements due to fraud, though they cannot guarantee detection of all fraud due to the concealment nature of fraudulent activities.</p>
+        </div>
+        
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="showTab('triangle')">Fraud Triangle</button>
+            <button class="tab-btn" onclick="showTab('types')">Types of Fraud</button>
+            <button class="tab-btn" onclick="showTab('risks')">Risk Factors</button>
+            <button class="tab-btn" onclick="showTab('responsibility')">Auditor Responsibility</button>
+            <button class="tab-btn" onclick="showTab('procedures')">Audit Procedures</button>
+            <button class="tab-btn" onclick="showTab('redflags')">Red Flags</button>
+        </div>
+        
+        <!-- Tab 1: Fraud Triangle -->
+        <div id="tab-triangle" class="tab-content active">
+            <div class="triangle-section">
+                <h3>The Fraud Triangle</h3>
+                <p style="text-align: center; color: #4a5568; margin-bottom: 30px; font-size: 0.95em;">Three conditions are generally present when fraud occurs</p>
+                
+                <div class="triangle-visual">
+                    <div class="triangle-container">
+                        <div class="triangle-point point-top">
+                            <h4>INCENTIVE / PRESSURE</h4>
+                            <p>Motivation to commit fraud</p>
+                        </div>
+                        <div class="triangle-point point-left">
+                            <h4>OPPORTUNITY</h4>
+                            <p>Ability to commit fraud</p>
+                        </div>
+                        <div class="triangle-point point-right">
+                            <h4>ATTITUDE / RATIONALIZATION</h4>
+                            <p>Justification for fraud</p>
+                        </div>
+                        <div class="triangle-center">FRAUD</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="fraud-card" style="border-left: 5px solid #dc2626; margin-bottom: 15px;">
+                <h3><span class="icon">💰</span> Incentive / Pressure</h3>
+                <p>Management or employees have an incentive or are under pressure to commit fraud. This could be financial pressure, performance targets, or personal circumstances.</p>
+                <ul>
+                    <li><strong>Financial Targets:</strong> Pressure to meet earnings, revenue, or analyst expectations</li>
+                    <li><strong>Personal Financial Stress:</strong> Individual financial difficulties or lifestyle pressures</li>
+                    <li><strong>Compensation Tied to Performance:</strong> Bonuses or stock options based on financial results</li>
+                    <li><strong>Loan Covenants:</strong> Risk of violating debt agreements</li>
+                    <li><strong>Industry/Economic Pressure:</strong> Declining industry or severe competition</li>
+                </ul>
+            </div>
+            
+            <div class="fraud-card" style="border-left: 5px solid #f59e0b; margin-bottom: 15px;">
+                <h3><span class="icon">🔓</span> Opportunity</h3>
+                <p>Circumstances provide an opportunity to commit fraud, typically due to weak internal controls or the ability to override controls.</p>
+                <ul>
+                    <li><strong>Weak Internal Controls:</strong> Inadequate segregation of duties or control environment</li>
+                    <li><strong>Management Override:</strong> Ability to bypass existing controls</li>
+                    <li><strong>Complex Transactions:</strong> Difficult-to-audit transactions or estimates</li>
+                    <li><strong>Lack of Oversight:</strong> Ineffective board or audit committee monitoring</li>
+                    <li><strong>Poor Recordkeeping:</strong> Inadequate documentation or record retention</li>
+                </ul>
+            </div>
+            
+            <div class="fraud-card" style="border-left: 5px solid #8b5cf6;">
+                <h3><span class="icon">💭</span> Attitude / Rationalization</h3>
+                <p>Individuals justify the fraudulent behavior or possess an attitude that allows them to rationalize committing fraud.</p>
+                <ul>
+                    <li><strong>Entitlement:</strong> Belief that fraud is justified or deserved</li>
+                    <li><strong>"Everyone Does It":</strong> Perception that fraud is common or acceptable</li>
+                    <li><strong>Temporary Justification:</strong> "I'll pay it back" or "It's just this once"</li>
+                    <li><strong>Company Loyalty:</strong> Fraud to "help" the company meet targets</li>
+                    <li><strong>Ethical Disconnect:</strong> Poor ethical values or disregard for rules</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <h4>💡 The Fraud Triangle in Practice</h4>
+                <p>All three elements typically need to be present for fraud to occur. Auditors assess these conditions during risk assessment and design procedures to address identified fraud risks. Reducing any one element can help prevent fraud - for example, strong controls reduce opportunity, ethical tone reduces rationalization, and realistic targets reduce pressure.</p>
+            </div>
+        </div>
+        
+        <!-- Tab 2: Types of Fraud -->
+        <div id="tab-types" class="tab-content">
+            <div class="fraud-types">
+                <div class="fraud-card" style="border-color: #dc2626;">
+                    <h3><span class="icon">📊</span> Fraudulent Financial Reporting</h3>
+                    <p>Intentional misstatements or omissions of amounts or disclosures to deceive financial statement users.</p>
+                    <ul>
+                        <li>Manipulation, falsification, or alteration of records</li>
+                        <li>Misrepresentation or omission of events or transactions</li>
+                        <li>Intentional misapplication of accounting principles</li>
+                        <li>Revenue recognition fraud (channel stuffing, fictitious sales)</li>
+                        <li>Improper asset valuation (inventory, receivables)</li>
+                        <li>Hidden liabilities or expenses</li>
+                        <li>Improper disclosures</li>
+                    </ul>
+                </div>
+                
+                <div class="fraud-card" style="border-color: #f59e0b;">
+                    <h3><span class="icon">💰</span> Misappropriation of Assets</h3>
+                    <p>Theft of an entity's assets, often called employee fraud or defalcation.</p>
+                    <ul>
+                        <li>Cash theft (skimming, lapping)</li>
+                        <li>Fraudulent disbursements (fake vendors, ghost employees)</li>
+                        <li>Inventory theft or diversion</li>
+                        <li>Payroll fraud</li>
+                        <li>Misuse of company assets</li>
+                        <li>Check tampering</li>
+                        <li>Expense reimbursement fraud</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <h4>💡 Key Differences</h4>
+                <p><strong>Fraudulent Financial Reporting:</strong> Usually perpetrated by management, affects overall financial statements, typically larger dollar amounts, harder to detect. <strong>Misappropriation of Assets:</strong> Often perpetrated by employees, affects specific assets, typically smaller amounts (but can accumulate), may be easier to detect through controls.</p>
+            </div>
+            
+            <div class="warning-box">
+                <h4>⚠️ Revenue Recognition Fraud</h4>
+                <p>Revenue is <strong>presumed</strong> to be a fraud risk in every audit (AU-C 240). This presumption can only be rebutted with specific documentation. Common schemes include: premature recognition, fictitious sales, side agreements, channel stuffing, and bill-and-hold arrangements.</p>
+            </div>
+            
+            <div class="warning-box">
+                <h4>⚠️ Management Override Risk</h4>
+                <p>Management override of controls is also a fraud risk in every audit because management can circumvent otherwise effective controls. This includes: recording fictitious journal entries, making biased estimates, and manipulating transactions or documents.</p>
+            </div>
+        </div>
+        
+        <!-- Tab 3: Risk Factors -->
+        <div id="tab-risks" class="tab-content">
+            <div class="risk-factors">
+                <h3>Fraud Risk Factors (AU-C 240)</h3>
+                
+                <h4>Fraudulent Financial Reporting - Incentives/Pressures</h4>
+                <ul class="risk-list">
+                    <li><strong>Financial Stability Threatened:</strong> Declining industry, loss of customers, bankruptcy threat</li>
+                    <li><strong>Excessive Pressure:</strong> Unrealistic targets, analyst expectations, debt covenants</li>
+                    <li><strong>Management Financial Interests:</strong> Significant portions of compensation in stock/options</li>
+                    <li><strong>Personal Guarantees:</strong> Management guarantees of entity debt</li>
+                </ul>
+                
+                <h4>Fraudulent Financial Reporting - Opportunities</h4>
+                <ul class="risk-list">
+                    <li><strong>Complex Structures:</strong> Overly complex organizational structure or operations</li>
+                    <li><strong>Weak Controls:</strong> Deficient internal control components</li>
+                    <li><strong>Management Domination:</strong> Single person or small group controls entity</li>
+                    <li><strong>Difficult-to-Audit Items:</strong> Significant estimates, related parties, off-balance sheet</li>
+                    <li><strong>Ineffective Oversight:</strong> Weak board, audit committee, or internal audit</li>
+                </ul>
+                
+                <h4>Fraudulent Financial Reporting - Attitudes/Rationalization</h4>
+                <ul class="risk-list">
+                    <li><strong>Poor Tone at Top:</strong> Management displays weak commitment to ethics</li>
+                    <li><strong>Excessive Interest:</strong> Management obsessed with stock price or earnings</li>
+                    <li><strong>Aggressive Practices:</strong> Management practices aggressive accounting</li>
+                    <li><strong>High Turnover:</strong> High turnover of senior management, counsel, or audit committee</li>
+                    <li><strong>Strained Relationships:</strong> Poor relationships with auditors or regulators</li>
+                </ul>
+            </div>
+            
+            <div class="risk-factors" style="background: #fff7ed; border-left-color: #f59e0b;">
+                <h3 style="color: #9a3412;">Misappropriation of Assets - Risk Factors</h3>
+                
+                <h4 style="color: #9a3412;">Incentives/Pressures</h4>
+                <ul class="risk-list">
+                    <li><strong>Personal Financial Obligations:</strong> Excessive personal debt or financial difficulties</li>
+                    <li><strong>Adverse Relationships:</strong> Dissatisfaction with entity or management</li>
+                    <li><strong>Personal Issues:</strong> Gambling problems, substance abuse, lifestyle pressures</li>
+                </ul>
+                
+                <h4 style="color: #9a3412;">Opportunities</h4>
+                <ul class="risk-list">
+                    <li><strong>Large Cash Amounts:</strong> Significant cash on hand or cash processing</li>
+                    <li><strong>Small/Portable Items:</strong> Inventory items small, high-value, or easily converted</li>
+                    <li><strong>Weak Controls:</strong> Inadequate segregation of duties over assets</li>
+                    <li><strong>Poor Oversight:</strong> Inadequate management oversight</li>
+                    <li><strong>Inadequate Screening:</strong> Lack of employee background checks</li>
+                </ul>
+                
+                <h4 style="color: #9a3412;">Attitudes/Rationalization</h4>
+                <ul class="risk-list">
+                    <li><strong>Disregard for Controls:</strong> Management ignores or fails to correct weaknesses</li>
+                    <li><strong>Low Morale:</strong> Poor employee morale or motivation</li>
+                    <li><strong>Changes in Behavior:</strong> Changes in lifestyle or behavior inconsistent with salary</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <h4>💡 Using Risk Factors</h4>
+                <p>Auditors identify and assess fraud risk factors during planning and throughout the audit. The presence of risk factors doesn't necessarily mean fraud exists, but indicates heightened risk requiring additional audit attention and procedures. Document all identified risk factors and how they're addressed.</p>
+            </div>
+        </div>
+        
+        <!-- Tab 4: Auditor Responsibility -->
+        <div id="tab-responsibility" class="tab-content">
+            <div class="responsibilities">
+                <h3>Auditor Responsibilities Under AU-C 240</h3>
+                <ul class="resp-list">
+                    <li><strong>Maintain Professional Skepticism:</strong> Questioning mindset and critical assessment throughout the audit</li>
+                    <li><strong>Discuss Fraud Risks:</strong> Required discussion among engagement team about fraud susceptibility</li>
+                    <li><strong>Obtain Information:</strong> Inquire of management, audit committee, internal audit, and others about fraud risks</li>
+                    <li><strong>Identify and Assess Risks:</strong> Identify and assess risks of material misstatement due to fraud</li>
+                    <li><strong>Design Responses:</strong> Design and implement audit responses to assessed fraud risks</li>
+                    <li><strong>Evaluate Evidence:</strong> Evaluate whether audit evidence indicates fraud risks</li>
+                    <li><strong>Communicate Findings:</strong> Communicate identified fraud or fraud risks to management and governance</li>
+                    <li><strong>Document Procedures:</strong> Document fraud risk assessment and responses in audit documentation</li>
+                </ul>
+            </div>
+            
+            <div class="warning-box">
+                <h4>⚠️ Limitations of an Audit</h4>
+                <p>Auditors <strong>cannot guarantee</strong> detection of all material misstatements due to fraud. Fraud involves concealment through collusion, forgery, and intentional misrepresentations. An audit provides <strong>reasonable assurance</strong>, not absolute assurance. However, auditors are responsible for obtaining reasonable assurance that material misstatements due to fraud are detected.</p>
+            </div>
+            
+            <div class="info-box">
+                <h4>💡 Differences from Error</h4>
+                <p><strong>Fraud:</strong> Intentional misstatement with intent to deceive. <strong>Error:</strong> Unintentional misstatement. The auditor's responsibility is the same for both - detect material misstatements. However, fraud is harder to detect due to concealment and may indicate pervasive problems requiring different audit responses.</p>
+            </div>
+            
+            <div class="responsibilities" style="background: #fef2f2; border-left-color: #ef4444;">
+                <h3 style="color: #991b1b;">Required Fraud Risk Assessments</h3>
+                <ul class="resp-list">
+                    <li style="color: #7f1d1d;"><strong>Revenue Recognition:</strong> Presumed fraud risk in every audit (rebuttable with documentation)</li>
+                    <li style="color: #7f1d1d;"><strong>Management Override:</strong> Risk that management can override controls in every audit</li>
+                    <li style="color: #7f1d1d;"><strong>Other Risks:</strong> Any other identified fraud risks based on entity-specific factors</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <h4>💡 Communication Requirements</h4>
+                <p><strong>To Management:</strong> All fraud or information indicating fraud, unless clearly inconsequential. <strong>To Governance (Audit Committee):</strong> All fraud involving management, employees with significant control roles, or causing material misstatement. Also communicate fraud risk factors and internal control deficiencies. <strong>To Regulators:</strong> Required by law in certain circumstances (e.g., illegal acts).</p>
+            </div>
+        </div>
+        
+        <!-- Tab 5: Audit Procedures -->
+        <div id="tab-procedures" class="tab-content">
+            <div class="procedures-section">
+                <h3>Required Fraud-Related Audit Procedures</h3>
+                <ul class="procedure-list">
+                    <li><strong>Engagement Team Discussion:</strong> Discuss susceptibility to fraud and how it might occur</li>
+                    <li><strong>Inquiries of Management:</strong> Ask about fraud risks, known fraud, and controls</li>
+                    <li><strong>Inquiries of Audit Committee:</strong> Ask about oversight and fraud risk assessment</li>
+                    <li><strong>Inquiries of Internal Audit:</strong> Discuss fraud risks and any identified issues</li>
+                    <li><strong>Inquiries of Others:</strong> Operating personnel, employees with different levels</li>
+                    <li><strong>Analytical Procedures:</strong> Perform analytics to identify unusual relationships</li>
+                    <li><strong>Consider Fraud Risk Factors:</strong> Evaluate presence of fraud triangle elements</li>
+                </ul>
+            </div>
+            
+            <div class="procedures-section">
+                <h3>Overall Responses to Fraud Risk</h3>
+                <ul class="procedure-list">
+                    <li><strong>Assignment of Personnel:</strong> Assign more experienced staff to high-risk areas</li>
+                    <li><strong>Increased Skepticism:</strong> Apply heightened professional skepticism</li>
+                    <li><strong>Unpredictability:</strong> Incorporate element of unpredictability in audit procedures</li>
+                    <li><strong>More Audit Procedures:</strong> Increase nature, timing, or extent of procedures</li>
+                </ul>
+            </div>
+            
+            <div class="procedures-section">
+                <h3>Specific Responses to Revenue Recognition Risk</h3>
+                <ul class="procedure-list">
+                    <li><strong>Confirm Terms:</strong> Confirm terms of sales with customers, not just amounts</li>
+                    <li><strong>Physical Observation:</strong> Observe inventory shipments near period-end</li>
+                    <li><strong>Cutoff Testing:</strong> Extensive testing of revenue cutoff</li>
+                    <li><strong>Review for Side Agreements:</strong> Search for undisclosed agreements</li>
+                    <li><strong>Channel Stuffing:</strong> Analyze sales returns, discounts after period-end</li>
+                    <li><strong>Journal Entry Testing:</strong> Test unusual revenue journal entries</li>
+                </ul>
+            </div>
+            
+            <div class="procedures-section">
+                <h3>Procedures for Management Override Risk (Required)</h3>
+                <ul class="procedure-list">
+                    <li><strong>Journal Entry Testing:</strong> Test appropriateness of journal entries and adjustments (required)</li>
+                    <li><strong>Accounting Estimates:</strong> Review estimates for bias (required)</li>
+                    <li><strong>Unusual Transactions:</strong> Understand business rationale for significant unusual transactions (required)</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <h4>💡 Journal Entry Testing</h4>
+                <p>Focus on: (1) Entries made at period-end, (2) Entries to unusual or unrelated accounts, (3) Entries with unusual descriptions or no descriptions, (4) Entries made by inappropriate personnel, (5) Round-dollar entries, (6) Complex entries. Test both manual and automated entries.</p>
+            </div>
+            
+            <div class="warning-box">
+                <h4>⚠️ If Fraud is Identified</h4>
+                <p>Auditors must: (1) Consider implications for other audit areas, (2) Reassess fraud risk, (3) Evaluate whether fraud indicates internal control deficiency, (4) Communicate to appropriate management level and governance, (5) Consider impact on audit opinion, (6) Obtain management representations about fraud, (7) Consider whether to continue the engagement.</p>
+            </div>
+        </div>
+        
+        <!-- Tab 6: Red Flags -->
+        <div id="tab-redflags" class="tab-content">
+            <div class="red-flags">
+                <h3>Common Fraud Red Flags</h3>
+                
+                <div class="red-flags-grid">
+                    <div class="red-flag-card">
+                        <h4>Financial Statement Red Flags</h4>
+                        <ul>
+                            <li>Unusual growth or profitability vs. industry</li>
+                            <li>Results always at budget or forecast</li>
+                            <li>Revenues increasing while cash flow declining</li>
+                            <li>Significant period-end transactions</li>
+                            <li>Frequent related party transactions</li>
+                            <li>Unusual or complex transactions</li>
+                            <li>Significant estimates with subjective inputs</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="red-flag-card">
+                        <h4>Management Behavior Red Flags</h4>
+                        <ul>
+                            <li>Overly aggressive or defensive responses</li>
+                            <li>Strained relationships with auditors</li>
+                            <li>Frequent disputes with auditors</li>
+                            <li>Reluctance to provide information</li>
+                            <li>Domineering management with weak board</li>
+                            <li>High turnover in key positions</li>
+                            <li>Lavish lifestyle inconsistent with salary</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="red-flag-card">
+                        <h4>Internal Control Red Flags</h4>
+                        <ul>
+                            <li>Inadequate segregation of duties</li>
+                            <li>Lack of management oversight</li>
+                            <li>Poor documentation of transactions</li>
+                            <li>Missing or altered documents</li>
+                            <li>Overrides of existing controls</li>
+                            <li>Management ignoring control deficiencies</li>
+                            <li>Ineffective internal audit function</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="red-flag-card">
+                        <h4>Operational Red Flags</h4>
+                        <ul>
+                            <li>Declining sales or margins</li>
+                            <li>Rapid growth without infrastructure</li>
+                            <li>Significant one-time transactions</li>
+                            <li>Loss of major customers</li>
+                            <li>Significant unusual transactions near year-end</li>
+                            <li>Heavy reliance on new/untested products</li>
+                            <li>Problems with regulators or legal issues</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="red-flag-card">
+                        <h4>Revenue Recognition Red Flags</h4>
+                        <ul>
+                            <li>Revenue recognition before delivery</li>
+                            <li>Bill-and-hold arrangements</li>
+                            <li>Channel stuffing near period-end</li>
+                            <li>Significant sales returns after period-end</li>
+                            <li>Unusual payment terms</li>
+                            <li>Side agreements with customers</li>
+                            <li>Related party revenue</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="red-flag-card">
+                        <h4>Asset Misappropriation Red Flags</h4>
+                        <ul>
+                            <li>Missing inventory or documents</li>
+                            <li>Altered checks or invoices</li>
+                            <li>Duplicate payments</li>
+                            <li>Fictitious vendors or employees</li>
+                            <li>Unusual patterns in expense accounts</li>
+                            <li>Cash shortages or overages</li>
+                            <li>Excessive voids or credits</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <h4>💡 Professional Skepticism</h4>
+                <p>Red flags don't prove fraud exists, but require additional investigation. Auditors should maintain an attitude of professional skepticism - a questioning mind and critical assessment of audit evidence. Don't accept management explanations at face value when red flags are present. Follow up with additional procedures to either corroborate or refute suspicions.</p>
+            </div>
+            
+            <div class="warning-box">
+                <h4>⚠️ When Red Flags are Present</h4>
+                <p>Actions to take: (1) Gather additional evidence, (2) Modify planned procedures, (3) Perform more extensive testing, (4) Use different procedures, (5) Test at different times (unpredictability), (6) Expand sample sizes, (7) Increase supervision, (8) Communicate with engagement team and management/governance as appropriate.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>

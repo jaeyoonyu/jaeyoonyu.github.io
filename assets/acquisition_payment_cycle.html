@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditing Acquisition & Payment Cycle - Interactive Visualization</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #7c2d12 0%, #be123c 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 5px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 20px;
+            font-size: 1em;
+        }
+        
+        .cycle-intro {
+            background: linear-gradient(135deg, #fff7ed, #fed7aa);
+            border-left: 4px solid #ea580c;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+        
+        .cycle-intro h2 {
+            color: #9a3412;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        
+        .cycle-intro p {
+            color: #7c2d12;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #4a5568;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+        }
+        
+        .tab-btn:hover {
+            border-color: #ea580c;
+            color: #ea580c;
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(135deg, #ea580c, #dc2626);
+            color: white;
+            border-color: transparent;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .process-flow {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+        
+        .process-flow h3 {
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            text-align: center;
+        }
+        
+        .flow-steps {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .flow-step {
+            background: linear-gradient(135deg, #ea580c, #dc2626);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            text-align: center;
+            min-width: 120px;
+            box-shadow: 0 3px 10px rgba(234, 88, 12, 0.3);
+            font-size: 0.9em;
+        }
+        
+        .flow-step .step-number {
+            display: block;
+            font-size: 0.75em;
+            opacity: 0.9;
+            margin-bottom: 3px;
+        }
+        
+        .accounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .account-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        }
+        
+        .account-card h4 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .account-card .icon {
+            font-size: 1.3em;
+        }
+        
+        .account-card p {
+            color: #4a5568;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        
+        .risks-section {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .risks-section h3 {
+            color: #991b1b;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .risk-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .risk-list li {
+            color: #7f1d1d;
+            line-height: 1.7;
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 0.95em;
+        }
+        
+        .risk-list li::before {
+            content: '⚠️';
+            position: absolute;
+            left: 0;
+        }
+        
+        .risk-list li strong {
+            color: #991b1b;
+        }
+        
+        .assertions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .assertion-card {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border-left: 4px solid #10b981;
+            padding: 18px;
+            border-radius: 10px;
+        }
+        
+        .assertion-card h4 {
+            color: #065f46;
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+        
+        .assertion-card p {
+            color: #047857;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        
+        .procedures-section {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .procedures-section h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .procedure-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .procedure-list li {
+            color: #4a5568;
+            line-height: 1.7;
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 0.95em;
+        }
+        
+        .procedure-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .procedure-list li strong {
+            color: #2d3748;
+        }
+        
+        .controls-section {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 4px solid #f59e0b;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .controls-section h3 {
+            color: #92400e;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .control-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .control-list li {
+            color: #78350f;
+            line-height: 1.7;
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            font-size: 0.95em;
+        }
+        
+        .control-list li::before {
+            content: '🔒';
+            position: absolute;
+            left: 0;
+        }
+        
+        .control-list li strong {
+            color: #92400e;
+        }
+        
+        .info-box {
+            background: #e0f2fe;
+            border-left: 3px solid #0284c7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .info-box h4 {
+            color: #075985;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+        
+        .info-box p {
+            color: #0c4a6e;
+            line-height: 1.6;
+            font-size: 0.9em;
+        }
+        
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            h1 { font-size: 1.5em; }
+            .flow-steps, .nav-tabs { flex-direction: column; }
+            .tab-btn { width: 100%; }
+            .two-column { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Auditing the Acquisition & Payment Cycle</h1>
+        <p class="subtitle">Purchases, Accounts Payable, and Cash Disbursements</p>
+        
+        <div class="cycle-intro">
+            <h2>Acquisition & Payment Cycle Overview</h2>
+            <p>The acquisition and payment cycle encompasses all business activities related to purchasing goods and services and paying for them. This cycle includes the acquisition of inventory, supplies, fixed assets, and services. Key accounts include purchases, accounts payable, inventory, fixed assets, and various expense accounts. Auditors focus on ensuring that recorded liabilities are complete, expenses are properly recorded, and cash disbursements are authorized and accurate.</p>
+        </div>
+        
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="showTab('process')">Process Flow</button>
+            <button class="tab-btn" onclick="showTab('accounts')">Key Accounts</button>
+            <button class="tab-btn" onclick="showTab('risks')">Key Risks</button>
+            <button class="tab-btn" onclick="showTab('assertions')">Assertions</button>
+            <button class="tab-btn" onclick="showTab('procedures')">Audit Procedures</button>
+            <button class="tab-btn" onclick="showTab('controls')">Internal Controls</button>
+        </div>
+        
+        <!-- Tab 1: Process Flow -->
+        <div id="tab-process" class="tab-content active">
+            <div class="process-flow">
+                <h3>Acquisition & Payment Cycle Process Flow</h3>
+                <div class="flow-steps">
+                    <div class="flow-step"><span class="step-number">Step 1</span><span>Purchase<br/>Requisition</span></div>
+                    <svg width="45" height="45" viewBox="0 0 45 45"><defs><marker id="arrow1" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L7,3 z" fill="#2d3748" /></marker></defs><line x1="5" y1="22" x2="38" y2="22" stroke="#2d3748" stroke-width="3" marker-end="url(#arrow1)" /></svg>
+                    <div class="flow-step"><span class="step-number">Step 2</span><span>Purchase<br/>Order</span></div>
+                    <svg width="45" height="45" viewBox="0 0 45 45"><defs><marker id="arrow2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L7,3 z" fill="#2d3748" /></marker></defs><line x1="5" y1="22" x2="38" y2="22" stroke="#2d3748" stroke-width="3" marker-end="url(#arrow2)" /></svg>
+                    <div class="flow-step"><span class="step-number">Step 3</span><span>Receipt of<br/>Goods/Services</span></div>
+                    <svg width="45" height="45" viewBox="0 0 45 45"><defs><marker id="arrow3" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L7,3 z" fill="#2d3748" /></marker></defs><line x1="5" y1="22" x2="38" y2="22" stroke="#2d3748" stroke-width="3" marker-end="url(#arrow3)" /></svg>
+                    <div class="flow-step"><span class="step-number">Step 4</span><span>Vendor<br/>Invoice</span></div>
+                    <svg width="45" height="45" viewBox="0 0 45 45"><defs><marker id="arrow4" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L7,3 z" fill="#2d3748" /></marker></defs><line x1="5" y1="22" x2="38" y2="22" stroke="#2d3748" stroke-width="3" marker-end="url(#arrow4)" /></svg>
+                    <div class="flow-step"><span class="step-number">Step 5</span><span>Cash<br/>Disbursement</span></div>
+                    <svg width="45" height="45" viewBox="0 0 45 45"><defs><marker id="arrow5" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L7,3 z" fill="#2d3748" /></marker></defs><line x1="5" y1="22" x2="38" y2="22" stroke="#2d3748" stroke-width="3" marker-end="url(#arrow5)" /></svg>
+                    <div class="flow-step"><span class="step-number">Step 6</span><span>Recording<br/>& Posting</span></div>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <h4>💡 Key Control: Three-Way Match</h4>
+                <p>Before payment is authorized, organizations should match three key documents: (1) Purchase Order, (2) Receiving Report, and (3) Vendor Invoice. This ensures goods/services were ordered, received, and properly billed before payment is made.</p>
+            </div>
+            
+            <div class="info-box" style="background: #fff7ed; border-left-color: #f59e0b;">
+                <h4 style="color: #9a3412;">📌 Audit Focus</h4>
+                <p style="color: #7c2d12;">Unlike revenue cycle (where overstatement is the main risk), the primary risk in the acquisition cycle is <strong>understatement of liabilities</strong> - unrecorded payables or expenses that should be recorded but aren't (completeness assertion).</p>
+            </div>
+        </div>
+        
+        <!-- Additional tabs continue -->
+        <div id="tab-accounts" class="tab-content">
+            <div class="accounts-grid">
+                <div class="account-card" style="border-left: 4px solid #ef4444;"><h4><span class="icon">📋</span> Accounts Payable</h4><p><strong>Nature:</strong> Liability representing amounts owed to suppliers.</p><p style="margin-top: 8px;"><strong>Risk:</strong> Understatement through unrecorded liabilities.</p></div>
+                <div class="account-card" style="border-left: 4px solid #ea580c;"><h4><span class="icon">💰</span> Purchases / Expenses</h4><p><strong>Nature:</strong> Cost of goods and services acquired.</p><p style="margin-top: 8px;"><strong>Risk:</strong> Understatement or improper capitalization.</p></div>
+                <div class="account-card" style="border-left: 4px solid #10b981;"><h4><span class="icon">📦</span> Inventory</h4><p><strong>Nature:</strong> Goods held for resale or raw materials.</p><p style="margin-top: 8px;"><strong>Risk:</strong> Overstatement (obsolescence, shrinkage).</p></div>
+                <div class="account-card" style="border-left: 4px solid #3b82f6;"><h4><span class="icon">🏢</span> Fixed Assets (PP&E)</h4><p><strong>Nature:</strong> Long-term tangible assets.</p><p style="margin-top: 8px;"><strong>Risk:</strong> Improper capitalization, inadequate depreciation.</p></div>
+                <div class="account-card" style="border-left: 4px solid #8b5cf6;"><h4><span class="icon">💵</span> Cash</h4><p><strong>Nature:</strong> Payments to vendors.</p><p style="margin-top: 8px;"><strong>Risk:</strong> Unauthorized disbursements, misappropriation.</p></div>
+                <div class="account-card" style="border-left: 4px solid #f59e0b;"><h4><span class="icon">⏱️</span> Accrued Liabilities</h4><p><strong>Nature:</strong> Expenses incurred but not yet paid.</p><p style="margin-top: 8px;"><strong>Risk:</strong> Understatement at period-end.</p></div>
+            </div>
+        </div>
+        
+        <div id="tab-risks" class="tab-content">
+            <div class="risks-section">
+                <h3>Key Risks in Acquisition & Payment Cycle</h3>
+                <ul class="risk-list">
+                    <li><strong>Unrecorded Liabilities:</strong> Failing to record goods/services received before year-end</li>
+                    <li><strong>Fictitious Vendors:</strong> Creating fake vendors and making fraudulent payments</li>
+                    <li><strong>Unauthorized Purchases:</strong> Purchasing without proper authorization</li>
+                    <li><strong>Duplicate Payments:</strong> Paying the same invoice twice</li>
+                    <li><strong>Improper Capitalization:</strong> Expensing capital items or vice versa</li>
+                    <li><strong>Cash Misappropriation:</strong> Theft through check tampering or kickbacks</li>
+                    <li><strong>Billing Errors:</strong> Paying incorrect amounts</li>
+                    <li><strong>Inventory Obsolescence:</strong> Failing to write down obsolete inventory</li>
+                    <li><strong>Personal Purchases:</strong> Unauthorized personal purchases</li>
+                    <li><strong>Related Party Transactions:</strong> Non-arm's length purchases</li>
+                </ul>
+            </div>
+            <div class="info-box"><h4>💡 Completeness is the Primary Risk</h4><p>Unlike revenue, the main risk is <strong>completeness</strong> - ensuring all liabilities are recorded. Management has incentive to understate liabilities to improve ratios and profitability.</p></div>
+        </div>
+        
+        <div id="tab-assertions" class="tab-content">
+            <h3 style="color: #2d3748; margin-bottom: 15px; font-size: 1.3em;">Management Assertions</h3>
+            <div class="assertions-grid">
+                <div class="assertion-card"><h4>Occurrence / Existence</h4><p>Recorded purchases occurred and pertain to entity. Payables represent valid obligations. Assets actually exist.</p></div>
+                <div class="assertion-card"><h4>Completeness ⭐</h4><p><strong>PRIMARY RISK:</strong> All purchases and liabilities are recorded. Search for unrecorded liabilities is critical.</p></div>
+                <div class="assertion-card"><h4>Accuracy / Valuation</h4><p>Recorded at correct amounts. Inventory at lower of cost/market. Proper depreciation.</p></div>
+                <div class="assertion-card"><h4>Cutoff</h4><p>Recorded in proper period. Liabilities recorded when received, not when paid.</p></div>
+                <div class="assertion-card"><h4>Classification</h4><p>Properly classified between inventory, fixed assets, and expenses.</p></div>
+                <div class="assertion-card"><h4>Rights & Obligations</h4><p>Entity has obligations to pay liabilities. Entity owns recorded assets.</p></div>
+                <div class="assertion-card"><h4>Presentation & Disclosure</h4><p>Proper presentation with adequate disclosure of policies, commitments, and related parties.</p></div>
+            </div>
+        </div>
+        
+        <div id="tab-procedures" class="tab-content">
+            <div class="procedures-section">
+                <h3>Accounts Payable Procedures</h3>
+                <ul class="procedure-list">
+                    <li><strong>Search for Unrecorded Liabilities:</strong> Examine subsequent disbursements and receiving reports</li>
+                    <li><strong>Cutoff Testing:</strong> Test purchases before/after year-end</li>
+                    <li><strong>Vouching:</strong> Trace payables to supporting documents</li>
+                    <li><strong>Vendor Reconciliation:</strong> Compare statements to records</li>
+                    <li><strong>Analytical Procedures:</strong> Analyze turnover ratios</li>
+                </ul>
+            </div>
+            <div class="procedures-section">
+                <h3>Purchases & Expenses Procedures</h3>
+                <ul class="procedure-list">
+                    <li><strong>Analytical Procedures:</strong> Compare to prior periods and budget</li>
+                    <li><strong>Vouching:</strong> Trace to supporting documents</li>
+                    <li><strong>Test Capitalization:</strong> Verify proper classification</li>
+                    <li><strong>Test Accruals:</strong> Evaluate reasonableness</li>
+                </ul>
+            </div>
+            <div class="procedures-section">
+                <h3>Inventory & Fixed Assets Procedures</h3>
+                <ul class="procedure-list">
+                    <li><strong>Physical Observation:</strong> Observe inventory counts and inspect assets</li>
+                    <li><strong>Test Pricing:</strong> Verify costs and depreciation</li>
+                    <li><strong>Test Obsolescence:</strong> Review slow-moving inventory</li>
+                    <li><strong>Impairment Testing:</strong> Assess for indicators</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div id="tab-controls" class="tab-content">
+            <div class="controls-section">
+                <h3>Key Internal Controls</h3>
+                <ul class="control-list">
+                    <li><strong>Segregation of Duties:</strong> Separate authorization, recording, and custody</li>
+                    <li><strong>Purchase Authorization:</strong> Require approval based on thresholds</li>
+                    <li><strong>Approved Vendor List:</strong> Maintain vetted vendor list</li>
+                    <li><strong>Prenumbered Documents:</strong> Use for completeness</li>
+                    <li><strong>Three-Way Match:</strong> Match PO, receiving report, invoice</li>
+                    <li><strong>Check Signing Authority:</strong> Dual signatures for large amounts</li>
+                    <li><strong>Physical Safeguards:</strong> Secure inventory and assets</li>
+                    <li><strong>Regular Reconciliations:</strong> Reconcile ledgers and statements</li>
+                    <li><strong>Positive Pay:</strong> Prevent check fraud</li>
+                    <li><strong>IT Controls:</strong> Edit checks and duplicate detection</li>
+                </ul>
+            </div>
+            <div class="info-box"><h4>💡 Preventive vs. Detective</h4><p><strong>Preventive:</strong> Authorization, segregation, three-way match. <strong>Detective:</strong> Reconciliations, counts, variance analysis.</p></div>
+        </div>
+    </div>
+    
+    <script>
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
+            event.target.classList.add('active');
+        }
+    </script>
+</body>
+</html>
