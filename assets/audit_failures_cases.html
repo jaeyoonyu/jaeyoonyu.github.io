@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High-Profile Audit Failures - 10 Major Cases</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 5px;
+            font-size: 2em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 20px;
+            font-size: 1em;
+        }
+        .intro-section {
+            background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+            border-left: 4px solid #475569;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+        .intro-section h2 {
+            color: #1e293b;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+        .intro-section p {
+            color: #334155;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+        
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .summary-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 18px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .summary-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            border-color: #475569;
+        }
+        
+        .summary-card h3 {
+            color: #1e293b;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+        
+        .summary-meta {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        
+        .summary-tag {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+        }
+        
+        .summary-tag.year { background: #dbeafe; color: #1e40af; }
+        .summary-tag.auditor { background: #fef3c7; color: #92400e; }
+        
+        .summary-card p {
+            color: #4a5568;
+            font-size: 0.85em;
+            line-height: 1.5;
+        }
+        
+        .lessons-section {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 25px 0;
+        }
+        
+        .lessons-section h2 {
+            color: #1e40af;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .lessons-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .lessons-section ul li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #1e3a8a;
+            line-height: 1.7;
+            font-size: 0.95em;
+        }
+        
+        .lessons-section ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+            margin: 30px 0 25px 0;
+            flex-wrap: wrap;
+            padding-top: 25px;
+            border-top: 2px solid #e2e8f0;
+        }
+        
+        .tab-btn {
+            background: white;
+            border: 2px solid #e2e8f0;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #4a5568;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+        .tab-btn:hover { border-color: #475569; color: #475569; }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #475569, #334155);
+            color: white;
+            border-color: transparent;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .case-card {
+            background: white;
+            border: 3px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .case-card h3 {
+            color: #1e293b;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        .case-meta {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .meta-tag {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        .meta-tag.year { background: #dbeafe; color: #1e40af; }
+        .meta-tag.auditor { background: #fef3c7; color: #92400e; }
+        .meta-tag.amount { background: #fee2e2; color: #991b1b; }
+        .case-section {
+            margin-bottom: 18px;
+        }
+        .case-section h4 {
+            color: #475569;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .case-section p {
+            color: #4a5568;
+            line-height: 1.7;
+            font-size: 0.95em;
+            margin-bottom: 10px;
+        }
+        .case-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .case-section ul li {
+            padding: 6px 0;
+            padding-left: 25px;
+            position: relative;
+            color: #4a5568;
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+        .case-section ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #475569;
+            font-weight: bold;
+        }
+        .impact-box {
+            background: linear-gradient(135deg, #fee2e2, #fecaca);
+            border-left: 4px solid #dc2626;
+            padding: 18px;
+            border-radius: 8px;
+            margin-top: 18px;
+        }
+        .impact-box h4 {
+            color: #991b1b;
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+        .impact-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .impact-box ul li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+            color: #7f1d1d;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        .impact-box ul li::before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: #dc2626;
+            font-weight: bold;
+        }
+        .lesson-box {
+            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+            border-left: 4px solid #3b82f6;
+            padding: 18px;
+            border-radius: 8px;
+            margin-top: 18px;
+        }
+        .lesson-box h4 {
+            color: #1e40af;
+            margin-bottom: 10px;
+            font-size: 1.05em;
+        }
+        .lesson-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .lesson-box ul li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+            color: #1e3a8a;
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+        .lesson-box ul li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #3b82f6;
+            font-weight: bold;
+        }
+        .info-box {
+            background: #e0f2fe;
+            border-left: 3px solid #0284c7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .info-box h4 {
+            color: #075985;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+        .info-box p {
+            color: #0c4a6e;
+            line-height: 1.6;
+            font-size: 0.9em;
+        }
+        @media (max-width: 768px) {
+            .container { padding: 20px; }
+            h1 { font-size: 1.5em; }
+            .nav-tabs { flex-direction: column; }
+            .tab-btn { width: 100%; padding: 12px; }
+            .summary-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>High-Profile Audit Failures</h1>
+        <p class="subtitle">10 Major Cases Involving Well-Known Public Companies</p>
+        
+        <div class="intro-section">
+            <h2>Learning from Major Audit Failures</h2>
+            <p>These cases involve household names and well-known public companies where audit failures contributed to massive financial fraud, investor losses, and regulatory consequences. Each case offers critical lessons about professional skepticism, independence, and audit quality.</p>
+        </div>
+        
+        <div class="summary-grid">
+            <div class="summary-card" onclick="showTab(1)">
+                <h3>1. Enron</h3>
+                <div class="summary-meta">
+                    <span class="summary-tag year">2001</span>
+                    <span class="summary-tag auditor">Arthur Andersen</span>
+                </div>
+                <p>Energy giant used 3,000+ SPEs to hide debt. Destroyed Arthur Andersen, created SOX and PCAOB. Changed auditing forever.</p>
+            </div>
+            
+            <div class="summary-card" onclick="showTab(2)">
+                <h3>2. WorldCom</h3>
+                <div class="summary-meta">
+                    <span class="summary-tag year">2002</span>
+                    <span class="summary-tag auditor">Arthur Andersen</span>
+                </div>
+                <p>$11B fraud capitalizing operating expenses. Internal auditor discovered it. CEO got 25 years. Largest bankruptcy at the time.</p>
+            </div>
+            
+            <div class="summary-card" onclick="showTab(3)">
+                <h3>3. Wirecard</h3>
+                <div class="summary-meta">
+                    <span class="summary-tag year">2020</span>
+                    <span class="summary-tag auditor">EY</span>
+                </div>
+                <p>German payment processor fabricated €1.9B in cash. EY audited for 10+ years. COO fled, still at large.</p>
+            </div>
+            
+            <div class="summary-card" onclick="showTab(4)">
+                <h3>4. Luckin Coffee</h3>
+                <div class="summary-meta">
+                    <span class="summary-tag year">2020</span>
+                    <span class="summary-tag auditor">EY Hua Ming</span>
+                </div>
+                <p>China's Starbucks fabricated $310M in sales. Delisted from Nasdaq. Heightened scrutiny of Chinese companies.</p>
+            </div>
+            
+            <div class="summary-card" onclick="showTab(5)">
+                <h3>5. Toshiba</h3>
+                <div class="summary-meta">
+                    <span class="summary-tag year">2015</span>
+                    <span class="summary-tag auditor">EY ShinNihon</span>
+                </div>
+                <p>Japanese icon overstated profits $1.2B over 7 years. Pervasive earnings management culture. Top executives resigned.</p>
+            </div>
+            
+            <div class="summary-card" onclick="showTab(6)">
+                <h3>6. Wells Fargo</h3>
+                <div class="summary-meta">
+                    <span class="summary-tag year">2016</span>
+                    <span class="summary-tag auditor">KPMG</span>
+                </div>
+                <p>3.5M unauthorized accounts created by employees. Toxic sales culture. CEO fired, $3B settlement.</p>
+            </div>
+            
+            <div class="summary-card" onclick="showTab(7)">
+                <h3>7. General Electric</h3>
+                <div class="summary-meta">
+                    <span class="summary-tag year">2020</span>
+                    <span class="summary-tag auditor">KPMG</span>
+                </div>
+                <p>Industrial icon manipulated revenue and reserves. Removed from Dow after 111 years. Split into 3 companies.</p>
+            </div>
+            
+            <div class="summary-card" onclick="showTab(8)">
+                <h3>8. Tesla</h3>
+                <div class="summary-meta">
+                    <span class="summary-tag year">2018-19</span>
+                    <span class="summary-tag auditor">PwC</span>
+                </div>
+                <p>Musk's false "funding secured" tweet. Weak disclosure controls. CEO forced to step down as Chairman.</p>
+            </div>
+            
+            <div class="summary-card" onclick="showTab(9)">
+                <h3>9. Boeing</h3>
+                <div class="summary-meta">
+                    <span class="summary-tag year">2019-20</span>
+                    <span class="summary-tag auditor">Deloitte</span>
+                </div>
+                <p>737 MAX crashes killed 346 people. Concealed MCAS safety issues. Safety culture failure, $2.5B settlement.</p>
+            </div>
+            
+            <div class="summary-card" onclick="showTab(10)">
+                <h3>10. Volkswagen</h3>
+                <div class="summary-meta">
+                    <span class="summary-tag year">2015</span>
+                    <span class="summary-tag auditor">PwC</span>
+                </div>
+                <p>"Dieselgate": defeat devices in 11M vehicles. Systematic emissions fraud. Over $30B in fines and buybacks.</p>
+            </div>
+        </div>
+        
+        <div class="lessons-section">
+            <h2>📚 Universal Lessons for Auditors</h2>
+            <ul>
+                <li><strong>Professional Skepticism is Non-Negotiable:</strong> Question everything, especially when things seem too good to be true</li>
+                <li><strong>Independence Must Be Protected:</strong> Avoid any relationships that could compromise objectivity</li>
+                <li><strong>Verify, Don't Trust:</strong> Never rely solely on management representations</li>
+                <li><strong>Test for Management Override:</strong> Specifically design procedures to detect circumvention of controls</li>
+                <li><strong>Follow the Red Flags:</strong> Investigate anomalies, whistleblowers, and warning signs thoroughly</li>
+                <li><strong>Document Thoroughly:</strong> Maintain detailed work papers that support all conclusions</li>
+                <li><strong>Consult on Difficult Issues:</strong> Seek help from specialists and technical experts</li>
+                <li><strong>Consider Corporate Culture:</strong> Assess "tone at the top" and pressure to manipulate results</li>
+                <li><strong>Look Beyond Financials:</strong> Evaluate operational controls, compliance, and safety issues</li>
+                <li><strong>Remember the Public Trust:</strong> Investors and society rely on auditor independence and skepticism</li>
+            </ul>
+        </div>
+        
+        <div class="info-box">
+            <h4>💡 The Cost of Audit Failures</h4>
+            <p>These cases demonstrate that audit failures have catastrophic consequences: companies destroyed, lives ruined, public trust shattered, and entire industries reformed. The accounting profession has evolved significantly since Enron, but vigilance is always required. Every audit opinion represents a public trust responsibility that must never be taken lightly. Click on any case above to explore the details.</p>
+        </div>
+        
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <button class="tab-btn" onclick="showTab(1)">Enron</button>
+            <button class="tab-btn" onclick="showTab(2)">WorldCom</button>
+            <button class="tab-btn" onclick="showTab(3)">Wirecard</button>
+            <button class="tab-btn" onclick="showTab(4)">Luckin Coffee</button>
+            <button class="tab-btn" onclick="showTab(5)">Toshiba</button>
+            <button class="tab-btn" onclick="showTab(6)">Wells Fargo</button>
+            <button class="tab-btn" onclick="showTab(7)">General Electric</button>
+            <button class="tab-btn" onclick="showTab(8)">Tesla</button>
+            <button class="tab-btn" onclick="showTab(9)">Boeing</button>
+            <button class="tab-btn" onclick="showTab(10)">Volkswagen</button>
+        </div>
+        
+        <!-- Case 1: Enron -->
+        <div id="tab-1" class="tab-content">
+            <div class="case-card" style="border-left: 5px solid #dc2626;">
+                <h3>Enron Corporation</h3>
+                <div class="case-meta">
+                    <span class="meta-tag year">2001</span>
+                    <span class="meta-tag auditor">Arthur Andersen</span>
+                    <span class="meta-tag amount">$74B market cap loss</span>
+                </div>
+                
+                <div class="case-section">
+                    <h4>🏢 Company Background</h4>
+                    <p>Once America's 7th largest company, Enron was an energy giant that became synonymous with corporate fraud. The company's collapse led to the most significant accounting reforms in U.S. history.</p>
+                </div>
+                
+                <div class="case-section">
+                    <h4>📋 The Fraud</h4>
+                    <p>Enron used complex special purpose entities (SPEs) and off-balance-sheet partnerships to hide billions in debt and inflate profits through aggressive mark-to-market accounting.</p>
+                    <ul>
+                        <li>Created over 3,000 SPEs to hide debt and inflate revenue</li>
+                        <li>Mark-to-market accounting abused to recognize future profits immediately</li>
+                        <li>Related party transactions with partnerships controlled by CFO Andrew Fastow</li>
+                        <li>Fraudulent revenue recognition on energy trading contracts</li>
+                        <li>Concealed massive losses in subsidiaries</li>
+                    </ul>
+                </div>
+                
+                <div class="case-section">
+                    <h4>⚠️ Audit Failures</h4>
+                    <ul>
+                        <li>Failed to identify or properly audit off-balance-sheet entities</li>
+                        <li>Accepted management's aggressive accounting without sufficient skepticism</li>
+                        <li>Severe conflict of interest: Andersen earned $52M annually ($27M audit, $25M consulting)</li>
+                        <li>Destroyed thousands of audit documents after SEC investigation began</li>
+                        <li>Former Andersen partners worked at Enron, compromising independence</li>
+                        <li>Failed to adequately test complex structured transactions</li>
+                        <li>Did not properly evaluate related party transactions and conflicts</li>
+                    </ul>
+                </div>
+                
+                <div class="impact-box">
+                    <h4>💥 Impact & Consequences</h4>
+                    <ul>
+                        <li><strong>Arthur Andersen destroyed:</strong> Convicted of obstruction (later overturned), but firm dissolved with 85,000 jobs lost worldwide</li>
+                        <li>20,000+ Enron employees lost jobs and $2 billion in pension funds</li>
+                        <li>CEO Ken Lay died before sentencing, CFO Andrew Fastow served 6 years</li>
+                        <li><strong>Sarbanes-Oxley Act of 2002:</strong> Most significant audit reform in history created</li>
+                        <li><strong>PCAOB established:</strong> Public Company Accounting Oversight Board to regulate auditors</li>
+                        <li><strong>Big 5 became Big 4:</strong> Fundamentally changed audit industry structure</li>
+                        <li>Enhanced auditor independence requirements and restrictions on non-audit services</li>
+                    </ul>
+                </div>
+                
+                <div class="lesson-box">
+                    <h4>📚 Key Lessons</h4>
+                    <ul>
+                        <li>Maintain strict auditor independence - consulting fees created fatal conflict of interest</li>
+                        <li>Apply rigorous professional skepticism to complex transactions and structures</li>
+                        <li>Thoroughly understand and audit special purpose entities and off-balance-sheet transactions</li>
+                        <li>Evaluate substance over form - look beyond legal structure to economic reality</li>
+                        <li>Never destroy audit documentation under any circumstances</li>
+                        <li>Question and challenge management's aggressive accounting positions</li>
+                        <li>Be especially alert to related party transactions and potential conflicts of interest</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Remaining case content abbreviated for length - each includes same structure -->
+        <!-- Cases 2-10 follow same format with Company Background, Fraud, Audit Failures, Impact, and Lessons -->
+        
+        <div id="tab-2" class="tab-content">
+            <div class="case-card" style="border-left: 5px solid #dc2626;">
+                <h3>WorldCom</h3>
+                <div class="case-meta">
+                    <span class="meta-tag year">2002</span>
+                    <span class="meta-tag auditor">Arthur Andersen</span>
+                    <span class="meta-tag amount">$11B fraud</span>
+                </div>
+                <div class="case-section">
+                    <h4>🏢 Company Background</h4>
+                    <p>WorldCom was the second-largest long-distance telecom provider in the U.S., handling half of all internet traffic. At bankruptcy, it held $103 billion in assets.</p>
+                </div>
+                <div class="case-section">
+                    <h4>📋 The Fraud</h4>
+                    <p>WorldCom improperly capitalized $3.8 billion in ordinary operating expenses as capital expenditures.</p>
+                    <ul>
+                        <li>Improperly capitalized billions in ordinary operating expenses</li>
+                        <li>Released reserves to boost income</li>
+                        <li>Simple scheme: reclassifying expenses to capital</li>
+                        <li>CEO Ebbers and CFO Sullivan orchestrated fraud</li>
+                        <li>Internal auditor Cynthia Cooper discovered it</li>
+                    </ul>
+                </div>
+                <div class="case-section">
+                    <h4>⚠️ Audit Failures</h4>
+                    <ul>
+                        <li>Failed to detect material expense misclassification</li>
+                        <li>Inadequate testing of capital expenditures and expenses</li>
+                        <li>Over-reliance on management representations</li>
+                        <li>Failed to identify unusual journal entries</li>
+                        <li>Did not test for management override</li>
+                    </ul>
+                </div>
+                <div class="impact-box">
+                    <h4>💥 Impact</h4>
+                    <ul>
+                        <li>Largest bankruptcy in U.S. history at the time</li>
+                        <li>CEO Ebbers: 25-year sentence (died in custody 2020)</li>
+                        <li>17,000 jobs lost</li>
+                        <li>Further damaged Andersen's reputation</li>
+                        <li>Strengthened case for SOX reforms</li>
+                    </ul>
+                </div>
+                <div class="lesson-box">
+                    <h4>📚 Key Lessons</h4>
+                    <ul>
+                        <li>Test capital vs. expense classifications thoroughly</li>
+                        <li>Perform robust analytical procedures</li>
+                        <li>Test unusual journal entries</li>
+                        <li>Never rely solely on management</li>
+                        <li>Support internal audit findings</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Additional case tabs 3-10 would follow same structure -->
+        <!-- Including all for completeness but abbreviated here for space -->
+        
+        <div id="tab-3" class="tab-content"><div class="case-card" style="border-left: 5px solid #f59e0b;"><h3>Wirecard AG</h3><div class="case-meta"><span class="meta-tag year">2020</span><span class="meta-tag auditor">EY</span><span class="meta-tag amount">€1.9B missing</span></div><div class="case-section"><h4>🏢 Company Background</h4><p>German payment processor, DAX-30 member, once valued at €24 billion - Germany's tech success story.</p></div><div class="case-section"><h4>📋 The Fraud</h4><ul><li>Fabricated €1.9B in cash that never existed</li><li>Fake revenue from Asian third-party partners</li><li>Used forged bank confirmations</li><li>Whistleblowers ignored for years</li></ul></div><div class="case-section"><h4>⚠️ Audit Failures</h4><ul><li>EY audited 10+ years without detecting fraud</li><li>Failed to verify cash with trustees</li><li>Relied on forged confirmations</li><li>Didn't investigate whistleblowers</li></ul></div><div class="impact-box"><h4>💥 Impact</h4><ul><li>€25B market value wiped out</li><li>CEO arrested, COO fled (at large)</li><li>EY faces lawsuits and investigations</li><li>German audit reforms</li></ul></div><div class="lesson-box"><h4>📚 Lessons</h4><ul><li>Verify cash independently</li><li>Take whistleblowers seriously</li><li>Apply skepticism to overseas operations</li><li>Consider qualifying opinion if unable to verify</li></ul></div></div></div>
+        
+        <div id="tab-4" class="tab-content"><div class="case-card" style="border-left: 5px solid #f59e0b;"><h3>Luckin Coffee</h3><div class="case-meta"><span class="meta-tag year">2020</span><span class="meta-tag auditor">EY Hua Ming</span><span class="meta-tag amount">$310M fraud</span></div><div class="case-section"><h4>🏢 Company Background</h4><p>China's answer to Starbucks, grew from founding in 2017 to IPO in 2019 with over 4,500 stores.</p></div><div class="case-section"><h4>📋 The Fraud</h4><ul><li>Fabricated $310M in sales</li><li>Created fake transactions and receipts</li><li>COO coordinated fraud</li><li>Went public with fraudulent financials</li></ul></div><div class="case-section"><h4>⚠️ Audit Failures</h4><ul><li>Failed to detect fabricated sales despite aggressive growth</li><li>Inadequate revenue verification</li><li>Insufficient testing of unrealistic growth rates</li></ul></div><div class="impact-box"><h4>💥 Impact</h4><ul><li>Stock collapsed, delisted from Nasdaq</li><li>$180M SEC fine</li><li>Executives barred from officer roles</li><li>Heightened scrutiny of Chinese companies</li></ul></div><div class="lesson-box"><h4>📚 Lessons</h4><ul><li>Be skeptical of "too good to be true" growth</li><li>Thoroughly test app-based revenue</li><li>Verify customer transactions independently</li></ul></div></div></div>
+        
+        <div id="tab-5" class="tab-content"><div class="case-card" style="border-left: 5px solid #f59e0b;"><h3>Toshiba Corporation</h3><div class="case-meta"><span class="meta-tag year">2015</span><span class="meta-tag auditor">EY ShinNihon</span><span class="meta-tag amount">$1.2B overstatement</span></div><div class="case-section"><h4>🏢 Company Background</h4><p>140+ year-old Japanese conglomerate and household name, one of Japan's most iconic corporations.</p></div><div class="case-section"><h4>📋 The Fraud</h4><ul><li>Overstated profits $1.2B over 7 years</li><li>Delayed loss recognition on long-term projects</li><li>Pervasive earnings management culture</li><li>Management pressure to meet targets</li></ul></div><div class="case-section"><h4>⚠️ Audit Failures</h4><ul><li>Failed to detect systematic profit inflation</li><li>Didn't challenge management estimates</li><li>Insufficient skepticism of consistent targets</li></ul></div><div class="impact-box"><h4>💥 Impact</h4><ul><li>CEO, Vice Chairman, President resigned</li><li>7-year restatement</li><li>Stock plummeted</li><li>Japanese governance reforms</li></ul></div><div class="lesson-box"><h4>📚 Lessons</h4><ul><li>Question companies that consistently meet targets</li><li>Apply skepticism to estimates and judgments</li><li>Assess corporate culture for pressure</li></ul></div></div></div>
+        
+        <div id="tab-6" class="tab-content"><div class="case-card" style="border-left: 5px solid #ea580c;"><h3>Wells Fargo</h3><div class="case-meta"><span class="meta-tag year">2016</span><span class="meta-tag auditor">KPMG</span><span class="meta-tag amount">3.5M fake accounts</span></div><div class="case-section"><h4>🏢 Company Background</h4><p>One of the "Big Four" U.S. banks, household name with coast-to-coast branches serving millions.</p></div><div class="case-section"><h4>📋 The Misconduct</h4><ul><li>3.5M unauthorized accounts created</li><li>Toxic sales culture ("Eight is Great")</li><li>Customers charged fees for fake accounts</li><li>5,300 employees terminated</li></ul></div><div class="case-section"><h4>⚠️ Audit Failures</h4><ul><li>Failed to identify control weaknesses</li><li>Didn't detect fraudulent account opening</li><li>Board oversight failures</li></ul></div><div class="impact-box"><h4>💥 Impact</h4><ul><li>$3B settlement (largest ever against bank)</li><li>CEO resigned, forfeited $41M</li><li>Fed capped Wells Fargo's growth</li><li>Massive reputational damage</li></ul></div><div class="lesson-box"><h4>📚 Lessons</h4><ul><li>Assess culture and incentive structures</li><li>Test operational controls, not just financial</li><li>Evaluate whistleblower mechanisms</li></ul></div></div></div>
+        
+        <div id="tab-7" class="tab-content"><div class="case-card" style="border-left: 5px solid #ea580c;"><h3>General Electric</h3><div class="case-meta"><span class="meta-tag year">2020</span><span class="meta-tag auditor">KPMG</span><span class="meta-tag amount">$200M SEC fine</span></div><div class="case-section"><h4>🏢 Company Background</h4><p>Iconic American industrial conglomerate, once world's most valuable company, Dow component for over a century.</p></div><div class="case-section"><h4>📋 The Issues</h4><ul><li>Improper revenue recognition on service agreements</li><li>Failed to account for insurance costs</li><li>Used non-GAAP metrics to mask decline</li><li>Understated insurance liabilities by billions</li></ul></div><div class="case-section"><h4>⚠️ Audit Failures</h4><ul><li>Failed to challenge aggressive revenue recognition</li><li>Insufficient skepticism on insurance reserves</li><li>Inadequate testing of long-term contract estimates</li></ul></div><div class="impact-box"><h4>💥 Impact</h4><ul><li>$200M SEC fine</li><li>Stock declined 70%+ from peak</li><li>Removed from Dow after 111 years</li><li>Split into 3 separate companies by 2024</li></ul></div><div class="lesson-box"><h4>📚 Lessons</h4><ul><li>Challenge aggressive revenue recognition</li><li>Apply skepticism to complex estimates</li><li>Evaluate non-GAAP metrics</li></ul></div></div></div>
+        
+        <div id="tab-8" class="tab-content"><div class="case-card" style="border-left: 5px solid #ea580c;"><h3>Tesla, Inc.</h3><div class="case-meta"><span class="meta-tag year">2018-19</span><span class="meta-tag auditor">PwC</span><span class="meta-tag amount">$40M settlement</span></div><div class="case-section"><h4>🏢 Company Background</h4><p>World's most valuable automaker, led by Elon Musk. Revolutionized EVs but faced scrutiny over controls.</p></div><div class="case-section"><h4>📋 The Issues</h4><ul><li>Musk's false "funding secured" tweet</li><li>Material misstatements on production numbers</li><li>Weak disclosure controls</li><li>Questions about revenue recognition timing</li></ul></div><div class="case-section"><h4>⚠️ Audit Failures</h4><ul><li>Difficulty controlling CEO statements</li><li>Weak disclosure controls</li><li>Challenges auditing aggressive recognition</li></ul></div><div class="impact-box"><h4>💥 Impact</h4><ul><li>$40M fine ($20M each)</li><li>Musk stepped down as Chairman</li><li>Required communication controls</li><li>Added independent directors</li></ul></div><div class="lesson-box"><h4>📚 Lessons</h4><ul><li>Assess disclosure controls over exec communications</li><li>Evaluate social media impact</li><li>Test controls in fast-growth environments</li></ul></div></div></div>
+        
+        <div id="tab-9" class="tab-content"><div class="case-card" style="border-left: 5px solid #ea580c;"><h3>Boeing</h3><div class="case-meta"><span class="meta-tag year">2019-20</span><span class="meta-tag auditor">Deloitte</span><span class="meta-tag amount">$2.5B settlement</span></div><div class="case-section"><h4>🏢 Company Background</h4><p>America's largest aerospace company, Dow component. The 737 MAX crisis was Boeing's worst disaster.</p></div><div class="case-section"><h4>📋 The Issues</h4><ul><li>Concealed MCAS safety information from FAA</li><li>False statements to regulators</li><li>Two crashes killed 346 people</li><li>Inadequate disclosure of safety risks</li></ul></div><div class="case-section"><h4>⚠️ Audit Failures</h4><ul><li>Failed to identify safety control weaknesses</li><li>Insufficient evaluation of operational risks</li><li>Board oversight failures on safety culture</li></ul></div><div class="impact-box"><h4>💥 Impact</h4><ul><li>$2.5B DOJ settlement</li><li>737 MAX grounded 20 months</li><li>CEO fired</li><li>Over $20B in direct costs</li></ul></div><div class="lesson-box"><h4>📚 Lessons</h4><ul><li>Evaluate operational and safety controls</li><li>Assess disclosure of operational risks</li><li>Test whether culture prioritizes safety</li></ul></div></div></div>
+        
+        <div id="tab-10" class="tab-content"><div class="case-card" style="border-left: 5px solid #ea580c;"><h3>Volkswagen</h3><div class="case-meta"><span class="meta-tag year">2015</span><span class="meta-tag auditor">PwC</span><span class="meta-tag amount">$30B+ fines</span></div><div class="case-section"><h4>🏢 Company Background</h4><p>One of world's largest automakers, German industrial icon. "Dieselgate" was one of history's biggest corporate frauds.</p></div><div class="case-section"><h4>📋 The Fraud</h4><ul><li>Defeat devices in 11M vehicles worldwide</li><li>Emitted up to 40x legal pollutant limits</li><li>Software detected test conditions</li><li>Executives approved the cheating</li><li>Marketed as "clean diesel"</li></ul></div><div class="case-section"><h4>⚠️ Audit Failures</h4><ul><li>Failed to identify compliance control weaknesses</li><li>Did not detect systematic regulatory fraud</li><li>Insufficient evaluation of litigation risks</li></ul></div><div class="impact-box"><h4>💥 Impact</h4><ul><li>Over $30B in fines and buybacks</li><li>CEO resigned, criminally charged</li><li>Multiple executives imprisoned</li><li>Stock dropped 50%</li><li>Accelerated shift to electric vehicles</li></ul></div><div class="lesson-box"><h4>📚 Lessons</h4><ul><li>Evaluate compliance and environmental controls</li><li>Assess culture and pressure to meet targets</li><li>Test disclosure of known violations</li></ul></div></div></div>
+        
+    </div>
+    
+    <script>
+        function showTab(num) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            // Show selected tab
+            const tab = document.getElementById('tab-' + num);
+            if (tab) {
+                tab.classList.add('active');
+                // Find and activate the corresponding button
+                const buttons = document.querySelectorAll('.tab-btn');
+                if (buttons[num - 1]) {
+                    buttons[num - 1].classList.add('active');
+                }
+                // Scroll to tabs section
+                document.querySelector('.nav-tabs').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    </script>
+</body>
+</html>
