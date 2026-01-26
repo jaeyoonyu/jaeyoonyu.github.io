@@ -9,6 +9,9 @@ Welcome to my collection of interactive auditing teaching materials. These dynam
 * [Background-Part-I](assets/Ch0A-Handout.pdf)
 * [Background-Part-II](assets/Ch0B-Handout.pdf)
 * [Ch1-Auditing-and-Assurance-Services](assets/Ch1-Handout.pdf)
+  
+**Handout versions** are here. A complete version (with no blanks) will be available via Blackboard after each chapter is covered.
+
 
 ## Interactive, Supplementary Materials
 * <a href="/assets/assertions.html" target="_blank">Management's Assertions</a>
@@ -21,6 +24,5 @@ Welcome to my collection of interactive auditing teaching materials. These dynam
 * <a href="/assets/revenue_cycle_audit.html" target="_blank">Revenue Cycle</a>
 * <a href="/assets/acquisition_payment_cycle.html" target="_blank">Acquisition and Payment Cycle</a>
 * <a href="/assets/audit_failures_cases.html" target="_blank">Audit Failure Cases</a>
-
 
 **Disclaimer**: The materials are still under development and may contain errors or incomplete information. Please use them as supplementary learning tools and always refer to official standards and textbooks for authoritative guidance. E-mail me if you spot any **"material" errors**!
