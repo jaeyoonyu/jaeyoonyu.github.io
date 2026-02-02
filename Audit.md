@@ -5,10 +5,12 @@ title: "Audit"
 
 Welcome to my auditing course materials. This page includes lecture notes (handout versions with blanks for active learning) and interactive HTML applications designed to help accounting students understand key auditing concepts—from the U.S. regulatory framework (SEC, PCAOB, AICPA) to audit procedures and internal controls—through engaging, clickable visualizations that make complex relationships clearer and more memorable.
 
-## 📄Lecture Notes
+## 📄Lecture Notes 
+* [Syllabus-2026S](assets/ACC531.pdf)
 * [Background-Part-I](assets/Ch0A-Handout.pdf)
 * [Background-Part-II](assets/Ch0B-Handout.pdf)
 * [Ch1-Auditing-and-Assurance-Services](assets/Ch1-Handout.pdf)
+* [Ch2-Professional-Standards](assets/Ch1-Handout.pdf)
   
 **A complete version (with no blanks)** will be available via Blackboard after each chapter is covered.
 
