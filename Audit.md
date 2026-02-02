@@ -10,7 +10,7 @@ Welcome to my auditing course materials. This page includes lecture notes (hando
 * [Background-Part-I](assets/Ch0A-Handout.pdf)
 * [Background-Part-II](assets/Ch0B-Handout.pdf)
 * [Ch1-Auditing-and-Assurance-Services](assets/Ch1-Handout.pdf)
-* [Ch2-Professional-Standards](assets/Ch1-Handout.pdf)
+* [Ch2-Professional-Standards](assets/Ch2-Handout.pdf)
   
 **A complete version (with no blanks)** will be available via Blackboard after each chapter is covered.
 
