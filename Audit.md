@@ -21,7 +21,6 @@ Welcome to my auditing course materials. This page includes lecture notes (hando
 * <a href="/assets/audit-process-overview.html" target="_blank">Audit Process Overview</a>
 * <a href="/assets/substantive_procedures.html" target="_blank">Substantive Procedures</a>
 * <a href="/assets/coso_framework.html" target="_blank">COSO Framework</a>
-* <a href="/assets/audit-process-overview.html" target="_blank">Audit Process Overview</a>
 * <a href="/assets/fraud_risk_audit.html" target="_blank">Fraud Risk</a>
 * <a href="/assets/revenue_cycle_audit.html" target="_blank">Revenue Cycle</a>
 * <a href="/assets/acquisition_payment_cycle.html" target="_blank">Acquisition and Payment Cycle</a>
