@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal Entry Practice</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 8px;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 6px;
+        }
+
+        header h1 {
+            font-size: 1.4rem;
+            margin-bottom: 2px;
+        }
+
+        header p {
+            opacity: 0.9;
+            font-size: 0.85rem;
+        }
+
+        /* Step Navigation */
+        .step-nav {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+
+        .step-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: 2px solid rgba(255,255,255,0.3);
+            padding: 5px 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .step-btn:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .step-btn.active {
+            background: white;
+            color: #667eea;
+            border-color: white;
+        }
+
+        .step-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: rgba(255,255,255,0.2);
+            border-radius: 6px;
+            height: 4px;
+            margin-bottom: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: #2ecc71;
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            color: white;
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+        }
+
+        /* Main Card */
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: #f8f9fa;
+            padding: 8px 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .question-number {
+            color: #667eea;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+        }
+
+        .transaction-text {
+            font-size: 1rem;
+            color: #333;
+            line-height: 1.3;
+        }
+
+        .card-body {
+            padding: 12px;
+        }
+
+        /* Journal Entry Table */
+        .journal-entry {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 8px;
+        }
+
+        .journal-entry th {
+            background: #667eea;
+            color: white;
+            padding: 5px 8px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .journal-entry th:nth-child(2),
+        .journal-entry th:nth-child(3) {
+            text-align: right;
+            width: 85px;
+        }
+
+        .journal-entry td {
+            padding: 6px 8px;
+            border-bottom: 1px solid #eee;
+            font-size: 0.9rem;
+        }
+
+        .journal-entry td:nth-child(2),
+        .journal-entry td:nth-child(3) {
+            text-align: right;
+            font-family: 'Courier New', monospace;
+            font-weight: 600;
+        }
+
+        .journal-entry tr.credit-row td:first-child {
+            padding-left: 30px;
+        }
+
+        /* Account Slot */
+        .account-slot {
+            display: inline-block;
+            min-width: 140px;
+            padding: 4px 8px;
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            background: #f8f9fa;
+            color: #999;
+            font-style: italic;
+            font-size: 0.9rem;
+        }
+
+        .account-slot.filled {
+            border-style: solid;
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .account-slot.debit-filled {
+            border-color: #3498db;
+            background: #ebf5fb;
+            color: #2980b9;
+        }
+
+        .account-slot.credit-filled {
+            border-color: #e74c3c;
+            background: #ffe5e5;
+            color: #c0392b;
+        }
+
+        .account-slot.correct {
+            border-color: #2ecc71;
+            background: #e8f8f0;
+            color: #155724;
+        }
+
+        .account-slot.incorrect {
+            border-color: #e74c3c;
+            background: #fdf0f0;
+            color: #721c24;
+        }
+
+        .amount {
+            color: #333;
+        }
+
+        /* Account Selection Panel - Two Columns */
+        .account-panel {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 8px;
+            margin-bottom: 6px;
+        }
+
+        .account-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .account-column {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .column-header {
+            text-align: center;
+            font-weight: 600;
+            padding: 4px;
+            border-radius: 5px;
+            margin-bottom: 2px;
+            font-size: 0.85rem;
+        }
+
+        .column-header.debit {
+            background: #3498db;
+            color: white;
+        }
+
+        .column-header.credit {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .account-btn {
+            padding: 5px 8px;
+            font-size: 0.85rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            background: white;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-weight: 500;
+            text-align: center;
+        }
+
+        .account-btn:hover {
+            border-color: #999;
+            background: #f5f5f5;
+        }
+
+        .account-btn.focused {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.5);
+        }
+
+        .account-btn.debit-selected {
+            border-color: #3498db;
+            background: #3498db;
+            color: white;
+        }
+
+        .account-btn.credit-selected {
+            border-color: #e74c3c;
+            background: #e74c3c;
+            color: white;
+        }
+
+        .account-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Buttons */
+        .btn-container {
+            display: flex;
+            gap: 5px;
+            justify-content: center;
+            margin-top: 6px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+            border: 2px solid transparent;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn.focused {
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-clear {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Feedback */
+        .feedback {
+            margin-top: 8px;
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+        }
+
+        .feedback.incorrect {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+        }
+
+        .feedback h3 {
+            margin-bottom: 6px;
+            font-size: 1.1rem;
+        }
+
+        .feedback p {
+            line-height: 1.4;
+            font-size: 1.05rem;
+        }
+
+        /* Score Display */
+        .score-display {
+            text-align: center;
+            color: white;
+            margin-top: 6px;
+            font-size: 0.9rem;
+        }
+
+        .score-display span {
+            font-weight: bold;
+            font-size: 1.05rem;
+        }
+
+        /* Keyboard hint */
+        .keyboard-hint {
+            text-align: center;
+            color: #999;
+            font-size: 0.75rem;
+            margin-top: 6px;
+        }
+
+        .keyboard-hint kbd {
+            background: #eee;
+            padding: 1px 4px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+            font-family: inherit;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Journal Entry Practice</h1>
+            <p>Select accounts for the journal entry</p>
+        </header>
+
+        <div class="step-nav">
+            <button class="step-btn active" onclick="switchStep(1)">Step 1: Basic Accounts</button>
+            <button class="step-btn" onclick="switchStep(2)" disabled>Step 2</button>
+            <button class="step-btn" onclick="switchStep(3)" disabled>Step 3</button>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
+        </div>
+        <div class="progress-text" id="progress-text">Question 1 of 6</div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="question-number" id="question-number">Transaction 1</div>
+                <div class="transaction-text" id="transaction-text"></div>
+            </div>
+            <div class="card-body">
+                <table class="journal-entry">
+                    <thead>
+                        <tr>
+                            <th>Account</th>
+                            <th>Debit</th>
+                            <th>Credit</th>
+                        </tr>
+                    </thead>
+                    <tbody id="journal-body">
+                    </tbody>
+                </table>
+
+                <div class="account-panel" id="account-panel">
+                    <div class="account-columns">
+                        <div class="account-column" id="debit-column">
+                            <div class="column-header debit">Select DEBIT Account</div>
+                        </div>
+                        <div class="account-column" id="credit-column">
+                            <div class="column-header credit">Select CREDIT Account</div>
+                        </div>
+                    </div>
+                    <div class="keyboard-hint">
+                        <kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd> navigate accounts &nbsp;|&nbsp;
+                        <kbd>Space</kbd> select &nbsp;|&nbsp;
+                        <kbd>Enter</kbd> submit/next &nbsp;|&nbsp;
+                        <kbd>Shift+←</kbd> prev &nbsp;|&nbsp;
+                        <kbd>Shift+→</kbd> next &nbsp;|&nbsp;
+                        <kbd>Esc</kbd> clear
+                    </div>
+                </div>
+
+                <div class="btn-container" id="btn-container">
+                    <button class="btn btn-secondary" id="btn-prev" onclick="prevQuestion()">← Previous</button>
+                    <button class="btn btn-clear" id="btn-clear" onclick="clearSelections()">Clear</button>
+                    <button class="btn btn-success" id="btn-check" onclick="checkAnswer()">Check Answer</button>
+                    <button class="btn btn-secondary" id="btn-next" onclick="nextQuestion()">Next →</button>
+                </div>
+
+                <div class="feedback" id="feedback">
+                    <h3 id="feedback-title"></h3>
+                    <p id="feedback-text"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="score-display">
+            Score: <span id="score">0</span> / <span id="total">6</span>
+        </div>
+    </div>
+
+    <script>
+        // Step 1 Accounts
+        const step1Accounts = [
+            "Cash", "Supplies", "Software", "PPE (Equipment)",
+            "Accounts Payable", "Notes Payable", "Logo and Trademarks", "Common Stock"
+        ];
+
+        // Step 1 Transactions
+        const step1Transactions = [
+            {
+                id: 1,
+                text: "The owners invested $50,000 cash to start the business.",
+                debitAccount: "Cash",
+                creditAccount: "Common Stock",
+                debitAmount: 50000,
+                creditAmount: 50000,
+                explanation: "When owners invest cash, the company receives Cash (an asset that increases with a debit) and issues Common Stock (equity that increases with a credit)."
+            },
+            {
+                id: 2,
+                text: "Purchased office supplies for $2,000 on account.",
+                debitAccount: "Supplies",
+                creditAccount: "Accounts Payable",
+                debitAmount: 2000,
+                creditAmount: 2000,
+                explanation: "Buying supplies on account increases Supplies (asset, debit) and creates an obligation in Accounts Payable (liability, credit)."
+            },
+            {
+                id: 3,
+                text: "Purchased equipment for $30,000 cash.",
+                debitAccount: "PPE (Equipment)",
+                creditAccount: "Cash",
+                debitAmount: 30000,
+                creditAmount: 30000,
+                explanation: "Purchasing equipment increases PPE (asset, debit) and decreases Cash (asset, credit). This is an exchange of one asset for another."
+            },
+            {
+                id: 4,
+                text: "Borrowed $20,000 from the bank by signing a note.",
+                debitAccount: "Cash",
+                creditAccount: "Notes Payable",
+                debitAmount: 20000,
+                creditAmount: 20000,
+                explanation: "Borrowing money increases Cash (asset, debit) and creates a Notes Payable obligation (liability, credit)."
+            },
+            {
+                id: 5,
+                text: "Purchased accounting software for $5,000 on account.",
+                debitAccount: "Software",
+                creditAccount: "Accounts Payable",
+                debitAmount: 5000,
+                creditAmount: 5000,
+                explanation: "Buying software on account increases Software (asset, debit) and creates an Accounts Payable obligation (liability, credit)."
+            },
+            {
+                id: 6,
+                text: "Paid $8,000 cash to register the company logo and trademarks.",
+                debitAccount: "Logo and Trademarks",
+                creditAccount: "Cash",
+                debitAmount: 8000,
+                creditAmount: 8000,
+                explanation: "Registering trademarks increases Logo and Trademarks (intangible asset, debit) and decreases Cash (asset, credit)."
+            }
+        ];
+
+        // State
+        let currentStep = 1;
+        let currentQuestion = 0;
+        let transactions = step1Transactions;
+        let accounts = step1Accounts;
+        let score = 0;
+        let answered = new Array(step1Transactions.length).fill(false);
+        let correct = new Array(step1Transactions.length).fill(false);
+        let userSelections = new Array(step1Transactions.length).fill(null).map(() => ({ debit: null, credit: null }));
+
+        // Selection state
+        let selectedDebit = null;
+        let selectedCredit = null;
+
+        // Focus state: 'debit' or 'credit'
+        let focusArea = 'debit';
+        let focusedIndex = 0;  // Index within the current area
+
+        // Initialize
+        function init() {
+            renderQuestion();
+            updateProgress();
+            updateScore();
+            document.addEventListener('keydown', handleKeyDown);
+        }
+
+        function handleKeyDown(e) {
+            // ESC always clears
+            if (e.key === 'Escape') {
+                clearSelections();
+                e.preventDefault();
+                return;
+            }
+
+            // Shift + Arrow for navigation buttons
+            if (e.shiftKey && e.key === 'ArrowLeft') {
+                prevQuestion();
+                e.preventDefault();
+                return;
+            }
+
+            if (e.shiftKey && e.key === 'ArrowRight') {
+                nextQuestion();
+                e.preventDefault();
+                return;
+            }
+
+            const numAccounts = accounts.length;
+
+            switch (e.key) {
+                case 'ArrowRight':
+                    // Wrap around: debit -> credit -> debit
+                    if (focusArea === 'debit') {
+                        focusArea = 'credit';
+                    } else {
+                        focusArea = 'debit';
+                    }
+                    updateFocus();
+                    e.preventDefault();
+                    break;
+
+                case 'ArrowLeft':
+                    // Wrap around: credit -> debit -> credit
+                    if (focusArea === 'credit') {
+                        focusArea = 'debit';
+                    } else {
+                        focusArea = 'credit';
+                    }
+                    updateFocus();
+                    e.preventDefault();
+                    break;
+
+                case 'ArrowDown':
+                    // Wrap to top at bottom
+                    if (focusedIndex < numAccounts - 1) {
+                        focusedIndex++;
+                    } else {
+                        focusedIndex = 0;
+                    }
+                    updateFocus();
+                    e.preventDefault();
+                    break;
+
+                case 'ArrowUp':
+                    // Wrap to bottom at top
+                    if (focusedIndex > 0) {
+                        focusedIndex--;
+                    } else {
+                        focusedIndex = numAccounts - 1;
+                    }
+                    updateFocus();
+                    e.preventDefault();
+                    break;
+
+                case ' ':
+                    if (focusArea === 'debit') {
+                        selectDebit(accounts[focusedIndex]);
+                    } else if (focusArea === 'credit') {
+                        selectCredit(accounts[focusedIndex]);
+                    }
+                    e.preventDefault();
+                    break;
+
+                case 'Enter':
+                    if (answered[currentQuestion]) {
+                        if (correct[currentQuestion]) {
+                            // If correct, move to next question
+                            nextQuestion();
+                        } else {
+                            // If incorrect, allow retry
+                            retryQuestion();
+                        }
+                    } else if (selectedDebit && selectedCredit) {
+                        // Submit the answer
+                        checkAnswer();
+                    }
+                    e.preventDefault();
+                    break;
+            }
+        }
+
+        function updateFocus() {
+            // Remove all focus
+            document.querySelectorAll('.focused').forEach(el => el.classList.remove('focused'));
+
+            if (focusArea === 'debit') {
+                const btns = document.querySelectorAll('#debit-column .account-btn');
+                if (btns[focusedIndex]) btns[focusedIndex].classList.add('focused');
+            } else if (focusArea === 'credit') {
+                const btns = document.querySelectorAll('#credit-column .account-btn');
+                if (btns[focusedIndex]) btns[focusedIndex].classList.add('focused');
+            }
+        }
+
+        function renderQuestion() {
+            const t = transactions[currentQuestion];
+
+            document.getElementById('question-number').textContent = `Transaction ${currentQuestion + 1}`;
+            document.getElementById('transaction-text').textContent = t.text;
+
+            // Load saved selections for this question
+            selectedDebit = userSelections[currentQuestion].debit;
+            selectedCredit = userSelections[currentQuestion].credit;
+
+            // Build journal entry table
+            const tbody = document.getElementById('journal-body');
+            tbody.innerHTML = '';
+
+            // Debit row
+            const debitRow = document.createElement('tr');
+            debitRow.className = 'debit-row';
+
+            let debitSlotClass = 'account-slot';
+            let debitText = 'Select from left...';
+
+            if (answered[currentQuestion]) {
+                const wasDebitCorrect = userSelections[currentQuestion].debit === t.debitAccount;
+                debitSlotClass += wasDebitCorrect ? ' correct' : ' incorrect';
+                debitText = t.debitAccount;
+            } else if (selectedDebit) {
+                debitSlotClass += ' filled debit-filled';
+                debitText = selectedDebit;
+            }
+
+            debitRow.innerHTML = `
+                <td><span class="${debitSlotClass}">${debitText}</span></td>
+                <td class="amount">$${t.debitAmount.toLocaleString()}</td>
+                <td class="amount"></td>
+            `;
+            tbody.appendChild(debitRow);
+
+            // Credit row
+            const creditRow = document.createElement('tr');
+            creditRow.className = 'credit-row';
+
+            let creditSlotClass = 'account-slot';
+            let creditText = 'Select from right...';
+
+            if (answered[currentQuestion]) {
+                const wasCreditCorrect = userSelections[currentQuestion].credit === t.creditAccount;
+                creditSlotClass += wasCreditCorrect ? ' correct' : ' incorrect';
+                creditText = t.creditAccount;
+            } else if (selectedCredit) {
+                creditSlotClass += ' filled credit-filled';
+                creditText = selectedCredit;
+            }
+
+            creditRow.innerHTML = `
+                <td><span class="${creditSlotClass}">${creditText}</span></td>
+                <td class="amount"></td>
+                <td class="amount">$${t.creditAmount.toLocaleString()}</td>
+            `;
+            tbody.appendChild(creditRow);
+
+            // Render account buttons
+            renderAccountButtons();
+
+            // Update button states
+            document.getElementById('btn-prev').disabled = currentQuestion === 0;
+            document.getElementById('btn-next').disabled = currentQuestion === transactions.length - 1;
+            document.getElementById('btn-clear').disabled = answered[currentQuestion];
+            document.getElementById('btn-check').disabled = answered[currentQuestion] || !selectedDebit || !selectedCredit;
+
+            // Show/hide account panel
+            document.getElementById('account-panel').style.display = answered[currentQuestion] ? 'none' : 'block';
+
+            if (answered[currentQuestion]) {
+                showFeedback(correct[currentQuestion], t.explanation);
+            } else {
+                hideFeedback();
+            }
+
+            // Reset focus to debit column
+            if (!answered[currentQuestion]) {
+                focusArea = 'debit';
+                focusedIndex = 0;
+            }
+            updateFocus();
+        }
+
+        function renderAccountButtons() {
+            const debitColumn = document.getElementById('debit-column');
+            const creditColumn = document.getElementById('credit-column');
+
+            // Clear existing buttons (keep headers)
+            debitColumn.innerHTML = '<div class="column-header debit">Select DEBIT Account</div>';
+            creditColumn.innerHTML = '<div class="column-header credit">Select CREDIT Account</div>';
+
+            accounts.forEach((account, idx) => {
+                // Debit button
+                const debitBtn = document.createElement('button');
+                debitBtn.className = 'account-btn';
+                debitBtn.textContent = account;
+                if (account === selectedDebit) {
+                    debitBtn.classList.add('debit-selected');
+                }
+                debitBtn.onclick = () => {
+                    focusArea = 'debit';
+                    focusedIndex = idx;
+                    selectDebit(account);
+                };
+                debitColumn.appendChild(debitBtn);
+
+                // Credit button
+                const creditBtn = document.createElement('button');
+                creditBtn.className = 'account-btn';
+                creditBtn.textContent = account;
+                if (account === selectedCredit) {
+                    creditBtn.classList.add('credit-selected');
+                }
+                creditBtn.onclick = () => {
+                    focusArea = 'credit';
+                    focusedIndex = idx;
+                    selectCredit(account);
+                };
+                creditColumn.appendChild(creditBtn);
+            });
+        }
+
+        function selectDebit(account) {
+            if (answered[currentQuestion]) return;
+
+            if (selectedDebit === account) {
+                selectedDebit = null;
+            } else {
+                selectedDebit = account;
+            }
+            userSelections[currentQuestion].debit = selectedDebit;
+            renderQuestion();
+        }
+
+        function selectCredit(account) {
+            if (answered[currentQuestion]) return;
+
+            if (selectedCredit === account) {
+                selectedCredit = null;
+            } else {
+                selectedCredit = account;
+            }
+            userSelections[currentQuestion].credit = selectedCredit;
+            renderQuestion();
+        }
+
+        function clearSelections() {
+            if (answered[currentQuestion]) return;
+            selectedDebit = null;
+            selectedCredit = null;
+            userSelections[currentQuestion] = { debit: null, credit: null };
+            focusArea = 'debit';
+            focusedIndex = 0;
+            renderQuestion();
+        }
+
+        function retryQuestion() {
+            // Allow retry for incorrect answers
+            answered[currentQuestion] = false;
+            correct[currentQuestion] = false;
+            selectedDebit = null;
+            selectedCredit = null;
+            userSelections[currentQuestion] = { debit: null, credit: null };
+            focusArea = 'debit';
+            focusedIndex = 0;
+            renderQuestion();
+            updateProgress();
+        }
+
+        function checkAnswer() {
+            if (answered[currentQuestion]) return;
+            if (!selectedDebit || !selectedCredit) return;
+
+            const t = transactions[currentQuestion];
+
+            const debitCorrect = selectedDebit === t.debitAccount;
+            const creditCorrect = selectedCredit === t.creditAccount;
+            const allCorrect = debitCorrect && creditCorrect;
+
+            answered[currentQuestion] = true;
+            correct[currentQuestion] = allCorrect;
+
+            if (allCorrect) {
+                score++;
+                updateScore();
+            }
+
+            renderQuestion();
+            updateProgress();
+        }
+
+        function showFeedback(isCorrect, explanation) {
+            const feedback = document.getElementById('feedback');
+            const title = document.getElementById('feedback-title');
+            const text = document.getElementById('feedback-text');
+
+            feedback.className = `feedback show ${isCorrect ? 'correct' : 'incorrect'}`;
+            title.textContent = isCorrect ? '✓ Correct!' : '✗ Not quite right';
+            text.textContent = explanation;
+        }
+
+        function hideFeedback() {
+            document.getElementById('feedback').className = 'feedback';
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < transactions.length - 1) {
+                currentQuestion++;
+                renderQuestion();
+                updateProgress();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            const answeredCount = answered.filter(a => a).length;
+            const total = transactions.length;
+            const percent = (answeredCount / total) * 100;
+
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+            document.getElementById('progress-text').textContent = `Question ${currentQuestion + 1} of ${total}`;
+            document.getElementById('total').textContent = total;
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+
+        function switchStep(step) {
+            if (step !== 1) return;
+            currentStep = step;
+        }
+
+        // Start
+        init();
+    </script>
+</body>
+</html>
