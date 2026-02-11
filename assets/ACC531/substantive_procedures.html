@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Substantive Audit Procedures - Interactive Visualization</title>
+    <title>Audit Procedures - Interactive Visualization</title>
     <style>
         * {
             margin: 0;
@@ -13,154 +13,366 @@
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
-            padding: 20px;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
             min-height: 100vh;
         }
         
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
+        .page-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: #2d3748;
+            color: white;
+            padding: 15px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar h2 {
+            padding: 0 15px;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            color: white;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 10px;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar li {
+            margin: 0;
+        }
+        
+        .sidebar a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            font-size: 0.9em;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .sidebar a:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .sidebar a.active {
+            background: rgba(59, 130, 246, 0.3);
+            color: white;
+            border-left-color: #3b82f6;
+            font-weight: 600;
+        }
+        
+        .sidebar .sub-item {
+            padding-left: 30px;
+            font-size: 0.85em;
+        }
+        
+        .main-content {
+            margin-left: 250px;
+            flex: 1;
+            padding: 20px 30px;
             background: white;
-            border-radius: 20px;
-            padding: 35px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            min-height: 100vh;
+            max-width: 1200px;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.75em;
+            font-weight: 500;
+            margin: 2px 4px 2px 0;
+            transition: all 0.2s ease;
+        }
+        
+        .tag:hover {
+            background: #bae6fd;
+            color: #075985;
+        }
+        
+        .tag-container {
+            margin-top: 8px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
         }
         
         h1 {
-            text-align: center;
             color: #2d3748;
-            margin-bottom: 5px;
-            font-size: 2em;
+            margin-bottom: 8px;
+            font-size: 1.6em;
         }
         
         .subtitle {
-            text-align: center;
             color: #718096;
-            margin-bottom: 20px;
-            font-size: 1em;
+            margin-bottom: 15px;
+            font-size: 0.9em;
         }
         
         .intro-section {
-            background: linear-gradient(135deg, #dbeafe, #bfdbfe);
-            border-left: 4px solid #3b82f6;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 25px;
+            background: #f7fafc;
+            border-left: 3px solid #3b82f6;
+            padding: 12px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
         }
         
         .intro-section h2 {
             color: #1e40af;
-            margin-bottom: 10px;
-            font-size: 1.3em;
+            margin-bottom: 8px;
+            font-size: 1.1em;
         }
         
         .intro-section p {
-            color: #1e3a8a;
-            line-height: 1.6;
-            font-size: 0.95em;
-        }
-        
-        .nav-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-        
-        .tab-btn {
-            background: white;
-            border: 2px solid #e2e8f0;
-            padding: 12px 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
             color: #4a5568;
-            transition: all 0.3s ease;
-            font-size: 0.95em;
+            line-height: 1.5;
+            font-size: 0.9em;
+            margin: 0;
         }
         
-        .tab-btn:hover {
-            border-color: #3b82f6;
-            color: #3b82f6;
+        .uses-section {
+            margin-bottom: 15px;
         }
         
-        .tab-btn.active {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            color: white;
-            border-color: transparent;
+        .uses-section h3 {
+            color: #2d3748;
+            margin-bottom: 10px;
+            font-size: 1em;
         }
         
-        .tab-content {
+        .uses-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+        
+        .use-box {
+            background: #f0fdf4;
+            border: 1px solid #10b981;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .use-box:hover {
+            background: #dcfce7;
+            border-color: #059669;
+        }
+        
+        .use-box h4 {
+            color: #065f46;
+            font-size: 0.9em;
+            margin: 0;
+        }
+        
+        .modal {
             display: none;
-        }
-        
-        .tab-content.active {
-            display: block;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
             animation: fadeIn 0.3s ease;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        .procedure-types {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-        
-        .procedure-card {
+        .modal-content {
             background: white;
-            border: 3px solid #e2e8f0;
+            padding: 30px;
             border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 15px;
+        }
+        
+        .modal-header h3 {
+            color: #1e40af;
+            margin: 0;
+            font-size: 1.5em;
+        }
+        
+        .close-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: all 0.3s ease;
         }
         
+        .close-btn:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+        
+        .modal-body {
+            color: #4a5568;
+            line-height: 1.7;
+            font-size: 0.95em;
+        }
+        
+        .back-btn {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+        }
+        
+        .procedure-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 15px 0;
+        }
+        
+        .procedure-card {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 5px;
+            padding: 12px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
         .procedure-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            border-color: #3b82f6;
+            background: #f0f9ff;
         }
         
         .procedure-card h3 {
             color: #2d3748;
-            margin-bottom: 12px;
-            font-size: 1.3em;
+            margin-bottom: 8px;
+            font-size: 1em;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         
-        .procedure-card .icon {
-            font-size: 1.5em;
+        .procedure-card .number {
+            background: #3b82f6;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.85em;
         }
         
         .procedure-card p {
             color: #4a5568;
-            line-height: 1.7;
-            margin-bottom: 15px;
-            font-size: 0.95em;
+            line-height: 1.5;
+            font-size: 0.85em;
+            margin: 0;
         }
         
-        .procedure-card ul {
+        .detail-view {
+            display: none;
+        }
+        
+        .detail-view.active {
+            display: block;
+        }
+        
+        .detail-content {
+            background: white;
+        }
+        
+        .detail-content h2 {
+            color: #2d3748;
+            margin-bottom: 12px;
+            font-size: 1.4em;
+            border-bottom: 2px solid #3b82f6;
+            padding-bottom: 8px;
+        }
+        
+        .detail-content h3 {
+            color: #1e40af;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .detail-content p {
+            color: #4a5568;
+            line-height: 1.5;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+        
+        .detail-content ul {
             list-style: none;
             padding-left: 0;
+            margin-bottom: 15px;
         }
         
-        .procedure-card ul li {
+        .detail-content ul li {
             color: #4a5568;
-            line-height: 1.6;
-            padding: 6px 0;
-            padding-left: 25px;
+            line-height: 1.5;
+            padding: 5px 0;
+            padding-left: 20px;
             position: relative;
             font-size: 0.9em;
         }
         
-        .procedure-card ul li::before {
+        .detail-content ul li::before {
             content: '▸';
             position: absolute;
             left: 0;
@@ -168,621 +380,662 @@
             font-weight: bold;
         }
         
-        .comparison-table {
-            background: #f7fafc;
-            border-radius: 12px;
-            padding: 25px;
-            margin: 20px 0;
+        .example-box {
+            background: #f0f9ff;
+            border-left: 3px solid #0284c7;
+            padding: 10px 12px;
+            border-radius: 4px;
+            margin: 10px 0;
         }
         
-        .comparison-table h3 {
-            color: #2d3748;
-            margin-bottom: 20px;
-            font-size: 1.3em;
-            text-align: center;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        th {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            color: white;
-            padding: 15px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 0.95em;
-        }
-        
-        td {
-            padding: 15px;
-            border-bottom: 1px solid #e2e8f0;
-            color: #4a5568;
+        .example-box h4 {
+            color: #075985;
+            margin-bottom: 6px;
             font-size: 0.9em;
-            line-height: 1.6;
         }
         
-        tr:last-child td {
-            border-bottom: none;
-        }
-        
-        tr:nth-child(even) {
-            background: #f8fafc;
-        }
-        
-        .assertion-section {
-            background: #f7fafc;
-            border-radius: 12px;
-            padding: 25px;
-            margin: 20px 0;
-        }
-        
-        .assertion-section h3 {
-            color: #2d3748;
-            margin-bottom: 20px;
-            font-size: 1.3em;
-        }
-        
-        .assertion-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
-        }
-        
-        .assertion-card {
-            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
-            border-left: 4px solid #10b981;
-            padding: 18px;
-            border-radius: 10px;
-        }
-        
-        .assertion-card h4 {
-            color: #065f46;
-            margin-bottom: 10px;
-            font-size: 1.05em;
-        }
-        
-        .assertion-card p {
-            color: #047857;
-            font-size: 0.9em;
-            line-height: 1.6;
-        }
-        
-        .assertion-card ul {
-            list-style: none;
-            padding-left: 0;
-            margin-top: 10px;
-        }
-        
-        .assertion-card ul li {
-            color: #047857;
+        .example-box p {
+            color: #0c4a6e;
             line-height: 1.5;
-            padding: 4px 0;
-            padding-left: 20px;
-            position: relative;
             font-size: 0.85em;
-        }
-        
-        .assertion-card ul li::before {
-            content: '•';
-            position: absolute;
-            left: 0;
-            color: #10b981;
-            font-weight: bold;
+            margin: 0;
         }
         
         .info-box {
             background: #e0f2fe;
             border-left: 3px solid #0284c7;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
+            padding: 10px 12px;
+            border-radius: 4px;
+            margin: 10px 0;
         }
         
         .info-box h4 {
             color: #075985;
-            margin-bottom: 8px;
-            font-size: 1em;
+            margin-bottom: 6px;
+            font-size: 0.9em;
         }
         
         .info-box p {
             color: #0c4a6e;
-            line-height: 1.6;
-            font-size: 0.9em;
+            line-height: 1.5;
+            font-size: 0.85em;
+            margin: 0;
         }
         
         .warning-box {
             background: #fef2f2;
             border-left: 3px solid #ef4444;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
+            padding: 10px 12px;
+            border-radius: 4px;
+            margin: 10px 0;
         }
         
         .warning-box h4 {
             color: #991b1b;
-            margin-bottom: 8px;
-            font-size: 1em;
+            margin-bottom: 6px;
+            font-size: 0.9em;
         }
         
         .warning-box p {
             color: #7f1d1d;
-            line-height: 1.6;
-            font-size: 0.9em;
+            line-height: 1.5;
+            font-size: 0.85em;
+            margin: 0;
         }
         
-        .key-points {
-            background: linear-gradient(135deg, #fef3c7, #fde68a);
-            border-left: 4px solid #f59e0b;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
-        }
-        
-        .key-points h3 {
-            color: #92400e;
-            margin-bottom: 15px;
-            font-size: 1.2em;
-        }
-        
-        .key-points ul {
-            list-style: none;
-            padding-left: 0;
-        }
-        
-        .key-points ul li {
-            color: #78350f;
-            line-height: 1.7;
-            padding: 8px 0;
-            padding-left: 30px;
-            position: relative;
-            font-size: 0.95em;
-        }
-        
-        .key-points ul li::before {
-            content: '★';
-            position: absolute;
-            left: 0;
-            color: #f59e0b;
-            font-size: 1.2em;
-        }
-        
-        .key-points ul li strong {
-            color: #92400e;
-        }
-        
-        .decision-flow {
-            background: white;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 25px;
-            margin: 20px 0;
-        }
-        
-        .decision-flow h3 {
-            color: #2d3748;
-            margin-bottom: 20px;
-            font-size: 1.3em;
+        .vouching-tracing-diagram {
+            background: #f7fafc;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
             text-align: center;
         }
         
-        .flow-diagram {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        .diagram-box {
+            display: inline-block;
+            background: #dbeafe;
+            border: 1px solid #3b82f6;
+            border-radius: 4px;
+            padding: 10px;
+            margin: 8px;
+            min-width: 150px;
         }
         
-        .flow-row {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            justify-content: center;
-        }
-        
-        .flow-box {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-            color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            font-weight: 600;
-            text-align: center;
-            min-width: 180px;
+        .diagram-box h4 {
+            color: #1e40af;
+            margin-bottom: 6px;
             font-size: 0.9em;
-            box-shadow: 0 3px 10px rgba(59, 130, 246, 0.3);
+        }
+        
+        .diagram-box p {
+            color: #1e3a8a;
+            font-size: 0.8em;
+            margin: 0;
+        }
+        
+        .arrow {
+            display: inline-block;
+            font-size: 2.5em;
+            color: #3b82f6;
+            margin: 0 15px;
+            vertical-align: middle;
+            font-weight: bold;
+        }
+        
+        .back-btn {
+            display: none;
         }
         
         @media (max-width: 768px) {
-            .container { padding: 20px; }
-            h1 { font-size: 1.5em; }
-            .nav-tabs { flex-direction: column; }
-            .tab-btn { width: 100%; }
-            .procedure-types { grid-template-columns: 1fr; }
-            table { font-size: 0.85em; }
-            th, td { padding: 10px; }
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .procedure-grid { grid-template-columns: 1fr; }
+            .uses-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Substantive Audit Procedures</h1>
-        <p class="subtitle">Tests of Details and Substantive Analytical Procedures</p>
+    <div class="page-wrapper">
+        <nav class="sidebar">
+            <h2>Navigation</h2>
+            <ul>
+                <li><a href="#" onclick="showMain(); return false;" id="nav-overview">Overview</a></li>
+                <li><a href="#" onclick="showDetail(1); return false;" id="nav-1">1. Inspection of Records</a></li>
+                <li><a href="#" onclick="showDetail('1-vouching'); return false;" id="nav-1-vouching" class="sub-item">• Vouching</a></li>
+                <li><a href="#" onclick="showDetail('1-tracing'); return false;" id="nav-1-tracing" class="sub-item">• Tracing</a></li>
+                <li><a href="#" onclick="showDetail('1-scanning'); return false;" id="nav-1-scanning" class="sub-item">• Scanning</a></li>
+                <li><a href="#" onclick="showDetail(2); return false;" id="nav-2">2. Inspection of Assets</a></li>
+                <li><a href="#" onclick="showDetail(3); return false;" id="nav-3">3. Observation</a></li>
+                <li><a href="#" onclick="showDetail(4); return false;" id="nav-4">4. Inquiry</a></li>
+                <li><a href="#" onclick="showDetail(5); return false;" id="nav-5">5. Confirmation</a></li>
+                <li><a href="#" onclick="showDetail(6); return false;" id="nav-6">6. Recalculation</a></li>
+                <li><a href="#" onclick="showDetail(7); return false;" id="nav-7">7. Reperformance</a></li>
+                <li><a href="#" onclick="showDetail(8); return false;" id="nav-8">8. Analytical Procedures</a></li>
+            </ul>
+        </nav>
+        
+        <div class="main-content">
+            <h1>Audit Procedures</h1>
+            <p class="subtitle">8 General Types of Audit Procedures for Gathering Evidence</p>
         
         <div class="intro-section">
-            <h2>What are Substantive Procedures?</h2>
-            <p>Substantive procedures are audit tests designed to detect material misstatements at the assertion level. They are performed to obtain audit evidence about the completeness, accuracy, and validity of account balances and transaction classes. All audits require substantive procedures for material account balances and classes of transactions, regardless of the assessed level of control risk.</p>
+            <h2>What are Audit Procedures?</h2>
+            <p>Audit procedures help auditors gather <strong>sufficient appropriate evidence</strong> to support their audit opinion. The right audit procedure should be selected to test the relevant <strong>assertions</strong>.</p>
         </div>
         
-        <div class="nav-tabs">
-            <button class="tab-btn active" onclick="showTab('types')">Types of Procedures</button>
-            <button class="tab-btn" onclick="showTab('comparison')">Tests of Details vs. Analytics</button>
-            <button class="tab-btn" onclick="showTab('assertions')">Procedures by Assertion</button>
-            <button class="tab-btn" onclick="showTab('nature')">Nature, Timing, Extent</button>
-            <button class="tab-btn" onclick="showTab('examples')">Common Examples</button>
-        </div>
-        
-        <!-- Tab 1: Types of Procedures -->
-        <div id="tab-types" class="tab-content active">
-            <div class="procedure-types">
-                <div class="procedure-card" style="border-color: #3b82f6;">
-                    <h3><span class="icon">🔍</span> Tests of Details</h3>
-                    <p>Detailed examination of individual transactions, account balances, and disclosures to detect material misstatements.</p>
-                    <ul>
-                        <li><strong>Inspection of Records:</strong> Examine documents, contracts, agreements</li>
-                        <li><strong>Inspection of Assets:</strong> Physical examination of tangible assets</li>
-                        <li><strong>Confirmation:</strong> Direct communication with third parties</li>
-                        <li><strong>Recalculation:</strong> Independent calculation to verify mathematical accuracy</li>
-                        <li><strong>Reperformance:</strong> Independent execution of procedures/controls</li>
-                        <li><strong>Vouching:</strong> Trace recorded amounts to supporting documents</li>
-                        <li><strong>Tracing:</strong> Follow source documents to recorded amounts</li>
-                    </ul>
+        <!-- Main Overview -->
+        <div id="main-view">
+            <div class="uses-section">
+                <h3>Uses of Audit Procedures</h3>
+                <div class="uses-grid">
+                    <div class="use-box" onclick="showUseModal('risk')">
+                        <h4>Risk Assessment Procedures</h4>
+                    </div>
+                    <div class="use-box" onclick="showUseModal('controls')">
+                        <h4>Tests of Controls</h4>
+                    </div>
+                    <div class="use-box" onclick="showUseModal('substantive')">
+                        <h4>Substantive Procedures</h4>
+                    </div>
+                </div>
+            </div>
+            <h2 style="text-align: center; color: #2d3748; margin: 30px 0 20px 0;">8 Types of Audit Procedures</h2>
+            <div class="procedure-grid">
+                <div class="procedure-card" onclick="showDetail(1)">
+                    <h3><span class="number">1</span> Inspection of Records or Documents</h3>
+                    <p>Examining records or documents, whether internal or external.</p>
+                    <div class="tag-container" onclick="event.stopPropagation();">
+                        <a href="#" onclick="showDetail('1-vouching'); return false;" class="tag" style="text-decoration: none; cursor: pointer;">Vouching</a>
+                        <a href="#" onclick="showDetail('1-tracing'); return false;" class="tag" style="text-decoration: none; cursor: pointer;">Tracing</a>
+                        <a href="#" onclick="showDetail('1-scanning'); return false;" class="tag" style="text-decoration: none; cursor: pointer;">Scanning</a>
+                    </div>
                 </div>
                 
-                <div class="procedure-card" style="border-color: #10b981;">
-                    <h3><span class="icon">📊</span> Substantive Analytical Procedures</h3>
-                    <p>Evaluation of financial information through analysis of plausible relationships among financial and non-financial data.</p>
-                    <ul>
-                        <li><strong>Trend Analysis:</strong> Compare data over time to identify patterns</li>
-                        <li><strong>Ratio Analysis:</strong> Calculate and analyze financial ratios</li>
-                        <li><strong>Reasonableness Tests:</strong> Develop independent expectations</li>
-                        <li><strong>Regression Analysis:</strong> Statistical modeling of relationships</li>
-                        <li><strong>Industry Comparisons:</strong> Compare to industry benchmarks</li>
-                        <li><strong>Budget vs. Actual:</strong> Compare results to expectations</li>
-                    </ul>
+                <div class="procedure-card" onclick="showDetail(2)">
+                    <h3><span class="number">2</span> Inspection of Tangible Assets</h3>
+                    <p>Physical examination of tangible assets. Provides evidence about existence of assets.</p>
+                </div>
+                
+                <div class="procedure-card" onclick="showDetail(3)">
+                    <h3><span class="number">3</span> Observation</h3>
+                    <p>Looking at a process or procedure being performed by others. Evidence is limited to the point in time when observation occurs.</p>
+                </div>
+                
+                <div class="procedure-card" onclick="showDetail(4)">
+                    <h3><span class="number">4</span> Inquiry</h3>
+                    <p>Seeking information from knowledgeable persons, both financial and non-financial, throughout the entity or outside the entity.</p>
+                </div>
+                
+                <div class="procedure-card" onclick="showDetail(5)">
+                    <h3><span class="number">5</span> Confirmation</h3>
+                    <p>A specific type of inquiry that involves obtaining a representation of information directly from a third party. Provides highly reliable evidence.</p>
+                </div>
+                
+                <div class="procedure-card" onclick="showDetail(6)">
+                    <h3><span class="number">6</span> Recalculation</h3>
+                    <p>Checking the mathematical accuracy of documents or records. Provides evidence about accuracy and valuation.</p>
+                </div>
+                
+                <div class="procedure-card" onclick="showDetail(7)">
+                    <h3><span class="number">7</span> Reperformance</h3>
+                    <p>The auditor's independent execution of procedures or controls that were originally performed as part of the entity's internal control.</p>
+                </div>
+                
+                <div class="procedure-card" onclick="showDetail(8)">
+                    <h3><span class="number">8</span> Analytical Procedures</h3>
+                    <p>Evaluations of financial information through analysis of plausible relationships among both financial and non-financial data.</p>
                 </div>
             </div>
-            
-            <div class="info-box">
-                <h4>💡 When to Use Each Type</h4>
-                <p><strong>Tests of Details:</strong> More effective for existence/occurrence and rights/obligations assertions. Required for material balances. <strong>Analytical Procedures:</strong> More efficient for completeness and valuation assertions when relationships are predictable and data is reliable. Often used together for comprehensive testing.</p>
-            </div>
-            
-            <div class="warning-box">
-                <h4>⚠️ Important Note</h4>
-                <p>Substantive procedures are <strong>mandatory</strong> for all material account balances and transaction classes, regardless of the assessed level of control risk. Auditors cannot rely solely on tests of controls - they must always perform substantive procedures.</p>
-            </div>
         </div>
         
-        <!-- Tab 2: Comparison -->
-        <div id="tab-comparison" class="tab-content">
-            <div class="comparison-table">
-                <h3>Tests of Details vs. Substantive Analytical Procedures</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Characteristic</th>
-                            <th>Tests of Details</th>
-                            <th>Substantive Analytical Procedures</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Definition</strong></td>
-                            <td>Detailed examination of individual transactions and balances</td>
-                            <td>Evaluation of relationships among financial and non-financial data</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Evidence Type</strong></td>
-                            <td>Direct, detailed evidence about specific items</td>
-                            <td>Indirect evidence based on plausible relationships</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Best For</strong></td>
-                            <td>Existence, Rights & Obligations, specific high-risk items</td>
-                            <td>Completeness, Valuation when relationships are stable</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Efficiency</strong></td>
-                            <td>More time-consuming and costly</td>
-                            <td>More efficient when effective</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Effectiveness</strong></td>
-                            <td>Provides direct, persuasive evidence</td>
-                            <td>Effective when data is reliable and relationships predictable</td>
-                        </tr>
-                        <tr>
-                            <td><strong>When Required</strong></td>
-                            <td>Always required for material balances, especially cash</td>
-                            <td>Can substitute for some tests of details when effective</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Examples</strong></td>
-                            <td>Confirmations, physical counts, vouching, inspection</td>
-                            <td>Ratio analysis, trend analysis, reasonableness tests</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Risk Level</strong></td>
-                            <td>Used regardless of risk level</td>
-                            <td>More effective when risk is lower</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div class="info-box">
-                <h4>💡 Combining Both Approaches</h4>
-                <p>Most audits use a combination of both types. For example, for accounts receivable: (1) Use analytical procedures to test overall reasonableness of the balance, (2) Use confirmations (test of details) to verify existence of specific balances, (3) Use aging analysis (analytical) combined with vouching of subsequent collections (tests of details) to assess valuation.</p>
-            </div>
-        </div>
-        
-        <!-- Tab 3: Procedures by Assertion -->
-        <div id="tab-assertions" class="tab-content">
-            <div class="assertion-section">
-                <h3>Substantive Procedures Mapped to Assertions</h3>
-                <div class="assertion-grid">
-                    <div class="assertion-card">
-                        <h4>Existence / Occurrence</h4>
-                        <p><strong>Assets/Liabilities exist; Transactions occurred</strong></p>
-                        <ul>
-                            <li>Confirmation of balances</li>
-                            <li>Physical inspection/observation</li>
-                            <li>Vouching to source documents</li>
-                            <li>Cutoff testing</li>
-                            <li>Review subsequent events</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="assertion-card">
-                        <h4>Completeness</h4>
-                        <p><strong>All items are recorded</strong></p>
-                        <ul>
-                            <li>Analytical procedures (trend analysis)</li>
-                            <li>Tracing from source to records</li>
-                            <li>Search for unrecorded liabilities</li>
-                            <li>Test sequence of documents</li>
-                            <li>Reconciliations</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="assertion-card">
-                        <h4>Accuracy / Valuation</h4>
-                        <p><strong>Recorded at appropriate amounts</strong></p>
-                        <ul>
-                            <li>Recalculation of amounts</li>
-                            <li>Test pricing and extensions</li>
-                            <li>Analytical procedures (ratios)</li>
-                            <li>Test accounting estimates</li>
-                            <li>Lower of cost or market tests</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="assertion-card">
-                        <h4>Rights & Obligations</h4>
-                        <p><strong>Entity has rights to assets/obligations for liabilities</strong></p>
-                        <ul>
-                            <li>Inspection of documents (titles, deeds)</li>
-                            <li>Review contracts and agreements</li>
-                            <li>Confirmation with third parties</li>
-                            <li>Examine debt covenants</li>
-                            <li>Review board minutes</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="assertion-card">
-                        <h4>Cutoff</h4>
-                        <p><strong>Recorded in proper period</strong></p>
-                        <ul>
-                            <li>Test transactions near period-end</li>
-                            <li>Review shipping/receiving documents</li>
-                            <li>Examine dates on source documents</li>
-                            <li>Test bank transfers</li>
-                            <li>Review subsequent events</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="assertion-card">
-                        <h4>Classification</h4>
-                        <p><strong>Recorded in proper accounts</strong></p>
-                        <ul>
-                            <li>Review account classifications</li>
-                            <li>Test capital vs. expense items</li>
-                            <li>Examine account coding</li>
-                            <li>Review general ledger</li>
-                            <li>Test debt classifications</li>
-                        </ul>
-                    </div>
-                    
-                    <div class="assertion-card">
-                        <h4>Presentation & Disclosure</h4>
-                        <p><strong>Properly presented and disclosed</strong></p>
-                        <ul>
-                            <li>Review financial statement presentation</li>
-                            <li>Check disclosure completeness</li>
-                            <li>Compare to GAAP requirements</li>
-                            <li>Review related party disclosures</li>
-                            <li>Examine footnote disclosures</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="info-box">
-                <h4>💡 Designing Procedures for Specific Assertions</h4>
-                <p>Auditors design substantive procedures to address specific assertions based on assessed risks. For high-risk assertions, more extensive or persuasive procedures are needed. Multiple procedures are often used for critical assertions to obtain sufficient appropriate evidence.</p>
-            </div>
-        </div>
-        
-        <!-- Tab 4: Nature, Timing, Extent -->
-        <div id="tab-nature" class="tab-content">
-            <div class="key-points">
-                <h3>Three Key Decisions in Substantive Testing</h3>
+        <!-- Detail Views -->
+        <!-- Procedure 1: Inspection of Records or Documents -->
+        <div id="detail-1" class="detail-view">
+            <div class="detail-content">
+                <h2>1. Inspection of Records or Documents</h2>
+                <p><strong>Definition:</strong> Examining records or documents, whether internal or external.</p>
+                
+                <h3>Key Characteristics</h3>
                 <ul>
-                    <li><strong>Nature:</strong> Type of audit procedure (what procedures to perform)</li>
-                    <li><strong>Timing:</strong> When procedures are performed (interim vs. year-end)</li>
-                    <li><strong>Extent:</strong> Amount of testing (sample size, items selected)</li>
+                    <li>Can be <strong>internal</strong> (purchase orders, invoices, checks, general and subsidiary ledgers, journal entries, worksheets, copies of sales invoices, internal memos or reports)</li>
+                    <li>Can be <strong>external</strong> (vendor invoices, bank statements, customer confirmations, government filings such as tax returns, contracts from third parties, credit reports or correspondence from outsiders)</li>
+                    <li>Can be <strong>original</strong> documents or <strong>copies</strong></li>
+                    <li>Reliability depends on source and nature of the document</li>
                 </ul>
-            </div>
-            
-            <div class="procedure-card" style="border-color: #3b82f6; margin-bottom: 20px;">
-                <h3><span class="icon">🎯</span> Nature of Procedures</h3>
-                <p>The <strong>nature</strong> refers to the type of audit procedure performed:</p>
-                <ul>
-                    <li><strong>More Reliable Procedures:</strong> External confirmation, direct inspection, independent calculation</li>
-                    <li><strong>Less Reliable Procedures:</strong> Inquiry, internal documents, management representations</li>
-                    <li><strong>Risk Response:</strong> Higher risk → More reliable procedures needed</li>
-                </ul>
-            </div>
-            
-            <div class="procedure-card" style="border-color: #10b981; margin-bottom: 20px;">
-                <h3><span class="icon">⏰</span> Timing of Procedures</h3>
-                <p>The <strong>timing</strong> refers to when audit procedures are performed:</p>
-                <ul>
-                    <li><strong>Interim Testing:</strong> Performed before year-end (requires rollforward procedures)</li>
-                    <li><strong>Year-End Testing:</strong> Performed at or near balance sheet date</li>
-                    <li><strong>Post Year-End:</strong> Some procedures after balance sheet date (e.g., subsequent collections)</li>
-                    <li><strong>Risk Response:</strong> Higher risk → Testing closer to year-end</li>
-                </ul>
-            </div>
-            
-            <div class="procedure-card" style="border-color: #f59e0b;">
-                <h3><span class="icon">📏</span> Extent of Procedures</h3>
-                <p>The <strong>extent</strong> refers to the quantity of testing:</p>
-                <ul>
-                    <li><strong>Sample Size:</strong> Number of items tested from a population</li>
-                    <li><strong>Selection Method:</strong> Random, systematic, haphazard, or targeted selection</li>
-                    <li><strong>Coverage:</strong> Percentage of population tested (dollar or item coverage)</li>
-                    <li><strong>Risk Response:</strong> Higher risk → Larger sample size needed</li>
-                </ul>
-            </div>
-            
-            <div class="decision-flow">
-                <h3>Risk Assessment Drives Substantive Procedure Design</h3>
-                <div class="flow-diagram">
-                    <div class="flow-row">
-                        <div class="flow-box" style="background: linear-gradient(135deg, #ef4444, #dc2626);">HIGH RISK</div>
-                        <svg width="45" height="45" viewBox="0 0 45 45"><defs><marker id="arrow1" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L7,3 z" fill="#2d3748" /></marker></defs><line x1="5" y1="22" x2="38" y2="22" stroke="#2d3748" stroke-width="3" marker-end="url(#arrow1)" /></svg>
-                        <div class="flow-box" style="min-width: 300px;">More Reliable + Year-End + Larger Sample</div>
-                    </div>
-                    <div class="flow-row">
-                        <div class="flow-box" style="background: linear-gradient(135deg, #f59e0b, #d97706);">MEDIUM RISK</div>
-                        <svg width="45" height="45" viewBox="0 0 45 45"><defs><marker id="arrow2" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L7,3 z" fill="#2d3748" /></marker></defs><line x1="5" y1="22" x2="38" y2="22" stroke="#2d3748" stroke-width="3" marker-end="url(#arrow2)" /></svg>
-                        <div class="flow-box" style="min-width: 300px;">Mix of Procedures + Flexible Timing</div>
-                    </div>
-                    <div class="flow-row">
-                        <div class="flow-box" style="background: linear-gradient(135deg, #10b981, #059669);">LOW RISK</div>
-                        <svg width="45" height="45" viewBox="0 0 45 45"><defs><marker id="arrow3" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L7,3 z" fill="#2d3748" /></marker></defs><line x1="5" y1="22" x2="38" y2="22" stroke="#2d3748" stroke-width="3" marker-end="url(#arrow3)" /></svg>
-                        <div class="flow-box" style="min-width: 300px;">Analytical Procedures + Interim + Smaller Sample</div>
-                    </div>
+                
+                <h3>Sub-types</h3>
+                <p>Inspection of records includes three important sub-types:</p>
+                <div class="tag-container" style="margin-top: 10px;">
+                    <a href="#" onclick="showDetail('1-vouching'); return false;" class="tag" style="text-decoration: none; cursor: pointer;">Vouching</a>
+                    <a href="#" onclick="showDetail('1-tracing'); return false;" class="tag" style="text-decoration: none; cursor: pointer;">Tracing</a>
+                    <a href="#" onclick="showDetail('1-scanning'); return false;" class="tag" style="text-decoration: none; cursor: pointer;">Scanning</a>
                 </div>
-            </div>
-            
-            <div class="info-box">
-                <h4>💡 Inverse Relationship with Controls</h4>
-                <p>When control risk is low (strong controls), auditors can reduce the extent of substantive procedures, perform them at interim, or use more analytical procedures. When control risk is high (weak controls), more extensive substantive procedures are needed, performed closer to year-end, using more reliable procedures.</p>
+                <ul style="margin-top: 10px;">
+                    <li><strong>Vouching:</strong> Tests whether recorded transactions actually occurred (Occurrence/Existence)</li>
+                    <li><strong>Tracing:</strong> Tests whether all transactions were recorded (Completeness)</li>
+                    <li><strong>Scanning:</strong> General alertness to unusual items and events</li>
+                </ul>
+                
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <p>An auditor inspects:</p>
+                    <ul style="margin-top: 10px;">
+                        <li>A sample of purchase orders to verify that they are properly authorized and contain required information such as vendor name, date, and amount</li>
+                        <li>Bank statements to verify cash balances and reconcile them with the company's records</li>
+                    </ul>
+                </div>
             </div>
         </div>
         
-        <!-- Tab 5: Common Examples -->
-        <div id="tab-examples" class="tab-content">
-            <div class="assertion-section">
-                <h3>Common Substantive Procedures by Account</h3>
+        <!-- Sub-section: Vouching -->
+        <div id="detail-1-vouching" class="detail-view">
+            <div class="detail-content">
+                <h2>1. Inspection of Records - Vouching</h2>
+                <p><strong>Definition:</strong> Testing whether recorded transactions actually occurred by examining source documents.</p>
                 
-                <div class="procedure-card" style="border-left: 5px solid #3b82f6; margin-bottom: 20px;">
-                    <h3><span class="icon">💰</span> Cash</h3>
-                    <ul>
-                        <li><strong>Bank Confirmation:</strong> Direct confirmation of balances with financial institutions</li>
-                        <li><strong>Bank Reconciliation Testing:</strong> Test accuracy and investigate reconciling items</li>
-                        <li><strong>Cutoff Bank Statement:</strong> Obtain statement for period after year-end</li>
-                        <li><strong>Proof of Cash:</strong> Reconcile deposits and disbursements for a period</li>
-                        <li><strong>Test Transfers:</strong> Verify proper recording of bank transfers</li>
-                    </ul>
+                <h3>Key Characteristics</h3>
+                <ul>
+                    <li>Tests whether <strong>recorded transactions actually occurred</strong></li>
+                    <li>Relevant assertions: <strong>Occurrence/Existence</strong></li>
+                    <li>Direction: FROM Accounting records TO Source documents</li>
+                    <li>Used when auditors are concerned about <strong>overstatement</strong> of an account</li>
+                </ul>
+                
+                <div class="vouching-tracing-diagram">
+                    <h3 style="color: #1e40af; margin-bottom: 15px;">Vouching Direction</h3>
+                    <div style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap;">
+                        <div class="diagram-box">
+                            <h4>Source Documents</h4>
+                            <p>Purchase Orders<br>Invoices<br>Receipts</p>
+                        </div>
+                        <div class="arrow">←</div>
+                        <div class="diagram-box">
+                            <h4>Accounting Records</h4>
+                            <p>Journal<br>Ledger<br>Financial Statements</p>
+                        </div>
+                    </div>
+                    <p style="margin-top: 10px; color: #3b82f6; font-weight: bold;">FROM Accounting Records TO Source Documents<br>Tests Occurrence/Existence</p>
                 </div>
                 
-                <div class="procedure-card" style="border-left: 5px solid #10b981; margin-bottom: 20px;">
-                    <h3><span class="icon">📊</span> Accounts Receivable</h3>
-                    <ul>
-                        <li><strong>Confirmation:</strong> Send positive confirmations to customers</li>
-                        <li><strong>Aging Analysis:</strong> Analyze aged trial balance and allowance</li>
-                        <li><strong>Subsequent Collections:</strong> Test cash receipts after year-end</li>
-                        <li><strong>Sales Cutoff:</strong> Test sales near year-end for proper period</li>
-                        <li><strong>Analytical Procedures:</strong> Compare turnover ratios to prior periods</li>
-                    </ul>
+                <div class="example-box">
+                    <h4>Example:</h4>
+                    <p>Vouch a sales entry in the journal to the sales invoice / shipping doc / customer order</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sub-section: Tracing -->
+        <div id="detail-1-tracing" class="detail-view">
+            <div class="detail-content">
+                <h2>1. Inspection of Records - Tracing</h2>
+                <p><strong>Definition:</strong> Testing whether all transactions were recorded by following source documents to accounting records.</p>
+                
+                <h3>Key Characteristics</h3>
+                <ul>
+                    <li>Tests whether <strong>all transactions were recorded</strong></li>
+                    <li>Relevant assertions: <strong>Completeness</strong></li>
+                    <li>Direction: FROM Source documents TO Accounting records</li>
+                    <li>Used when auditors are concerned about <strong>understatement</strong> of an account</li>
+                </ul>
+                
+                <div class="vouching-tracing-diagram">
+                    <h3 style="color: #1e40af; margin-bottom: 15px;">Tracing Direction</h3>
+                    <div style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap;">
+                        <div class="diagram-box">
+                            <h4>Source Documents</h4>
+                            <p>Purchase Orders<br>Invoices<br>Receipts</p>
+                        </div>
+                        <div class="arrow">→</div>
+                        <div class="diagram-box">
+                            <h4>Accounting Records</h4>
+                            <p>Journal<br>Ledger<br>Financial Statements</p>
+                        </div>
+                    </div>
+                    <p style="margin-top: 10px; color: #3b82f6; font-weight: bold;">FROM Source Documents TO Accounting Records<br>Tests Completeness</p>
                 </div>
                 
-                <div class="procedure-card" style="border-left: 5px solid #f59e0b; margin-bottom: 20px;">
-                    <h3><span class="icon">📦</span> Inventory</h3>
-                    <ul>
-                        <li><strong>Physical Observation:</strong> Observe client's physical count</li>
-                        <li><strong>Test Pricing:</strong> Verify cost per unit from vendor invoices</li>
-                        <li><strong>Lower of Cost or Market:</strong> Test NRV for slow-moving items</li>
-                        <li><strong>Cutoff Testing:</strong> Test purchases and sales cutoff</li>
-                        <li><strong>Analytical Procedures:</strong> Analyze inventory turnover and gross margin</li>
-                    </ul>
+                <div class="example-box">
+                    <h4>Example:</h4>
+                    <p>Trace a purchase order to see if it was recorded in the journal</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sub-section: Scanning -->
+        <div id="detail-1-scanning" class="detail-view">
+            <div class="detail-content">
+                <h2>1. Inspection of Records - Scanning</h2>
+                <p><strong>Definition:</strong> The way auditors exercise their general alertness to unusual items and events in clients' documentation.</p>
+                
+                <h3>Key Characteristics</h3>
+                <ul>
+                    <li>An "eyes-open" approach of looking for anything unusual</li>
+                    <li>Could be done with the help of computer-assisted audit techniques (CAATs)</li>
+                    <li>Contributes some evidence related to the <strong>Existence</strong> of assets (starting from the balance sheet, auditors look for supporting evidence from records)</li>
+                    <li>Contributes some evidence related to the <strong>Completeness</strong> of accounting records (starting from records, auditors look for supporting evidence to the balance sheet)</li>
+                </ul>
+                
+                <div class="info-box">
+                    <h4>💡 Purpose</h4>
+                    <p>Scanning helps auditors identify unusual patterns, missing items, or anomalies that may require further investigation through more detailed audit procedures.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Procedure 2: Inspection of Tangible Assets -->
+        <div id="detail-2" class="detail-view">
+            <div class="detail-content">
+                <h2>2. Inspection of Tangible Assets</h2>
+                <p><strong>Definition:</strong> Physical examination of the tangible assets.</p>
+                
+                <h3>Key Characteristics</h3>
+                <ul>
+                    <li>Provides evidence about <strong>existence</strong> of assets</li>
+                    <li>Does <strong>NOT</strong> necessarily provide evidence about <strong>ownership</strong> and <strong>completeness</strong> of assets</li>
+                    <li>Often used for inventory and PPE (Property, Plant, and Equipment)</li>
+                </ul>
+                
+                <div class="warning-box">
+                    <h4>⚠️ Important Limitation</h4>
+                    <p>Some inventory might be held on consignment from others and is therefore not owned by the company. Inspection doesn't test the ownership or completeness of the inventory.</p>
                 </div>
                 
-                <div class="procedure-card" style="border-left: 5px solid #8b5cf6; margin-bottom: 20px;">
-                    <h3><span class="icon">🏢</span> Fixed Assets</h3>
-                    <ul>
-                        <li><strong>Physical Inspection:</strong> Inspect major assets</li>
-                        <li><strong>Vouch Additions:</strong> Examine invoices and authorization for new assets</li>
-                        <li><strong>Recalculate Depreciation:</strong> Test depreciation calculations</li>
-                        <li><strong>Test Disposals:</strong> Verify gain/loss on asset retirements</li>
-                        <li><strong>Impairment Testing:</strong> Assess indicators of impairment</li>
-                    </ul>
+                <div class="example-box">
+                    <h4>Example:</h4>
+                    <p>An auditor physically inspects inventory in a warehouse to verify that the items listed in the inventory records <strong>actually exist</strong> and are in saleable condition. However, some inventory might be held on consignment from others and is therefore not owned by the company. Inspection doesn't test the ownership or completeness of the inventory.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Procedure 3: Observation -->
+        <div id="detail-3" class="detail-view">
+            <div class="detail-content">
+                <h2>3. Observation</h2>
+                <p><strong>Definition:</strong> Looking at a process or procedure being performed by others.</p>
+                
+                <h3>Key Characteristics</h3>
+                <ul>
+                    <li>Evidence is limited to the <strong>point in time</strong> when the observation occurs</li>
+                    <li>Useful for understanding <strong>internal controls</strong> and processes</li>
+                </ul>
+                
+                <div class="info-box">
+                    <h4>💡 Timing Limitation</h4>
+                    <p>Since observation only provides evidence at a specific point in time, auditors may need to combine it with other procedures to obtain evidence about the effectiveness of controls throughout the period.</p>
                 </div>
                 
-                <div class="procedure-card" style="border-left: 5px solid #ef4444; margin-bottom: 20px;">
-                    <h3><span class="icon">📋</span> Accounts Payable</h3>
-                    <ul>
-                        <li><strong>Search for Unrecorded Liabilities:</strong> Examine subsequent disbursements</li>
-                        <li><strong>Cutoff Testing:</strong> Test purchases near year-end</li>
-                        <li><strong>Vouching:</strong> Trace payables to supporting documents</li>
-                        <li><strong>Vendor Statement Reconciliation:</strong> Reconcile to vendor statements</li>
-                        <li><strong>Analytical Procedures:</strong> Analyze payables turnover</li>
-                    </ul>
-                </div>
-                
-                <div class="procedure-card" style="border-left: 5px solid #ec4899;">
-                    <h3><span class="icon">💵</span> Revenue & Expenses</h3>
-                    <ul>
-                        <li><strong>Analytical Procedures:</strong> Compare to budget and prior periods</li>
-                        <li><strong>Vouching:</strong> Trace to supporting documents</li>
-                        <li><strong>Cutoff Testing:</strong> Test transactions near period-end</li>
-                        <li><strong>Test Accruals:</strong> Evaluate reasonableness of estimates</li>
-                        <li><strong>Related Party Review:</strong> Identify unusual transactions</li>
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <ul style="margin-top: 10px;">
+                        <li>An auditor observes the inventory <strong>counting process</strong> to ensure that company employees are following proper procedures for counting and recording inventory</li>
+                        <li>An auditor observes the cash <strong>handling process</strong> at a retail store to verify that cashiers are following proper procedures for handling cash transactions</li>
                     </ul>
                 </div>
             </div>
-            
-            <div class="warning-box">
-                <h4>⚠️ Remember: Sufficient Appropriate Evidence</h4>
-                <p>All substantive procedures must provide <strong>sufficient</strong> (quantity) and <strong>appropriate</strong> (quality) audit evidence. The combination of procedures should address all relevant assertions for material accounts and reduce audit risk to an acceptably low level.</p>
+        </div>
+        
+        <!-- Procedure 4: Inquiry -->
+        <div id="detail-4" class="detail-view">
+            <div class="detail-content">
+                <h2>4. Inquiry</h2>
+                <p><strong>Definition:</strong> Seeking information of knowledgeable persons, both financial and non-financial, throughout the entity or outside the entity.</p>
+                
+                <h3>Key Characteristics</h3>
+                <ul>
+                    <li>Can be <strong>formal</strong> (written) or <strong>informal</strong> (oral)</li>
+                    <li>Provides <strong>less reliable</strong> evidence than other procedures</li>
+                    <li>Should be <strong>corroborated</strong> with other evidence</li>
+                    <li>Used throughout the audit process</li>
+                </ul>
+                
+                <div class="warning-box">
+                    <h4>⚠️ Reliability Consideration</h4>
+                    <p>Inquiry alone is not sufficient to provide sufficient appropriate audit evidence. Auditors should corroborate responses with other audit procedures.</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <ul style="margin-top: 10px;">
+                        <li>An auditor inquires of management about the company's policies for recognizing revenue and whether there have been any changes during the year</li>
+                        <li>An auditor inquires of the accounts payable clerk about the process for processing vendor invoices and what controls are in place to prevent duplicate payments</li>
+                    </ul>
+                </div>
             </div>
+        </div>
+        
+        <!-- Procedure 5: Confirmation -->
+        <div id="detail-5" class="detail-view">
+            <div class="detail-content">
+                <h2>5. Confirmation</h2>
+                <p><strong>Definition:</strong> A specific type of inquiry that involves obtaining a representation of information or an existing condition directly from a third party.</p>
+                
+                <h3>Key Characteristics</h3>
+                <ul>
+                    <li>Provides <strong>highly reliable</strong> evidence because it comes from independent third parties</li>
+                    <li>Commonly used for <strong>accounts receivable</strong>, <strong>accounts payable</strong>, and <strong>bank balances</strong></li>
+                </ul>
+                
+                <h3>Types of Confirmations</h3>
+                
+                <div class="info-box">
+                    <h4>Positive Confirmations</h4>
+                    <ul style="margin-top: 10px;">
+                        <li>Requests that the third party <strong>respond whether or not</strong> they agree with the information stated in the request</li>
+                        <li>Provides <strong>stronger evidence</strong> because non-responses must be followed up</li>
+                        <li>Used when individual balances are <strong>large</strong>, errors are expected, or internal controls are <strong>weak</strong></li>
+                    </ul>
+                </div>
+                
+                <div class="warning-box">
+                    <h4>Negative Confirmations</h4>
+                    <ul style="margin-top: 10px;">
+                        <li>Requests that the third party <strong>respond only if</strong> they disagree with the information stated in the request</li>
+                        <li>No response is interpreted as agreement</li>
+                        <li>Provides <strong>less reliable</strong> evidence due to risk of non-responses going unnoticed</li>
+                        <li>Suitable when the assessed level of risk is <strong>low</strong>, many accounts are involved, and individual balances are <strong>small</strong></li>
+                    </ul>
+                </div>
+                
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <ul style="margin-top: 10px;">
+                        <li>An auditor sends confirmations to customers asking them to verify the amount they owe the company as of the balance sheet date</li>
+                        <li>An auditor sends confirmations to the company's bank asking the bank to verify the cash balance and any outstanding loans as of year-end</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Procedure 6: Recalculation -->
+        <div id="detail-6" class="detail-view">
+            <div class="detail-content">
+                <h2>6. Recalculation</h2>
+                <p><strong>Definition:</strong> Checking the mathematical accuracy of documents or records.</p>
+                
+                <h3>Key Characteristics</h3>
+                <ul>
+                    <li>Involves <strong>rechecking</strong> computations performed by the entity</li>
+                    <li>Can be done <strong>manually</strong> or using <strong>computer-assisted audit techniques</strong></li>
+                    <li>Provides evidence about <strong>accuracy</strong> and <strong>valuation</strong></li>
+                </ul>
+                
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <ul style="margin-top: 10px;">
+                        <li>An auditor recalculates depreciation expense by applying the company's depreciation method and rates to the asset balances to verify the accuracy of the recorded depreciation</li>
+                        <li>An auditor recalculates the total of an accounts receivable aging report by adding up all the individual customer balances to ensure the total matches the general ledger balance</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Procedure 7: Reperformance -->
+        <div id="detail-7" class="detail-view">
+            <div class="detail-content">
+                <h2>7. Reperformance</h2>
+                <p><strong>Definition:</strong> The auditor's independent execution of procedures or controls that were originally performed as part of the entity's internal control.</p>
+                
+                <h3>Key Characteristics</h3>
+                <ul>
+                    <li>Involves <strong>independently</strong> performing the same procedure</li>
+                    <li>Provides evidence about the <strong>effectiveness</strong> of <strong>controls</strong></li>
+                    <li>More <strong>reliable</strong> than observation because auditor performs it independently</li>
+                </ul>
+                
+                <div class="info-box">
+                    <h4>💡 Difference from Observation</h4>
+                    <p>While observation involves watching someone else perform a procedure, reperformance involves the auditor independently executing the same procedure. This provides stronger evidence because the auditor directly experiences the procedure.</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <ul style="margin-top: 10px;">
+                        <li>An auditor reperforms the bank reconciliation that was prepared by the company's accounting staff to verify that it was done correctly and that all reconciling items were properly identified</li>
+                        <li>An auditor reperforms the control procedure of reviewing and approving purchase orders by independently reviewing a sample of purchase orders to verify they meet the company's approval criteria</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Procedure 8: Analytical Procedures -->
+        <div id="detail-8" class="detail-view">
+            <div class="detail-content">
+                <h2>8. Analytical Procedures</h2>
+                <p><strong>Definition:</strong> Evaluations of financial information through analysis of plausible relationships among both financial and non-financial data.</p>
+                
+                <h3>Key Characteristics</h3>
+                <ul>
+                    <li>Involves <strong>comparing</strong> current period data with prior periods, budgets, or industry data</li>
+                    <li>Used for <strong>planning</strong>, <strong>testing</strong>, and <strong>final review</strong></li>
+                    <li>Can identify <strong>unusual</strong> relationships or trends that require investigation</li>
+                </ul>
+                
+                <h3>Types of Analytical Procedures</h3>
+                <ul>
+                    <li><strong>Trend Analysis:</strong> Compare data over time to identify patterns</li>
+                    <li><strong>Ratio Analysis:</strong> Calculate and analyze financial ratios</li>
+                    <li><strong>Reasonableness Tests:</strong> Develop independent expectations</li>
+                    <li><strong>Regression Analysis:</strong> Statistical modeling of relationships</li>
+                    <li><strong>Industry Comparisons:</strong> Compare to industry benchmarks</li>
+                    <li><strong>Budget vs. Actual:</strong> Compare results to expectations</li>
+                </ul>
+                
+                <div class="info-box">
+                    <h4>💡 When Most Effective</h4>
+                    <p>Analytical procedures are most effective when relationships are predictable and data is reliable. They are more efficient for completeness and valuation assertions when relationships are stable.</p>
+                </div>
+                
+                <div class="example-box">
+                    <h4>Examples:</h4>
+                    <ul style="margin-top: 10px;">
+                        <li>An auditor performs analytical procedures by comparing the current year's gross profit margin (40%) with the prior year's margin (35%) and investigating the significant increase to understand if it's due to pricing changes, cost reductions, or potential misstatements</li>
+                        <li>An auditor performs analytical procedures by calculating the accounts receivable turnover ratio and comparing it to industry averages to assess the reasonableness of the accounts receivable balance and identify potential collection issues</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Modal for Use Information -->
+        <div id="useModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modalTitle"></h3>
+                    <button class="close-btn" onclick="closeUseModal()">&times;</button>
+                </div>
+                <div class="modal-body" id="modalBody">
+                </div>
+            </div>
+        </div>
         </div>
     </div>
     
     <script>
-        function showTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.getElementById('tab-' + tabName).classList.add('active');
-            event.target.classList.add('active');
+        function updateNavActive(activeId) {
+            // Remove active class from all nav links
+            document.querySelectorAll('.sidebar a').forEach(link => {
+                link.classList.remove('active');
+            });
+            // Add active class to the clicked link
+            if (activeId) {
+                const activeLink = document.getElementById(activeId);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+            }
         }
+        
+        function showDetail(procedureNum) {
+            document.getElementById('main-view').style.display = 'none';
+            document.querySelectorAll('.detail-view').forEach(view => {
+                view.classList.remove('active');
+            });
+            const detailId = 'detail-' + procedureNum;
+            const detailElement = document.getElementById(detailId);
+            if (detailElement) {
+                detailElement.classList.add('active');
+                updateNavActive('nav-' + procedureNum);
+            }
+        }
+        
+        function showMain() {
+            document.getElementById('main-view').style.display = 'block';
+            document.querySelectorAll('.detail-view').forEach(view => {
+                view.classList.remove('active');
+            });
+            updateNavActive('nav-overview');
+        }
+        
+        // Set overview as active on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            updateNavActive('nav-overview');
+        });
+        
+        // Modal functions for Use boxes
+        const useContent = {
+            risk: {
+                title: 'Risk Assessment Procedures',
+                body: '<p><strong>Definition:</strong> Risk assessment procedures are employed to obtain information for identifying and assessing the risk of material misstatement (RMM) in the financial statements whether due to error or fraud.</p><p><strong>Important Note:</strong> Risk assessment procedures by themselves do <strong>NOT provide</strong> sufficient appropriate evidence on which to base an audit opinion. However, auditors use them for planning the audit and tailoring it to the areas of the financial statements most likely to contain material misstatements.</p><p><strong>Purpose:</strong> These procedures help auditors understand the entity and its environment, including internal controls, to identify where material misstatements might occur.</p>'
+            },
+            controls: {
+                title: 'Tests of Controls',
+                body: '<p><strong>Definition:</strong> Tests of controls are performed to evaluate the operating effectiveness of internal controls in preventing or detecting material misstatements in account balances.</p><p><strong>Purpose:</strong> These procedures test whether internal controls are working as designed and operating effectively throughout the period under audit.</p><p><strong>When Used:</strong> Auditors perform tests of controls when they plan to rely on the operating effectiveness of controls to reduce the extent of substantive procedures.</p><p><strong>Note:</strong> Even if controls are effective, auditors must still perform substantive procedures for material account balances.</p>'
+            },
+            substantive: {
+                title: 'Substantive Procedures',
+                body: '<p><strong>Definition:</strong> Substantive procedures are performed to detect material misstatements in transactions and account balances.</p><p><strong>Types:</strong></p><ul><li><strong>Tests of Details:</strong> Detailed examination of individual transactions, account balances, and disclosures</li><li><strong>Substantive Analytical Procedures:</strong> Evaluation of financial information through analysis of plausible relationships among financial and non-financial data</li></ul><p><strong>Important:</strong> Substantive procedures are <strong>mandatory</strong> for all material account balances and transaction classes, regardless of the assessed level of control risk. Auditors cannot rely solely on tests of controls - they must always perform substantive procedures.</p>'
+            }
+        };
+        
+        function showUseModal(useType) {
+            const modal = document.getElementById('useModal');
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+            
+            if (useContent[useType]) {
+                title.textContent = useContent[useType].title;
+                body.innerHTML = useContent[useType].body;
+                modal.classList.add('active');
+            }
+        }
+        
+        function closeUseModal() {
+            const modal = document.getElementById('useModal');
+            modal.classList.remove('active');
+        }
+        
+        // Close modal when clicking outside of it
+        window.addEventListener('click', function(event) {
+            const modal = document.getElementById('useModal');
+            if (event.target === modal) {
+                closeUseModal();
+            }
+        });
     </script>
 </body>
 </html>
