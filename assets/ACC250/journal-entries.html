@@ -13,30 +13,152 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
             min-height: 100vh;
-            padding: 8px;
+        }
+
+        .page-wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .content-wrapper {
+            flex: 1;
+            margin-left: 200px;
+            display: flex;
+            justify-content: center;
+            background: white;
+            min-height: 100vh;
+            padding: 20px 30px;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 200px;
+            background: #2d3748;
+            color: white;
+            padding: 15px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+        }
+
+        .sidebar h3 {
+            padding: 0 15px;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            color: white;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 10px;
+        }
+
+        .sidebar .chapter-section {
+            margin-bottom: 15px;
+        }
+
+        .sidebar .chapter-title {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 8px;
+            padding: 0 15px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar li {
+            margin: 0;
+        }
+
+        .sidebar a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            padding: 10px 15px;
+            display: block;
+            font-size: 0.9em;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .sidebar a:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .sidebar a.active {
+            background: rgba(59, 130, 246, 0.3);
+            color: white;
+            border-left-color: #3b82f6;
+            font-weight: 600;
+        }
+
+        .sidebar a.correct {
+            color: #2ecc71;
+        }
+
+        .sidebar a.correct:hover {
+            color: #2ecc71;
+        }
+
+        .sidebar a.incorrect {
+            color: #e74c3c;
+        }
+
+        .sidebar a.incorrect:hover {
+            color: #e74c3c;
         }
 
         .container {
+            width: 100%;
             max-width: 650px;
-            margin: 0 auto;
+            padding: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: relative;
+                height: auto;
+            }
+            
+            .content-wrapper {
+                margin-left: 0;
+            }
+            
+            .sidebar ul {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+            
+            .sidebar li {
+                margin-bottom: 0;
+            }
         }
 
         header {
             text-align: center;
-            color: white;
+            color: #2d3748;
             margin-bottom: 6px;
         }
 
         header h1 {
-            font-size: 1.4rem;
-            margin-bottom: 2px;
+            font-size: 1.6em;
+            margin-bottom: 8px;
+            color: #2d3748;
         }
 
         header p {
-            opacity: 0.9;
-            font-size: 0.85rem;
+            color: #718096;
+            font-size: 0.9em;
+            margin-bottom: 15px;
         }
 
         /* Step Navigation */
@@ -48,9 +170,9 @@
         }
 
         .step-btn {
-            background: rgba(255,255,255,0.2);
-            color: white;
-            border: 2px solid rgba(255,255,255,0.3);
+            background: #e2e8f0;
+            color: #4a5568;
+            border: 2px solid #cbd5e0;
             padding: 5px 12px;
             border-radius: 15px;
             cursor: pointer;
@@ -59,13 +181,14 @@
         }
 
         .step-btn:hover {
-            background: rgba(255,255,255,0.3);
+            background: #cbd5e0;
+            color: #2d3748;
         }
 
         .step-btn.active {
-            background: white;
-            color: #667eea;
-            border-color: white;
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
         }
 
         .step-btn:disabled {
@@ -75,7 +198,7 @@
 
         /* Progress Bar */
         .progress-container {
-            background: rgba(255,255,255,0.2);
+            background: #e2e8f0;
             border-radius: 6px;
             height: 4px;
             margin-bottom: 4px;
@@ -83,13 +206,13 @@
         }
 
         .progress-bar {
-            background: #2ecc71;
+            background: #3b82f6;
             height: 100%;
             transition: width 0.3s ease;
         }
 
         .progress-text {
-            color: white;
+            color: #4a5568;
             text-align: center;
             margin-bottom: 5px;
             font-size: 0.85rem;
@@ -98,8 +221,9 @@
         /* Main Card */
         .card {
             background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
             overflow: hidden;
         }
 
@@ -110,7 +234,7 @@
         }
 
         .question-number {
-            color: #667eea;
+            color: #1e40af;
             font-size: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
@@ -120,7 +244,7 @@
 
         .transaction-text {
             font-size: 1rem;
-            color: #333;
+            color: #2d3748;
             line-height: 1.3;
         }
 
@@ -136,7 +260,7 @@
         }
 
         .journal-entry th {
-            background: #667eea;
+            background: #3b82f6;
             color: white;
             padding: 5px 8px;
             text-align: left;
@@ -187,31 +311,31 @@
         }
 
         .account-slot.debit-filled {
-            border-color: #3498db;
-            background: #ebf5fb;
-            color: #2980b9;
+            border-color: #3b82f6;
+            background: #dbeafe;
+            color: #1e40af;
         }
 
         .account-slot.credit-filled {
-            border-color: #e74c3c;
-            background: #ffe5e5;
-            color: #c0392b;
+            border-color: #ef4444;
+            background: #fee2e2;
+            color: #991b1b;
         }
 
         .account-slot.correct {
-            border-color: #2ecc71;
-            background: #e8f8f0;
-            color: #155724;
+            border-color: #10b981;
+            background: #d1fae5;
+            color: #065f46;
         }
 
         .account-slot.incorrect {
-            border-color: #e74c3c;
-            background: #fdf0f0;
-            color: #721c24;
+            border-color: #ef4444;
+            background: #fee2e2;
+            color: #991b1b;
         }
 
         .amount {
-            color: #333;
+            color: #2d3748;
         }
 
         /* Account Selection Panel - Two Columns */
@@ -244,12 +368,12 @@
         }
 
         .column-header.debit {
-            background: #3498db;
+            background: #3b82f6;
             color: white;
         }
 
         .column-header.credit {
-            background: #e74c3c;
+            background: #ef4444;
             color: white;
         }
 
@@ -277,14 +401,14 @@
         }
 
         .account-btn.debit-selected {
-            border-color: #3498db;
-            background: #3498db;
+            border-color: #3b82f6;
+            background: #3b82f6;
             color: white;
         }
 
         .account-btn.credit-selected {
-            border-color: #e74c3c;
-            background: #e74c3c;
+            border-color: #ef4444;
+            background: #ef4444;
             color: white;
         }
 
@@ -321,22 +445,22 @@
         }
 
         .btn-primary {
-            background: #667eea;
+            background: #3b82f6;
             color: white;
         }
 
         .btn-secondary {
-            background: #95a5a6;
+            background: #718096;
             color: white;
         }
 
         .btn-clear {
-            background: #e74c3c;
+            background: #ef4444;
             color: white;
         }
 
         .btn-success {
-            background: #27ae60;
+            background: #10b981;
             color: white;
         }
 
@@ -382,7 +506,7 @@
         /* Score Display */
         .score-display {
             text-align: center;
-            color: white;
+            color: #2d3748;
             margin-top: 6px;
             font-size: 0.9rem;
         }
@@ -395,7 +519,7 @@
         /* Keyboard hint */
         .keyboard-hint {
             text-align: center;
-            color: #999;
+            color: #718096;
             font-size: 0.75rem;
             margin-top: 6px;
         }
@@ -411,18 +535,32 @@
 
         .chapter-label {
             text-align: center;
-            color: white;
+            color: #2d3748;
             font-size: 1rem;
             font-weight: 600;
             margin: 8px 0;
             padding: 6px;
-            background: rgba(255, 255, 255, 0.2);
+            background: #f7fafc;
             border-radius: 8px;
+            border-left: 3px solid #3b82f6;
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="page-wrapper">
+        <nav class="sidebar">
+            <h3>Questions</h3>
+            <div class="chapter-section" id="ch2-section">
+                <div class="chapter-title">Chapter 2</div>
+                <ul id="ch2-questions"></ul>
+            </div>
+            <div class="chapter-section" id="ch3-section">
+                <div class="chapter-title">Chapter 3</div>
+                <ul id="ch3-questions"></ul>
+            </div>
+        </nav>
+        <div class="content-wrapper">
+            <div class="container">
         <header>
             <h1>Journal Entry Practice</h1>
             <p>Select accounts for the journal entry</p>
@@ -493,6 +631,7 @@
 
         <div class="score-display">
             Score: <span id="score">0</span> / <span id="total">6</span>
+            </div>
         </div>
     </div>
 
@@ -669,10 +808,95 @@
             correct = new Array(transactions.length).fill(false);
             userSelections = new Array(transactions.length).fill(null).map(() => ({ debit: null, credit: null }));
             
+            renderSidebar();
             renderQuestion();
             updateProgress();
             updateScore();
             document.addEventListener('keydown', handleKeyDown);
+        }
+
+        function renderSidebar() {
+            // Render Ch2 questions
+            const ch2List = document.getElementById('ch2-questions');
+            ch2List.innerHTML = '';
+            ch2Transactions.forEach((t, idx) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = `Q${idx + 1}`;
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    if (currentStep === 1) {
+                        currentQuestion = idx;
+                        renderQuestion();
+                        updateProgress();
+                    } else {
+                        switchStep(1);
+                        setTimeout(() => {
+                            currentQuestion = idx;
+                            renderQuestion();
+                            updateProgress();
+                        }, 0);
+                    }
+                };
+                li.appendChild(a);
+                ch2List.appendChild(li);
+            });
+
+            // Render Ch3 questions
+            const ch3List = document.getElementById('ch3-questions');
+            ch3List.innerHTML = '';
+            ch3Transactions.forEach((t, idx) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = `Q${idx + 1}`;
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    if (currentStep === 2) {
+                        currentQuestion = idx;
+                        renderQuestion();
+                        updateProgress();
+                    } else {
+                        switchStep(2);
+                        setTimeout(() => {
+                            currentQuestion = idx;
+                            renderQuestion();
+                            updateProgress();
+                        }, 0);
+                    }
+                };
+                li.appendChild(a);
+                ch3List.appendChild(li);
+            });
+
+            updateSidebar();
+        }
+
+        function updateSidebar() {
+            // Update Ch2 questions
+            const ch2Links = document.querySelectorAll('#ch2-questions a');
+            ch2Links.forEach((link, idx) => {
+                link.classList.remove('active', 'correct', 'incorrect');
+                if (currentStep === 1 && currentQuestion === idx) {
+                    link.classList.add('active');
+                }
+                if (currentStep === 1 && answered[idx]) {
+                    link.classList.add(correct[idx] ? 'correct' : 'incorrect');
+                }
+            });
+
+            // Update Ch3 questions
+            const ch3Links = document.querySelectorAll('#ch3-questions a');
+            ch3Links.forEach((link, idx) => {
+                link.classList.remove('active', 'correct', 'incorrect');
+                if (currentStep === 2 && currentQuestion === idx) {
+                    link.classList.add('active');
+                }
+                if (currentStep === 2 && answered[idx]) {
+                    link.classList.add(correct[idx] ? 'correct' : 'incorrect');
+                }
+            });
         }
 
         function handleKeyDown(e) {
@@ -867,6 +1091,7 @@
                 focusedIndex = 0;
             }
             updateFocus();
+            updateSidebar();
         }
 
         function renderAccountButtons() {
@@ -953,6 +1178,7 @@
             focusedIndex = 0;
             renderQuestion();
             updateProgress();
+            updateSidebar();
         }
 
         function checkAnswer() {
@@ -975,6 +1201,7 @@
 
             renderQuestion();
             updateProgress();
+            updateSidebar();
         }
 
         function showFeedback(isCorrect, explanation) {
@@ -1056,6 +1283,7 @@
             focusArea = 'debit';
             focusedIndex = 0;
             
+            renderSidebar();
             renderQuestion();
             updateProgress();
             updateScore();
@@ -1064,5 +1292,6 @@
         // Start
         init();
     </script>
+    </div>
 </body>
 </html>
