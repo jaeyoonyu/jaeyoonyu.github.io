@@ -1,6 +1,7 @@
 ---
 layout: page
 title: "Python Code - Basic"
+permalink: /python-basics/
 ---
 
 Python is a powerful tool for **accounting research** and **data analytics**. 

@@ -17,20 +17,22 @@ show_sidebar: false       # show a sidebar instead of the usual header
 navigation:                # accepts {file, title, url, icon, sidebaricon}
   - {file: "index.md", title: Home}
   #  - {file:  "CV.md", title: CV}
-  - {file: "accounting-news.md", title: AccNews}
-  - {file: "Audit.md", title: Audit}
+  - {file: "ACCNEWS.md", title: AccNews}
+  - {file: "ACC250.md", title: IntroFA-ACC250}
+  - {file: "ACC531.md", title: Audit-ACC531}
+  - {file: "ACC575.md", title: Analytics-ACC575}
   - {file: "account-reference.md", title: AccReference}
-  - {file: "Inventory-costing.md", title: InvCosting}
-  - {file: "Depreciation.md", title: DepExp-Method}
-  - {file: "Benford-analyzer.md", title: Benford-Analyzer}
+  # - {file: "Inventory-costing.md", title: InvCosting}
+  # - {file: "Depreciation.md", title: DepExp-Method}
+  # - {file: "Benford-analyzer.md", title: Benford-Analyzer}
   - {file: "Grade-analyzer.md", title: Grade-Analyzer}
-  - {file: "python-basics.md", title: Python-Basic}
-  - {file: "python-applications.md", title: Python-Applied}
+  # - {file: "python-basics.md", title: Python-Basic}
+  # - {file: "python-applications.md", title: Python-Applied}
   - {file: "visuals.md", title: Visuals}
 
 
 external:                  # shows a footer with social links - for available icons see fontawesome.com/icons
-  - {title: Mail, icon: envelope, url: "mailto:yu@ese.eur.nl"}
+  - {title: Mail, icon: envelope, url: "mailto:yjaeyoon@gmail.com"}
   - {title: Github, icon: github, url: "https://github.com/jaeyoonyu"}
 
 remote_theme: niklasbuschmann/contrast@v2.11

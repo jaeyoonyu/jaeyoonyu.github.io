@@ -408,6 +408,17 @@
             font-family: inherit;
             font-size: 0.75rem;
         }
+
+        .chapter-label {
+            text-align: center;
+            color: white;
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 8px 0;
+            padding: 6px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
@@ -418,10 +429,11 @@
         </header>
 
         <div class="step-nav">
-            <button class="step-btn active" onclick="switchStep(1)">Step 1: Basic Accounts</button>
-            <button class="step-btn" onclick="switchStep(2)" disabled>Step 2</button>
-            <button class="step-btn" onclick="switchStep(3)" disabled>Step 3</button>
+            <button class="step-btn active" onclick="switchStep(1)">Ch2</button>
+            <button class="step-btn" onclick="switchStep(2)">Ch3</button>
         </div>
+
+        <div class="chapter-label" id="chapter-label">Journal entries required in August</div>
 
         <div class="progress-container">
             <div class="progress-bar" id="progress-bar" style="width: 0%"></div>
@@ -485,14 +497,14 @@
     </div>
 
     <script>
-        // Step 1 Accounts
-        const step1Accounts = [
+        // Ch2 Accounts
+        const ch2Accounts = [
             "Cash", "Supplies", "Software", "PPE (Equipment)",
             "Accounts Payable", "Notes Payable", "Logo and Trademarks", "Common Stock"
         ];
 
-        // Step 1 Transactions
-        const step1Transactions = [
+        // Ch2 Transactions
+        const ch2Transactions = [
             {
                 id: 1,
                 text: "The owners invested $50,000 cash to start the business.",
@@ -549,15 +561,98 @@
             }
         ];
 
+        // Ch3 Accounts
+        const ch3Accounts = [
+            "Cash", "Accounts Receivable", "Prepaid Rent", 
+            "Accounts Payable", "Deferred Revenue", 
+            "Revenues", "Wages Expense", "Advertising Expenses", "Utility Expenses"
+        ];
+
+        // Ch3 Transactions
+        const ch3Transactions = [
+            {
+                id: 1,
+                text: "In September, Noodlecake sold $3,000 of apps online. Cash collected in September.",
+                debitAccount: "Cash",
+                creditAccount: "Revenues",
+                debitAmount: 3000,
+                creditAmount: 3000,
+                explanation: "Selling apps for cash increases Cash (asset, debit) and increases Revenues (revenue account that increases with a credit, which increases equity)."
+            },
+            {
+                id: 2,
+                text: "Noodlecake issued three $100 gift cards at the beginning of September.",
+                debitAccount: "Cash",
+                creditAccount: "Deferred Revenue",
+                debitAmount: 300,
+                creditAmount: 300,
+                explanation: "Receiving cash for gift cards increases Cash (asset, debit) and creates Deferred Revenue (liability, credit) since the company has an obligation to provide goods/services in the future."
+            },
+            {
+                id: 3,
+                text: "Noodlecake sold $9,000 of apps in the App Store and on Google Play. Cash will be collected in October.",
+                debitAccount: "Accounts Receivable",
+                creditAccount: "Revenues",
+                debitAmount: 9000,
+                creditAmount: 9000,
+                explanation: "Selling apps on account increases Accounts Receivable (asset, debit) and increases Revenues (revenue account that increases with a credit, which increases equity)."
+            },
+            {
+                id: 4,
+                text: "Noodlecake received checks totaling $8,500 from Apple and Google, on account.",
+                debitAccount: "Cash",
+                creditAccount: "Accounts Receivable",
+                debitAmount: 8500,
+                creditAmount: 8500,
+                explanation: "Collecting cash from customers decreases Accounts Receivable (asset, credit) and increases Cash (asset, debit). This is an exchange of one asset for another."
+            },
+            {
+                id: 5,
+                text: "Noodlecake wrote checks to employees totaling $7,800 for wages related to hours worked in September.",
+                debitAccount: "Wages Expense",
+                creditAccount: "Cash",
+                debitAmount: 7800,
+                creditAmount: 7800,
+                explanation: "Paying wages increases Wages Expense (expense account that increases with a debit, which decreases equity) and decreases Cash (asset, credit)."
+            },
+            {
+                id: 6,
+                text: "On September 1, Noodlecake paid $7,200 in advance for September, October, and November rent.",
+                debitAccount: "Prepaid Rent",
+                creditAccount: "Cash",
+                debitAmount: 7200,
+                creditAmount: 7200,
+                explanation: "Paying rent in advance increases Prepaid Rent (asset, debit) and decreases Cash (asset, credit). This is an exchange of one asset for another."
+            },
+            {
+                id: 7,
+                text: "Noodlecake displayed online ads in September and received a bill for $500 to be paid in October.",
+                debitAccount: "Advertising Expenses",
+                creditAccount: "Accounts Payable",
+                debitAmount: 500,
+                creditAmount: 500,
+                explanation: "Incurring advertising expenses increases Advertising Expenses (expense account that increases with a debit, which decreases equity) and creates an Accounts Payable obligation (liability, credit)."
+            },
+            {
+                id: 8,
+                text: "Noodlecake was notified by its bank that an automatic monthly payment of $600 was transmitted to its utility company for electricity use in September.",
+                debitAccount: "Utility Expenses",
+                creditAccount: "Cash",
+                debitAmount: 600,
+                creditAmount: 600,
+                explanation: "Paying utility expenses increases Utility Expenses (expense account that increases with a debit, which decreases equity) and decreases Cash (asset, credit)."
+            }
+        ];
+
         // State
         let currentStep = 1;
         let currentQuestion = 0;
-        let transactions = step1Transactions;
-        let accounts = step1Accounts;
+        let transactions = ch2Transactions;
+        let accounts = ch2Accounts;
         let score = 0;
-        let answered = new Array(step1Transactions.length).fill(false);
-        let correct = new Array(step1Transactions.length).fill(false);
-        let userSelections = new Array(step1Transactions.length).fill(null).map(() => ({ debit: null, credit: null }));
+        let answered = [];
+        let correct = [];
+        let userSelections = [];
 
         // Selection state
         let selectedDebit = null;
@@ -569,6 +664,11 @@
 
         // Initialize
         function init() {
+            // Initialize state arrays based on current transactions
+            answered = new Array(transactions.length).fill(false);
+            correct = new Array(transactions.length).fill(false);
+            userSelections = new Array(transactions.length).fill(null).map(() => ({ debit: null, credit: null }));
+            
             renderQuestion();
             updateProgress();
             updateScore();
@@ -922,8 +1022,43 @@
         }
 
         function switchStep(step) {
-            if (step !== 1) return;
             currentStep = step;
+            currentQuestion = 0;
+            score = 0;
+            
+            if (step === 1) {
+                transactions = ch2Transactions;
+                accounts = ch2Accounts;
+                document.getElementById('chapter-label').textContent = 'Journal entries required in August';
+            } else if (step === 2) {
+                transactions = ch3Transactions;
+                accounts = ch3Accounts;
+                document.getElementById('chapter-label').textContent = 'Journal entries required in September';
+            }
+            
+            // Reset state arrays
+            answered = new Array(transactions.length).fill(false);
+            correct = new Array(transactions.length).fill(false);
+            userSelections = new Array(transactions.length).fill(null).map(() => ({ debit: null, credit: null }));
+            
+            // Update step buttons
+            document.querySelectorAll('.step-btn').forEach((btn, idx) => {
+                if (idx + 1 === step) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+            
+            // Reset selections
+            selectedDebit = null;
+            selectedCredit = null;
+            focusArea = 'debit';
+            focusedIndex = 0;
+            
+            renderQuestion();
+            updateProgress();
+            updateScore();
         }
 
         // Start

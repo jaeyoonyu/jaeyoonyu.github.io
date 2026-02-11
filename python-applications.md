@@ -1,6 +1,7 @@
 ---
 layout: page
 title: "Python Code - Applied"
+permalink: /python-applications/
 ---
 Python is a powerful tool for **accounting research** and **data analytics**. On this webpage, I share some python code to demonstrate **how I use Python for accounting research** with a focus on the following topics: <br>
 * How to get access to XBRL from SEC EDGAR;<br>
