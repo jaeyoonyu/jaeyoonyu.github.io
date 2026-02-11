@@ -461,10 +461,10 @@
                 <div class="account-panel" id="account-panel">
                     <div class="account-columns">
                         <div class="account-column" id="debit-column">
-                            <div class="column-header debit">Select DEBIT Account</div>
+                            <div class="column-header debit">On debit side:</div>
                         </div>
                         <div class="account-column" id="credit-column">
-                            <div class="column-header credit">Select CREDIT Account</div>
+                            <div class="column-header credit">On credit side:</div>
                         </div>
                     </div>
                     <div class="keyboard-hint">
@@ -874,8 +874,8 @@
             const creditColumn = document.getElementById('credit-column');
 
             // Clear existing buttons (keep headers)
-            debitColumn.innerHTML = '<div class="column-header debit">Select DEBIT Account</div>';
-            creditColumn.innerHTML = '<div class="column-header credit">Select CREDIT Account</div>';
+            debitColumn.innerHTML = '<div class="column-header debit">On debit side:</div>';
+            creditColumn.innerHTML = '<div class="column-header credit">On credit side:</div>';
 
             accounts.forEach((account, idx) => {
                 // Debit button
