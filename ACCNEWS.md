@@ -14,11 +14,11 @@ The attached file includes accounting cases that I use in my courses. Examples i
 
 <a href="https://drive.google.com/file/d/1ucxYVMXXmSHiMc3bIX4H8oViMytQj_XA/view?usp=sharing" target="_blank">View PDF</a>
 
-## Capital Market Resources
+## Sources for Capital Market News
 
 * [The Wall Street Journal](https://www.wsj.com/) - Financial news and market coverage
   * [WSJ Market Data](https://www.wsj.com/market-data) - Real-time market data and quotes
 * [CNBC](https://www.cnbc.com/) - Business news and financial markets
 * [Finviz](https://finviz.com/) - Stock screener and market visualization
 * [Stock Analysis](https://stockanalysis.com/) - Stock research and analysis tools
-
+* [AppEconomyInsights](https://www.appeconomyinsights.com/) - A collection of interesting viz
