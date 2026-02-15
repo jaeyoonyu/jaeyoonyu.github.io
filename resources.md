@@ -31,7 +31,7 @@ title: "Resources"
 * [OpenDataReader](https://github.com/FinanceData/OpenDartReader)
 
 #### CMU
-* [Blackboard](https://blackboard.cmich.edu/ultra/course)
+* [Blackboard](https://blackboard.cmich.edu/ultra/course); [Question-format-to-import](https://help.anthology.com/blackboard/instructor/en/assessments/questions/reuse-questions/upload-or-import-questions.html)
 * [Connect](https://connect.edu.mheducation.com/instructor/courses)
 * [Course Registration](https://courseregistration.apps.cmich.edu/Home/SignedIn)
 * [Class List](apps.cmich.edu/tools/academic/ClassList/)
