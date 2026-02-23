@@ -1,15 +1,14 @@
----
+c_detail---
 layout: page
 title: "Resources"
 ---
 
 #### Sources for Capital Market News
-* [WSJ](https://www.wsj.com/); [WSJ Market Data](https://www.wsj.com/market-data)
-* [CNBC](https://www.cnbc.com/); [Finviz](https://finviz.com/); [Stock Analysis](https://stockanalysis.com/); [MacroTrends](https://www.macrotrends.net/); [AppEconomyInsights](https://www.appeconomyinsights.com/); [EarningsHub](https://earningshub.com/)
+* [WSJ](https://www.wsj.com/); [WSJ Market Data](https://www.wsj.com/market-data); [CNBC](https://www.cnbc.com/); [Finviz](https://finviz.com/); [Stock Analysis](https://stockanalysis.com/); [MacroTrends](https://www.macrotrends.net/); [AppEconomyInsights](https://www.appeconomyinsights.com/); [EarningsHub](https://earningshub.com/); [AnnualReport](https://www.annualreports.com/)
 
 #### AI tools
 * [Gemini](https://gemini.google.com/); [Notebook LM](https://notebooklm.google); [Google AI Studio](https://aistudio.google.com/apps)
-* [Claude](https://claude.ai/); [Claude Use Case](https://claude.com/resources/use-cases)
+* [Claude](https://claude.ai/); [Claude Use Case](https://claude.com/resources/use-cases); [Claude Usage](https://claude.ai/settings/usage)
 * [ChatGPT](https://chat.openai.com/)
 * [Cursor](https://cursor.sh/)
 
@@ -31,6 +30,7 @@ title: "Resources"
 * [OpenDataReader](https://github.com/FinanceData/OpenDartReader)
 
 #### CMU
+* [SharePoint](centralmichigan-my.sharepoint.com)
 * [Blackboard](https://blackboard.cmich.edu/ultra/course); [Question-format-to-import](https://help.anthology.com/blackboard/instructor/en/assessments/questions/reuse-questions/upload-or-import-questions.html)
 * [Connect](https://connect.edu.mheducation.com/instructor/courses)
 * [Course Registration](https://courseregistration.apps.cmich.edu/Home/SignedIn)
