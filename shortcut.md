@@ -12,15 +12,13 @@
 - **Ctrl + Enter**: Send.
 
 ## Antigravity Shortcuts
-- **Ctrl + E**: Focus on or open the Antigravity chat input.
-- **Ctrl + I**: Open inline chat or generation prompt within the editor.
-- **Ctrl + Enter**: Submit the current prompt or accept the current generation.
-- **Esc**: Stop the current generation process or dismiss the inline prompt.
-- **Ctrl + Right Arrow**: Accept the code completion suggestion word-by-word.
-- **Ctrl + L**: Start a new chat session or clear the chat panel.
-- **Ctrl + Shift + I**: Trigger context-aware AI generation for the selected block.
-- **Alt + C**: Toggle the inclusion of file context in the chat.
+- **Ctrl + E**: Toggle Agent Manager/Editor.
+- **Ctrl + I**: Open inline chat.
+- **Ctrl + L**: Open/close chat panel. If code is selected, it will be included in the chat.
+- **Ctrl + `**: Toggle terminal.
 - **Ctrl + J**: Toggle visibility of the AI/terminal sidebar.
+- **Ctrl + Right Arrow**: Accept the code completion suggestion word-by-word.
+- **Ctrl + ,**: Open settings.
 
 ## Cursor Shortcuts
 - **Ctrl + K**: Open the inline generation and editing prompt (Cursor AI).
