@@ -2,22 +2,20 @@
 
 ## Outlook Shortcuts
 - **Alt + PgDn / PgUp**: Move to the next/previous page (useful for calendars) or scroll through messages.
-- **Ctrl + 1**: Switch to the Mail view.
-- **Ctrl + 2**: Switch to the Calendar view.
-- **Ctrl + 3**: Switch to the Contacts/People view.
-- **Ctrl + 4**: Switch to the Tasks/To-Do view.
-- **Ctrl + N**: Create a new item (Email, Appointment, or Contact, depending on the current view).
-- **Ctrl + R**: Reply to the selected email.
-- **Ctrl + Shift + R**: Reply All to the selected email.
-- **Ctrl + F**: Forward the selected email.
-- **Ctrl + Enter**: Send the current email message.
+- **Ctrl + 1**: Mail view.
+- **Ctrl + 2**: Calendar view.
+- **Ctrl + 3**: Copilot.
+- **Ctrl + N**: New item.
+- **Ctrl + R**: Reply.
+- **Ctrl + Shift + R**: Reply All.
+- **Ctrl + F**: Forward.
+- **Ctrl + Enter**: Send.
 
 ## Antigravity Shortcuts
 - **Ctrl + E**: Focus on or open the Antigravity chat input.
 - **Ctrl + I**: Open inline chat or generation prompt within the editor.
 - **Ctrl + Enter**: Submit the current prompt or accept the current generation.
 - **Esc**: Stop the current generation process or dismiss the inline prompt.
-- **Tab**: Accept the suggested code completion snippet.
 - **Ctrl + Right Arrow**: Accept the code completion suggestion word-by-word.
 - **Ctrl + L**: Start a new chat session or clear the chat panel.
 - **Ctrl + Shift + I**: Trigger context-aware AI generation for the selected block.
