@@ -3,4 +3,4 @@ layout: page
 title: "Grade Analyzer"
 ---
 
-<iframe src="/assets/Grade-Analyzer.html" width="100%" height="800px" frameborder="0"></iframe>
+Click to open <a href="/assets/Grade-Analyzer.html" target="_blank">Grader-Analyzer</a>

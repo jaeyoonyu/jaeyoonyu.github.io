@@ -1,358 +1,767 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exam Score Analyzer</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            padding: 30px;
-        }
-        h1 {
-            color: #667eea;
-            margin-bottom: 10px;
-            font-size: 2em;
-        }
-        .input-section {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 30px;
-        }
-        .controls {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        label {
-            color: #667eea;
-            font-weight: 600;
-        }
-        input[type="number"], select {
-            padding: 10px;
-            border: 2px solid #667eea;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-        textarea {
-            width: 100%;
-            min-height: 150px;
-            padding: 15px;
-            border: 2px solid #667eea;
-            border-radius: 8px;
-            font-family: monospace;
-            font-size: 16px;
-            resize: vertical;
-        }
-        .analyze-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 12px 40px;
-            border: none;
-            border-radius: 25px;
-            font-size: 16px;
-            cursor: pointer;
-            margin-top: 15px;
-        }
-        .analyze-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-        .stats-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-            background: white;
-        }
-        .stats-table th {
-            background: #f8f9fa;
-            color: #333;
-            padding: 12px 15px;
-            text-align: left;
-            font-weight: 600;
-            border-bottom: 2px solid #ddd;
-        }
-        .stats-table td {
-            padding: 10px 15px;
-            border-bottom: 1px solid #eee;
-        }
-        .stat-name {
-            font-weight: 600;
-            color: #555;
-        }
-        .chart-container {
-            margin-bottom: 30px;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
-        .chart-title {
-            font-size: 1.3em;
-            color: #333;
-            font-weight: 600;
-        }
-        .chart-controls {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        #results {
-            display: none;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exam Score Analyzer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f13;
+    --surface: #17171d;
+    --surface2: #1f1f28;
+    --border: #2c2c38;
+    --accent: #5eead4;
+    --accent2: #a78bfa;
+    --text: #e2e2ee;
+    --text-muted: #6b6b82;
+    --text-dim: #4a4a5a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 2.5rem 1.25rem 4rem;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+
+  header { margin-bottom: 2.5rem; }
+  header h1 {
+    font-family: 'DM Mono', monospace;
+    font-size: 1.6rem;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+    margin-bottom: 0.3rem;
+  }
+  header p { color: var(--text-muted); font-size: 1rem; font-weight: 300; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .card-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .input-row { display: flex; gap: 1rem; align-items: flex-end; flex-wrap: wrap; margin-bottom: 1rem; }
+  .field { display: flex; flex-direction: column; gap: 0.4rem; }
+  label { font-size: 0.95rem; color: var(--text-muted); }
+
+  input[type="number"] {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 1rem;
+    padding: 0.55rem 0.8rem;
+    outline: none;
+    transition: border-color 0.15s;
+    width: 120px;
+  }
+  input[type="number"]:focus { border-color: var(--accent); }
+
+  textarea {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 1rem;
+    padding: 0.75rem 1rem;
+    resize: vertical;
+    min-height: 120px;
+    outline: none;
+    transition: border-color 0.15s;
+    line-height: 1.7;
+  }
+  textarea:focus { border-color: var(--accent); }
+  textarea::placeholder { color: var(--text-dim); }
+
+  /* Hidden real checkbox – focusable for tab navigation */
+  .check-row { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 1.25rem; cursor: pointer; user-select: none; width: fit-content; }
+  .check-row input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0; height: 0;
+    pointer-events: none;
+  }
+  .check-row input[type="checkbox"]:focus + .check-box {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .check-box {
+    width: 19px; height: 19px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, border-color 0.15s;
+    flex-shrink: 0;
+  }
+  .check-row input:checked + .check-box { background: var(--accent); border-color: var(--accent); }
+  .check-box svg { display: none; }
+  .check-row input:checked + .check-box svg { display: block; }
+  .check-label { font-size: 1rem; color: var(--text-muted); }
+
+  .btn {
+    background: var(--accent); color: #0a1a16;
+    border: none; border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600;
+    padding: 0.7rem 2.2rem; cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+  }
+  .btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+
+  #results { display: none; }
+  #results.visible { display: block; }
+
+  .stats-table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-family: 'DM Mono', monospace; font-size: 0.95rem; }
+  th, td { padding: 0.65rem 1rem; text-align: right; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  thead th { color: var(--text-muted); font-size: 0.82rem; letter-spacing: 0.07em; text-transform: uppercase; font-weight: 500; padding-bottom: 0.75rem; }
+  tbody tr:last-child td { border-bottom: none; }
+  .row-label { color: var(--text-muted); font-size: 0.88rem; letter-spacing: 0.04em; }
+  .val { color: var(--text); }
+  .val-pct { color: var(--accent2); }
+
+  .n-badge {
+    display: inline-flex; align-items: center; gap: 0.3rem;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 0.35rem 0.85rem;
+    font-family: 'DM Mono', monospace; font-size: 0.95rem; color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+  .n-badge span { color: var(--accent); font-weight: 500; }
+
+  .hist-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.75rem; }
+  .hist-header .card-title { margin-bottom: 0; }
+  .bin-presets { display: flex; gap: 0.4rem; }
+  .btn-preset {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    padding: 0.35rem 0.8rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    white-space: nowrap;
+  }
+  .btn-preset:hover { background: var(--surface2); border-color: var(--accent); color: var(--accent); }
+  .btn-preset.active { background: var(--surface2); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+
+  .chart-area { position: relative; width: 100%; height: 340px; margin-top: 0.5rem; }
+  canvas { width: 100% !important; }
+
+  input[type="text"] {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 1rem;
+    padding: 0.55rem 0.8rem;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  input[type="text"]:focus { border-color: var(--accent); }
+  .filename-preview {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    margin-top: 0.4rem;
+    min-height: 1.2em;
+  }
+  .btn-dl {
+    background: var(--surface2);
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    color: var(--accent);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.7rem 1.8rem;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .btn-dl:hover { background: #1a2e2a; transform: translateY(-1px); }
+  .btn-dl:active { transform: translateY(0); }
+
+  .error-msg {
+    background: #2a1010; border: 1px solid #5c2020; border-radius: 8px;
+    color: #f87171; font-size: 0.95rem; padding: 0.65rem 1rem;
+    margin-top: 0.75rem; display: none; font-family: 'DM Mono', monospace;
+  }
+  .error-msg.show { display: block; }
+
+  @media (max-width: 600px) {
+    input[type="number"] { width: 100%; max-width: 200px; }
+  }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>📊 Exam Score Analyzer</h1>
-        <p style="color: #666; margin-bottom: 20px;">Paste your exam scores below, one score per line</p>
-        
-        <div class="input-section">
-            <div class="controls">
-                <div>
-                    <label>Maximum Score:</label>
-                    <input type="number" id="maxScore" value="100" min="1" style="width: 120px;">
-                </div>
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <label>Remove 0 scores?</label>
-                    <input type="checkbox" id="removeZeros" checked style="width: 18px; height: 18px; cursor: pointer;">
-                </div>
-            </div>
-            <textarea id="scoreInput" placeholder="Enter scores, one per line:
-85
-92
-78
-88
-95
-..."></textarea>
-            <button class="analyze-btn" onclick="analyzeScores()">Analyze Scores</button>
-        </div>
+<div class="wrap">
 
-        <div id="results">
-            <table class="stats-table" id="statsTable"></table>
-            
-            <div class="chart-container">
-                <div class="chart-header">
-                    <div class="chart-title">Score Distribution</div>
-                    <div class="chart-controls">
-                        <div>
-                            <label>Start from:</label>
-                            <select id="startPercent" onchange="updateChart()">
-                                <option value="50" selected>50%</option>
-                                <option value="60">60%</option>
-                                <option value="70">70%</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label>Bin Size:</label>
-                            <select id="binSize" onchange="updateChart()">
-                                <option value="10">10%</option>
-                                <option value="5" selected>5%</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <canvas id="histogram"></canvas>
-            </div>
-        </div>
+  <header>
+    <h1>Exam Score Analyzer</h1>
+    <p>Descriptive statistics &amp; histogram visualization for exam data</p>
+  </header>
+
+  <div class="card">
+    <div class="card-title">Configuration</div>
+    <div class="input-row">
+      <div class="field">
+        <label>Maximum Score</label>
+        <input type="number" id="maxScore" value="100" min="1">
+      </div>
     </div>
 
-    <script>
-        let currentScores = [];
-        let currentZeroCount = 0;
-        let myChart = null;
+    <label class="check-row">
+      <input type="checkbox" id="checkRemoveZero" tabindex="0" checked>
+      <span class="check-box">
+        <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+          <path d="M1 4L3.5 6.5L9 1" stroke="#0a1a16" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="check-label">Remove zero scores</span>
+    </label>
 
-        function analyzeScores() {
-            const input = document.getElementById('scoreInput').value.trim();
-            if (!input) {
-                alert('Please enter some scores');
-                return;
-            }
+    <div class="card-title" style="margin-top:0.5rem;">Scores</div>
+    <textarea id="scoreInput" placeholder="Enter scores separated by comma, space, tab, or newline&#10;e.g.  85, 92, 78  or  85 92 78  or one per line"></textarea>
+    <div class="error-msg" id="errorMsg"></div>
 
-            const allScores = input.split('\n')
-                .map(line => parseFloat(line.trim()))
-                .filter(score => !isNaN(score) && score >= 0);
+    <div style="margin-top:1rem;">
+      <button class="btn" onclick="analyze()">Analyze Scores</button>
+    </div>
+  </div>
 
-            if (allScores.length === 0) {
-                alert('No valid scores found');
-                return;
-            }
+  <div id="results">
 
-            currentZeroCount = allScores.filter(s => s === 0).length;
-            
-            const removeZeros = document.getElementById('removeZeros').checked;
-            currentScores = removeZeros ? allScores.filter(s => s > 0) : allScores;
+    <div class="card">
+      <div class="card-title">Descriptive Statistics</div>
+      <div class="n-badge">N = <span id="nVal">—</span></div>
+      <div class="stats-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Mean</th>
+              <th>SD</th>
+              <th>Min</th>
+              <th>Q1</th>
+              <th>Median</th>
+              <th>Q3</th>
+              <th>Max</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="row-label">Original</td>
+              <td class="val" id="s-mean">—</td>
+              <td class="val" id="s-sd">—</td>
+              <td class="val" id="s-min">—</td>
+              <td class="val" id="s-q1">—</td>
+              <td class="val" id="s-med">—</td>
+              <td class="val" id="s-q3">—</td>
+              <td class="val" id="s-max">—</td>
+            </tr>
+            <tr>
+              <td class="row-label">%</td>
+              <td class="val-pct" id="p-mean">—</td>
+              <td class="val-pct" id="p-sd">—</td>
+              <td class="val-pct" id="p-min">—</td>
+              <td class="val-pct" id="p-q1">—</td>
+              <td class="val-pct" id="p-med">—</td>
+              <td class="val-pct" id="p-q3">—</td>
+              <td class="val-pct" id="p-max">—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-            if (currentScores.length === 0) {
-                alert('No scores remaining after removing zeros');
-                return;
-            }
+    <!-- HISTOGRAM -->
+    <div class="card">
+      <div class="hist-header">
+        <div class="card-title">Histogram — Score Distribution</div>
+        <div class="bin-presets">
+          <button class="btn-preset" id="btn5" onclick="applyBinPreset(5)">5%</button>
+          <button class="btn-preset active" id="btn10" onclick="applyBinPreset(10)">10%</button>
+        </div>
+      </div>
+      <div class="chart-area"><canvas id="rawChart"></canvas></div>
+    </div>
 
-            displayStats();
-            updateChart();
-            document.getElementById('results').style.display = 'block';
+    <!-- EXPORT -->
+    <div class="card">
+      <div class="card-title">Export</div>
+      <div class="input-row" style="margin-bottom:0.5rem;">
+        <div class="field">
+          <label>Course Code</label>
+          <input type="text" id="expCourse" value="CODE" style="width:130px;" oninput="updateFilename()">
+        </div>
+        <div class="field">
+          <label>Semester</label>
+          <input type="text" id="expSemester" value="SEMESTER" style="width:130px;" oninput="updateFilename()">
+        </div>
+        <div class="field">
+          <label>Exam #</label>
+          <input type="text" id="expExam" value="N" style="width:80px;" oninput="updateFilename()">
+        </div>
+      </div>
+      <div class="input-row" style="align-items:flex-end; gap:0.75rem; flex-wrap:wrap;">
+        <div class="field" style="flex:1; min-width:220px;">
+          <label>Filename override <span style="font-size:0.8rem; color:var(--text-dim);">(optional)</span></label>
+          <input type="text" id="expOverride" placeholder="Leave blank to auto-generate" style="width:100%;" oninput="updateFilename()">
+        </div>
+      </div>
+      <div style="margin-top:1rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+        <button class="btn-dl" onclick="downloadPNG()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 2v8M5 7l3 3 3-3M2 11v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Download PNG
+        </button>
+        <div class="filename-preview" id="filenamePreview"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+let rawChart = null;
+let currentScores = [];
+let currentMax = 100;
+let currentPctBin = 10;
+
+document.addEventListener('DOMContentLoaded', updateFilename);
+
+function parseScores(raw) {
+  return raw.split(/[\s,;\t\n]+/).map(s => s.trim()).filter(s => s !== '').map(s => parseFloat(s));
+}
+
+function percentile(sorted, p) {
+  if (sorted.length === 0) return NaN;
+  if (sorted.length === 1) return sorted[0];
+  const idx = (p / 100) * (sorted.length - 1);
+  const lo = Math.floor(idx), hi = Math.ceil(idx);
+  if (lo === hi) return sorted[lo];
+  return sorted[lo] + (sorted[hi] - sorted[lo]) * (idx - lo);
+}
+
+function sd(arr, mean) {
+  if (arr.length < 2) return 0;
+  return Math.sqrt(arr.reduce((s, v) => s + (v - mean) ** 2, 0) / (arr.length - 1));
+}
+
+function fmt(n) { return n.toFixed(2); }
+function fmtPct(n) { return n.toFixed(1) + '%'; }
+
+
+function renderHist() {
+  if (currentScores.length === 0) return;
+  const pctBin = currentPctBin;
+  // For 5% mode, scores below 50% collapse into first bin; for 10% start at 0
+  const pctStart = (pctBin === 5) ? 50 : 0;
+  const pctScores = currentScores.map(s => (s / currentMax) * 100);
+
+  // Build edges from pctStart to 100
+  const regularEdges = [];
+  for (let e = pctStart; e <= 100 + 1e-9; e = Math.round((e + pctBin) * 1e9) / 1e9) {
+    regularEdges.push(Math.min(e, 100));
+    if (e >= 100 - 1e-9) break;
+  }
+
+  // Bins: if pctStart > 0, first bin is "< pctStart" catch-all
+  const bins = [];
+  if (pctStart > 0) {
+    bins.push({ lo: -Infinity, hi: pctStart });
+  }
+  for (let i = 0; i < regularEdges.length - 1; i++) {
+    bins.push({ lo: regularEdges[i], hi: regularEdges[i + 1] });
+  }
+
+  const counts = bins.map(b => {
+    if (b.lo === -Infinity) return pctScores.filter(s => s < b.hi).length;
+    if (b.hi >= 100 - 1e-9) return pctScores.filter(s => s >= b.lo && s <= 100).length;
+    return pctScores.filter(s => s >= b.lo && s < b.hi).length;
+  });
+
+  // Helper to format raw score value
+  function fmtRawVal(pct) {
+    const raw = pct / 100 * currentMax;
+    return raw % 1 === 0 ? String(Math.round(raw)) : raw.toFixed(1);
+  }
+
+  // No per-bar labels — cutoff values are drawn at edges by the plugin
+  const labels = bins.map(() => '');
+
+  // Edge cutoff values: raw score and pct at each bar boundary
+  // edgeRaws[i] = raw score at left edge of bin i (and right edge of bin i-1)
+  // edgeRaws[bins.length] = right edge of last bin
+  const edgeRaws = [];
+  const edgePcts = [];
+
+  if (pctStart > 0) {
+    // catch-all bin left edge: no label
+    edgeRaws.push(null);
+    edgePcts.push(null);
+    // boundary between catch-all and first regular bin
+    edgeRaws.push(fmtRawVal(pctStart));
+    edgePcts.push(pctStart);
+  } else {
+    edgeRaws.push(fmtRawVal(0));
+    edgePcts.push(0);
+  }
+  for (let i = 1; i < regularEdges.length; i++) {
+    const pctVal = Math.round(regularEdges[i] * 10) / 10;
+    edgeRaws.push(fmtRawVal(pctVal));
+    edgePcts.push(pctVal);
+  }
+
+  const pctBoundaryPlugin = {
+    id: 'pctBoundary',
+    afterDraw(chart) {
+      const { ctx, scales: { x } } = chart;
+      const meta = chart.getDatasetMeta(0);
+      if (!meta.data.length) return;
+
+      ctx.save();
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+
+      const barCount = meta.data.length;
+
+      for (let i = 0; i <= barCount; i++) {
+        if (edgePcts[i] === null || edgePcts[i] === undefined) continue;
+
+        let xPos;
+        if (i === 0) {
+          xPos = meta.data[0].x - meta.data[0].width / 2;
+        } else if (i === barCount) {
+          xPos = meta.data[barCount - 1].x + meta.data[barCount - 1].width / 2;
+        } else {
+          xPos = (meta.data[i - 1].x + meta.data[i - 1].width / 2 + meta.data[i].x - meta.data[i].width / 2) / 2;
         }
 
-        function displayStats() {
-            const maxScore = parseFloat(document.getElementById('maxScore').value) || 100;
-            const sorted = [...currentScores].sort((a, b) => a - b);
-            const n = sorted.length;
-            
-            const mean = currentScores.reduce((a, b) => a + b, 0) / n;
-            
-            const median = n % 2 === 0 
-                ? (sorted[n/2 - 1] + sorted[n/2]) / 2 
-                : sorted[Math.floor(n/2)];
-            
-            const q1Index = Math.floor(n / 4);
-            const q1 = sorted[q1Index];
-            
-            const q3Index = Math.floor(3 * n / 4);
-            const q3 = sorted[q3Index];
-            
-            const removeZeros = document.getElementById('removeZeros').checked;
-            const zeroText = removeZeros && currentZeroCount > 0 ? ` | ${currentZeroCount} zero scores excluded` : '';
+        const yBase = x.bottom + 4;
 
-            let html = `
-                <thead>
-                    <tr>
-                        <th colspan="5" style="font-weight: normal; font-size: 0.95em;">N = ${n}${zeroText}</th>
-                    </tr>
-                    <tr>
-                        <th></th>
-                        <th>Mean</th>
-                        <th>Q1</th>
-                        <th>Median</th>
-                        <th>Q3</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="stat-name">Original</td>
-                        <td>${mean.toFixed(2)}</td>
-                        <td>${q1.toFixed(2)}</td>
-                        <td>${median.toFixed(2)}</td>
-                        <td>${q3.toFixed(2)}</td>
-                    </tr>
-                    <tr>
-                        <td class="stat-name">%</td>
-                        <td>${((mean/maxScore)*100).toFixed(1)}%</td>
-                        <td>${((q1/maxScore)*100).toFixed(1)}%</td>
-                        <td>${((median/maxScore)*100).toFixed(1)}%</td>
-                        <td>${((q3/maxScore)*100).toFixed(1)}%</td>
-                    </tr>
-                </tbody>
-            `;
-            document.getElementById('statsTable').innerHTML = html;
+        // Raw cutoff — top row, bright
+        ctx.font = `bold 15px 'DM Mono', monospace`;
+        ctx.fillStyle = '#b0b0c8';
+        ctx.fillText(edgeRaws[i], xPos, yBase);
+
+        // Pct cutoff — bottom row, accent color, larger, with gap
+        ctx.font = `bold 15px 'DM Mono', monospace`;
+        ctx.fillStyle = '#a78bfa';
+        ctx.fillText(`${edgePcts[i]}%`, xPos, yBase + 26);
+      }
+      ctx.restore();
+    }
+  };
+
+  if (rawChart) rawChart.destroy();
+  const ctx = document.getElementById('rawChart').getContext('2d');
+  rawChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        data: counts,
+        backgroundColor: '#5eead444',
+        borderColor: '#5eead4',
+        borderWidth: 1.5,
+        borderRadius: 3,
+        borderSkipped: false,
+      }]
+    },
+    plugins: [pctBoundaryPlugin],
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 350, easing: 'easeOutQuart' },
+      layout: { padding: { bottom: 52 } },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1f1f28',
+          borderColor: '#2c2c38',
+          borderWidth: 1,
+          titleColor: '#b0b0c8',
+          bodyColor: '#e2e2ee',
+          titleFont: { family: 'DM Mono', size: 12 },
+          bodyFont: { family: 'DM Mono', size: 13 },
+          callbacks: {
+            title: items => {
+              const lbl = items[0].label;
+              if (Array.isArray(lbl)) return lbl.join(' ').trim();
+              return lbl;
+            },
+            label: item => `  Count: ${item.raw}`
+          }
         }
-
-        function updateChart() {
-            const maxScore = parseFloat(document.getElementById('maxScore').value) || 100;
-            const binSize = parseInt(document.getElementById('binSize').value);
-            const startPercent = parseInt(document.getElementById('startPercent').value);
-
-            const percentages = currentScores.map(s => (s / maxScore) * 100);
-            
-            const labels = [];
-            const counts = [];
-            
-            const firstUpper = startPercent + binSize;
-            const firstScoreUpper = ((firstUpper / 100) * maxScore).toFixed(2);
-            labels.push(['≤' + firstUpper + '%', '(≤' + firstScoreUpper + ')']);
-            counts.push(0);
-
-            for (let i = firstUpper; i < 100; i += binSize) {
-                const upper = i + binSize;
-                const lowerScore = ((i / 100) * maxScore).toFixed(2);
-                const upperScore = ((upper / 100) * maxScore).toFixed(2);
-                labels.push([i + '-' + upper + '%', '(' + lowerScore + '-' + upperScore + ')']);
-                counts.push(0);
-            }
-
-            percentages.forEach(pct => {
-                if (pct <= firstUpper) {
-                    counts[0]++;
-                } else {
-                    let idx = 1 + Math.floor((pct - firstUpper) / binSize);
-                    if (pct === 100) idx = counts.length - 1;
-                    if (idx < counts.length) counts[idx]++;
-                }
-            });
-
-            const ctx = document.getElementById('histogram');
-            if (myChart) myChart.destroy();
-
-            myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        data: counts,
-                        backgroundColor: 'rgba(102, 126, 234, 0.7)',
-                        borderColor: 'rgba(102, 126, 234, 1)',
-                        borderWidth: 2
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Number of Students',
-                                font: { size: 18, weight: 'bold' }
-                            },
-                            ticks: {
-                                stepSize: 1,
-                                font: { size: 16, weight: 'bold' }
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Score Range',
-                                font: { size: 18, weight: 'bold' }
-                            },
-                            ticks: {
-                                font: { size: 13, weight: 'bold' }
-                            }
-                        }
-                    }
-                }
-            });
+      },
+      scales: {
+        x: {
+          grid: { color: '#3a3a4a', lineWidth: 0.5 },
+          ticks: { display: false },
+          border: { color: '#4a4a60' }
+        },
+        y: {
+          beginAtZero: true,
+          grid: { color: '#3a3a4a', lineWidth: 0.5 },
+          ticks: { color: '#b0b0c8', font: { family: 'DM Mono', size: 13 }, stepSize: 1, precision: 0 },
+          border: { color: '#4a4a60' },
+          title: { display: true, text: 'Count', color: '#9090b0', font: { family: 'DM Mono', size: 13 } }
         }
-    </script>
+      }
+    }
+  });
+}
+
+function applyBinPreset(pctBin) {
+  currentPctBin = pctBin;
+  document.getElementById('btn5').classList.toggle('active', pctBin === 5);
+  document.getElementById('btn10').classList.toggle('active', pctBin === 10);
+  renderHist();
+}
+
+function updateFilename() {
+  const override = document.getElementById('expOverride').value.trim();
+  let name = '';
+  if (override) {
+    name = override;
+  } else {
+    const course   = document.getElementById('expCourse').value.trim();
+    const semester = document.getElementById('expSemester').value.trim();
+    const exam     = document.getElementById('expExam').value.trim();
+    const parts = [course, semester, exam ? `Exam${exam}` : ''].filter(Boolean);
+    name = 'Results_' + (parts.join('_') || 'exam_scores');
+  }
+  const display = name || 'Results_exam_scores';
+  document.getElementById('filenamePreview').textContent = `${display}.png`;
+  return display;
+}
+
+function downloadPNG() {
+  const filename = updateFilename();
+
+  const n = document.getElementById('nVal').textContent;
+  const stats = [
+    ['', 'Mean', 'SD', 'Min', 'Q1', 'Median', 'Q3', 'Max'],
+    ['Original',
+      document.getElementById('s-mean').textContent,
+      document.getElementById('s-sd').textContent,
+      document.getElementById('s-min').textContent,
+      document.getElementById('s-q1').textContent,
+      document.getElementById('s-med').textContent,
+      document.getElementById('s-q3').textContent,
+      document.getElementById('s-max').textContent,
+    ],
+    ['%',
+      document.getElementById('p-mean').textContent,
+      document.getElementById('p-sd').textContent,
+      document.getElementById('p-min').textContent,
+      document.getElementById('p-q1').textContent,
+      document.getElementById('p-med').textContent,
+      document.getElementById('p-q3').textContent,
+      document.getElementById('p-max').textContent,
+    ],
+  ];
+
+  const chartCanvas = document.getElementById('rawChart');
+
+  // Fixed layout — always 900px wide
+  const PAD    = 48;
+  const MONO   = `'Courier New', Courier, monospace`;
+  const totalW = 900;
+  const innerW = totalW - PAD * 2;
+
+  // Chart: scale to fit innerW, preserve aspect ratio
+  const chartAspect = chartCanvas.width / chartCanvas.height;
+  const drawChartW  = innerW;
+  const drawChartH  = Math.round(innerW / chartAspect);
+
+  const titleH    = 60;
+  const subtitleH = 32;
+  const secH      = 30;
+  const nbadgeH   = 38;
+  const rowH      = 36;
+  const tableH    = rowH * 3;
+  const gap1      = 32;
+  const totalH    = PAD + titleH + subtitleH + secH + nbadgeH + tableH + gap1 + secH + drawChartH + PAD;
+
+  const off = document.createElement('canvas');
+  off.width  = totalW;
+  off.height = totalH;
+  const c = off.getContext('2d');
+
+  // ── Background ──
+  c.fillStyle = '#0f0f13';
+  c.fillRect(0, 0, totalW, totalH);
+
+  let y = PAD;
+
+  // ── Title ──
+  c.textBaseline = 'top';
+  c.textAlign    = 'left';
+  c.fillStyle    = '#5eead4';
+  c.font         = `bold 28px ${MONO}`;
+  c.fillText('Exam Score Analyzer', PAD, y);
+  y += titleH;
+
+  // ── Subtitle ──
+  c.fillStyle = '#6b6b82';
+  c.font      = `15px ${MONO}`;
+  c.fillText(filename, PAD, y);
+  y += subtitleH;
+
+  // ── Section: Descriptive Statistics ──
+  c.fillStyle   = '#4a4a5a';
+  c.font        = `bold 11px ${MONO}`;
+  c.fillText('DESCRIPTIVE STATISTICS', PAD, y + 9);
+  c.strokeStyle = '#2c2c38'; c.lineWidth = 1;
+  c.beginPath(); c.moveTo(PAD, y + secH - 1); c.lineTo(PAD + innerW, y + secH - 1); c.stroke();
+  y += secH;
+
+  // ── N badge ──
+  c.fillStyle = '#1f1f28';
+  c.fillRect(PAD, y + 6, 92, 24);
+  c.textBaseline = 'middle';
+  c.fillStyle    = '#6b6b82'; c.font = `13px ${MONO}`;
+  c.fillText('N =', PAD + 10, y + 18);
+  c.fillStyle    = '#5eead4'; c.font = `bold 13px ${MONO}`;
+  c.fillText(n, PAD + 46, y + 18);
+  y += nbadgeH;
+
+  // ── Stats table ──
+  const colW = innerW / 8;
+  c.textBaseline = 'middle';
+
+  for (let ri = 0; ri < stats.length; ri++) {
+    const row  = stats[ri];
+    const rowY = y + ri * rowH;
+
+    if (ri === 2) { c.fillStyle = '#17171d'; c.fillRect(PAD, rowY, innerW, rowH); }
+
+    c.strokeStyle = '#2c2c38'; c.lineWidth = 1;
+    c.beginPath(); c.moveTo(PAD, rowY + rowH); c.lineTo(PAD + innerW, rowY + rowH); c.stroke();
+
+    for (let ci = 0; ci < row.length; ci++) {
+      const isHeader = ri === 0;
+      const isLabel  = ci === 0;
+      const textX    = isLabel ? PAD + ci * colW + 6 : PAD + (ci + 1) * colW - 6;
+      const textY    = rowY + rowH / 2;
+
+      c.textAlign = isLabel ? 'left' : 'right';
+
+      if (isHeader)      { c.fillStyle = '#6b6b82'; c.font = `bold 11px ${MONO}`; }
+      else if (isLabel)  { c.fillStyle = '#9090b0'; c.font = `13px ${MONO}`; }
+      else if (ri === 2) { c.fillStyle = '#a78bfa'; c.font = `14px ${MONO}`; }
+      else               { c.fillStyle = '#e2e2ee'; c.font = `14px ${MONO}`; }
+
+      c.fillText(row[ci], textX, textY);
+    }
+  }
+  y += tableH + gap1;
+
+  // ── Section: Histogram ──
+  c.textBaseline = 'top';
+  c.textAlign    = 'left';
+  c.fillStyle    = '#4a4a5a';
+  c.font         = `bold 11px ${MONO}`;
+  c.fillText('HISTOGRAM — SCORE DISTRIBUTION', PAD, y + 9);
+  c.strokeStyle  = '#2c2c38'; c.lineWidth = 1;
+  c.beginPath(); c.moveTo(PAD, y + secH - 1); c.lineTo(PAD + innerW, y + secH - 1); c.stroke();
+  y += secH;
+
+  // ── Chart — scaled to fit innerW ──
+  c.drawImage(chartCanvas, PAD, y, drawChartW, drawChartH);
+
+  // ── Download ──
+  const link = document.createElement('a');
+  link.download = `${filename}.png`;
+  link.href = off.toDataURL('image/png');
+  link.click();
+}
+
+function analyze() {
+  const errorEl = document.getElementById('errorMsg');
+  errorEl.classList.remove('show');
+
+  const raw = document.getElementById('scoreInput').value;
+  const maxScore = parseFloat(document.getElementById('maxScore').value) || 100;
+  const removeZero = document.getElementById('checkRemoveZero').checked;
+
+  let scores = parseScores(raw);
+
+  if (scores.length === 0) { errorEl.textContent = 'No valid scores found.'; errorEl.classList.add('show'); return; }
+  if (scores.some(isNaN)) { errorEl.textContent = 'Non-numeric value detected. Please check your input.'; errorEl.classList.add('show'); return; }
+  if (scores.some(s => s < 0)) { errorEl.textContent = 'Negative scores detected.'; errorEl.classList.add('show'); return; }
+
+  if (removeZero) scores = scores.filter(s => s !== 0);
+  if (scores.length === 0) { errorEl.textContent = 'No scores remain after removing zeros.'; errorEl.classList.add('show'); return; }
+
+  currentScores = scores;
+  currentMax = maxScore;
+  currentPctBin = 10;
+  document.getElementById('btn5').classList.remove('active');
+  document.getElementById('btn10').classList.add('active');
+
+  const sorted = [...scores].sort((a, b) => a - b);
+  const pctScores = scores.map(s => (s / maxScore) * 100);
+  const sortedPct = [...pctScores].sort((a, b) => a - b);
+
+  const mean = scores.reduce((a, b) => a + b, 0) / scores.length;
+  const meanPct = pctScores.reduce((a, b) => a + b, 0) / pctScores.length;
+
+  document.getElementById('nVal').textContent = scores.length;
+  document.getElementById('s-mean').textContent = fmt(mean);
+  document.getElementById('s-sd').textContent = fmt(sd(scores, mean));
+  document.getElementById('s-min').textContent = fmt(sorted[0]);
+  document.getElementById('s-q1').textContent = fmt(percentile(sorted, 25));
+  document.getElementById('s-med').textContent = fmt(percentile(sorted, 50));
+  document.getElementById('s-q3').textContent = fmt(percentile(sorted, 75));
+  document.getElementById('s-max').textContent = fmt(sorted[sorted.length - 1]);
+
+  document.getElementById('p-mean').textContent = fmtPct(meanPct);
+  document.getElementById('p-sd').textContent = fmtPct(sd(pctScores, meanPct));
+  document.getElementById('p-min').textContent = fmtPct((sorted[0] / maxScore) * 100);
+  document.getElementById('p-q1').textContent = fmtPct(percentile(sortedPct, 25));
+  document.getElementById('p-med').textContent = fmtPct(percentile(sortedPct, 50));
+  document.getElementById('p-q3').textContent = fmtPct(percentile(sortedPct, 75));
+  document.getElementById('p-max').textContent = fmtPct((sorted[sorted.length - 1] / maxScore) * 100);
+
+  const resultsEl = document.getElementById('results');
+  resultsEl.classList.add('visible');
+
+  setTimeout(() => {
+    renderHist();
+    resultsEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }, 50);
+}
+</script>
 </body>
 </html>
