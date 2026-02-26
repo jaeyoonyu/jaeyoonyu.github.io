@@ -317,16 +317,16 @@
       <div class="card-title">Export</div>
       <div class="input-row" style="margin-bottom:0.5rem;">
         <div class="field">
+          <label>Exam #</label>
+          <input type="text" id="expExam" value="N" style="width:80px;" oninput="updateFilename()">
+        </div>
+        <div class="field">
           <label>Course Code</label>
           <input type="text" id="expCourse" value="CODE" style="width:130px;" oninput="updateFilename()">
         </div>
         <div class="field">
           <label>Semester</label>
           <input type="text" id="expSemester" value="SEMESTER" style="width:130px;" oninput="updateFilename()">
-        </div>
-        <div class="field">
-          <label>Exam #</label>
-          <input type="text" id="expExam" value="N" style="width:80px;" oninput="updateFilename()">
         </div>
       </div>
       <div class="input-row" style="align-items:flex-end; gap:0.75rem; flex-wrap:wrap;">
@@ -557,13 +557,14 @@ function updateFilename() {
     const course   = document.getElementById('expCourse').value.trim();
     const semester = document.getElementById('expSemester').value.trim();
     const exam     = document.getElementById('expExam').value.trim();
-    const parts = [course, semester, exam ? `Exam${exam}` : ''].filter(Boolean);
-    name = 'Results_' + (parts.join('_') || 'exam_scores');
+    const parts = [exam ? `Exam${exam}` : '', course, semester].filter(Boolean);
+    name = parts.join('_');
   }
-  const display = name || 'Results_exam_scores';
+  const display = name || 'exam_scores';
   document.getElementById('filenamePreview').textContent = `${display}.png`;
   return display;
 }
+
 
 function downloadPNG() {
   const filename = updateFilename();

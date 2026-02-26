@@ -12,6 +12,9 @@ title: "Resources"
 * [ChatGPT](https://chat.openai.com/)
 * [Cursor](https://cursor.sh/)
 
+#### LaTex resources
+* [Overleaf - Guideline](https://www.overleaf.com/learn/latex/Contents)
+
 #### Research
 * [WRDS](https://wrds-www.wharton.upenn.edu/)
 * [SEC](https://www.sec.gov/); [SEC Data & Research](https://www.sec.gov/data-research)
