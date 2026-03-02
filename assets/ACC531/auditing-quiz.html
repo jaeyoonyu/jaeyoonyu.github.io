@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auditing & Assurance Services - Practice Questions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Top Navigation Bar */
+        .top-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: #1a252f;
+            display: flex;
+            align-items: flex-end;
+            padding: 0 20px 12px 20px;
+            z-index: 200;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .top-nav-brand {
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-right: 30px;
+            white-space: nowrap;
+        }
+
+        .top-nav-chapters {
+            display: flex;
+            gap: 5px;
+            flex: 1;
+            flex-wrap: nowrap;
+        }
+
+        .chapter-tab {
+            background: rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.8);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .chapter-tab:hover {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .chapter-tab.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .chapter-tab.keyboard-focus {
+            outline: 3px solid #f1c40f;
+            outline-offset: 2px;
+        }
+
+        .chapter-tab .chapter-progress {
+            position: absolute;
+            bottom: -6px;
+            right: -6px;
+            background: #2ecc71;
+            color: white;
+            font-size: 0.65rem;
+            padding: 2px 5px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .chapter-tab .chapter-progress.incomplete {
+            background: #95a5a6;
+        }
+
+        .top-nav-score {
+            margin-left: 20px;
+            color: white;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .top-nav-score span {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #2ecc71;
+        }
+
+        /* Page Layout */
+        .page-wrapper {
+            display: flex;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+
+        /* Left Sidebar */
+        .sidebar {
+            width: 260px;
+            position: fixed;
+            left: 0;
+            top: 80px;
+            height: calc(100vh - 80px);
+            background: #2c3e50;
+            padding: 20px 15px;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .sidebar-chapter-title {
+            color: #3498db;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-chapter-name {
+            color: white;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            line-height: 1.4;
+        }
+
+        .nav-title {
+            color: #3498db;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+
+        .question-nav {
+            list-style: none;
+        }
+
+        .question-nav-item {
+            margin-bottom: 4px;
+        }
+
+        .question-nav-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: rgba(255,255,255,0.7);
+            padding: 10px 12px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .question-nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .question-nav-link.keyboard-focus {
+            outline: 2px solid #f1c40f;
+            outline-offset: 2px;
+            background: rgba(241, 196, 15, 0.2);
+        }
+
+        .question-nav-link.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .question-nav-link.answered {
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .question-nav-link.correct {
+            border-color: #2ecc71;
+            background: rgba(46, 204, 113, 0.15);
+        }
+
+        .question-nav-link.incorrect {
+            border-color: #e74c3c;
+            background: rgba(231, 76, 60, 0.15);
+        }
+
+        .question-nav-link.active.correct {
+            background: #2ecc71;
+        }
+
+        .question-nav-link.active.incorrect {
+            background: #e74c3c;
+        }
+
+        .nav-number {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.75rem;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+
+        .question-nav-link.correct .nav-number {
+            background: #2ecc71;
+        }
+
+        .question-nav-link.incorrect .nav-number {
+            background: #e74c3c;
+        }
+
+        .nav-question-title {
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .nav-status {
+            margin-left: 8px;
+            font-size: 0.9rem;
+        }
+
+        /* Sidebar Score */
+        .sidebar-score {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .sidebar-score-label {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .sidebar-score-value {
+            color: white;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .sidebar-buttons {
+            margin-top: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-btn {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .sidebar-btn.danger {
+            background: rgba(231, 76, 60, 0.3);
+        }
+
+        .sidebar-btn.danger:hover {
+            background: rgba(231, 76, 60, 0.5);
+        }
+
+        /* Main Content - Two Column Layout */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .question-container {
+            flex: 1;
+            max-width: 55%;
+        }
+
+        .explanation-panel {
+            flex: 1;
+            max-width: 45%;
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .explanation-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .explanation-header {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            color: white;
+            padding: 15px 20px;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .explanation-header.correct {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+        }
+
+        .explanation-header.incorrect {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+        }
+
+        .explanation-body {
+            padding: 20px;
+            line-height: 1.7;
+            color: #333;
+            min-height: 200px;
+        }
+
+        .explanation-body.empty {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #95a5a6;
+            font-style: italic;
+        }
+
+        .explanation-body strong {
+            color: #2c3e50;
+        }
+
+        .keyboard-hint {
+            background: #f8f9fa;
+            padding: 12px 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.8rem;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .keyboard-hint div {
+            margin: 2px 0;
+        }
+
+        .keyboard-hint kbd {
+            background: #e0e0e0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.85rem;
+            margin: 0 1px;
+            border: 1px solid #ccc;
+        }
+
+        /* Question Card */
+        .question-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .question-header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 25px 30px;
+        }
+
+        .question-meta {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        .question-chapter {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .question-number-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .question-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .question-body {
+            padding: 30px;
+        }
+
+        .question-text {
+            font-size: 1.15rem;
+            color: #333;
+            margin-bottom: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 18px 20px;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover:not(.disabled) {
+            border-color: #3498db;
+            background: #e8f4fc;
+            transform: translateX(5px);
+        }
+
+        .option.keyboard-focus:not(.disabled) {
+            outline: 3px solid #f1c40f;
+            outline-offset: 2px;
+            border-color: #3498db;
+            background: #e8f4fc;
+        }
+
+        .option.selected {
+            border-color: #3498db;
+            background: #e8f4fc;
+        }
+
+        .option.correct {
+            border-color: #27ae60;
+            background: #d4edda;
+        }
+
+        .option.incorrect {
+            border-color: #e74c3c;
+            background: #f8d7da;
+        }
+
+        .option.disabled {
+            cursor: default;
+        }
+
+        .option.disabled:hover {
+            transform: none;
+        }
+
+        .option-letter {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1rem;
+            margin-right: 15px;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .option.selected .option-letter {
+            background: #3498db;
+            color: white;
+        }
+
+        .option.correct .option-letter {
+            background: #27ae60;
+            color: white;
+        }
+
+        .option.incorrect .option-letter {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .option-text {
+            flex: 1;
+            font-size: 1rem;
+        }
+
+        /* Action Buttons */
+        .question-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            background: #f0f0f0;
+            color: #333;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            background: #e0e0e0;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .nav-btn.keyboard-focus {
+            outline: 3px solid #f1c40f;
+            outline-offset: 2px;
+        }
+
+        .submit-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 14px 35px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            background: #2980b9;
+            transform: scale(1.02);
+        }
+
+        .submit-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .submit-btn.keyboard-focus {
+            outline: 3px solid #f1c40f;
+            outline-offset: 2px;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Overview Styles */
+        .overview-chapters {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .overview-chapter-item {
+            display: flex;
+            align-items: center;
+            padding: 18px 20px;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .overview-chapter-item:hover {
+            border-color: #3498db;
+            background: #e8f4fc;
+            transform: translateX(5px);
+        }
+
+        .overview-chapter-item.keyboard-focus {
+            outline: 3px solid #f1c40f;
+            outline-offset: 2px;
+            border-color: #3498db;
+            background: #e8f4fc;
+        }
+
+        .overview-chapter-number {
+            background: #3498db;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            margin-right: 15px;
+            white-space: nowrap;
+        }
+
+        .overview-chapter-title {
+            flex: 1;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .overview-chapter-score {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .overview-chapter-score.complete {
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 2px;
+            margin-top: 20px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            border-radius: 2px;
+            transition: width 0.5s ease;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 1200px) {
+            .main-content {
+                flex-direction: column;
+            }
+
+            .question-container {
+                max-width: 100%;
+            }
+
+            .explanation-panel {
+                max-width: 100%;
+                position: static;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 15px;
+            }
+
+            .top-nav {
+                flex-wrap: wrap;
+                height: auto;
+                padding: 15px 10px 5px 10px;
+            }
+
+            .top-nav-brand {
+                display: none;
+            }
+
+            .top-nav-chapters {
+                width: 100%;
+            }
+
+            .chapter-tab {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+
+            .page-wrapper {
+                padding-top: 80px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .question-header {
+                padding: 20px;
+            }
+
+            .question-title {
+                font-size: 1.2rem;
+            }
+
+            .question-body {
+                padding: 20px;
+            }
+
+            .question-text {
+                font-size: 1rem;
+                padding: 15px;
+            }
+
+            .option {
+                padding: 14px;
+            }
+
+            .question-actions {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-buttons {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .submit-btn {
+                width: 100%;
+            }
+
+            .keyboard-hint {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Navigation Bar -->
+    <nav class="top-nav">
+        <div class="top-nav-brand">Auditing Quiz</div>
+        <div class="top-nav-chapters" id="chapter-tabs">
+            <!-- Generated by JS -->
+        </div>
+        <div class="top-nav-score">Score: <span id="total-score">0/25</span></div>
+    </nav>
+
+    <div class="page-wrapper">
+        <!-- Left Sidebar -->
+        <nav class="sidebar">
+            <div class="sidebar-chapter-title">Current Chapter</div>
+            <div class="sidebar-chapter-name" id="sidebar-chapter-name">Chapter 1: Auditing and Assurance Services</div>
+
+            <div class="nav-title">Questions</div>
+            <ul class="question-nav" id="question-nav">
+                <!-- Generated by JS -->
+            </ul>
+
+            <div class="sidebar-score">
+                <div class="sidebar-score-label">Chapter Score</div>
+                <div class="sidebar-score-value" id="chapter-score">0 / 5</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="chapter-progress" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div class="sidebar-buttons">
+                <button class="sidebar-btn" onclick="resetChapter()">Reset Chapter</button>
+                <button class="sidebar-btn danger" onclick="resetAll()">Reset All</button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="question-container">
+                <div class="question-card" id="question-card">
+                    <!-- Generated by JS -->
+                </div>
+            </div>
+            <div class="explanation-panel">
+                <div class="explanation-card" id="explanation-card">
+                    <div class="explanation-header" id="explanation-header">Explanation</div>
+                    <div class="explanation-body empty" id="explanation-body">
+                        Select an answer and press Enter to see explanation
+                    </div>
+                    <div class="keyboard-hint">
+                        <div><kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> Navigate Chapters · Questions · Options · Buttons</div>
+                        <div><kbd>Tab</kbd> Cycle Focus Areas · <kbd>⌫</kbd> Previous Question</div>
+                        <div><kbd>Enter</kbd> / <kbd>Space</kbd> Select · Submit · Next</div>
+                        <div><kbd>1</kbd>-<kbd>5</kbd> Quick Select Options</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Question Data
+        const questions = {
+            1: [
+                {
+                    id: "1-1",
+                    title: "Definition of Auditing",
+                    question: "Which of the following best describes the primary purpose of an independent audit of financial statements?",
+                    options: [
+                        "To detect all fraud and errors in the financial statements",
+                        "To guarantee the accuracy of the financial statements",
+                        "To provide reasonable assurance that financial statements are free from material misstatement",
+                        "To prepare the financial statements for management"
+                    ],
+                    correct: 2,
+                    explanation: `<strong>C) Provide reasonable assurance that financial statements are free from material misstatement</strong> is correct. This captures the essence of the audit function.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>A)</strong> Auditors are not required to detect ALL fraud/errors. They focus on MATERIAL misstatements.<br>
+                    • <strong>B)</strong> Auditors never guarantee accuracy. Only reasonable assurance can be provided.<br>
+                    • <strong>D)</strong> Preparation is management's responsibility. Auditors examine statements prepared by others.`
+                },
+                {
+                    id: "1-2",
+                    title: "Agency Theory",
+                    question: "The demand for auditing can be explained by agency theory. Which relationship best exemplifies the agency problem that auditing addresses?",
+                    options: [
+                        "Auditors and regulators",
+                        "Shareholders (principals) and management (agents)",
+                        "Competitors in the same industry",
+                        "Auditors and their staff"
+                    ],
+                    correct: 1,
+                    explanation: `<strong>B) Shareholders (principals) and management (agents)</strong> is correct. Agency theory explains that owners hire managers to run the business, creating information asymmetry.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>A)</strong> This is a regulatory relationship, not an agency relationship.<br>
+                    • <strong>C)</strong> Competitors have no principal-agent relationship with each other.<br>
+                    • <strong>D)</strong> While technically an agency relationship, it's not what drives demand for auditing.`
+                },
+                {
+                    id: "1-3",
+                    title: "Types of Auditors",
+                    question: "Which type of auditor is primarily responsible for determining whether federally funded programs are administered in compliance with applicable laws?",
+                    options: [
+                        "Internal auditors",
+                        "External auditors from CPA firms",
+                        "Government auditors (such as GAO)",
+                        "Forensic auditors"
+                    ],
+                    correct: 2,
+                    explanation: `<strong>C) Government auditors (such as GAO)</strong> is correct. The GAO primarily audits federal programs for compliance with laws and proper use of public funds.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>A)</strong> Internal auditors focus on operational efficiency, not federal program compliance.<br>
+                    • <strong>B)</strong> CPAs primarily focus on financial statement audits.<br>
+                    • <strong>D)</strong> Forensic auditors investigate fraud, not federal program compliance.`
+                },
+                {
+                    id: "1-4",
+                    title: "Assurance Services",
+                    question: "Which of the following is an example of an attestation engagement that is NOT an audit?",
+                    options: [
+                        "Audit of annual financial statements",
+                        "Tax return preparation",
+                        "Management consulting engagement",
+                        "Examination of internal control (SOC 1)"
+                    ],
+                    correct: 3,
+                    explanation: `<strong>D) Examination of internal control (SOC 1)</strong> is correct. A SOC 1 report is an attestation engagement examining controls at a service organization, but it's not a financial statement audit.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>A)</strong> This IS an audit, not the answer we're looking for.<br>
+                    • <strong>B)</strong> Tax preparation is not an attestation engagement at all.<br>
+                    • <strong>C)</strong> Consulting provides advice without assurance, not attestation.`
+                },
+                {
+                    id: "1-5",
+                    title: "Audit Report Users",
+                    question: "The audit report is addressed to the shareholders rather than management primarily because:",
+                    options: [
+                        "The auditor reports to shareholders/board, maintaining independence from management",
+                        "Management already knows the financial information",
+                        "Shareholders pay higher fees than management",
+                        "Regulations require addressing to the largest stakeholder group"
+                    ],
+                    correct: 0,
+                    explanation: `<strong>A) The auditor reports to shareholders/board, maintaining independence from management</strong> is correct. This reinforces auditor independence and serves owners, not management.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>B)</strong> While true, this isn't why the report is addressed to shareholders.<br>
+                    • <strong>C)</strong> Audit fees are paid by the company, not directly by shareholders.<br>
+                    • <strong>D)</strong> No such regulation exists; the addressee reflects governance relationship.`
+                }
+            ],
+            2: [
+                {
+                    id: "2-1",
+                    title: "AICPA Code of Conduct",
+                    question: "Which principle of the AICPA Code of Professional Conduct requires CPAs to be honest and candid within the constraints of client confidentiality?",
+                    options: [
+                        "Objectivity",
+                        "Integrity",
+                        "Due care",
+                        "Independence"
+                    ],
+                    correct: 1,
+                    explanation: `<strong>B) Integrity</strong> is correct. The integrity principle requires honesty and candor within confidentiality constraints.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>A)</strong> Objectivity requires impartiality and freedom from conflicts.<br>
+                    • <strong>C)</strong> Due care requires competence and diligence.<br>
+                    • <strong>D)</strong> Independence requires freedom from impairing relationships.`
+                },
+                {
+                    id: "2-2",
+                    title: "Independence Requirements",
+                    question: "Which situation would MOST likely impair an auditor's independence?",
+                    options: [
+                        "The audit firm provides tax preparation services to the client",
+                        "An audit partner's spouse works in a non-accounting role at the client",
+                        "The engagement partner owns stock in the audit client",
+                        "The audit firm performed the prior year audit"
+                    ],
+                    correct: 2,
+                    explanation: `<strong>C) The engagement partner owns stock in the audit client</strong> is correct. Direct financial interests are prohibited and clearly impair independence.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>A)</strong> Tax services are generally permitted with proper safeguards.<br>
+                    • <strong>B)</strong> A spouse in a non-influential position may not impair independence.<br>
+                    • <strong>D)</strong> Recurring audits are normal and don't impair independence.`
+                },
+                {
+                    id: "2-3",
+                    title: "PCAOB Standards",
+                    question: "The PCAOB has authority to set auditing standards for audits of:",
+                    options: [
+                        "All U.S. companies regardless of size",
+                        "Public companies (SEC registrants) and broker-dealers",
+                        "Only companies with more than $100 million in revenue",
+                        "Government entities and nonprofits"
+                    ],
+                    correct: 1,
+                    explanation: `<strong>B) Public companies (SEC registrants) and broker-dealers</strong> is correct. PCAOB was created by SOX to oversee public company audits.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>A)</strong> Private company audits follow AICPA standards.<br>
+                    • <strong>C)</strong> No revenue threshold; based on public company status.<br>
+                    • <strong>D)</strong> Government audits follow Yellow Book standards.`
+                },
+                {
+                    id: "2-4",
+                    title: "Quality Control",
+                    question: "Which element of quality control addresses hiring, training, and evaluating personnel?",
+                    options: [
+                        "Human resources",
+                        "Engagement performance",
+                        "Monitoring",
+                        "Leadership responsibilities"
+                    ],
+                    correct: 0,
+                    explanation: `<strong>A) Human resources</strong> is correct. This element addresses recruitment, hiring, development, and advancement.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>B)</strong> Engagement performance addresses supervision during audits.<br>
+                    • <strong>C)</strong> Monitoring assesses quality control system effectiveness.<br>
+                    • <strong>D)</strong> Leadership addresses tone at the top and culture.`
+                },
+                {
+                    id: "2-5",
+                    title: "Legal Liability",
+                    question: "Under common law, which standard of care are auditors held to for negligence?",
+                    options: [
+                        "Absolute perfection in detecting all errors",
+                        "Best practices exceeding professional standards",
+                        "The care and skill of a reasonably competent professional",
+                        "Strict liability regardless of fault"
+                    ],
+                    correct: 2,
+                    explanation: `<strong>C) The care and skill of a reasonably competent professional</strong> is correct. This is the "prudent professional" standard.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>A)</strong> The standard is reasonable care, not perfection.<br>
+                    • <strong>B)</strong> Auditors are held to professional standards, not best-in-class.<br>
+                    • <strong>D)</strong> Strict liability doesn't apply; plaintiffs must prove negligence.`
+                }
+            ],
+            3: [
+                {
+                    id: "3-1",
+                    title: "Client Acceptance",
+                    question: "Before accepting a new audit client, the successor auditor is required to:",
+                    options: [
+                        "Review all of the predecessor's working papers",
+                        "Communicate with the predecessor auditor with client permission",
+                        "Obtain a written guarantee from management about no fraud",
+                        "Confirm the client's creditworthiness with banks"
+                    ],
+                    correct: 1,
+                    explanation: `<strong>B) Communicate with the predecessor auditor with client permission</strong> is correct. Standards require this communication to inquire about reasons for the change.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>A)</strong> Full access to working papers is not required.<br>
+                    • <strong>C)</strong> Management provides representations, not guarantees.<br>
+                    • <strong>D)</strong> No requirement to contact banks during acceptance.`
+                },
+                {
+                    id: "3-2",
+                    title: "Engagement Letter",
+                    question: "Which of the following is NOT typically included in an audit engagement letter?",
+                    options: [
+                        "The objective and scope of the audit",
+                        "Management's responsibilities for the financial statements",
+                        "The expected form of the auditor's report",
+                        "A guarantee that all fraud will be detected"
+                    ],
+                    correct: 3,
+                    explanation: `<strong>D) A guarantee that all fraud will be detected</strong> is correct. Auditors cannot guarantee fraud detection; only reasonable assurance is provided.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>A)</strong> This IS included to define audit coverage.<br>
+                    • <strong>B)</strong> This IS included to document management's responsibility.<br>
+                    • <strong>C)</strong> This IS included to set expectations.`
+                },
+                {
+                    id: "3-3",
+                    title: "Audit Evidence",
+                    question: "Which type of audit evidence is generally considered MOST reliable?",
+                    options: [
+                        "External evidence obtained directly by the auditor",
+                        "Internal documents created and held by the client",
+                        "Oral representations from management",
+                        "Copies of documents provided by the client"
+                    ],
+                    correct: 0,
+                    explanation: `<strong>A) External evidence obtained directly by the auditor</strong> is correct. Evidence from independent external sources is most reliable because it's independent and auditor-controlled.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>B)</strong> Internal documents can be altered and lack independent verification.<br>
+                    • <strong>C)</strong> Oral evidence is least reliable; it should be corroborated.<br>
+                    • <strong>D)</strong> Copies could be altered; client documents are less reliable.`
+                },
+                {
+                    id: "3-4",
+                    title: "Audit Procedures",
+                    question: "Tracing purchase orders to receiving reports and invoices primarily tests which assertion?",
+                    options: [
+                        "Completeness",
+                        "Valuation",
+                        "Occurrence/Existence",
+                        "Classification"
+                    ],
+                    correct: 2,
+                    explanation: `<strong>C) Occurrence/Existence</strong> is correct. Tracing FROM recorded transactions TO supporting documents tests whether recorded items actually occurred.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>A)</strong> Completeness testing traces FROM source documents TO records.<br>
+                    • <strong>B)</strong> Valuation focuses on whether amounts are correctly valued.<br>
+                    • <strong>D)</strong> Classification examines proper account coding.`
+                },
+                {
+                    id: "3-5",
+                    title: "Materiality",
+                    question: "When determining planning materiality, auditors typically consider:",
+                    options: [
+                        "Only the dollar amount of total assets",
+                        "A benchmark and the needs of financial statement users",
+                        "Whatever amount management suggests is immaterial",
+                        "A fixed percentage set by accounting standards"
+                    ],
+                    correct: 1,
+                    explanation: `<strong>B) A benchmark and the needs of financial statement users</strong> is correct. Materiality requires professional judgment based on appropriate benchmarks and user needs.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>A)</strong> Auditors consider multiple factors, not just one.<br>
+                    • <strong>C)</strong> Materiality is the auditor's independent judgment.<br>
+                    • <strong>D)</strong> No fixed percentage exists in GAAP or GAAS.`
+                }
+            ],
+            4: [
+                {
+                    id: "4-1",
+                    title: "Audit Risk Model",
+                    question: "AR = IR × CR × DR. If IR = 80%, CR = 50%, what DR is needed for AR of 4%?",
+                    options: [
+                        "10%",
+                        "20%",
+                        "40%",
+                        "5%"
+                    ],
+                    correct: 0,
+                    explanation: `<strong>A) 10%</strong> is correct. DR = AR ÷ (IR × CR) = 0.04 ÷ (0.80 × 0.50) = 0.04 ÷ 0.40 = 0.10 = 10%<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>B)</strong> 20% would result in AR = 8%, exceeding 4% target.<br>
+                    • <strong>C)</strong> 40% would result in AR = 16%, far exceeding target.<br>
+                    • <strong>D)</strong> 5% is overly conservative; 10% is the calculated answer.`
+                },
+                {
+                    id: "4-2",
+                    title: "Inherent Risk Factors",
+                    question: "Which would INCREASE inherent risk for an account balance?",
+                    options: [
+                        "Simple, routine transactions",
+                        "Stable economic conditions",
+                        "Complex accounting estimates with significant judgment",
+                        "Experienced, competent accounting staff"
+                    ],
+                    correct: 2,
+                    explanation: `<strong>C) Complex accounting estimates with significant judgment</strong> is correct. Complexity and judgment increase misstatement likelihood before considering controls.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>A)</strong> Simple transactions DECREASE inherent risk.<br>
+                    • <strong>B)</strong> Stability DECREASES inherent risk.<br>
+                    • <strong>D)</strong> This relates to control environment; inherent risk assumes no controls.`
+                },
+                {
+                    id: "4-3",
+                    title: "Risk of Material Misstatement",
+                    question: "Risk of material misstatement (RMM) at the assertion level consists of:",
+                    options: [
+                        "Detection risk and control risk",
+                        "Inherent risk and control risk",
+                        "Audit risk and inherent risk",
+                        "Detection risk and audit risk"
+                    ],
+                    correct: 1,
+                    explanation: `<strong>B) Inherent risk and control risk</strong> is correct. RMM = IR × CR, representing risk that statements are misstated BEFORE the audit.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>A)</strong> Detection risk is the auditor's risk, not part of RMM.<br>
+                    • <strong>C)</strong> Audit risk is overall risk, not a component of RMM.<br>
+                    • <strong>D)</strong> Neither is a component of RMM.`
+                },
+                {
+                    id: "4-4",
+                    title: "Significant Risks",
+                    question: "A 'significant risk' requires special audit consideration because:",
+                    options: [
+                        "The account balance is larger than other accounts",
+                        "The client has had that account for many years",
+                        "The auditor found a small error there last year",
+                        "It involves significant judgment or fraud susceptibility"
+                    ],
+                    correct: 3,
+                    explanation: `<strong>D) It involves significant judgment or fraud susceptibility</strong> is correct. Significant risks require special consideration due to nature, complexity, or fraud risk.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>A)</strong> Size alone doesn't make a risk significant.<br>
+                    • <strong>B)</strong> Account history doesn't define significant risk.<br>
+                    • <strong>C)</strong> A small corrected error doesn't create significant risk.`
+                },
+                {
+                    id: "4-5",
+                    title: "Detection Risk",
+                    question: "Which statement about detection risk is TRUE?",
+                    options: [
+                        "Detection risk exists independently of the audit",
+                        "Detection risk cannot be changed by the auditor",
+                        "Detection risk is controlled by the nature, timing, and extent of procedures",
+                        "Detection risk should always be set at maximum"
+                    ],
+                    correct: 2,
+                    explanation: `<strong>C) Detection risk is controlled by the nature, timing, and extent of procedures</strong> is correct. It's the only component auditors can directly control.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>A)</strong> Detection risk only exists because an audit is performed.<br>
+                    • <strong>B)</strong> This is exactly what auditors CAN change.<br>
+                    • <strong>D)</strong> Detection risk should be set inversely to RMM.`
+                }
+            ],
+            5: [
+                {
+                    id: "5-1",
+                    title: "COSO Framework",
+                    question: "Which is NOT one of the five COSO Internal Control Framework components?",
+                    options: [
+                        "Control Environment",
+                        "Risk Assessment",
+                        "Financial Reporting",
+                        "Monitoring Activities"
+                    ],
+                    correct: 2,
+                    explanation: `<strong>C) Financial Reporting</strong> is correct. It's an objective category, not a COSO component. The five components are: Control Environment, Risk Assessment, Control Activities, Information & Communication, and Monitoring Activities.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>A)</strong> Control Environment IS a COSO component.<br>
+                    • <strong>B)</strong> Risk Assessment IS a COSO component.<br>
+                    • <strong>D)</strong> Monitoring Activities IS a COSO component.`
+                },
+                {
+                    id: "5-2",
+                    title: "Segregation of Duties",
+                    question: "Proper segregation of duties requires separating which three functions?",
+                    options: [
+                        "Authorization, custody of assets, and recording",
+                        "Planning, execution, and reporting",
+                        "Hiring, training, and supervising",
+                        "Budgeting, spending, and auditing"
+                    ],
+                    correct: 0,
+                    explanation: `<strong>A) Authorization, custody of assets, and recording</strong> is correct. These three functions must be separated to prevent fraud.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>B)</strong> These are project management phases.<br>
+                    • <strong>C)</strong> These are HR functions, not the classic segregation concern.<br>
+                    • <strong>D)</strong> This isn't the authorization-custody-recording triad.`
+                },
+                {
+                    id: "5-3",
+                    title: "Control Environment",
+                    question: "Which factor is MOST important in establishing an effective control environment?",
+                    options: [
+                        "Tone at the top and management's commitment to integrity",
+                        "Implementation of sophisticated IT systems",
+                        "Detailed written policies and procedures",
+                        "Regular external audits"
+                    ],
+                    correct: 0,
+                    explanation: `<strong>A) Tone at the top and management's commitment to integrity</strong> is correct. Leadership's ethical values set the standard for the organization.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>B)</strong> IT systems can't compensate for poor ethics.<br>
+                    • <strong>C)</strong> Policies are meaningless without leadership modeling them.<br>
+                    • <strong>D)</strong> Audits assess controls after the fact, not the foundation.`
+                },
+                {
+                    id: "5-4",
+                    title: "IT General Controls",
+                    question: "Which is an IT General Control (ITGC) rather than an application control?",
+                    options: [
+                        "Input validation checking for valid customer numbers",
+                        "Automatic calculation of invoice totals",
+                        "Change management procedures for system updates",
+                        "Three-way matching of PO, receipt, and invoice"
+                    ],
+                    correct: 2,
+                    explanation: `<strong>C) Change management procedures</strong> is correct. ITGCs support ALL applications: change management, access security, operations, development.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>A)</strong> Input validation is an application control.<br>
+                    • <strong>B)</strong> Automatic calculation is an application control.<br>
+                    • <strong>D)</strong> Three-way matching is an application control.`
+                },
+                {
+                    id: "5-5",
+                    title: "Tests of Controls",
+                    question: "An auditor must test control effectiveness when:",
+                    options: [
+                        "The client is a public company regardless of strategy",
+                        "The auditor intends to rely on controls to reduce substantive testing",
+                        "Management requests the auditor to test controls",
+                        "The prior year audit identified no control deficiencies"
+                    ],
+                    correct: 1,
+                    explanation: `<strong>B) The auditor intends to rely on controls to reduce substantive testing</strong> is correct. To rely on controls and reduce substantive procedures, auditors must test those controls.<br><br>
+                    Why other answers are incorrect:<br>
+                    • <strong>A)</strong> Control testing depends on audit strategy.<br>
+                    • <strong>C)</strong> Management requests don't drive audit requirements.<br>
+                    • <strong>D)</strong> Prior results don't require current testing.`
+                }
+            ]
+        };
+
+        const chapterNames = {
+            1: "Auditing and Assurance Services",
+            2: "Professional Standards",
+            3: "Engagement Planning and Audit Evidence",
+            4: "The Audit Risk Model",
+            5: "Internal Control Evaluation"
+        };
+
+        // State
+        let currentChapter = 1;
+        let currentQuestion = 0;
+        let answers = {
+            1: {}, 2: {}, 3: {}, 4: {}, 5: {}
+        };
+
+        // Keyboard navigation state
+        // focusArea: 'chapters' (top nav), 'questions' (sidebar), 'options' (main), 'actions' (buttons)
+        let focusArea = 'questions';
+        let focusedChapterIndex = 1;   // Which chapter tab (0=Overview, 1-5=chapters)
+        let focusedQuestionIndex = 0;  // Which question in sidebar (0-4)
+        let focusedOptionIndex = 0;    // Which option (0-3)
+        let focusedActionIndex = 2;    // Which button (0=Previous, 1=Next, 2=Check Answer)
+        let selectedOption = null;     // Currently selected (highlighted) option
+
+        // Initialize
+        function init() {
+            renderChapterTabs();
+            renderQuestionNav();
+            renderQuestion();
+            updateScores();
+            setupKeyboardShortcuts();
+            updateKeyboardFocus();
+        }
+
+        function setupKeyboardShortcuts() {
+            document.addEventListener('keydown', handleKeyPress);
+        }
+
+        function handleKeyPress(e) {
+            // Ignore if typing in an input
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+            // Handle Overview page separately
+            if (currentChapter === 0) {
+                handleOverviewKeyPress(e);
+                return;
+            }
+
+            const q = questions[currentChapter][currentQuestion];
+            const isAnswered = answers[currentChapter][currentQuestion] !== undefined;
+            const numOptions = q.options.length;
+
+            switch (e.key) {
+                case 'ArrowUp':
+                    if (focusArea === 'chapters') {
+                        // From chapters, go down to questions
+                        focusArea = 'questions';
+                    } else if (focusArea === 'questions') {
+                        if (focusedQuestionIndex > 0) {
+                            focusedQuestionIndex--;
+                        } else {
+                            // At top of questions, go to chapters
+                            focusArea = 'chapters';
+                            focusedChapterIndex = currentChapter;
+                        }
+                    } else if (focusArea === 'options') {
+                        if (focusedOptionIndex > 0) {
+                            focusedOptionIndex--;
+                        } else {
+                            // At top of options, go to chapters
+                            focusArea = 'chapters';
+                            focusedChapterIndex = currentChapter;
+                        }
+                    } else if (focusArea === 'actions') {
+                        // From actions, go to options
+                        focusArea = 'options';
+                        focusedOptionIndex = numOptions - 1;
+                    }
+                    updateKeyboardFocus();
+                    e.preventDefault();
+                    break;
+
+                case 'ArrowDown':
+                    if (focusArea === 'chapters') {
+                        // From chapters, go to questions or options based on previous state
+                        focusArea = 'questions';
+                        focusedQuestionIndex = 0;
+                    } else if (focusArea === 'questions') {
+                        if (focusedQuestionIndex < 4) {
+                            focusedQuestionIndex++;
+                        }
+                    } else if (focusArea === 'options') {
+                        if (focusedOptionIndex < numOptions - 1) {
+                            focusedOptionIndex++;
+                        } else {
+                            // At bottom of options, go to actions
+                            focusArea = 'actions';
+                            focusedActionIndex = 2; // Check Answer button
+                        }
+                    } else if (focusArea === 'actions') {
+                        // Stay in actions
+                    }
+                    updateKeyboardFocus();
+                    e.preventDefault();
+                    break;
+
+                case 'ArrowRight':
+                    if (focusArea === 'chapters') {
+                        // Move right in chapter tabs
+                        if (focusedChapterIndex < 5) {
+                            focusedChapterIndex++;
+                        }
+                    } else if (focusArea === 'questions') {
+                        // Move from questions to options
+                        focusArea = 'options';
+                        focusedOptionIndex = 0;
+                    } else if (focusArea === 'options') {
+                        // Stay in options
+                    } else if (focusArea === 'actions') {
+                        // Move right in action buttons
+                        if (focusedActionIndex < 2) {
+                            focusedActionIndex++;
+                        }
+                    }
+                    updateKeyboardFocus();
+                    e.preventDefault();
+                    break;
+
+                case 'ArrowLeft':
+                    if (focusArea === 'chapters') {
+                        // Move left in chapter tabs
+                        if (focusedChapterIndex > 0) {
+                            focusedChapterIndex--;
+                        }
+                    } else if (focusArea === 'questions') {
+                        // Stay in questions
+                    } else if (focusArea === 'options') {
+                        // Move from options back to questions
+                        focusArea = 'questions';
+                    } else if (focusArea === 'actions') {
+                        // Move left in action buttons
+                        if (focusedActionIndex > 0) {
+                            focusedActionIndex--;
+                        } else {
+                            // At leftmost action, go to questions
+                            focusArea = 'questions';
+                        }
+                    }
+                    updateKeyboardFocus();
+                    e.preventDefault();
+                    break;
+
+                case 'Enter':
+                case ' ':  // Space key works same as Enter
+                    if (focusArea === 'chapters') {
+                        // Select the focused chapter
+                        if (focusedChapterIndex === 0) {
+                            switchToOverview();
+                        } else if (focusedChapterIndex !== currentChapter) {
+                            switchChapter(focusedChapterIndex);
+                        }
+                    } else if (focusArea === 'questions') {
+                        // Select the focused question
+                        if (focusedQuestionIndex !== currentQuestion) {
+                            goToQuestion(focusedQuestionIndex);
+                        } else {
+                            // Same question - move to options
+                            focusArea = 'options';
+                            focusedOptionIndex = 0;
+                            updateKeyboardFocus();
+                        }
+                    } else if (focusArea === 'options') {
+                        if (!isAnswered) {
+                            // Select the focused option and submit
+                            selectOption(focusedOptionIndex);
+                            submitAnswer();
+                        } else {
+                            // Already answered - move to next question
+                            if (currentQuestion < 4) {
+                                nextQuestion();
+                            } else if (currentChapter < 5) {
+                                switchChapter(currentChapter + 1);
+                            }
+                        }
+                    } else if (focusArea === 'actions') {
+                        // Execute the focused action
+                        if (focusedActionIndex === 0) {
+                            prevQuestion();
+                        } else if (focusedActionIndex === 1) {
+                            nextQuestion();
+                        } else if (focusedActionIndex === 2) {
+                            if (!isAnswered && selectedOption !== null) {
+                                submitAnswer();
+                            } else if (isAnswered) {
+                                // Move to next
+                                if (currentQuestion < 4) {
+                                    nextQuestion();
+                                } else if (currentChapter < 5) {
+                                    switchChapter(currentChapter + 1);
+                                }
+                            }
+                        }
+                    }
+                    e.preventDefault();
+                    break;
+
+                // Number keys 1-5 still work as shortcuts for options
+                case '1': case '2': case '3': case '4': case '5':
+                    const optionIndex = parseInt(e.key) - 1;
+                    if (optionIndex < numOptions && !isAnswered) {
+                        focusArea = 'options';
+                        focusedOptionIndex = optionIndex;
+                        selectOption(optionIndex);
+                        updateKeyboardFocus();
+                    }
+                    e.preventDefault();
+                    break;
+
+                // Backspace - go to previous question
+                case 'Backspace':
+                    if (currentQuestion > 0) {
+                        prevQuestion();
+                    } else if (currentChapter > 1) {
+                        // Go to last question of previous chapter
+                        currentChapter--;
+                        currentQuestion = 4;
+                        selectedOption = null;
+                        focusedQuestionIndex = 4;
+                        focusedOptionIndex = 0;
+                        renderChapterTabs();
+                        renderQuestionNav();
+                        renderQuestion();
+                        updateScores();
+                        updateKeyboardFocus();
+                    } else {
+                        // At Ch1 Q1, go to overview
+                        switchToOverview();
+                    }
+                    e.preventDefault();
+                    break;
+
+                // Tab key to cycle through focus areas
+                case 'Tab':
+                    if (e.shiftKey) {
+                        // Shift+Tab: reverse order
+                        if (focusArea === 'actions') focusArea = 'options';
+                        else if (focusArea === 'options') focusArea = 'questions';
+                        else if (focusArea === 'questions') focusArea = 'chapters';
+                        else if (focusArea === 'chapters') focusArea = 'actions';
+                    } else {
+                        // Tab: forward order
+                        if (focusArea === 'chapters') focusArea = 'questions';
+                        else if (focusArea === 'questions') focusArea = 'options';
+                        else if (focusArea === 'options') focusArea = 'actions';
+                        else if (focusArea === 'actions') focusArea = 'chapters';
+                    }
+                    focusedChapterIndex = currentChapter;
+                    updateKeyboardFocus();
+                    e.preventDefault();
+                    break;
+            }
+        }
+
+        function handleOverviewKeyPress(e) {
+            switch (e.key) {
+                case 'ArrowUp':
+                    if (focusArea === 'chapters') {
+                        focusArea = 'questions';
+                    } else if (focusArea === 'questions') {
+                        if (focusedQuestionIndex > 0) {
+                            focusedQuestionIndex--;
+                        } else {
+                            focusArea = 'chapters';
+                            focusedChapterIndex = 0;
+                        }
+                    }
+                    updateKeyboardFocus();
+                    e.preventDefault();
+                    break;
+
+                case 'ArrowDown':
+                    if (focusArea === 'chapters') {
+                        focusArea = 'questions';
+                        focusedQuestionIndex = 0;
+                    } else if (focusArea === 'questions') {
+                        if (focusedQuestionIndex < 4) {
+                            focusedQuestionIndex++;
+                        }
+                    }
+                    updateKeyboardFocus();
+                    e.preventDefault();
+                    break;
+
+                case 'ArrowRight':
+                    if (focusArea === 'chapters') {
+                        if (focusedChapterIndex < 5) {
+                            focusedChapterIndex++;
+                        }
+                    } else if (focusArea === 'questions') {
+                        // Go to same chapter in main content (but it's overview, so go to chapters)
+                    }
+                    updateKeyboardFocus();
+                    e.preventDefault();
+                    break;
+
+                case 'ArrowLeft':
+                    if (focusArea === 'chapters') {
+                        if (focusedChapterIndex > 0) {
+                            focusedChapterIndex--;
+                        }
+                    }
+                    updateKeyboardFocus();
+                    e.preventDefault();
+                    break;
+
+                case 'Enter':
+                case ' ':
+                    if (focusArea === 'chapters') {
+                        if (focusedChapterIndex === 0) {
+                            // Already on overview
+                        } else {
+                            switchChapter(focusedChapterIndex);
+                        }
+                    } else {
+                        // Go to focused chapter (index 0-4 = chapter 1-5)
+                        switchChapter(focusedQuestionIndex + 1);
+                    }
+                    e.preventDefault();
+                    break;
+
+                case '1': case '2': case '3': case '4': case '5':
+                    switchChapter(parseInt(e.key));
+                    e.preventDefault();
+                    break;
+
+                case 'Tab':
+                    if (e.shiftKey) {
+                        focusArea = focusArea === 'questions' ? 'chapters' : 'questions';
+                    } else {
+                        focusArea = focusArea === 'chapters' ? 'questions' : 'chapters';
+                    }
+                    focusedChapterIndex = 0;
+                    updateKeyboardFocus();
+                    e.preventDefault();
+                    break;
+            }
+        }
+
+        function updateKeyboardFocus() {
+            // Clear all keyboard focus
+            document.querySelectorAll('.keyboard-focus').forEach(el => {
+                el.classList.remove('keyboard-focus');
+            });
+
+            if (currentChapter === 0) {
+                // Overview page
+                if (focusArea === 'chapters') {
+                    const chapterTabs = document.querySelectorAll('.chapter-tab');
+                    if (chapterTabs[focusedChapterIndex]) {
+                        chapterTabs[focusedChapterIndex].classList.add('keyboard-focus');
+                    }
+                } else {
+                    // Highlight chapter in sidebar
+                    const navLinks = document.querySelectorAll('.question-nav-link');
+                    if (navLinks[focusedQuestionIndex]) {
+                        navLinks[focusedQuestionIndex].classList.add('keyboard-focus');
+                    }
+                    // Also highlight in main content
+                    const overviewItems = document.querySelectorAll('.overview-chapter-item');
+                    if (overviewItems[focusedQuestionIndex]) {
+                        overviewItems[focusedQuestionIndex].classList.add('keyboard-focus');
+                    }
+                }
+            } else {
+                // Regular chapter view
+                if (focusArea === 'chapters') {
+                    const chapterTabs = document.querySelectorAll('.chapter-tab');
+                    if (chapterTabs[focusedChapterIndex]) {
+                        chapterTabs[focusedChapterIndex].classList.add('keyboard-focus');
+                    }
+                } else if (focusArea === 'questions') {
+                    const navLinks = document.querySelectorAll('.question-nav-link');
+                    if (navLinks[focusedQuestionIndex]) {
+                        navLinks[focusedQuestionIndex].classList.add('keyboard-focus');
+                    }
+                } else if (focusArea === 'options') {
+                    const options = document.querySelectorAll('.option');
+                    if (options[focusedOptionIndex]) {
+                        options[focusedOptionIndex].classList.add('keyboard-focus');
+                    }
+                } else if (focusArea === 'actions') {
+                    const buttons = document.querySelectorAll('.question-actions .nav-btn, .question-actions .submit-btn');
+                    if (buttons[focusedActionIndex]) {
+                        buttons[focusedActionIndex].classList.add('keyboard-focus');
+                    }
+                }
+            }
+        }
+
+        function renderChapterTabs() {
+            const container = document.getElementById('chapter-tabs');
+            container.innerHTML = '';
+
+            // Overview tab
+            const overviewBtn = document.createElement('button');
+            overviewBtn.className = `chapter-tab ${currentChapter === 0 ? 'active' : ''}`;
+            overviewBtn.onclick = () => switchToOverview();
+            overviewBtn.textContent = 'Overview';
+            container.appendChild(overviewBtn);
+
+            for (let ch = 1; ch <= 5; ch++) {
+                const chapterAnswers = Object.values(answers[ch]);
+                const correctCount = chapterAnswers.filter(a => a.correct).length;
+                const btn = document.createElement('button');
+                btn.className = `chapter-tab ${ch === currentChapter ? 'active' : ''}`;
+                btn.onclick = () => switchChapter(ch);
+                btn.innerHTML = `
+                    Ch ${ch}
+                    <span class="chapter-progress ${correctCount < 5 ? 'incomplete' : ''}">${correctCount}/5</span>
+                `;
+                container.appendChild(btn);
+            }
+        }
+
+        function switchToOverview() {
+            currentChapter = 0;
+            focusArea = 'questions';
+            focusedChapterIndex = 0;
+            focusedQuestionIndex = 0;
+            renderChapterTabs();
+            renderOverview();
+            updateKeyboardFocus();
+        }
+
+        function renderOverview() {
+            // Update sidebar
+            document.getElementById('sidebar-chapter-name').textContent = 'Course Overview';
+            const navContainer = document.getElementById('question-nav');
+            navContainer.innerHTML = '';
+
+            // Show chapters in sidebar
+            for (let ch = 1; ch <= 5; ch++) {
+                const chapterAnswers = Object.values(answers[ch]);
+                const correctCount = chapterAnswers.filter(a => a.correct).length;
+                const li = document.createElement('li');
+                li.className = 'question-nav-item';
+                li.innerHTML = `
+                    <div class="question-nav-link" onclick="switchChapter(${ch})">
+                        <span class="nav-number">${ch}</span>
+                        <span class="nav-question-title">${chapterNames[ch]}</span>
+                        <span class="nav-status">${correctCount}/5</span>
+                    </div>
+                `;
+                navContainer.appendChild(li);
+            }
+
+            // Update chapter score area
+            let totalCorrect = 0;
+            let totalAnswered = 0;
+            for (let ch = 1; ch <= 5; ch++) {
+                const chapterAnswers = Object.values(answers[ch]);
+                totalCorrect += chapterAnswers.filter(a => a.correct).length;
+                totalAnswered += chapterAnswers.length;
+            }
+            document.getElementById('chapter-score').textContent = `${totalCorrect} / 25`;
+            document.getElementById('chapter-progress').style.width = `${(totalAnswered / 25) * 100}%`;
+
+            // Render overview in main content
+            const card = document.getElementById('question-card');
+            card.innerHTML = `
+                <div class="question-header">
+                    <div class="question-meta">
+                        <span class="question-chapter">Auditing & Assurance Services</span>
+                    </div>
+                    <div class="question-title">Course Overview</div>
+                </div>
+                <div class="question-body">
+                    <div class="overview-chapters">
+                        ${[1,2,3,4,5].map(ch => {
+                            const chapterAnswers = Object.values(answers[ch]);
+                            const correctCount = chapterAnswers.filter(a => a.correct).length;
+                            const answeredCount = chapterAnswers.length;
+                            return `
+                                <div class="overview-chapter-item" onclick="switchChapter(${ch})">
+                                    <div class="overview-chapter-number">Chapter ${ch}</div>
+                                    <div class="overview-chapter-title">${chapterNames[ch]}</div>
+                                    <div class="overview-chapter-score ${correctCount === 5 ? 'complete' : ''}">${correctCount}/5 correct</div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+
+            // Update explanation panel
+            const header = document.getElementById('explanation-header');
+            const body = document.getElementById('explanation-body');
+            header.className = 'explanation-header';
+            header.textContent = 'Progress Summary';
+
+            let totalForSummary = 0;
+            for (let ch = 1; ch <= 5; ch++) {
+                totalForSummary += Object.values(answers[ch]).filter(a => a.correct).length;
+            }
+            body.className = 'explanation-body';
+            body.innerHTML = `
+                <strong>Total Score: ${totalForSummary} / 25</strong><br><br>
+                Click on any chapter to start practicing.<br><br>
+                Use <kbd>Shift</kbd> + <kbd>→</kbd> to go to Chapter 1.
+            `;
+        }
+
+        function renderQuestionNav() {
+            const container = document.getElementById('question-nav');
+            container.innerHTML = '';
+
+            document.getElementById('sidebar-chapter-name').textContent =
+                `Chapter ${currentChapter}: ${chapterNames[currentChapter]}`;
+
+            questions[currentChapter].forEach((q, idx) => {
+                const answer = answers[currentChapter][idx];
+                let statusClass = '';
+                let statusIcon = '';
+
+                if (answer !== undefined) {
+                    statusClass = answer.correct ? 'correct' : 'incorrect';
+                    statusIcon = answer.correct ? '✓' : '✗';
+                }
+
+                const li = document.createElement('li');
+                li.className = 'question-nav-item';
+                li.innerHTML = `
+                    <div class="question-nav-link ${idx === currentQuestion ? 'active' : ''} ${statusClass}"
+                         onclick="goToQuestion(${idx})">
+                        <span class="nav-number">${idx + 1}</span>
+                        <span class="nav-question-title">${q.title}</span>
+                        <span class="nav-status">${statusIcon}</span>
+                    </div>
+                `;
+                container.appendChild(li);
+            });
+        }
+
+        function renderQuestion() {
+            const q = questions[currentChapter][currentQuestion];
+            const answer = answers[currentChapter][currentQuestion];
+            const isAnswered = answer !== undefined;
+
+            const card = document.getElementById('question-card');
+            card.innerHTML = `
+                <div class="question-header">
+                    <div class="question-meta">
+                        <span class="question-chapter">Chapter ${currentChapter}</span>
+                        <span class="question-number-badge">Question ${currentQuestion + 1} of 5</span>
+                    </div>
+                    <div class="question-title">${q.title}</div>
+                </div>
+                <div class="question-body">
+                    <div class="question-text">${q.question}</div>
+                    <div class="options">
+                        ${q.options.map((opt, idx) => {
+                            let optClass = '';
+                            if (isAnswered) {
+                                optClass = 'disabled';
+                                if (idx === q.correct) optClass += ' correct';
+                                else if (idx === answer.selected) optClass += ' incorrect';
+                            }
+                            return `
+                                <div class="option ${optClass}" data-index="${idx}" onclick="selectOption(${idx})">
+                                    <span class="option-letter">${String.fromCharCode(65 + idx)}</span>
+                                    <span class="option-text">${opt}</span>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+
+                    <div class="question-actions">
+                        <div class="nav-buttons">
+                            <button class="nav-btn" onclick="prevQuestion()" ${currentQuestion === 0 ? 'disabled' : ''}>
+                                ← Previous
+                            </button>
+                            <button class="nav-btn" onclick="nextQuestion()" ${currentQuestion === 4 ? 'disabled' : ''}>
+                                Next →
+                            </button>
+                        </div>
+                        <button class="submit-btn" onclick="submitAnswer()" id="submit-btn" ${isAnswered ? 'disabled' : 'disabled'}>
+                            ${isAnswered ? 'Answered' : 'Check Answer'}
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Update explanation panel
+            updateExplanationPanel();
+        }
+
+        function updateExplanationPanel() {
+            const q = questions[currentChapter][currentQuestion];
+            const answer = answers[currentChapter][currentQuestion];
+            const isAnswered = answer !== undefined;
+
+            const header = document.getElementById('explanation-header');
+            const body = document.getElementById('explanation-body');
+
+            if (isAnswered) {
+                header.className = 'explanation-header ' + (answer.correct ? 'correct' : 'incorrect');
+                header.textContent = answer.correct ? '✓ Correct!' : '✗ Incorrect';
+                body.className = 'explanation-body';
+                body.innerHTML = q.explanation;
+            } else {
+                header.className = 'explanation-header';
+                header.textContent = 'Explanation';
+                body.className = 'explanation-body empty';
+                body.innerHTML = 'Select an answer and press Enter to see explanation';
+            }
+        }
+
+        function selectOption(idx) {
+            if (answers[currentChapter][currentQuestion] !== undefined) return;
+
+            selectedOption = idx;
+
+            document.querySelectorAll('.option').forEach((opt, i) => {
+                opt.classList.toggle('selected', i === idx);
+            });
+
+            document.getElementById('submit-btn').disabled = false;
+        }
+
+        function submitAnswer() {
+            const selected = document.querySelector('.option.selected');
+            if (!selected) return;
+
+            const selectedIdx = parseInt(selected.dataset.index);
+            const q = questions[currentChapter][currentQuestion];
+            const isCorrect = selectedIdx === q.correct;
+
+            answers[currentChapter][currentQuestion] = {
+                selected: selectedIdx,
+                correct: isCorrect
+            };
+
+            // Keep selectedOption set so Enter can advance to next question
+            renderQuestion();
+            renderQuestionNav();
+            renderChapterTabs();
+            updateScores();
+            updateKeyboardFocus();
+        }
+
+        function updateScores() {
+            // Chapter score
+            const chapterAnswers = Object.values(answers[currentChapter]);
+            const chapterCorrect = chapterAnswers.filter(a => a.correct).length;
+            const chapterTotal = chapterAnswers.length;
+
+            document.getElementById('chapter-score').textContent = `${chapterCorrect} / 5`;
+            document.getElementById('chapter-progress').style.width = `${(chapterTotal / 5) * 100}%`;
+
+            // Total score
+            let totalCorrect = 0;
+            for (let ch = 1; ch <= 5; ch++) {
+                totalCorrect += Object.values(answers[ch]).filter(a => a.correct).length;
+            }
+            document.getElementById('total-score').textContent = `${totalCorrect}/25`;
+        }
+
+        function switchChapter(ch) {
+            currentChapter = ch;
+            currentQuestion = 0;
+            selectedOption = null;
+            focusArea = 'questions';
+            focusedChapterIndex = ch;
+            focusedQuestionIndex = 0;
+            focusedOptionIndex = 0;
+            focusedActionIndex = 2;
+            renderChapterTabs();
+            renderQuestionNav();
+            renderQuestion();
+            updateScores();
+            updateKeyboardFocus();
+        }
+
+        function goToQuestion(idx) {
+            currentQuestion = idx;
+            selectedOption = null;
+            focusArea = 'options';
+            focusedQuestionIndex = idx;
+            focusedOptionIndex = 0;
+            focusedActionIndex = 2;
+            renderQuestionNav();
+            renderQuestion();
+            updateKeyboardFocus();
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                selectedOption = null;
+                focusedQuestionIndex = currentQuestion;
+                focusedOptionIndex = 0;
+                renderQuestionNav();
+                renderQuestion();
+                updateKeyboardFocus();
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < 4) {
+                currentQuestion++;
+                selectedOption = null;
+                focusedQuestionIndex = currentQuestion;
+                focusedOptionIndex = 0;
+                renderQuestionNav();
+                renderQuestion();
+                updateKeyboardFocus();
+            }
+        }
+
+        function resetChapter() {
+            answers[currentChapter] = {};
+            currentQuestion = 0;
+            selectedOption = null;
+            focusArea = 'questions';
+            focusedChapterIndex = currentChapter;
+            focusedQuestionIndex = 0;
+            focusedOptionIndex = 0;
+            focusedActionIndex = 2;
+            renderChapterTabs();
+            renderQuestionNav();
+            renderQuestion();
+            updateScores();
+            updateKeyboardFocus();
+        }
+
+        function resetAll() {
+            if (!confirm('Reset all chapters? This will clear all your answers.')) return;
+
+            answers = { 1: {}, 2: {}, 3: {}, 4: {}, 5: {} };
+            currentChapter = 1;
+            currentQuestion = 0;
+            selectedOption = null;
+            focusArea = 'questions';
+            focusedChapterIndex = 1;
+            focusedQuestionIndex = 0;
+            focusedOptionIndex = 0;
+            focusedActionIndex = 2;
+            renderChapterTabs();
+            renderQuestionNav();
+            renderQuestion();
+            updateScores();
+            updateKeyboardFocus();
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
