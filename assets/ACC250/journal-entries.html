@@ -224,13 +224,14 @@
             border-radius: 8px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             border: 1px solid #e2e8f0;
-            overflow: hidden;
+            overflow: visible;
         }
 
         .card-header {
             background: #f8f9fa;
             padding: 8px 12px;
             border-bottom: 1px solid #eee;
+            border-radius: 8px 8px 0 0;
         }
 
         .question-number {
@@ -544,31 +545,378 @@
             border-radius: 8px;
             border-left: 3px solid #3b82f6;
         }
+
+        /* Cover page */
+        .cover-overlay {
+            position: fixed;
+            inset: 0;
+            background: #1e293b;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .cover-card {
+            background: white;
+            border-radius: 14px;
+            padding: 40px 44px;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 24px 48px rgba(0,0,0,0.4);
+        }
+
+        .cover-tag {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1e40af;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 3px 9px;
+            border-radius: 20px;
+            margin-bottom: 12px;
+        }
+
+        .cover-card h1 {
+            font-size: 1.6rem;
+            color: #1e293b;
+            margin-bottom: 4px;
+            line-height: 1.2;
+        }
+
+        .cover-card .cover-course {
+            font-size: 0.88rem;
+            color: #64748b;
+            margin-bottom: 28px;
+        }
+
+        .cover-section-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+
+        .cover-chapters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 28px;
+        }
+
+        .cover-ch-btn {
+            flex: 1;
+            padding: 12px 8px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: white;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.15s;
+        }
+
+        .cover-ch-btn:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+
+        .cover-ch-btn .ch-label {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #1e293b;
+            display: block;
+        }
+
+        .cover-ch-btn .ch-desc {
+            font-size: 0.72rem;
+            color: #64748b;
+            margin-top: 3px;
+            display: block;
+            line-height: 1.3;
+        }
+
+        .cover-divider {
+            border: none;
+            border-top: 1px solid #e2e8f0;
+            margin: 0 0 20px;
+        }
+
+        /* How to use */
+        .how-to {
+            margin-top: 16px;
+            padding: 14px 16px;
+            background: #f7fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .how-to h2 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #718096;
+            margin-bottom: 10px;
+        }
+
+        .how-to ol {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .how-to li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.87rem;
+            color: #4a5568;
+            line-height: 1.45;
+        }
+
+        .how-to .step-num {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            background: #3b82f6;
+            color: white;
+            border-radius: 50%;
+            font-size: 0.7rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 1px;
+        }
+
+        .how-to kbd {
+            background: #edf2f7;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            padding: 1px 5px;
+            font-family: inherit;
+            font-size: 0.8rem;
+            color: #2d3748;
+            white-space: nowrap;
+        }
+
+        /* Typeahead input */
+        .input-wrapper {
+            position: relative;
+            display: inline-block;
+            min-width: 170px;
+        }
+
+        .account-input {
+            width: 100%;
+            padding: 4px 8px;
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            background: #f8f9fa;
+            font-size: 0.9rem;
+            font-family: inherit;
+            color: #666;
+            outline: none;
+        }
+
+        .account-input:focus {
+            border-style: solid;
+            border-color: #3b82f6;
+            background: white;
+            color: #2d3748;
+        }
+
+        .account-input.debit-filled {
+            border-style: solid;
+            border-color: #3b82f6;
+            background: #dbeafe;
+            color: #1e40af;
+            font-weight: 600;
+        }
+
+        .account-input.credit-filled {
+            border-style: solid;
+            border-color: #ef4444;
+            background: #fee2e2;
+            color: #991b1b;
+            font-weight: 600;
+        }
+
+        .suggestions {
+            position: absolute;
+            top: calc(100% + 2px);
+            left: 0;
+            min-width: 100%;
+            background: white;
+            border: 1px solid #cbd5e0;
+            border-radius: 5px;
+            z-index: 100;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.12);
+        }
+
+        .suggestion-item {
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #2d3748;
+            white-space: nowrap;
+        }
+
+        .suggestion-item:hover,
+        .suggestion-item.highlighted {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        /* Chapter toggle */
+        .sidebar .chapter-title {
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-right: 15px;
+        }
+
+        .sidebar .chapter-title:hover {
+            color: white;
+        }
+
+        .chapter-toggle {
+            font-size: 0.75em;
+            transition: transform 0.2s ease;
+            display: inline-block;
+        }
+
+        .sidebar .chapter-section.collapsed .chapter-toggle {
+            transform: rotate(-90deg);
+        }
+
+        .sidebar .chapter-section.collapsed ul {
+            display: none;
+        }
+
+        .sidebar-home {
+            display: block;
+            padding: 8px 15px 10px;
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            font-size: 0.85em;
+            border-bottom: 1px solid rgba(255,255,255,0.12);
+            margin-bottom: 12px;
+            transition: color 0.2s;
+        }
+
+        .sidebar-home:hover {
+            color: white;
+        }
+
+        .page-footer {
+            margin-top: 18px;
+            padding-top: 12px;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+
+        .page-footer a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        .page-footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
+    <div class="cover-overlay" id="cover-overlay">
+        <div class="cover-card">
+            <span class="cover-tag">ACC250</span>
+            <h1>Journal Entry Practice</h1>
+            <p class="cover-course">Introduction to Financial Accounting &nbsp;&middot;&nbsp; Taught by Jaeyoon</p>
+
+            <p class="cover-section-label">Choose a chapter to begin</p>
+            <div class="cover-chapters">
+                <div class="cover-ch-btn" onclick="startChapter(1)">
+                    <span class="ch-label">Ch. 2</span>
+                    <span class="ch-desc">Balance sheet<br>accounts</span>
+                </div>
+                <div class="cover-ch-btn" onclick="startChapter(2)">
+                    <span class="ch-label">Ch. 3</span>
+                    <span class="ch-desc">Revenue &amp;<br>expense accounts</span>
+                </div>
+                <div class="cover-ch-btn" onclick="startChapter(3)">
+                    <span class="ch-label">Ch. 4</span>
+                    <span class="ch-desc">Adjusting<br>journal entries</span>
+                </div>
+            </div>
+
+            <hr class="cover-divider">
+            <p class="cover-section-label">How to use</p>
+            <div class="how-to" style="margin-top:0; border:none; padding:0; background:none;">
+                <ol>
+                    <li>
+                        <span class="step-num">1</span>
+                        <span>Type an account name (or part of it) in the <strong>Debit</strong> field.</span>
+                    </li>
+                    <li>
+                        <span class="step-num">2</span>
+                        <span>Navigate suggestions with <kbd>↑</kbd> <kbd>↓</kbd>, then press <kbd>Enter</kbd> to select.</span>
+                    </li>
+                    <li>
+                        <span class="step-num">3</span>
+                        <span>Press <kbd>Tab</kbd> to move to <strong>Credit</strong>. Use <kbd>Shift+Tab</kbd> to go back.</span>
+                    </li>
+                    <li>
+                        <span class="step-num">4</span>
+                        <span>Once both accounts are selected, press <kbd>Enter</kbd> to submit.</span>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
     <div class="page-wrapper">
         <nav class="sidebar">
+            <a class="sidebar-home" href="#" onclick="showCover(); return false;">&#8592; Front Page</a>
             <h3>Questions</h3>
-            <div class="chapter-section" id="ch2-section">
-                <div class="chapter-title">Chapter 2</div>
+            <div class="chapter-section collapsed" id="ch2-section">
+                <div class="chapter-title" onclick="toggleChapter('ch2-section')">Chapter 2 <span class="chapter-toggle">▼</span></div>
                 <ul id="ch2-questions"></ul>
             </div>
-            <div class="chapter-section" id="ch3-section">
-                <div class="chapter-title">Chapter 3</div>
+            <div class="chapter-section collapsed" id="ch3-section">
+                <div class="chapter-title" onclick="toggleChapter('ch3-section')">Chapter 3 <span class="chapter-toggle">▼</span></div>
                 <ul id="ch3-questions"></ul>
+            </div>
+            <div class="chapter-section collapsed" id="ch4-section">
+                <div class="chapter-title" onclick="toggleChapter('ch4-section')">Chapter 4 <span class="chapter-toggle">▼</span></div>
+                <ul id="ch4-questions"></ul>
             </div>
         </nav>
         <div class="content-wrapper">
             <div class="container">
         <header>
             <h1>Journal Entry Practice</h1>
-            <p>Select accounts for the journal entry</p>
+            <p>Type account names in the journal entry</p>
         </header>
 
         <div class="step-nav">
-            <button class="step-btn active" onclick="switchStep(1)">Ch2</button>
-            <button class="step-btn" onclick="switchStep(2)">Ch3</button>
+            <button class="step-btn" onclick="showCover()" style="color:#718096;">&#8592; Front Page</button>
+            <button class="step-btn active" data-step="1" onclick="switchStep(1)">Ch2</button>
+            <button class="step-btn" data-step="2" onclick="switchStep(2)">Ch3</button>
+            <button class="step-btn" data-step="3" onclick="switchStep(3)">Ch4</button>
         </div>
 
         <div class="chapter-label" id="chapter-label">Journal entries required in August</div>
@@ -596,25 +944,6 @@
                     </tbody>
                 </table>
 
-                <div class="account-panel" id="account-panel">
-                    <div class="account-columns">
-                        <div class="account-column" id="debit-column">
-                            <div class="column-header debit">On debit side:</div>
-                        </div>
-                        <div class="account-column" id="credit-column">
-                            <div class="column-header credit">On credit side:</div>
-                        </div>
-                    </div>
-                    <div class="keyboard-hint">
-                        <kbd>←</kbd><kbd>→</kbd><kbd>↑</kbd><kbd>↓</kbd> navigate accounts &nbsp;|&nbsp;
-                        <kbd>Space</kbd> select &nbsp;|&nbsp;
-                        <kbd>Enter</kbd> submit/next &nbsp;|&nbsp;
-                        <kbd>Shift+←</kbd> prev &nbsp;|&nbsp;
-                        <kbd>Shift+→</kbd> next &nbsp;|&nbsp;
-                        <kbd>Esc</kbd> clear
-                    </div>
-                </div>
-
                 <div class="btn-container" id="btn-container">
                     <button class="btn btn-secondary" id="btn-prev" onclick="prevQuestion()">← Previous</button>
                     <button class="btn btn-clear" id="btn-clear" onclick="clearSelections()">Clear</button>
@@ -631,7 +960,34 @@
 
         <div class="score-display">
             Score: <span id="score">0</span> / <span id="total">6</span>
-            </div>
+        </div>
+
+        <div class="how-to">
+            <h2>How to use</h2>
+            <ol>
+                <li>
+                    <span class="step-num">1</span>
+                    <span>Type an account name (or part of it) in the <strong>Debit</strong> field.</span>
+                </li>
+                <li>
+                    <span class="step-num">2</span>
+                    <span>Navigate suggestions with <kbd>↑</kbd> <kbd>↓</kbd>, then press <kbd>Enter</kbd> to select.</span>
+                </li>
+                <li>
+                    <span class="step-num">3</span>
+                    <span>Press <kbd>Tab</kbd> to move to <strong>Credit</strong>. Use <kbd>Shift+Tab</kbd> to go back.</span>
+                </li>
+                <li>
+                    <span class="step-num">4</span>
+                    <span>Once both accounts are selected, press <kbd>Enter</kbd> to submit.</span>
+                </li>
+            </ol>
+        </div>
+
+        <div class="page-footer">
+            Email <a href="mailto:yu10j@cmich.edu">yu10j@cmich.edu</a> for any questions and feedback.
+        </div>
+
         </div>
     </div>
 
@@ -697,6 +1053,24 @@
                 debitAmount: 8000,
                 creditAmount: 8000,
                 explanation: "Registering trademarks increases Logo and Trademarks (intangible asset, debit) and decreases Cash (asset, credit)."
+            },
+            {
+                id: 7,
+                text: "Paid $2,000 cash to settle the accounts payable for supplies purchased earlier.",
+                debitAccount: "Accounts Payable",
+                creditAccount: "Cash",
+                debitAmount: 2000,
+                creditAmount: 2000,
+                explanation: "Paying off accounts payable decreases Accounts Payable (liability, debit) and decreases Cash (asset, credit)."
+            },
+            {
+                id: 8,
+                text: "Purchased additional office supplies for $1,500 cash.",
+                debitAccount: "Supplies",
+                creditAccount: "Cash",
+                debitAmount: 1500,
+                creditAmount: 1500,
+                explanation: "Purchasing supplies for cash increases Supplies (asset, debit) and decreases Cash (asset, credit). This is an exchange of one asset for another."
             }
         ];
 
@@ -780,6 +1154,121 @@
                 debitAmount: 600,
                 creditAmount: 600,
                 explanation: "Paying utility expenses increases Utility Expenses (expense account that increases with a debit, which decreases equity) and decreases Cash (asset, credit)."
+            },
+            {
+                id: 9,
+                text: "One of the gift cards issued in September was redeemed by a customer for $100 of apps.",
+                debitAccount: "Deferred Revenue",
+                creditAccount: "Revenues",
+                debitAmount: 100,
+                creditAmount: 100,
+                explanation: "When a gift card is redeemed, the company fulfills its obligation. Deferred Revenue (liability) decreases with a debit, and Revenues increase with a credit."
+            },
+            {
+                id: 10,
+                text: "Noodlecake paid the $500 advertising bill that was received in September.",
+                debitAccount: "Accounts Payable",
+                creditAccount: "Cash",
+                debitAmount: 500,
+                creditAmount: 500,
+                explanation: "Paying off accounts payable decreases Accounts Payable (liability, debit) and decreases Cash (asset, credit)."
+            }
+        ];
+
+        // Ch4 Accounts
+        const ch4Accounts = [
+            "Supplies", "Prepaid Rent", "Accounts Receivable",
+            "Accumulated Depreciation", "Accumulated Amortization",
+            "Wages Payable", "Interest Payable", "Income Tax Payable", "Deferred Revenue",
+            "Supplies Expense", "Rent Expense", "Depreciation Expense",
+            "Amortization Expense", "Wages Expense", "Interest Expense", "Income Tax Expense",
+            "Revenues", "Service Revenue"
+        ];
+
+        // Ch4 Transactions — Noodlecake Adjusting Journal Entries only
+        const ch4Transactions = [
+            // --- Deferrals ---
+            {
+                id: 1,
+                text: "Of the $600 in supplies previously received, $250 remain on hand at September 30.",
+                debitAccount: "Supplies Expense",
+                creditAccount: "Supplies",
+                debitAmount: 350,
+                creditAmount: 350,
+                explanation: "$600 − $250 = $350 of supplies were used. Supplies Expense increases with a debit and Supplies (asset) decreases with a credit."
+            },
+            {
+                id: 2,
+                text: "Three months of rent were prepaid on September 1 for $7,200, but one month has now expired, leaving only two months prepaid at September 30.",
+                debitAccount: "Rent Expense",
+                creditAccount: "Prepaid Rent",
+                debitAmount: 2400,
+                creditAmount: 2400,
+                explanation: "$7,200 ÷ 3 months = $2,400 per month. One month of rent has expired and becomes Rent Expense (debit). Prepaid Rent (asset) decreases with a credit."
+            },
+            {
+                id: 3,
+                text: "The computer equipment ($9,600), which was estimated to last two years, has now been used for one month, representing an estimated expense of $400.",
+                debitAccount: "Depreciation Expense",
+                creditAccount: "Accumulated Depreciation",
+                debitAmount: 400,
+                creditAmount: 400,
+                explanation: "$9,600 ÷ 24 months = $400/month. Depreciation Expense increases with a debit and Accumulated Depreciation (contra-asset) increases with a credit."
+            },
+            {
+                id: 4,
+                text: "The app software developed for Noodlecake ($9,000), estimated to have three years of usefulness, has now been used for one month at an estimated expense of $250.",
+                debitAccount: "Amortization Expense",
+                creditAccount: "Accumulated Amortization",
+                debitAmount: 250,
+                creditAmount: 250,
+                explanation: "$9,000 ÷ 36 months = $250/month. Amortization Expense increases with a debit and Accumulated Amortization (contra-asset) increases with a credit."
+            },
+            {
+                id: 5,
+                text: "Noodlecake customers redeemed $100 of previously issued gift cards as payment for game downloads.",
+                debitAccount: "Deferred Revenue",
+                creditAccount: "Revenues",
+                debitAmount: 100,
+                creditAmount: 100,
+                explanation: "When a gift card is redeemed, the obligation is fulfilled. Deferred Revenue (liability) decreases with a debit and Revenues increases with a credit."
+            },
+            // --- Accruals ---
+            {
+                id: 6,
+                text: "Noodlecake provided $3,250 of consulting services to other app developers in September, with payment to be received in October.",
+                debitAccount: "Accounts Receivable",
+                creditAccount: "Service Revenue",
+                debitAmount: 3250,
+                creditAmount: 3250,
+                explanation: "Revenue is earned when services are performed, even if cash hasn't been received yet. Accounts Receivable (asset) increases with a debit and Service Revenue increases with a credit."
+            },
+            {
+                id: 7,
+                text: "Noodlecake owes $1,950 of wages to employees for work done in the last six days of September.",
+                debitAccount: "Wages Expense",
+                creditAccount: "Wages Payable",
+                debitAmount: 1950,
+                creditAmount: 1950,
+                explanation: "Wages earned by employees but not yet paid must be accrued. Wages Expense increases with a debit and Wages Payable (liability) increases with a credit."
+            },
+            {
+                id: 8,
+                text: "Noodlecake has not paid or recorded the $100 interest that it owes for this month on its note payable.",
+                debitAccount: "Interest Expense",
+                creditAccount: "Interest Payable",
+                debitAmount: 100,
+                creditAmount: 100,
+                explanation: "Interest incurred but not yet paid must be accrued. Interest Expense increases with a debit and Interest Payable (liability) increases with a credit."
+            },
+            {
+                id: 9,
+                text: "Noodlecake pays income tax at an average rate equal to 20 percent of the company's income before taxes. Income Tax Expense for this month is $200.",
+                debitAccount: "Income Tax Expense",
+                creditAccount: "Income Tax Payable",
+                debitAmount: 200,
+                creditAmount: 200,
+                explanation: "Income taxes owed but not yet paid must be accrued. Income Tax Expense increases with a debit and Income Tax Payable (liability) increases with a credit."
             }
         ];
 
@@ -796,10 +1285,6 @@
         // Selection state
         let selectedDebit = null;
         let selectedCredit = null;
-
-        // Focus state: 'debit' or 'credit'
-        let focusArea = 'debit';
-        let focusedIndex = 0;  // Index within the current area
 
         // Initialize
         function init() {
@@ -870,6 +1355,33 @@
                 ch3List.appendChild(li);
             });
 
+            // Render Ch4 questions
+            const ch4List = document.getElementById('ch4-questions');
+            ch4List.innerHTML = '';
+            ch4Transactions.forEach((t, idx) => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = '#';
+                a.textContent = `Q${idx + 1}`;
+                a.onclick = (e) => {
+                    e.preventDefault();
+                    if (currentStep === 3) {
+                        currentQuestion = idx;
+                        renderQuestion();
+                        updateProgress();
+                    } else {
+                        switchStep(3);
+                        setTimeout(() => {
+                            currentQuestion = idx;
+                            renderQuestion();
+                            updateProgress();
+                        }, 0);
+                    }
+                };
+                li.appendChild(a);
+                ch4List.appendChild(li);
+            });
+
             updateSidebar();
         }
 
@@ -897,113 +1409,128 @@
                     link.classList.add(correct[idx] ? 'correct' : 'incorrect');
                 }
             });
+
+            // Update Ch4 questions
+            const ch4Links = document.querySelectorAll('#ch4-questions a');
+            ch4Links.forEach((link, idx) => {
+                link.classList.remove('active', 'correct', 'incorrect');
+                if (currentStep === 3 && currentQuestion === idx) {
+                    link.classList.add('active');
+                }
+                if (currentStep === 3 && answered[idx]) {
+                    link.classList.add(correct[idx] ? 'correct' : 'incorrect');
+                }
+            });
         }
 
         function handleKeyDown(e) {
-            // ESC always clears
-            if (e.key === 'Escape') {
-                clearSelections();
+            // Let account inputs handle their own keys
+            if (e.target.classList && e.target.classList.contains('account-input')) return;
+
+            if (e.shiftKey && e.key === 'ArrowLeft') { prevQuestion(); e.preventDefault(); return; }
+            if (e.shiftKey && e.key === 'ArrowRight') { nextQuestion(); e.preventDefault(); return; }
+
+            if (e.key === 'Escape') { clearSelections(); e.preventDefault(); return; }
+
+            if (e.key === 'Enter') {
+                if (answered[currentQuestion]) {
+                    nextQuestion();
+                } else if (selectedDebit && selectedCredit) {
+                    checkAnswer();
+                }
                 e.preventDefault();
-                return;
-            }
-
-            // Shift + Arrow for navigation buttons
-            if (e.shiftKey && e.key === 'ArrowLeft') {
-                prevQuestion();
-                e.preventDefault();
-                return;
-            }
-
-            if (e.shiftKey && e.key === 'ArrowRight') {
-                nextQuestion();
-                e.preventDefault();
-                return;
-            }
-
-            const numAccounts = accounts.length;
-
-            switch (e.key) {
-                case 'ArrowRight':
-                    // Wrap around: debit -> credit -> debit
-                    if (focusArea === 'debit') {
-                        focusArea = 'credit';
-                    } else {
-                        focusArea = 'debit';
-                    }
-                    updateFocus();
-                    e.preventDefault();
-                    break;
-
-                case 'ArrowLeft':
-                    // Wrap around: credit -> debit -> credit
-                    if (focusArea === 'credit') {
-                        focusArea = 'debit';
-                    } else {
-                        focusArea = 'credit';
-                    }
-                    updateFocus();
-                    e.preventDefault();
-                    break;
-
-                case 'ArrowDown':
-                    // Wrap to top at bottom
-                    if (focusedIndex < numAccounts - 1) {
-                        focusedIndex++;
-                    } else {
-                        focusedIndex = 0;
-                    }
-                    updateFocus();
-                    e.preventDefault();
-                    break;
-
-                case 'ArrowUp':
-                    // Wrap to bottom at top
-                    if (focusedIndex > 0) {
-                        focusedIndex--;
-                    } else {
-                        focusedIndex = numAccounts - 1;
-                    }
-                    updateFocus();
-                    e.preventDefault();
-                    break;
-
-                case ' ':
-                    if (focusArea === 'debit') {
-                        selectDebit(accounts[focusedIndex]);
-                    } else if (focusArea === 'credit') {
-                        selectCredit(accounts[focusedIndex]);
-                    }
-                    e.preventDefault();
-                    break;
-
-                case 'Enter':
-                    if (answered[currentQuestion]) {
-                        if (correct[currentQuestion]) {
-                            // If correct, move to next question
-                            nextQuestion();
-                        } else {
-                            // If incorrect, allow retry
-                            retryQuestion();
-                        }
-                    } else if (selectedDebit && selectedCredit) {
-                        // Submit the answer
-                        checkAnswer();
-                    }
-                    e.preventDefault();
-                    break;
             }
         }
 
-        function updateFocus() {
-            // Remove all focus
-            document.querySelectorAll('.focused').forEach(el => el.classList.remove('focused'));
+        // Autocomplete state
+        const highlightedIdx = { debit: -1, credit: -1 };
 
-            if (focusArea === 'debit') {
-                const btns = document.querySelectorAll('#debit-column .account-btn');
-                if (btns[focusedIndex]) btns[focusedIndex].classList.add('focused');
-            } else if (focusArea === 'credit') {
-                const btns = document.querySelectorAll('#credit-column .account-btn');
-                if (btns[focusedIndex]) btns[focusedIndex].classList.add('focused');
+        function filterSuggestions(side, value) {
+            const q = value.trim().toLowerCase();
+            const matches = q === ''
+                ? accounts.slice()
+                : accounts.filter(a => a.toLowerCase().includes(q));
+            renderSuggestions(side, matches);
+        }
+
+        function renderSuggestions(side, items) {
+            const container = document.getElementById(side + '-suggestions');
+            if (!container) return;
+            container.innerHTML = '';
+            if (items.length === 0) { container.style.display = 'none'; return; }
+            items.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'suggestion-item';
+                div.textContent = item;
+                div.addEventListener('mousedown', e => { e.preventDefault(); pickSuggestion(side, item); });
+                container.appendChild(div);
+            });
+            container.style.display = 'block';
+        }
+
+        function pickSuggestion(side, account) {
+            if (side === 'debit') {
+                selectedDebit = account;
+                userSelections[currentQuestion].debit = account;
+            } else {
+                selectedCredit = account;
+                userSelections[currentQuestion].credit = account;
+            }
+            const input = document.getElementById(side + '-input');
+            if (input) {
+                input.value = account;
+                input.classList.add(side + '-filled');
+            }
+            highlightedIdx[side] = -1;
+            closeSuggestions(side);
+            updateCheckButton();
+        }
+
+        function closeSuggestions(side) {
+            const c = document.getElementById(side + '-suggestions');
+            if (c) c.style.display = 'none';
+        }
+
+        function updateCheckButton() {
+            document.getElementById('btn-check').disabled =
+                answered[currentQuestion] || !selectedDebit || !selectedCredit;
+        }
+
+        function handleInputKeyDown(e, side) {
+            const container = document.getElementById(side + '-suggestions');
+            const items = container ? container.querySelectorAll('.suggestion-item') : [];
+
+            if (e.shiftKey && e.key === 'ArrowLeft') { e.preventDefault(); prevQuestion(); return; }
+            if (e.shiftKey && e.key === 'ArrowRight') { e.preventDefault(); nextQuestion(); return; }
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                highlightedIdx[side] = Math.min(highlightedIdx[side] + 1, items.length - 1);
+                updateHighlight(side, items);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                highlightedIdx[side] = Math.max(highlightedIdx[side] - 1, -1);
+                updateHighlight(side, items);
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (highlightedIdx[side] >= 0 && items[highlightedIdx[side]]) {
+                    pickSuggestion(side, items[highlightedIdx[side]].textContent);
+                } else if (selectedDebit && selectedCredit && !answered[currentQuestion]) {
+                    checkAnswer();
+                } else if (answered[currentQuestion]) {
+                    nextQuestion();
+                }
+            } else if (e.key === 'Escape') {
+                e.preventDefault();
+                closeSuggestions(side);
+                highlightedIdx[side] = -1;
+            }
+        }
+
+        function updateHighlight(side, items) {
+            items.forEach((item, i) => item.classList.toggle('highlighted', i === highlightedIdx[side]));
+            if (highlightedIdx[side] >= 0 && items[highlightedIdx[side]]) {
+                items[highlightedIdx[side]].scrollIntoView({ block: 'nearest' });
             }
         }
 
@@ -1017,58 +1544,46 @@
             selectedDebit = userSelections[currentQuestion].debit;
             selectedCredit = userSelections[currentQuestion].credit;
 
-            // Build journal entry table
             const tbody = document.getElementById('journal-body');
             tbody.innerHTML = '';
 
             // Debit row
             const debitRow = document.createElement('tr');
             debitRow.className = 'debit-row';
-
-            let debitSlotClass = 'account-slot';
-            let debitText = 'Select from left...';
-
+            const debitAccountTd = document.createElement('td');
             if (answered[currentQuestion]) {
-                const wasDebitCorrect = userSelections[currentQuestion].debit === t.debitAccount;
-                debitSlotClass += wasDebitCorrect ? ' correct' : ' incorrect';
-                debitText = t.debitAccount;
-            } else if (selectedDebit) {
-                debitSlotClass += ' filled debit-filled';
-                debitText = selectedDebit;
+                const wasCorrect = userSelections[currentQuestion].debit === t.debitAccount;
+                const span = document.createElement('span');
+                span.className = 'account-slot ' + (wasCorrect ? 'correct' : 'incorrect');
+                span.textContent = t.debitAccount;
+                debitAccountTd.appendChild(span);
+            } else {
+                debitAccountTd.appendChild(makeAccountInput('debit'));
             }
-
-            debitRow.innerHTML = `
-                <td><span class="${debitSlotClass}">${debitText}</span></td>
-                <td class="amount">$${t.debitAmount.toLocaleString()}</td>
-                <td class="amount"></td>
-            `;
+            const debitAmtTd = document.createElement('td');
+            debitAmtTd.className = 'amount';
+            debitAmtTd.textContent = '$' + t.debitAmount.toLocaleString();
+            debitRow.append(debitAccountTd, debitAmtTd, Object.assign(document.createElement('td'), { className: 'amount' }));
             tbody.appendChild(debitRow);
 
             // Credit row
             const creditRow = document.createElement('tr');
             creditRow.className = 'credit-row';
-
-            let creditSlotClass = 'account-slot';
-            let creditText = 'Select from right...';
-
+            const creditAccountTd = document.createElement('td');
             if (answered[currentQuestion]) {
-                const wasCreditCorrect = userSelections[currentQuestion].credit === t.creditAccount;
-                creditSlotClass += wasCreditCorrect ? ' correct' : ' incorrect';
-                creditText = t.creditAccount;
-            } else if (selectedCredit) {
-                creditSlotClass += ' filled credit-filled';
-                creditText = selectedCredit;
+                const wasCorrect = userSelections[currentQuestion].credit === t.creditAccount;
+                const span = document.createElement('span');
+                span.className = 'account-slot ' + (wasCorrect ? 'correct' : 'incorrect');
+                span.textContent = t.creditAccount;
+                creditAccountTd.appendChild(span);
+            } else {
+                creditAccountTd.appendChild(makeAccountInput('credit'));
             }
-
-            creditRow.innerHTML = `
-                <td><span class="${creditSlotClass}">${creditText}</span></td>
-                <td class="amount"></td>
-                <td class="amount">$${t.creditAmount.toLocaleString()}</td>
-            `;
+            const creditAmtTd = document.createElement('td');
+            creditAmtTd.className = 'amount';
+            creditAmtTd.textContent = '$' + t.creditAmount.toLocaleString();
+            creditRow.append(creditAccountTd, Object.assign(document.createElement('td'), { className: 'amount' }), creditAmtTd);
             tbody.appendChild(creditRow);
-
-            // Render account buttons
-            renderAccountButtons();
 
             // Update button states
             document.getElementById('btn-prev').disabled = currentQuestion === 0;
@@ -1076,85 +1591,59 @@
             document.getElementById('btn-clear').disabled = answered[currentQuestion];
             document.getElementById('btn-check').disabled = answered[currentQuestion] || !selectedDebit || !selectedCredit;
 
-            // Show/hide account panel
-            document.getElementById('account-panel').style.display = answered[currentQuestion] ? 'none' : 'block';
-
             if (answered[currentQuestion]) {
                 showFeedback(correct[currentQuestion], t.explanation);
             } else {
                 hideFeedback();
             }
 
-            // Reset focus to debit column
-            if (!answered[currentQuestion]) {
-                focusArea = 'debit';
-                focusedIndex = 0;
-            }
-            updateFocus();
             updateSidebar();
         }
 
-        function renderAccountButtons() {
-            const debitColumn = document.getElementById('debit-column');
-            const creditColumn = document.getElementById('credit-column');
+        function makeAccountInput(side) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'input-wrapper';
 
-            // Clear existing buttons (keep headers)
-            debitColumn.innerHTML = '<div class="column-header debit">On debit side:</div>';
-            creditColumn.innerHTML = '<div class="column-header credit">On credit side:</div>';
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.id = side + '-input';
+            input.className = 'account-input';
+            input.placeholder = 'Type account name...';
+            input.autocomplete = 'off';
+            input.spellcheck = false;
 
-            accounts.forEach((account, idx) => {
-                // Debit button
-                const debitBtn = document.createElement('button');
-                debitBtn.className = 'account-btn';
-                debitBtn.textContent = account;
-                if (account === selectedDebit) {
-                    debitBtn.classList.add('debit-selected');
+            const saved = side === 'debit' ? selectedDebit : selectedCredit;
+            if (saved) {
+                input.value = saved;
+                input.classList.add(side + '-filled');
+            }
+
+            input.addEventListener('input', () => {
+                if (side === 'debit') {
+                    selectedDebit = null;
+                    userSelections[currentQuestion].debit = null;
+                } else {
+                    selectedCredit = null;
+                    userSelections[currentQuestion].credit = null;
                 }
-                debitBtn.onclick = () => {
-                    focusArea = 'debit';
-                    focusedIndex = idx;
-                    selectDebit(account);
-                };
-                debitColumn.appendChild(debitBtn);
-
-                // Credit button
-                const creditBtn = document.createElement('button');
-                creditBtn.className = 'account-btn';
-                creditBtn.textContent = account;
-                if (account === selectedCredit) {
-                    creditBtn.classList.add('credit-selected');
-                }
-                creditBtn.onclick = () => {
-                    focusArea = 'credit';
-                    focusedIndex = idx;
-                    selectCredit(account);
-                };
-                creditColumn.appendChild(creditBtn);
+                input.classList.remove(side + '-filled');
+                filterSuggestions(side, input.value);
+                updateCheckButton();
             });
-        }
+            input.addEventListener('focus', () => {
+                highlightedIdx[side] = -1;
+                filterSuggestions(side, input.value);
+            });
+            input.addEventListener('blur', () => setTimeout(() => closeSuggestions(side), 150));
+            input.addEventListener('keydown', (e) => handleInputKeyDown(e, side));
 
-        function selectDebit(account) {
-            if (answered[currentQuestion]) return;
+            const suggDiv = document.createElement('div');
+            suggDiv.className = 'suggestions';
+            suggDiv.id = side + '-suggestions';
 
-            if (selectedDebit === account) {
-                selectedDebit = null;
-            } else {
-                selectedDebit = account;
-            }
-            userSelections[currentQuestion].debit = selectedDebit;
-            renderQuestion();
-        }
-
-        function selectCredit(account) {
-            if (answered[currentQuestion]) return;
-
-            if (selectedCredit === account) {
-                selectedCredit = null;
-            } else {
-                selectedCredit = account;
-            }
-            userSelections[currentQuestion].credit = selectedCredit;
-            renderQuestion();
+            wrapper.appendChild(input);
+            wrapper.appendChild(suggDiv);
+            return wrapper;
         }
 
         function clearSelections() {
@@ -1162,20 +1651,15 @@
             selectedDebit = null;
             selectedCredit = null;
             userSelections[currentQuestion] = { debit: null, credit: null };
-            focusArea = 'debit';
-            focusedIndex = 0;
             renderQuestion();
         }
 
         function retryQuestion() {
-            // Allow retry for incorrect answers
             answered[currentQuestion] = false;
             correct[currentQuestion] = false;
             selectedDebit = null;
             selectedCredit = null;
             userSelections[currentQuestion] = { debit: null, credit: null };
-            focusArea = 'debit';
-            focusedIndex = 0;
             renderQuestion();
             updateProgress();
             updateSidebar();
@@ -1261,6 +1745,10 @@
                 transactions = ch3Transactions;
                 accounts = ch3Accounts;
                 document.getElementById('chapter-label').textContent = 'Journal entries required in September';
+            } else if (step === 3) {
+                transactions = ch4Transactions;
+                accounts = ch4Accounts;
+                document.getElementById('chapter-label').textContent = 'Adjusting journal entries at September 30';
             }
             
             // Reset state arrays
@@ -1269,24 +1757,31 @@
             userSelections = new Array(transactions.length).fill(null).map(() => ({ debit: null, credit: null }));
             
             // Update step buttons
-            document.querySelectorAll('.step-btn').forEach((btn, idx) => {
-                if (idx + 1 === step) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
+            document.querySelectorAll('.step-btn[data-step]').forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.dataset.step) === step);
             });
             
             // Reset selections
             selectedDebit = null;
             selectedCredit = null;
-            focusArea = 'debit';
-            focusedIndex = 0;
-            
+
             renderSidebar();
             renderQuestion();
             updateProgress();
             updateScore();
+        }
+
+        function startChapter(step) {
+            switchStep(step);
+            document.getElementById('cover-overlay').style.display = 'none';
+        }
+
+        function showCover() {
+            document.getElementById('cover-overlay').style.display = 'flex';
+        }
+
+        function toggleChapter(sectionId) {
+            document.getElementById(sectionId).classList.toggle('collapsed');
         }
 
         // Start
