@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accounting &amp; Capital Markets News — CMU PLK School of Accounting</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --maroon: #6A0032;
+    --gold:   #F9A21B;
+    --white:  #FFFFFF;
+    --light:  #FAF4F7;
+    --gray:   #666;
+    --dark:   #111;
+  }
+  html, body {
+    min-height: 100%;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #F0EBE8;
+    color: var(--dark);
+  }
+
+  /* ── Header ─────────────────────────────────────── */
+  #header {
+    background: var(--maroon);
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+  .h-left  { font-size: 14px; color: rgba(255,255,255,0.8); font-weight: 500; }
+  .h-mid   { font-size: 15px; color: var(--gold); font-weight: 800; letter-spacing: 0.3px; }
+  .h-right { font-size: 14px; color: rgba(255,255,255,0.8); font-weight: 500; }
+
+  /* ── Hero ────────────────────────────────────────── */
+  #hero {
+    background: linear-gradient(140deg, #3D001C, var(--maroon) 60%, #7A1040);
+    padding: 52px 40px 44px;
+    text-align: center;
+    color: white;
+  }
+  #hero h1 { font-size: 30px; font-weight: 800; margin-bottom: 10px; }
+  #hero p  { font-size: 16px; color: rgba(255,255,255,0.65); max-width: 500px; margin: 0 auto; line-height: 1.6; }
+  .gold-bar { width: 50px; height: 4px; background: var(--gold); border-radius: 2px; margin: 16px auto; }
+
+  /* ── Main ────────────────────────────────────────── */
+  main {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 20px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--maroon);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #CCC0C0;
+  }
+
+  /* ── Article Card ────────────────────────────────── */
+  .article-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 2px 14px rgba(0,0,0,0.08);
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 6px 1fr;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .article-card:hover {
+    box-shadow: 0 6px 28px rgba(106,0,50,0.18);
+    transform: translateY(-2px);
+  }
+  .card-stripe { background: var(--maroon); }
+  .card-body   { padding: 24px 28px; display: flex; flex-direction: column; gap: 10px; }
+
+  .card-meta {
+    display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+  }
+  .card-date   { font-size: 12px; color: var(--gray); font-weight: 600; }
+  .card-source {
+    font-size: 11px; font-weight: 800;
+    background: var(--gold); color: var(--dark);
+    padding: 2px 9px; border-radius: 10px;
+  }
+  .card-title  { font-size: 21px; font-weight: 700; color: var(--dark); line-height: 1.3; }
+  .card-teaser { font-size: 15px; color: #555; line-height: 1.6; }
+
+  /* WSJ direct link inside card */
+  .card-wsj-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray);
+    text-decoration: none;
+    padding: 6px 0 0;
+    border-top: 1px solid #EEE;
+    margin-top: 4px;
+    transition: color 0.2s;
+  }
+  .card-wsj-link:hover { color: var(--maroon); }
+  .card-wsj-link .ext-icon { font-size: 11px; }
+
+  .card-actions {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-top: 4px;
+    padding-top: 12px;
+    border-top: 1px solid #EEE;
+    flex-wrap: wrap;
+  }
+  .btn-slides {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--maroon);
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 9px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.2s;
+    letter-spacing: 0.2px;
+  }
+  .btn-slides:hover { background: #4A0024; }
+
+  .btn-wsj {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 2px solid var(--maroon);
+    color: var(--maroon);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 7px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-wsj:hover { background: var(--maroon); color: white; }
+
+  /* ── Footer ──────────────────────────────────────── */
+  #footer {
+    background: var(--maroon);
+    color: rgba(255,255,255,0.45);
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+  }
+  #footer span { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div class="h-left">Central Michigan University</div>
+  <div class="h-mid">PLK School of Accounting</div>
+  <div class="h-right">Jaeyoon Yu, Ph.D.</div>
+</div>
+
+<div id="hero">
+  <h1>Accounting &amp; Capital Markets News</h1>
+  <div class="gold-bar"></div>
+  <p>Curated news for accounting students. Open slides for a classroom presentation, or read the original article directly.</p>
+</div>
+
+<main>
+  <div class="section-label">Latest Articles</div>
+
+  <!-- Article 2 — April 7, 2026 -->
+  <div class="article-card" style="display:grid; grid-template-columns:6px 1fr;">
+    <div class="card-stripe"></div>
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="card-date">February 6, 2026</span>
+        <span class="card-source">FT</span>
+      </div>
+      <div class="card-title">KPMG Pressed Its Auditor to Pass On AI Cost Savings</div>
+      <div class="card-teaser">KPMG told Grant Thornton UK to cut its audit fees or lose the business — arguing AI makes the work cheaper. Grant Thornton agreed to a 14% reduction. Now every company may use the same playbook.</div>
+      <div class="card-actions">
+        <a class="btn-slides" href="slides/20260407-kpmg-ai-audit-fees.html">▶ Open Slides</a>
+        <a class="btn-wsj" href="https://www.ft.com/content/c891c47c-b21f-4e0f-84b3-b80c794eff3d?syn-25a6b1a6=1" target="_blank">Click to Read Full Article on FT ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Article 1 — April 11, 2026 -->
+  <div class="article-card" style="display:grid; grid-template-columns:6px 1fr;">
+    <div class="card-stripe"></div>
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="card-date">April 11, 2026</span>
+        <span class="card-source">WSJ</span>
+      </div>
+      <div class="card-title">The Dirty Job That Accountants Desperately Wish AI Would Take Over</div>
+      <div class="card-teaser">Inventory audits still require accountants to climb grain bins, freeze in subzero warehouses, and smell like pig farms — and AI can't fix it yet, mostly because regulation hasn't caught up.</div>
+      <div class="card-actions">
+        <a class="btn-slides" href="slides/20260411-dirty-job-accountants-ai.html">▶ Open Slides</a>
+        <a class="btn-wsj" href="https://www.wsj.com/lifestyle/careers/accountants-audit-inventory-tax-day-59b1b71f?st=pViiqr&reflink=desktopwebshare_permalink" target="_blank">Click to Read Full Article on WSJ ↗</a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<div id="footer">
+  &copy; 2026 <span>PLK School of Accounting</span> · Central Michigan University · Jaeyoon Yu, Ph.D.
+</div>
+
+</body>
+</html>

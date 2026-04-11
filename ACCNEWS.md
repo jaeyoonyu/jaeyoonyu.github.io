@@ -3,6 +3,14 @@ layout: page
 title: "Acctg-news"
 ---
 
+## Accounting & Capital Markets News *(Work in Progress)*
+
+Curated news articles turned into classroom slide presentations — click to open.
+
+[**→ Open News Slides**](/actg-news/)
+
+---
+
 The attached file includes accounting cases that I use in my courses. Examples include the cases of:
 
 * General Motors Ch11 reorganization (2009)

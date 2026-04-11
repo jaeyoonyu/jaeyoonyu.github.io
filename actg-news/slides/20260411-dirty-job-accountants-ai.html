@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Dirty Job That Accountants Wish AI Would Take Over</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --maroon: #6A0032;
+    --gold:   #F9A21B;
+    --white:  #FFFFFF;
+    --dark:   #111111;
+  }
+  html, body {
+    height: 100%;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #1A1A1A;
+    overflow: hidden;
+  }
+
+  /* ── Header ─────────────────────────────────────── */
+  #header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 50px;
+    background: var(--maroon);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 100;
+  }
+  #header .h-left  { font-size: 13px; color: rgba(255,255,255,0.8); font-weight: 500; }
+  #header .h-mid   { font-size: 14px; color: var(--gold); font-weight: 800; }
+  #header .h-right { font-size: 13px; color: rgba(255,255,255,0.8); }
+
+  /* ── Deck ────────────────────────────────────────── */
+  #deck {
+    position: fixed;
+    top: 50px; bottom: 52px; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .slide {
+    position: absolute;
+    width: min(1060px, 95vw);
+    height: calc(100vh - 50px - 52px - 24px);
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 10px 50px rgba(0,0,0,0.55);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .slide.active  { opacity: 1; transform: translateX(0); pointer-events: all; }
+  .slide.past    { opacity: 0; transform: translateX(-50px); pointer-events: none; }
+
+  /* ── Slide layouts ───────────────────────────────── */
+
+  /* COVER */
+  .slide-cover {
+    background: linear-gradient(150deg, #3D001C 0%, var(--maroon) 55%, #7A1040 100%);
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px 72px;
+    gap: 28px;
+  }
+  .slide-cover .eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .slide-cover h1 {
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.15;
+    max-width: 700px;
+  }
+  .slide-cover .subtitle {
+    font-size: 19px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.6;
+    max-width: 620px;
+    border-left: 4px solid var(--gold);
+    padding-left: 18px;
+  }
+  .slide-cover .meta {
+    display: flex; gap: 14px; align-items: center; margin-top: 8px;
+  }
+  .badge {
+    background: var(--gold);
+    color: var(--dark);
+    font-size: 11px;
+    font-weight: 800;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+  }
+  .slide-cover .date-text {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+  }
+
+  /* STORY slides */
+  .slide-story {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    height: 100%;
+  }
+  .story-left {
+    background: var(--maroon);
+    padding: 52px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 24px;
+  }
+  .story-left .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .story-left h2 {
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.2;
+  }
+  .story-left .role {
+    font-size: 15px;
+    color: rgba(255,255,255,0.55);
+    font-style: italic;
+  }
+  .story-right {
+    padding: 52px 48px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 22px;
+  }
+  .story-right .big-quote {
+    font-size: 22px;
+    font-style: italic;
+    color: var(--dark);
+    line-height: 1.55;
+    position: relative;
+    padding-left: 20px;
+  }
+  .story-right .big-quote::before {
+    content: '\201C';
+    position: absolute;
+    left: -8px;
+    top: -10px;
+    font-size: 72px;
+    color: var(--gold);
+    line-height: 1;
+    font-style: normal;
+  }
+  .story-right .attribution {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--maroon);
+    margin-top: -8px;
+  }
+  .story-right .detail {
+    font-size: 18px;
+    color: #444;
+    line-height: 1.65;
+    padding: 20px 22px;
+    background: #FAF4F7;
+    border-radius: 10px;
+    border-left: 5px solid var(--gold);
+  }
+
+  /* BIG PICTURE slide */
+  .slide-big {
+    padding: 52px 72px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 32px;
+  }
+  .slide-big .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--maroon);
+    text-transform: uppercase;
+  }
+  .slide-big h2 {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--dark);
+    line-height: 1.2;
+  }
+  .two-points {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .point-card {
+    background: #FAF4F7;
+    border-top: 4px solid var(--maroon);
+    border-radius: 10px;
+    padding: 24px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .point-card .point-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--maroon);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .point-card p {
+    font-size: 18px;
+    color: #333;
+    line-height: 1.6;
+  }
+
+  /* READ MORE slide */
+  .slide-read {
+    background: #FAF4F7;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 72px;
+    gap: 28px;
+  }
+  .slide-read .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--maroon);
+  }
+  .slide-read h2 {
+    font-size: 38px;
+    font-weight: 800;
+    color: var(--dark);
+    line-height: 1.2;
+  }
+  .slide-read p {
+    font-size: 19px;
+    color: #555;
+    line-height: 1.6;
+    max-width: 560px;
+  }
+  .wsj-link {
+    display: inline-block;
+    margin-top: 8px;
+    background: var(--maroon);
+    color: var(--white);
+    font-size: 17px;
+    font-weight: 700;
+    padding: 16px 36px;
+    border-radius: 8px;
+    text-decoration: none;
+    letter-spacing: 0.3px;
+    transition: background 0.2s, transform 0.15s;
+    box-shadow: 0 4px 16px rgba(106,0,50,0.3);
+  }
+  .wsj-link:hover { background: #4A0024; transform: translateY(-2px); }
+  .wsj-link .arrow { margin-left: 10px; font-size: 20px; }
+
+  /* DISCUSSION slide */
+  .slide-discuss {
+    padding: 52px 72px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 30px;
+  }
+  .slide-discuss .eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--maroon);
+    text-transform: uppercase;
+  }
+  .slide-discuss h2 {
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--dark);
+  }
+  .q-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .q-item {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .q-num {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    min-width: 36px;
+  }
+  .q-text {
+    font-size: 20px;
+    color: #333;
+    line-height: 1.55;
+    padding-top: 4px;
+  }
+
+  /* ── Footer ──────────────────────────────────────── */
+  #footer {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 52px;
+    background: #111;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 100;
+  }
+  #back-link {
+    color: rgba(255,255,255,0.45);
+    font-size: 13px;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  #back-link:hover { color: var(--gold); }
+  #nav-hint { font-size: 12px; color: rgba(255,255,255,0.25); }
+  #counter  { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.55); min-width: 48px; text-align: right; }
+
+  #progress {
+    position: fixed;
+    bottom: 52px; left: 0;
+    height: 3px;
+    background: var(--gold);
+    transition: width 0.3s ease;
+    z-index: 100;
+  }
+
+  .nav-btn {
+    position: fixed;
+    top: 50%; transform: translateY(-50%);
+    width: 42px; height: 42px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 50%;
+    color: rgba(255,255,255,0.5);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; z-index: 99;
+  }
+  .nav-btn:hover { background: rgba(249,162,27,0.2); color: var(--gold); border-color: var(--gold); }
+  .nav-btn:disabled { opacity: 0.15; cursor: default; }
+  #btn-prev { left: 10px; }
+  #btn-next { right: 10px; }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div class="h-left">Central Michigan University</div>
+  <div class="h-mid">PLK School of Accounting</div>
+  <div class="h-right">Jaeyoon Yu, Ph.D.</div>
+</div>
+
+<div id="progress"></div>
+
+<div id="deck">
+
+  <!-- SLIDE 1 · COVER -->
+  <div class="slide slide-cover active" data-index="0">
+    <div class="eyebrow">Wall Street Journal · April 11, 2026</div>
+    <h1>The Dirty Job That Accountants Desperately Wish AI Would Take Over</h1>
+    <p class="subtitle">AI is transforming accounting — but one task refuses to change: counting inventory means someone still has to climb grain bins, freeze in cold storage, and smell like a pig farm.</p>
+    <div class="meta">
+      <span class="badge">WSJ</span>
+      <span class="date-text">April 11, 2026</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 · STORY — MATT GARDINER -->
+  <div class="slide" data-index="1">
+    <div class="slide-story" style="height:100%">
+      <div class="story-left">
+        <div class="eyebrow">Story · The Grain Bin Auditor</div>
+        <h2>Matt Gardiner<br>climbs 90-foot grain bins.</h2>
+        <p class="role">Third-generation auditor · Iowa · Agricultural clients</p>
+      </div>
+      <div class="story-right">
+        <p class="big-quote">
+          There's so much dust in the process of getting grain into a bin that it would have to have a little windshield wiper on the sensors to constantly clear it.
+        </p>
+        <p class="attribution">— Matt Gardiner, Iowa-based Auditor</p>
+        <div class="detail">
+          Gardiner and his team get so covered in thick dust they must be <strong>sprayed down with air hoses</strong> before returning to their cars. He uses a laser to measure grain — but no tool can save him from the climb.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 · STORY — THANKSGIVING -->
+  <div class="slide" data-index="2">
+    <div class="slide-story" style="height:100%">
+      <div class="story-left">
+        <div class="eyebrow">Story · Thanksgiving in a Freezer</div>
+        <h2>Navneet Sharma counted frozen vegetables all night.</h2>
+        <p class="role">Partner · KNAV · Atlanta</p>
+      </div>
+      <div class="story-right">
+        <div class="detail" style="margin-bottom:4px;">
+          Sharma was sent to a <strong>subzero cold storage facility</strong> on Thanksgiving. The job was supposed to take one hour using bar code scanners — but they <strong>malfunctioned in the cold</strong>, forcing his team to count manually through the night.
+        </div>
+        <p class="big-quote" style="font-size:20px;">
+          There's no fun in doing Thanksgiving the day after.
+        </p>
+        <p class="attribution">— Navneet Sharma, KNAV</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 · BIG PICTURE -->
+  <div class="slide" data-index="3">
+    <div class="slide-big">
+      <div class="eyebrow">The Bigger Picture</div>
+      <h2>Why hasn't AI fixed this yet?</h2>
+      <div class="two-points">
+        <div class="point-card">
+          <div class="point-label">The Rule</div>
+          <p>U.S. auditing standards <strong>require a person to physically verify inventory.</strong> The rules still referenced fax machines until recently.</p>
+        </div>
+        <div class="point-card">
+          <div class="point-label">The Technology Gap</div>
+          <p>Drones can't work indoors. Bar code scanners fail in extreme cold. Sensors in grain silos need windshield wipers. <strong>Regulation and reality haven't met yet.</strong></p>
+        </div>
+      </div>
+      <div style="font-size:19px; color:#555; padding:20px 22px; background:#FAF4F7; border-radius:10px; border-left:5px solid var(--gold); line-height:1.6;">
+        <strong style="color:var(--maroon);">Christian Peo, KPMG's U.S. Assurance Leader:</strong> &nbsp;"AI can count something faster than a human can, so you can see it coming."
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 · READ MORE -->
+  <div class="slide" data-index="4">
+    <div class="slide-read">
+      <div class="eyebrow">Read the Full Story</div>
+      <h2>Want the details?</h2>
+      <p>There's more — pig farm audits, a herd that charged at an auditor, and Gen Z accountants going viral on TikTok. Read the full article on WSJ.</p>
+      <a class="wsj-link" href="https://www.wsj.com/lifestyle/careers/accountants-audit-inventory-tax-day-59b1b71f?st=pViiqr&reflink=desktopwebshare_permalink" target="_blank">
+        Click to Read on WSJ <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<button class="nav-btn" id="btn-prev" onclick="navigate(-1)" disabled>&#8592;</button>
+<button class="nav-btn" id="btn-next" onclick="navigate(1)">&#8594;</button>
+
+<div id="footer">
+  <a href="../index.html" id="back-link">&#8592; Back to News</a>
+  <div id="nav-hint">← → arrow keys &nbsp;·&nbsp; ESC to go back</div>
+  <div id="counter">1 / 5</div>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let cur = 0;
+
+  function navigate(dir) {
+    const next = cur + dir;
+    if (next < 0 || next >= total) return;
+    slides[cur].classList.remove('active');
+    if (dir > 0) slides[cur].classList.add('past');
+    cur = next;
+    slides.forEach((s, i) => { if (i !== cur) s.classList.remove('active'); });
+    slides[cur].classList.remove('past');
+    slides[cur].classList.add('active');
+    update();
+  }
+
+  function update() {
+    document.getElementById('counter').textContent = (cur + 1) + ' / ' + total;
+    document.getElementById('progress').style.width = ((cur + 1) / total * 100) + '%';
+    document.getElementById('btn-prev').disabled = cur === 0;
+    document.getElementById('btn-next').disabled = cur === total - 1;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') navigate(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'PageUp')   navigate(-1);
+    if (e.key === 'Escape') window.location.href = '../index.html';
+  });
+
+  update();
+</script>
+</body>
+</html>
