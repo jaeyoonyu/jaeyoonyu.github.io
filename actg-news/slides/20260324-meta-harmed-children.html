@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Landmark Verdict: Meta Harmed Children</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --maroon: #6A0032;
+    --gold:   #F9A21B;
+    --white:  #FFFFFF;
+    --dark:   #111111;
+  }
+  html, body {
+    height: 100%;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #1A1A1A;
+    overflow: hidden;
+  }
+
+  /* ── Header ─────────────────────────────────────── */
+  #header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 50px;
+    background: var(--maroon);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    z-index: 100;
+  }
+  #header .h-left  { font-size: 13px; color: rgba(255,255,255,0.8); font-weight: 500; }
+  #header .h-mid   { font-size: 14px; color: var(--gold); font-weight: 800; }
+  #header .h-right { font-size: 13px; color: rgba(255,255,255,0.8); }
+
+  /* ── Deck ────────────────────────────────────────── */
+  #deck {
+    position: fixed;
+    top: 50px; bottom: 52px; left: 0; right: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .slide {
+    position: absolute;
+    width: min(1060px, 95vw);
+    height: calc(100vh - 50px - 52px - 24px);
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 10px 50px rgba(0,0,0,0.55);
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .slide.active  { opacity: 1; transform: translateX(0); pointer-events: all; }
+  .slide.past    { opacity: 0; transform: translateX(-50px); pointer-events: none; }
+
+  /* ── COVER ───────────────────────────────────────── */
+  .slide-cover {
+    background: linear-gradient(150deg, #3D001C 0%, var(--maroon) 55%, #7A1040 100%);
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px 72px;
+    gap: 28px;
+  }
+  .slide-cover .eyebrow {
+    font-size: 12px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--gold);
+  }
+  .slide-cover h1 {
+    font-size: 42px; font-weight: 800; color: var(--white);
+    line-height: 1.15; max-width: 760px;
+  }
+  .slide-cover .subtitle {
+    font-size: 19px; color: rgba(255,255,255,0.65); line-height: 1.6;
+    max-width: 640px; border-left: 4px solid var(--gold); padding-left: 18px;
+  }
+  .slide-cover .meta { display: flex; gap: 14px; align-items: center; margin-top: 8px; }
+  .badge {
+    background: var(--gold); color: var(--dark);
+    font-size: 11px; font-weight: 800;
+    padding: 4px 12px; border-radius: 20px; letter-spacing: 0.5px;
+  }
+  .slide-cover .date-text { font-size: 13px; color: rgba(255,255,255,0.5); }
+
+  /* ── STORY slides ────────────────────────────────── */
+  .slide-story { display: grid; grid-template-columns: 1fr 1fr; height: 100%; }
+  .story-left {
+    background: var(--maroon); padding: 52px 48px;
+    display: flex; flex-direction: column; justify-content: center; gap: 24px;
+  }
+  .story-left .eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--gold);
+  }
+  .story-left h2 { font-size: 34px; font-weight: 800; color: var(--white); line-height: 1.2; }
+  .story-left .role { font-size: 15px; color: rgba(255,255,255,0.55); font-style: italic; }
+  .story-right {
+    padding: 52px 48px; display: flex;
+    flex-direction: column; justify-content: center; gap: 22px;
+  }
+  .story-right .big-quote {
+    font-size: 22px; font-style: italic; color: var(--dark);
+    line-height: 1.55; position: relative; padding-left: 20px;
+  }
+  .story-right .big-quote::before {
+    content: '\201C'; position: absolute; left: -8px; top: -10px;
+    font-size: 72px; color: var(--gold); line-height: 1; font-style: normal;
+  }
+  .story-right .attribution {
+    font-size: 13px; font-weight: 700; color: var(--maroon); margin-top: -8px;
+  }
+  .story-right .detail {
+    font-size: 18px; color: #444; line-height: 1.65;
+    padding: 20px 22px; background: #FAF4F7;
+    border-radius: 10px; border-left: 5px solid var(--gold);
+  }
+
+  /* ── BIG PICTURE ─────────────────────────────────── */
+  .slide-big {
+    padding: 52px 72px; display: flex;
+    flex-direction: column; justify-content: center; gap: 32px;
+  }
+  .slide-big .eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px;
+    color: var(--maroon); text-transform: uppercase;
+  }
+  .slide-big h2 { font-size: 36px; font-weight: 800; color: var(--dark); line-height: 1.2; }
+  .two-points { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .point-card {
+    background: #FAF4F7; border-top: 4px solid var(--maroon);
+    border-radius: 10px; padding: 24px 26px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .point-card .point-label {
+    font-size: 12px; font-weight: 700; color: var(--maroon);
+    text-transform: uppercase; letter-spacing: 1.5px;
+  }
+  .point-card p { font-size: 18px; color: #333; line-height: 1.6; }
+
+  /* ── IMPLICATIONS slide ──────────────────────────── */
+  .slide-implications {
+    padding: 48px 72px;
+    display: flex; flex-direction: column; justify-content: center; gap: 28px;
+    background: linear-gradient(160deg, #FDF8F0 0%, #FAF4F7 100%);
+  }
+  .slide-implications .eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px;
+    color: var(--maroon); text-transform: uppercase;
+  }
+  .slide-implications h2 {
+    font-size: 30px; font-weight: 800; color: var(--dark); line-height: 1.2;
+  }
+  .impl-list { display: flex; flex-direction: column; gap: 16px; }
+  .impl-item {
+    display: flex; gap: 18px; align-items: flex-start;
+    background: var(--white); border-radius: 10px;
+    padding: 18px 22px;
+    border-left: 5px solid var(--gold);
+    box-shadow: 0 2px 8px rgba(106,0,50,0.07);
+  }
+  .impl-icon {
+    font-size: 22px; min-width: 32px; padding-top: 2px; text-align: center;
+  }
+  .impl-text { display: flex; flex-direction: column; gap: 4px; }
+  .impl-label {
+    font-size: 12px; font-weight: 800; color: var(--maroon);
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .impl-body { font-size: 16px; color: #333; line-height: 1.6; }
+
+  /* ── READ MORE ───────────────────────────────────── */
+  .slide-read {
+    background: #FAF4F7; display: flex;
+    flex-direction: column; justify-content: center;
+    align-items: center; text-align: center; padding: 60px 72px; gap: 28px;
+  }
+  .slide-read .eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--maroon);
+  }
+  .slide-read h2 { font-size: 38px; font-weight: 800; color: var(--dark); line-height: 1.2; }
+  .slide-read p { font-size: 19px; color: #555; line-height: 1.6; max-width: 560px; }
+  .wsj-link {
+    display: inline-block; margin-top: 8px;
+    background: var(--maroon); color: var(--white);
+    font-size: 17px; font-weight: 700; padding: 16px 36px;
+    border-radius: 8px; text-decoration: none; letter-spacing: 0.3px;
+    transition: background 0.2s, transform 0.15s;
+    box-shadow: 0 4px 16px rgba(106,0,50,0.3);
+  }
+  .wsj-link:hover { background: #4A0024; transform: translateY(-2px); }
+  .wsj-link .arrow { margin-left: 10px; font-size: 20px; }
+
+  /* ── Footer ──────────────────────────────────────── */
+  #footer {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    height: 52px; background: #111;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 32px; z-index: 100;
+  }
+  #back-link {
+    color: rgba(255,255,255,0.45); font-size: 13px;
+    text-decoration: none; transition: color 0.2s;
+  }
+  #back-link:hover { color: var(--gold); }
+  #nav-hint { font-size: 12px; color: rgba(255,255,255,0.25); }
+  #counter  { font-size: 14px; font-weight: 700; color: rgba(255,255,255,0.55); min-width: 48px; text-align: right; }
+
+  #progress {
+    position: fixed; bottom: 52px; left: 0;
+    height: 3px; background: var(--gold);
+    transition: width 0.3s ease; z-index: 100;
+  }
+
+  .nav-btn {
+    position: fixed; top: 50%; transform: translateY(-50%);
+    width: 42px; height: 42px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 50%; color: rgba(255,255,255,0.5);
+    font-size: 18px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; z-index: 99;
+  }
+  .nav-btn:hover { background: rgba(249,162,27,0.2); color: var(--gold); border-color: var(--gold); }
+  .nav-btn:disabled { opacity: 0.15; cursor: default; }
+  #btn-prev { left: 10px; }
+  #btn-next { right: 10px; }
+
+  /* ── Mobile ──────────────────────────────────────── */
+  @media (max-width: 640px) {
+    #header { padding: 0 16px; height: 44px; }
+    .h-left, .h-right { display: none; }
+    .h-mid { font-size: 12px; }
+
+    #deck { top: 44px; bottom: 48px; }
+    #progress { bottom: 48px; }
+
+    .slide {
+      width: 100vw;
+      height: calc(100dvh - 44px - 48px - 10px);
+      border-radius: 6px;
+      overflow-y: auto;
+    }
+
+    /* Cover */
+    .slide-cover { padding: 28px 22px; gap: 16px; }
+    .slide-cover h1 { font-size: 23px; }
+    .slide-cover .subtitle { font-size: 14px; padding-left: 12px; }
+
+    /* Story */
+    .slide-story { grid-template-columns: 1fr; height: auto; min-height: 100%; }
+    .story-left  { padding: 22px 22px 14px; gap: 10px; justify-content: flex-start; }
+    .story-left h2 { font-size: 20px; }
+    .story-left .role { font-size: 13px; }
+    .story-right { padding: 14px 22px 22px; gap: 14px; }
+    .story-right .big-quote { font-size: 15px; }
+    .story-right .big-quote::before { font-size: 48px; }
+    .story-right .detail { font-size: 14px; padding: 14px 16px; }
+
+    /* Big picture */
+    .slide-big { padding: 28px 20px; gap: 18px; }
+    .slide-big h2 { font-size: 22px; }
+    .two-points { grid-template-columns: 1fr; gap: 12px; }
+    .point-card { padding: 16px 18px; }
+    .point-card p { font-size: 15px; }
+
+    /* Implications */
+    .slide-implications { padding: 24px 18px; gap: 14px; }
+    .slide-implications h2 { font-size: 19px; }
+    .impl-list { gap: 10px; }
+    .impl-item { padding: 12px 14px; gap: 10px; }
+    .impl-icon { font-size: 18px; min-width: 22px; }
+    .impl-label { font-size: 10px; }
+    .impl-body  { font-size: 13px; }
+
+    /* Read more */
+    .slide-read { padding: 32px 22px; gap: 20px; }
+    .slide-read h2 { font-size: 26px; }
+    .slide-read p  { font-size: 15px; }
+    .wsj-link { font-size: 15px; padding: 14px 24px; width: 100%; text-align: center; }
+
+    /* Footer */
+    #footer { height: 48px; padding: 0 16px; }
+    #nav-hint { display: none; }
+    #back-link { font-size: 12px; }
+    #counter   { font-size: 12px; }
+
+    .nav-btn { width: 36px; height: 36px; font-size: 16px; }
+    #btn-prev { left: 4px; }
+    #btn-next { right: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="header">
+  <div class="h-left">Central Michigan University</div>
+  <div class="h-mid">PLK School of Accounting</div>
+  <div class="h-right">Jaeyoon Yu, Ph.D.</div>
+</div>
+
+<div id="progress"></div>
+
+<div id="deck">
+
+  <!-- SLIDE 1 · COVER -->
+  <div class="slide slide-cover active" data-index="0">
+    <div class="eyebrow">Wall Street Journal · March 24, 2026</div>
+    <h1>Landmark Verdict Says Meta Harmed Children, Allowing Adults to Prey on Them</h1>
+    <p class="subtitle">A New Mexico jury ordered $375 million in civil penalties — the first time a state has won at trial against a major tech company for endangering young users.</p>
+    <div class="meta">
+      <span class="badge">WSJ</span>
+      <span class="date-text">March 24, 2026</span>
+    </div>
+  </div>
+
+  <!-- SLIDE 2 · STORY A — THE VERDICT -->
+  <div class="slide" data-index="1">
+    <div class="slide-story" style="height:100%">
+      <div class="story-left">
+        <div class="eyebrow">Story · The Penalty</div>
+        <h2>$375 million.<br>Maximum per violation.</h2>
+        <p class="role">New Mexico jury · Consumer protection law · March 2026</p>
+      </div>
+      <div class="story-right">
+        <div class="detail">
+          The jury found Meta <strong>liable for misleading consumers</strong> about platform safety and <strong>endangering children</strong> — including exposing minors to explicit content, solicitation, and human trafficking.
+        </div>
+        <div class="detail" style="border-left-color: var(--maroon);">
+          For context: <strong>Meta made 160 times that amount in a single quarter.</strong> The $375M maximum penalty is less than 0.6% of one quarter's revenue.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 3 · STORY B — INTERNAL DOCUMENTS -->
+  <div class="slide" data-index="2">
+    <div class="slide-story" style="height:100%">
+      <div class="story-left">
+        <div class="eyebrow">Story · The Evidence</div>
+        <h2>Internal documents showed Meta ignored its own warnings.</h2>
+        <p class="role">State prosecutors · Undercover investigation · Decoy profiles</p>
+      </div>
+      <div class="story-right">
+        <p class="big-quote">
+          The jury joined families, educators, and child safety experts in saying enough is enough.
+        </p>
+        <p class="attribution">— NM Attorney General Raúl Torrez</p>
+        <div class="detail">
+          An undercover investigation created <strong>decoy profiles posing as children under 14.</strong> Meta's own platforms proactively served them explicit content and allowed adults to contact them for pornographic images.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 4 · BIG PICTURE -->
+  <div class="slide" data-index="3">
+    <div class="slide-big">
+      <div class="eyebrow">The Bigger Picture</div>
+      <h2>Who pays when a platform harms its users?</h2>
+      <div class="two-points">
+        <div class="point-card">
+          <div class="point-label">The Precedent</div>
+          <p>This is the <strong>first state trial win</strong> against a major tech company for child harm. Dozens of similar suits by state AGs are pending — plus 2,000+ federal lawsuits from individuals and school districts.</p>
+        </div>
+        <div class="point-card">
+          <div class="point-label">The Tension</div>
+          <p>Section 230 long shielded platforms from liability for user content. This verdict signals courts are willing to hold companies liable for <strong>design choices and safety failures</strong> — not just what users post.</p>
+        </div>
+      </div>
+      <div style="font-size:19px; color:#555; padding:20px 22px; background:#FAF4F7; border-radius:10px; border-left:5px solid var(--gold); line-height:1.6;">
+        Meta plans to appeal. A parallel trial in Los Angeles — involving 3,000+ lawsuits — was still deliberating the same week.
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 5 · IMPLICATIONS FOR ACCOUNTING STUDENTS -->
+  <div class="slide" data-index="4">
+    <div class="slide-implications">
+      <div class="eyebrow">Implications for Accounting Students</div>
+      <h2>How does a $375M verdict show up in the financial statements?</h2>
+      <div class="impl-list">
+        <div class="impl-item">
+          <div class="impl-icon">📋</div>
+          <div class="impl-text">
+            <div class="impl-label">Contingent Liabilities — ASC 450</div>
+            <div class="impl-body">When a loss is <strong>probable and reasonably estimable</strong>, it must be accrued as a liability. With 2,000+ lawsuits still pending, Meta's auditors and management must judge: what amount is "probable"? What goes in the footnotes vs. the balance sheet?</div>
+          </div>
+        </div>
+        <div class="impl-item">
+          <div class="impl-icon">🔍</div>
+          <div class="impl-text">
+            <div class="impl-label">Audit Risk — Significant Estimates</div>
+            <div class="impl-body">Auditors (PwC audits Meta) must evaluate whether management's litigation reserves are reasonable. Under PCAOB AS 2501, legal contingency estimates are a <strong>high-risk area</strong> requiring corroboration from outside legal counsel and independent analysis.</div>
+          </div>
+        </div>
+        <div class="impl-item">
+          <div class="impl-icon">📈</div>
+          <div class="impl-text">
+            <div class="impl-label">Materiality and Market Reaction</div>
+            <div class="impl-body">$375M is immaterial to Meta (0.6% of one quarter's revenue) — Meta's stock rose 1.24% the same day. Yet the <strong>disclosure of ongoing litigation risk</strong> still matters for investors pricing future liability exposure and regulatory escalation.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE 6 · READ MORE -->
+  <div class="slide" data-index="5">
+    <div class="slide-read">
+      <div class="eyebrow">Read the Full Story</div>
+      <h2>Want the details?</h2>
+      <p>The full article covers the parallel LA trial, the undercover investigation, and Meta's defense. Read the original reporting on WSJ.</p>
+      <a class="wsj-link" href="https://www.wsj.com/tech/landmark-verdict-says-meta-harmed-children-allowing-adults-to-prey-on-them-cb3ad674?st=jiBQ8q&reflink=desktopwebshare_permalink" target="_blank">
+        Click to Read on WSJ <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+
+</div><!-- /deck -->
+
+<button class="nav-btn" id="btn-prev" onclick="navigate(-1)" disabled>&#8592;</button>
+<button class="nav-btn" id="btn-next" onclick="navigate(1)">&#8594;</button>
+
+<div id="footer">
+  <a href="../index.html" id="back-link">&#8592; Back to News</a>
+  <div id="nav-hint">← → arrow keys &nbsp;·&nbsp; ESC to go back</div>
+  <div id="counter">1 / 6</div>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let cur = 0;
+
+  function navigate(dir) {
+    const next = cur + dir;
+    if (next < 0 || next >= total) return;
+    slides[cur].classList.remove('active');
+    if (dir > 0) slides[cur].classList.add('past');
+    cur = next;
+    slides.forEach((s, i) => { if (i !== cur) s.classList.remove('active'); });
+    slides[cur].classList.remove('past');
+    slides[cur].classList.add('active');
+    update();
+  }
+
+  function update() {
+    document.getElementById('counter').textContent = (cur + 1) + ' / ' + total;
+    document.getElementById('progress').style.width = ((cur + 1) / total * 100) + '%';
+    document.getElementById('btn-prev').disabled = cur === 0;
+    document.getElementById('btn-next').disabled = cur === total - 1;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') navigate(1);
+    if (e.key === 'ArrowLeft'  || e.key === 'PageUp')   navigate(-1);
+    if (e.key === 'Escape') window.location.href = '../index.html';
+  });
+
+  // Touch swipe
+  let touchStartX = 0, touchStartY = 0;
+  document.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+  }, { passive: true });
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    const dy = e.changedTouches[0].clientY - touchStartY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 50) navigate(dx < 0 ? 1 : -1);
+  }, { passive: true });
+
+  update();
+</script>
+</body>
+</html>

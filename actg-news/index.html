@@ -164,6 +164,19 @@
   }
   .btn-wsj:hover { background: var(--maroon); color: white; }
 
+  /* ── Topic Tags ─────────────────────────────────── */
+  .tag-list { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
+  .tag {
+    font-size: 10px; font-weight: 800;
+    padding: 2px 9px; border-radius: 10px;
+    letter-spacing: 0.4px; text-transform: uppercase;
+  }
+  .tag-finacc   { background: #E3EEF8; color: #1B5E9A; }
+  .tag-mgtacc   { background: #E2F4F0; color: #0F7B6C; }
+  .tag-tax      { background: #EDE7F6; color: #5E35B1; }
+  .tag-auditing { background: #FAF0F4; color: #6A0032; border: 1px solid #D9B0C0; }
+  .tag-market   { background: #E8F5E9; color: #2E7D32; }
+
   /* ── Footer ──────────────────────────────────────── */
   #footer {
     background: var(--maroon);
@@ -173,6 +186,30 @@
     font-size: 12px;
   }
   #footer span { color: var(--gold); }
+
+  /* ── Mobile ──────────────────────────────────────── */
+  @media (max-width: 640px) {
+    #header { padding: 0 16px; }
+    .h-left, .h-right { display: none; }
+    .h-mid { font-size: 13px; }
+
+    #hero { padding: 32px 20px 28px; }
+    #hero h1 { font-size: 22px; }
+    #hero p  { font-size: 14px; }
+    .gold-bar { margin: 10px auto; }
+
+    main { padding: 20px 12px 60px; gap: 16px; }
+
+    .card-body { padding: 16px 16px; gap: 8px; }
+    .card-title  { font-size: 17px; }
+    .card-teaser { font-size: 14px; }
+
+    .card-actions { gap: 8px; flex-wrap: wrap; }
+    .btn-slides { font-size: 12px; padding: 8px 14px; }
+    .btn-wsj    { font-size: 12px; padding: 6px 12px; }
+
+    .tag { font-size: 9px; padding: 2px 7px; }
+  }
 </style>
 </head>
 <body>
@@ -192,24 +229,7 @@
 <main>
   <div class="section-label">Latest Articles</div>
 
-  <!-- Article 2 — April 7, 2026 -->
-  <div class="article-card" style="display:grid; grid-template-columns:6px 1fr;">
-    <div class="card-stripe"></div>
-    <div class="card-body">
-      <div class="card-meta">
-        <span class="card-date">February 6, 2026</span>
-        <span class="card-source">FT</span>
-      </div>
-      <div class="card-title">KPMG Pressed Its Auditor to Pass On AI Cost Savings</div>
-      <div class="card-teaser">KPMG told Grant Thornton UK to cut its audit fees or lose the business — arguing AI makes the work cheaper. Grant Thornton agreed to a 14% reduction. Now every company may use the same playbook.</div>
-      <div class="card-actions">
-        <a class="btn-slides" href="slides/20260407-kpmg-ai-audit-fees.html">▶ Open Slides</a>
-        <a class="btn-wsj" href="https://www.ft.com/content/c891c47c-b21f-4e0f-84b3-b80c794eff3d?syn-25a6b1a6=1" target="_blank">Click to Read Full Article on FT ↗</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Article 1 — April 11, 2026 -->
+  <!-- Article: April 11, 2026 -->
   <div class="article-card" style="display:grid; grid-template-columns:6px 1fr;">
     <div class="card-stripe"></div>
     <div class="card-body">
@@ -219,9 +239,57 @@
       </div>
       <div class="card-title">The Dirty Job That Accountants Desperately Wish AI Would Take Over</div>
       <div class="card-teaser">Inventory audits still require accountants to climb grain bins, freeze in subzero warehouses, and smell like pig farms — and AI can't fix it yet, mostly because regulation hasn't caught up.</div>
+      <div class="tag-list">
+        <span class="tag tag-auditing">Auditing</span>
+        <span class="tag tag-finacc">FinAcc</span>
+        <span class="tag tag-mgtacc">MgtAcc</span>
+      </div>
       <div class="card-actions">
         <a class="btn-slides" href="slides/20260411-dirty-job-accountants-ai.html">▶ Open Slides</a>
         <a class="btn-wsj" href="https://www.wsj.com/lifestyle/careers/accountants-audit-inventory-tax-day-59b1b71f?st=pViiqr&reflink=desktopwebshare_permalink" target="_blank">Click to Read Full Article on WSJ ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Article: March 24, 2026 -->
+  <div class="article-card" style="display:grid; grid-template-columns:6px 1fr;">
+    <div class="card-stripe"></div>
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="card-date">March 24, 2026</span>
+        <span class="card-source">WSJ</span>
+      </div>
+      <div class="card-title">Landmark Verdict Says Meta Harmed Children, Allowing Adults to Prey on Them</div>
+      <div class="card-teaser">A New Mexico jury hit Meta with $375 million in civil penalties — the first state trial win against a major tech company for child endangerment — raising urgent questions about contingent liability disclosures and audit risk.</div>
+      <div class="tag-list">
+        <span class="tag tag-finacc">FinAcc</span>
+        <span class="tag tag-auditing">Auditing</span>
+        <span class="tag tag-market">Market</span>
+      </div>
+      <div class="card-actions">
+        <a class="btn-slides" href="slides/20260324-meta-harmed-children.html">▶ Open Slides</a>
+        <a class="btn-wsj" href="https://www.wsj.com/tech/landmark-verdict-says-meta-harmed-children-allowing-adults-to-prey-on-them-cb3ad674?st=jiBQ8q&reflink=desktopwebshare_permalink" target="_blank">Click to Read Full Article on WSJ ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Article: February 6, 2026 -->
+  <div class="article-card" style="display:grid; grid-template-columns:6px 1fr;">
+    <div class="card-stripe"></div>
+    <div class="card-body">
+      <div class="card-meta">
+        <span class="card-date">February 6, 2026</span>
+        <span class="card-source">FT</span>
+      </div>
+      <div class="card-title">KPMG Pressed Its Auditor to Pass On AI Cost Savings</div>
+      <div class="card-teaser">KPMG told Grant Thornton UK to cut its audit fees or lose the business — arguing AI makes the work cheaper. Grant Thornton agreed to a 14% reduction. Now every company may use the same playbook.</div>
+      <div class="tag-list">
+        <span class="tag tag-auditing">Auditing</span>
+        <span class="tag tag-market">Market</span>
+      </div>
+      <div class="card-actions">
+        <a class="btn-slides" href="slides/20260407-kpmg-ai-audit-fees.html">▶ Open Slides</a>
+        <a class="btn-wsj" href="https://www.ft.com/content/c891c47c-b21f-4e0f-84b3-b80c794eff3d?syn-25a6b1a6=1" target="_blank">Click to Read Full Article on FT ↗</a>
       </div>
     </div>
   </div>
