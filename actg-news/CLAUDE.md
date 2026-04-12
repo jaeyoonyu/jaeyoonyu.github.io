@@ -79,17 +79,35 @@ Each cover slide uses a background photo layered beneath the maroon gradient.
 
 **Source:** [Unsplash](https://unsplash.com) — free license, no attribution required (a subtle "Photo: Unsplash" credit is added in the cover slide anyway).
 
-**Finding a photo:**
+**Image workflow:**
 1. Search `unsplash.com/s/photos/[keyword]` for the article topic
-2. Pick a photo whose title includes "Free … Image on Unsplash" — these are community photos available for free embedding. Avoid any that mention "Getty Images" in the title (those require a paid subscription).
-3. Copy the photo ID from the URL: `unsplash.com/photos/[slug]-PHOTOID` — the ID is the last segment after the final `-`.
+2. Pick a photo whose title includes "Free … Image on Unsplash" (community photos). Avoid any with "Getty Images" in the title (paid subscription required).
+3. Note the photo ID from the URL — last segment after the final `-` in `unsplash.com/photos/[slug-PHOTOID]`
+4. Download: `curl -L -o "slides/assets/NAME-cover.jpg" "https://unsplash.com/photos/PHOTOID/download?force=true"`
+5. Compress to ≤ 1400px wide using PowerShell System.Drawing (see template below) or similar tool — raw downloads can be 4–5 MB
+6. Reference in CSS as `url('assets/NAME-cover.jpg')`
+
+**PowerShell compress snippet** (run from repo root):
+```powershell
+Add-Type -AssemblyName System.Drawing
+$path = "actg-news/slides/assets/NAME-cover.jpg"
+$img = [System.Drawing.Image]::FromFile($path)
+$ratio = 1400 / $img.Width
+$bmp = New-Object System.Drawing.Bitmap(1400, [int]($img.Height * $ratio))
+$g = [System.Drawing.Graphics]::FromImage($bmp); $g.InterpolationMode = "HighQualityBicubic"
+$g.DrawImage($img, 0, 0, 1400, [int]($img.Height * $ratio)); $g.Dispose(); $img.Dispose()
+$enc = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object { $_.MimeType -eq 'image/jpeg' }
+$p = New-Object System.Drawing.Imaging.EncoderParameters(1)
+$p.Param[0] = New-Object System.Drawing.Imaging.EncoderParameter([System.Drawing.Imaging.Encoder]::Quality, 85)
+$bmp.Save($path, $enc, $p); $bmp.Dispose()
+```
 
 **CSS pattern for `.slide-cover`:**
 ```css
 .slide-cover {
   background:
     linear-gradient(150deg, rgba(61,0,28,0.90) 0%, rgba(106,0,50,0.84) 55%, rgba(122,16,64,0.88) 100%),
-    url('https://images.unsplash.com/photo-PHOTOID?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
+    url('assets/NAME-cover.jpg') center/cover no-repeat;
   ...
 }
 ```
@@ -101,11 +119,11 @@ Add a tiny credit at the bottom of the cover slide HTML:
 
 **Photos used so far:**
 
-| Article | Photo ID | Description |
-|---------|----------|-------------|
-| Meta harmed children | `Jrz9YXN1Vwc` | Social media apps on smartphone |
-| KPMG AI audit fees | `LNnmSumlwO4` | Person at desk with calculator & notebook |
-| Dirty job / inventory | `4LsuWRRmwG8` | Grain silos under blue sky |
+| Article | File | Unsplash ID | Description |
+|---------|------|-------------|-------------|
+| Meta harmed children | `meta-cover.jpg` | `Jrz9YXN1Vwc` | Social media apps on smartphone |
+| KPMG AI audit fees | `kpmg-cover.jpg` | `LNnmSumlwO4` | Person at desk with calculator & notebook |
+| Dirty job / inventory | `inventory-cover.jpg` | `4LsuWRRmwG8` | Grain silos under blue sky |
 
 ---
 
