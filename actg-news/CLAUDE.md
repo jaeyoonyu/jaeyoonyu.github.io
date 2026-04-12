@@ -69,6 +69,43 @@ Examples:
 - Large fonts, high contrast — built for projection
 - Keyboard navigation: ← → arrows, ESC returns to index
 - **Must work on both desktop and mobile** — see responsive requirements below
+- **Cover slide has a background photo** — see image guidelines below
+
+---
+
+## Cover Image Guidelines
+
+Each cover slide uses a background photo layered beneath the maroon gradient.
+
+**Source:** [Unsplash](https://unsplash.com) — free license, no attribution required (a subtle "Photo: Unsplash" credit is added in the cover slide anyway).
+
+**Finding a photo:**
+1. Search `unsplash.com/s/photos/[keyword]` for the article topic
+2. Pick a photo whose title includes "Free … Image on Unsplash" — these are community photos available for free embedding. Avoid any that mention "Getty Images" in the title (those require a paid subscription).
+3. Copy the photo ID from the URL: `unsplash.com/photos/[slug]-PHOTOID` — the ID is the last segment after the final `-`.
+
+**CSS pattern for `.slide-cover`:**
+```css
+.slide-cover {
+  background:
+    linear-gradient(150deg, rgba(61,0,28,0.90) 0%, rgba(106,0,50,0.84) 55%, rgba(122,16,64,0.88) 100%),
+    url('https://images.unsplash.com/photo-PHOTOID?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
+  ...
+}
+```
+
+Add a tiny credit at the bottom of the cover slide HTML:
+```html
+<div style="font-size:10px; color:rgba(255,255,255,0.25); margin-top:auto;">Photo: Unsplash</div>
+```
+
+**Photos used so far:**
+
+| Article | Photo ID | Description |
+|---------|----------|-------------|
+| Meta harmed children | `Jrz9YXN1Vwc` | Social media apps on smartphone |
+| KPMG AI audit fees | `LNnmSumlwO4` | Person at desk with calculator & notebook |
+| Dirty job / inventory | `4LsuWRRmwG8` | Grain silos under blue sky |
 
 ---
 
