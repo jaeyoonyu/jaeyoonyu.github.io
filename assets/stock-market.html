@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>U.S. Stock Market Indices</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:    #0f1e2e;
+  --bg2:   #172639;
+  --bg3:   #1e3350;
+  --c0:    #19caca;
+  --c1:    #f0b429;
+  --c2:    #a78bfa;
+  --c0dim: rgba(25,202,202,0.12);
+  --c1dim: rgba(240,180,41,0.12);
+  --c2dim: rgba(167,139,250,0.12);
+  --green: #34d399;
+  --red:   #f87171;
+  --text:  #e2eaf3;
+  --text2: #7da8c8;
+  --text3: #3d6a8a;
+  --bdr:   rgba(25,202,202,0.15);
+  --bdr2:  rgba(255,255,255,0.08);
+  --card:  rgba(23,38,57,0.95);
+  --r:     12px;
+}
+body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; font-size:16px; line-height:1.5; }
+.page { max-width:1080px; margin:0 auto; padding:28px 18px 60px; display:flex; flex-direction:column; gap:24px; }
+
+/* ── HEADER ── */
+.hdr { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.hdr h1 { font-size:1.5rem; font-weight:800; letter-spacing:-.03em; line-height:1.15; }
+.hdr h1 span { color:var(--c0); }
+.hdr p { font-size:.8rem; color:var(--text3); margin-top:3px; }
+.badge { background:rgba(240,180,41,.1); border:1px solid rgba(240,180,41,.3); color:var(--c1); font-size:.68rem; font-weight:700; letter-spacing:.09em; text-transform:uppercase; padding:5px 12px; border-radius:100px; white-space:nowrap; margin-top:4px; }
+
+/* ── CONTROLS ── */
+.controls { display:flex; gap:24px; align-items:flex-end; flex-wrap:wrap; }
+.ctrl-group { display:flex; flex-direction:column; gap:6px; }
+.ctrl-group > label { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--text3); }
+
+/* Toggle buttons */
+.toggle-group { display:flex; gap:8px; flex-wrap:wrap; }
+.tbtn {
+  padding:8px 18px; border-radius:8px; border:1.5px solid var(--bdr2);
+  background:var(--bg2); color:var(--text2); font-family:'Inter',sans-serif;
+  font-size:.88rem; font-weight:600; cursor:pointer; transition:all .15s; white-space:nowrap;
+}
+.tbtn:hover { border-color:var(--c0); color:var(--text); }
+.tbtn.on-0  { background:var(--c0dim); border-color:var(--c0); color:var(--c0); }
+.tbtn.on-1  { background:var(--c1dim); border-color:var(--c1); color:var(--c1); }
+.tbtn.on-2  { background:rgba(248,113,113,0.12); border-color:#f87171; color:#f87171; }
+.tbtn.on-3  { background:var(--c2dim); border-color:var(--c2); color:var(--c2); }
+
+/* Mode toggle */
+.mode-group { display:flex; gap:8px; }
+.mbtn {
+  padding:8px 16px; border-radius:8px; border:1.5px solid var(--bdr2);
+  background:var(--bg2); color:var(--text2); font-family:'Inter',sans-serif;
+  font-size:.82rem; font-weight:600; cursor:pointer; transition:all .15s;
+}
+.mbtn.active { background:rgba(25,202,202,.12); border-color:var(--c0); color:var(--c0); }
+
+/* Dual range */
+.range-wrap { display:flex; flex-direction:column; gap:8px; min-width:280px; }
+.range-labels { display:flex; justify-content:space-between; align-items:baseline; }
+.range-labels .rl { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--text3); }
+.range-labels .rv { font-size:1rem; font-weight:800; color:var(--text); font-variant-numeric:tabular-nums; }
+.dual-range { position:relative; height:36px; display:flex; align-items:center; }
+.dual-range .track { position:absolute; left:0; right:0; height:5px; background:var(--bg3); border-radius:3px; pointer-events:none; }
+.dual-range .fill  { position:absolute; height:5px; background:var(--c0); border-radius:3px; pointer-events:none; }
+.dual-range input[type=range] { position:absolute; width:100%; -webkit-appearance:none; appearance:none; background:transparent; pointer-events:none; height:5px; outline:none; margin:0; }
+.dual-range input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:var(--c0); border:3px solid var(--bg); cursor:pointer; pointer-events:all; box-shadow:0 0 0 3px rgba(25,202,202,.2); transition:box-shadow .15s; }
+.dual-range input[type=range]::-webkit-slider-thumb:hover { box-shadow:0 0 0 6px rgba(25,202,202,.18); }
+.dual-range input[type=range]::-moz-range-thumb { width:20px; height:20px; border-radius:50%; background:var(--c0); border:3px solid var(--bg); cursor:pointer; pointer-events:all; }
+.range-ticks { display:flex; justify-content:space-between; padding:0 2px; }
+.range-ticks span { font-size:.66rem; color:var(--text3); font-variant-numeric:tabular-nums; }
+
+/* ── STAT PILLS ── */
+.stat-row { display:flex; gap:12px; flex-wrap:wrap; }
+.stat-pill {
+  flex:1; min-width:140px; background:var(--card); border:1px solid var(--bdr2);
+  border-radius:var(--r); padding:14px 16px; display:flex; flex-direction:column; gap:3px;
+}
+.stat-label { font-size:.65rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--text3); }
+.stat-val   { font-size:1.25rem; font-weight:800; letter-spacing:-.02em; font-variant-numeric:tabular-nums; }
+.stat-sub   { font-size:.72rem; color:var(--text2); }
+.stat-pill.c0 .stat-val { color:var(--c0); }
+.stat-pill.c1 .stat-val { color:var(--c1); }
+.stat-pill.c2 .stat-val { color:#f87171; }
+.stat-pill.c3 .stat-val { color:var(--c2); }
+
+/* ── MAIN CHART ── */
+.chart-card { background:var(--card); border:1px solid var(--bdr); border-radius:var(--r); padding:20px 20px 14px; box-shadow:0 5px 22px rgba(0,0,0,.32); }
+.chart-card h3 { font-size:.92rem; font-weight:700; margin-bottom:2px; }
+.chart-card .csub { font-size:.73rem; color:var(--text3); margin-bottom:14px; }
+.chart-wrap { position:relative; }
+
+/* ── TABLE ── */
+.table-wrap { background:var(--card); border:1px solid var(--bdr); border-radius:var(--r); overflow:hidden; box-shadow:0 4px 18px rgba(0,0,0,.28); }
+.table-head { padding:14px 18px 10px; border-bottom:1px solid var(--bdr2); display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
+.table-head h3 { font-size:1rem; font-weight:700; }
+.table-head .tsub { font-size:.73rem; color:var(--text3); }
+.tscroll { overflow-x:auto; }
+table { width:100%; border-collapse:collapse; font-size:.9rem; font-variant-numeric:tabular-nums; }
+thead th { padding:7px 14px; background:rgba(30,51,80,.85); font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text3); text-align:right; border-bottom:1.5px solid var(--bdr2); white-space:nowrap; }
+thead th:first-child { text-align:left; padding-left:18px; }
+tbody tr:nth-child(even) { background:rgba(30,51,80,.2); }
+tbody tr:hover { background:rgba(25,202,202,.05); }
+tbody td { padding:6px 14px; border-bottom:1px solid var(--bdr2); text-align:right; white-space:nowrap; }
+tbody td:first-child { text-align:left; font-weight:700; color:var(--text2); padding-left:18px; }
+.up { color:var(--green); font-weight:600; }
+.dn { color:var(--red);   font-weight:600; }
+.na { color:var(--text3); }
+tfoot td { padding:8px 14px; font-size:.9rem; font-weight:700; border-top:2px solid rgba(25,202,202,.22); text-align:right; background:rgba(25,202,202,.06); }
+tfoot td:first-child { text-align:left; color:var(--c0); padding-left:18px; font-size:.82rem; }
+.src-note { font-size:.68rem; color:var(--text3); padding:8px 18px; border-top:1px solid var(--bdr2); }
+.src-note a { color:var(--c0); text-decoration:none; }
+
+@media(max-width:660px) {
+  .controls { flex-direction:column; align-items:stretch; }
+  .range-wrap { min-width:unset; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div>
+    <h1>U.S. <span>Stock Market</span> Indices</h1>
+    <p>S&amp;P 500 · NASDAQ Composite · NASDAQ-100 · Russell 2000 · Annual Close · 1990–2025</p>
+  </div>
+  <div class="badge">Year-End Data</div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+
+  <div class="ctrl-group">
+    <label>Indices</label>
+    <div class="toggle-group">
+      <button class="tbtn on-0" id="btn-sp500"   onclick="toggleIdx(0)">S&amp;P 500</button>
+      <button class="tbtn on-1" id="btn-comp"    onclick="toggleIdx(1)">NASDAQ Composite</button>
+      <button class="tbtn on-2" id="btn-ndx100"  onclick="toggleIdx(2)">NASDAQ-100</button>
+      <button class="tbtn on-3" id="btn-russell" onclick="toggleIdx(3)">Russell 2000</button>
+    </div>
+  </div>
+
+  <div class="ctrl-group">
+    <label>Display</label>
+    <div class="mode-group">
+      <button class="mbtn"        id="mbtn-level"   onclick="setMode('level')">Index Level</button>
+      <button class="mbtn active" id="mbtn-indexed"  onclick="setMode('indexed')">Indexed (=100)</button>
+      <button class="mbtn"        id="mbtn-yoy"      onclick="setMode('yoy')">Ann. Return %</button>
+    </div>
+  </div>
+
+  <div class="ctrl-group" style="flex:1;min-width:280px;">
+    <label>Period</label>
+    <div class="range-wrap">
+      <div class="range-labels">
+        <span class="rl">Year Range</span>
+        <span class="rv"><span id="yrs-v">1990</span> – <span id="yre-v">2025</span></span>
+      </div>
+      <div class="dual-range">
+        <div class="track"></div>
+        <div class="fill" id="rangeFill"></div>
+        <input type="range" id="yr-s" min="1990" max="2025" value="1990" step="1">
+        <input type="range" id="yr-e" min="1990" max="2025" value="2025" step="1">
+      </div>
+      <div class="range-ticks">
+        <span>1990</span><span>1995</span><span>2000</span><span>2005</span><span>2010</span><span>2015</span><span>2020</span><span>2025</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- STAT PILLS -->
+<div class="stat-row" id="statRow"></div>
+
+<!-- MAIN CHART -->
+<div class="chart-card">
+  <h3 id="chartTitle">Index Level — Annual Close</h3>
+  <div class="csub" id="chartSub">Year-end closing values · Nominal (not inflation-adjusted)</div>
+  <div class="chart-wrap"><canvas id="mainChart"></canvas></div>
+</div>
+
+<!-- TABLE -->
+<div class="table-wrap">
+  <div class="table-head">
+    <h3>Annual Data Table</h3>
+    <span class="tsub">Year-end closing values · Annual return in parentheses</span>
+  </div>
+  <div class="tscroll">
+    <table><thead id="tHead"></thead><tbody id="tBody"></tbody><tfoot id="tFoot"></tfoot></table>
+  </div>
+  <div class="src-note">
+    Source: <a href="https://finance.yahoo.com" target="_blank">Yahoo Finance</a> /
+    <a href="https://www.wsj.com/market-data" target="_blank">WSJ Market Data</a>.
+    Year-end closing prices. 2025 value as of April 2025.
+    Russell 2000 data from 1990 onward. Past performance does not guarantee future results.
+  </div>
+</div>
+
+</div>
+<script>
+// ═══════════════════════════════════════════════
+//  ANNUAL YEAR-END CLOSE DATA  (1990 – 2025)
+//  SP500:  S&P 500 Index
+//  COMP:   NASDAQ Composite
+//  NDX100: NASDAQ-100 Index
+//  RUT:    Russell 2000
+//  Source: Yahoo Finance / wallstreetnumbers.com
+// ═══════════════════════════════════════════════
+const YEARS = [1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,
+               2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,
+               2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,
+               2020,2021,2022,2023,2024,2025];
+
+const SP500 = [
+   330.22,  417.09,  435.71,  466.45,  459.27,  615.93,  740.74,  970.43, 1229.23, 1469.25,
+  1320.28, 1148.08,  879.82, 1111.92, 1211.92, 1248.29, 1418.30, 1468.36,  903.25, 1115.10,
+  1257.64, 1257.61, 1426.19, 1848.36, 2058.90, 2043.94, 2238.83, 2673.61, 2506.85, 3230.78,
+  3756.07, 4766.18, 3839.50, 4769.83, 5881.63, 5611.85
+];
+
+// NASDAQ Composite (IXIC)
+const COMP = [
+   373.84,  586.35,  676.95,  776.80,  751.96, 1052.13, 1291.03, 1570.35, 2192.69, 4069.31,
+  2470.52, 1950.40, 1335.51, 2003.37, 2175.44, 2205.32, 2415.29, 2652.28, 1577.03, 2269.15,
+  2652.87, 2605.15, 3019.51, 4176.59, 4736.05, 5007.41, 5383.12, 6903.39, 6635.28, 8972.60,
+ 12888.28,15644.97,10939.99,16825.93,19310.79,19161.63
+];
+
+// NASDAQ-100 (NDX) — source: wallstreetnumbers.com
+const NDX100 = [
+   200.53,  330.86,  360.19,  398.28,  404.27,  576.23,  821.36,  990.83, 1836.01, 3707.83,
+  2341.70, 1577.05,  984.37, 1467.92, 1621.12, 1645.20, 1756.90, 2084.93, 1211.65, 1860.31,
+  2217.86, 2277.83, 2660.93, 3592.00, 4236.28, 4593.27, 4863.62, 6396.42, 6329.97, 8733.07,
+ 12888.28,16320.08,10939.76,16825.93,21012.17,25249.85
+];
+
+// Russell 2000 (RUT)
+const RUT = [
+   170.54,  253.82,  259.06,  295.96,  250.18,  314.90,  362.56,  437.02,  421.96,  504.75,
+   483.53,  488.50,  383.09,  556.91,  651.57,  673.22,  787.66,  766.03,  499.45,  625.39,
+   783.65,  740.92,  849.35, 1163.64, 1204.70, 1135.89, 1357.13, 1535.51, 1348.56, 1668.47,
+  1974.86, 2245.31, 1761.25, 2027.07, 2230.17, 2114.98
+];
+
+const INDICES = [
+  { key:'sp500',   label:'S&P 500',          data: SP500,  color:'#19caca', dim:'rgba(25,202,202,0.10)'  },
+  { key:'comp',    label:'NASDAQ Composite',  data: COMP,   color:'#f0b429', dim:'rgba(240,180,41,0.10)'  },
+  { key:'ndx100',  label:'NASDAQ-100',        data: NDX100, color:'#f87171', dim:'rgba(248,113,113,0.10)' },
+  { key:'russell', label:'Russell 2000',      data: RUT,    color:'#a78bfa', dim:'rgba(167,139,250,0.10)' },
+];
+
+// ── State ──
+let visible = [true, true, true, true];
+let mode    = 'indexed'; // 'level' | 'indexed' | 'yoy'
+let sy      = 1990;
+let ey      = 2025;
+let mainChart = null;
+
+// ── Helpers ──
+function fmtN(v) {
+  if(Math.abs(v)>=1000) return v.toLocaleString('en-US',{maximumFractionDigits:0});
+  return v.toFixed(2);
+}
+function fmtP(v, plus=true) {
+  const s = (plus && v>=0 ? '+' : '') + v.toFixed(1) + '%';
+  return s;
+}
+
+function getSlice() {
+  const si = YEARS.indexOf(sy);
+  const ei = YEARS.indexOf(ey);
+  if(si<0||ei<0) return { years:[], slices:[] };
+  const years = YEARS.slice(si, ei+1);
+  const slices = INDICES.map(idx => idx.data.slice(si, ei+1));
+  return { years, slices };
+}
+
+function getPlotData(slices, years) {
+  if(mode === 'level') return slices;
+  if(mode === 'indexed') {
+    return slices.map(s => s.map(v => s[0]>0 ? v/s[0]*100 : null));
+  }
+  if(mode === 'yoy') {
+    return slices.map(s => s.map((v,i) => i===0 ? null : s[i-1]>0 ? (v-s[i-1])/s[i-1]*100 : null));
+  }
+  return slices;
+}
+
+// ── Stats ──
+function buildStats(years, slices) {
+  const row = document.getElementById('statRow');
+  row.innerHTML = '';
+  const clsMap = ['c0','c1','c2','c3'];
+  INDICES.forEach((idx, i) => {
+    if(!visible[i]) return;
+    const s = slices[i];
+    const start = s[0], end = s[s.length-1];
+    const totalRet = start>0 ? (end-start)/start*100 : null;
+    const n = years.length-1;
+    const cagr = n>0&&start>0 ? (Math.pow(end/start,1/n)-1)*100 : null;
+
+    const displayVal = mode==='indexed' && start>0 ? (end/start*100).toFixed(1) : fmtN(end);
+    const displayLabel = mode==='indexed' ? 'Indexed Value' : 'End Value';
+
+    const pill = document.createElement('div');
+    pill.className = `stat-pill ${clsMap[i]}`;
+    pill.innerHTML = `
+      <div class="stat-label">${idx.label}</div>
+      <div class="stat-val">${displayVal}</div>
+      <div class="stat-sub">
+        ${totalRet!=null ? fmtP(totalRet) + ' total' : '—'}
+        ${cagr!=null ? ' · ' + fmtP(cagr) + '/yr CAGR' : ''}
+      </div>`;
+    row.appendChild(pill);
+  });
+}
+
+// ── Chart ──
+function buildChart(years, slices) {
+  const plotData = getPlotData(slices, years);
+
+  const titles = {
+    level:   'Index Level — Annual Close',
+    indexed: 'Indexed to 100 at Start of Period',
+    yoy:     'Annual Return (%)'
+  };
+  const subs = {
+    level:   'Year-end closing values · Nominal (not inflation-adjusted)',
+    indexed: 'All indices set to 100 at the first year of the selected period',
+    yoy:     'Year-over-year percentage change in index value'
+  };
+  document.getElementById('chartTitle').textContent = titles[mode];
+  document.getElementById('chartSub').textContent   = subs[mode];
+
+  const datasets = INDICES.map((idx, i) => {
+    if(!visible[i]) return null;
+    const d = plotData[i];
+    if(mode === 'yoy') {
+      const bgColors = d.map(v => v==null?'transparent':v>=0?'rgba(52,211,153,.7)':'rgba(248,113,113,.7)');
+      const bdColors = d.map(v => v==null?'transparent':v>=0?'#34d399':'#f87171');
+      return {
+        type: 'bar',
+        label: idx.label, data: d,
+        backgroundColor: bgColors, borderColor: bdColors,
+        borderWidth:1.5, borderRadius:4,
+        yAxisID:'y'
+      };
+    }
+    return {
+      type: 'line',
+      label: idx.label, data: d,
+      borderColor: idx.color, backgroundColor: idx.dim,
+      borderWidth: 2, fill: false, tension: 0,
+      pointRadius: 5, pointHoverRadius: 7,
+      pointBackgroundColor: idx.color,
+      pointBorderColor:'#0f1e2e', pointBorderWidth:2,
+      yAxisID:'y'
+    };
+  }).filter(Boolean);
+
+  if(mainChart) mainChart.destroy();
+  mainChart = new Chart(document.getElementById('mainChart'), {
+    data: { labels: years, datasets },
+    options: {
+      responsive:true, maintainAspectRatio:true, animation:{duration:300},
+      interaction:{mode:'index', intersect:false},
+      scales:{
+        x:{
+          grid:{color:'rgba(61,106,138,0.14)'}, border:{display:false},
+          ticks:{color:'#7da8c8', font:{size:11}, maxRotation:0, autoSkip:true, maxTicksLimit:12}
+        },
+        y:{
+          grid:{color:'rgba(61,106,138,0.14)'}, border:{display:false},
+          ticks:{
+            color:'#7da8c8', font:{size:11},
+            callback: v => mode==='yoy' ? v.toFixed(0)+'%' : mode==='indexed' ? v.toFixed(0) : fmtN(v)
+          }
+        }
+      },
+      plugins:{
+        legend:{
+          display:true, position:'top',
+          labels:{ color:'#7da8c8', font:{family:'Inter',size:12}, padding:18, usePointStyle:true, pointStyleWidth:10 }
+        },
+        tooltip:{
+          backgroundColor:'#172639', borderColor:'rgba(25,202,202,.22)', borderWidth:1,
+          titleColor:'#7da8c8', bodyColor:'#e2eaf3', padding:12, cornerRadius:8,
+          titleFont:{size:12}, bodyFont:{size:13,weight:'700'},
+          callbacks:{
+            label: item => {
+              const v = item.raw;
+              if(v==null) return '';
+              if(mode==='yoy')     return `  ${item.dataset.label}: ${fmtP(v)}`;
+              if(mode==='indexed') return `  ${item.dataset.label}: ${v.toFixed(1)}`;
+              return `  ${item.dataset.label}: ${fmtN(v)}`;
+            }
+          }
+        }
+      }
+    }
+  });
+}
+
+// ── Table ──
+function buildTable(years, slices) {
+  const thead = document.getElementById('tHead');
+  const tbody = document.getElementById('tBody');
+  const tfoot = document.getElementById('tFoot');
+  thead.innerHTML = ''; tbody.innerHTML = ''; tfoot.innerHTML = '';
+
+  const vis = INDICES.filter((_,i)=>visible[i]);
+  const visSlices = slices.filter((_,i)=>visible[i]);
+
+  // Header
+  const hr = document.createElement('tr');
+  const thY = document.createElement('th'); thY.textContent='Year'; hr.appendChild(thY);
+  vis.forEach(idx => {
+    const th1=document.createElement('th'); th1.textContent=idx.label; hr.appendChild(th1);
+    const th2=document.createElement('th'); th2.textContent='Ann. Return'; hr.appendChild(th2);
+  });
+  thead.appendChild(hr);
+
+  // Body
+  years.forEach((yr,i)=>{
+    const tr = document.createElement('tr');
+    const td0 = document.createElement('td'); td0.textContent=yr; tr.appendChild(td0);
+    visSlices.forEach(s=>{
+      const v  = s[i];
+      const vp = i>0?s[i-1]:null;
+      const ret = vp!=null&&vp>0?(v-vp)/vp*100:null;
+      const td1=document.createElement('td'); td1.textContent=fmtN(v); tr.appendChild(td1);
+      const td2=document.createElement('td');
+      td2.className = ret==null?'na':ret>=0?'up':'dn';
+      td2.textContent = ret==null?'—':fmtP(ret);
+      tr.appendChild(td2);
+    });
+    tbody.appendChild(tr);
+  });
+
+  // Footer
+  const ftr=document.createElement('tr');
+  const ftd0=document.createElement('td'); ftd0.textContent='Total Return'; ftr.appendChild(ftd0);
+  const n=years.length-1;
+  visSlices.forEach(s=>{
+    const vs=s[0], ve=s[s.length-1];
+    const tot=vs>0?(ve-vs)/vs*100:null;
+    const cagr=n>0&&vs>0?(Math.pow(ve/vs,1/n)-1)*100:null;
+    const ftd1=document.createElement('td');
+    ftd1.className=tot==null?'na':tot>=0?'up':'dn';
+    ftd1.textContent=tot==null?'—':fmtP(tot);
+    const ftd2=document.createElement('td');
+    ftd2.className=cagr==null?'na':cagr>=0?'up':'dn';
+    ftd2.textContent=cagr==null?'—':fmtP(cagr)+'/yr CAGR';
+    ftr.appendChild(ftd1); ftr.appendChild(ftd2);
+  });
+  tfoot.appendChild(ftr);
+}
+
+// ── Master render ──
+function render() {
+  const {years, slices} = getSlice();
+  buildStats(years, slices);
+  buildChart(years, slices);
+  buildTable(years, slices);
+}
+
+// ── Controls ──
+window.toggleIdx = function(i) {
+  const onCount = visible.filter(Boolean).length;
+  if(visible[i] && onCount===1) return; // keep at least one
+  visible[i] = !visible[i];
+  const cls = ['on-0','on-1','on-2','on-3'];
+  const ids = ['btn-sp500','btn-comp','btn-ndx100','btn-russell'];
+  document.getElementById(ids[i]).className = 'tbtn' + (visible[i]?' '+cls[i]:'');
+  render();
+};
+
+window.setMode = function(m) {
+  mode = m;
+  ['level','indexed','yoy'].forEach(k=>{
+    document.getElementById('mbtn-'+k).classList.toggle('active', k===m);
+  });
+  render();
+};
+
+// ── Dual range ──
+function updateFill() {
+  const MIN=1990, MAX=2025;
+  const s=+document.getElementById('yr-s').value;
+  const e=+document.getElementById('yr-e').value;
+  document.getElementById('rangeFill').style.left  = (s-MIN)/(MAX-MIN)*100+'%';
+  document.getElementById('rangeFill').style.width = (e-s)  /(MAX-MIN)*100+'%';
+  document.getElementById('yrs-v').textContent=s;
+  document.getElementById('yre-v').textContent=e;
+}
+document.getElementById('yr-s').addEventListener('input',function(){
+  let v=+this.value, ev=+document.getElementById('yr-e').value;
+  if(v>=ev){v=ev-1;this.value=v;}
+  sy=v; updateFill(); render();
+});
+document.getElementById('yr-e').addEventListener('input',function(){
+  let v=+this.value, sv=+document.getElementById('yr-s').value;
+  if(v<=sv){v=sv+1;this.value=v;}
+  ey=v; updateFill(); render();
+});
+updateFill();
+
+// ── Init ──
+render();
+</script>
+</body>
+</html>

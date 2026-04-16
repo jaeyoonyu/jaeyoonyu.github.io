@@ -553,9 +553,9 @@ function buildCharts() {
       data:{ labels:dispLabels, datasets:[{
         label:c+" County", data:vals,
         borderColor:color, backgroundColor:dim,
-        borderWidth:2.5, fill:true, tension:0.35,
-        pointRadius: vals.length<=30 ? 5 : 0,
-        pointHoverRadius:6, pointBackgroundColor:color,
+        borderWidth:2, fill:true, tension:0,
+        pointRadius:5, pointHoverRadius:7,
+        pointBackgroundColor:color,
         pointBorderColor:"#0f1e2e", pointBorderWidth:2
       }]},
       options: lineOpts(labels, color)
