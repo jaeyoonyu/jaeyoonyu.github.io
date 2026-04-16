@@ -29,6 +29,7 @@ navigation:                # accepts {file, title, url, icon, sidebaricon}
   - {file: "Grade-analyzer.md", title: Grade-Analyzer}
   # - {file: "python-basics.md", title: Python-Basic}
   # - {file: "python-applications.md", title: Python-Applied}
+  - {file: "michigan-housing.md", title: Michigan-Housing}
   - {file: "visuals.md", title: Visuals}
 
 
