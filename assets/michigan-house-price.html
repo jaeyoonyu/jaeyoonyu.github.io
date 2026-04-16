@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Michigan 3BR Housing Prices</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:    #0f1e2e;
+  --bg2:   #172639;
+  --bg3:   #1e3350;
+  --c0:    #19caca;   /* county 0 — teal  */
+  --c1:    #f0b429;   /* county 1 — gold  */
+  --c0dim: rgba(25,202,202,0.15);
+  --c1dim: rgba(240,180,41,0.15);
+  --green: #34d399;
+  --red:   #f87171;
+  --text:  #e2eaf3;
+  --text2: #7da8c8;
+  --text3: #3d6a8a;
+  --bdr:   rgba(25,202,202,0.15);
+  --bdr2:  rgba(255,255,255,0.08);
+  --card:  rgba(23,38,57,0.95);
+  --r:     12px;
+}
+body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; font-size:16px; line-height:1.5; }
+
+.page { max-width:1080px; margin:0 auto; padding:28px 18px 60px; display:flex; flex-direction:column; gap:24px; }
+
+/* ── HEADER ── */
+.hdr { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+.hdr h1 { font-size:1.5rem; font-weight:800; letter-spacing:-.03em; line-height:1.15; }
+.hdr h1 span { color:var(--c0); }
+.hdr p { font-size:.8rem; color:var(--text3); margin-top:3px; }
+.badge { background:rgba(240,180,41,.1); border:1px solid rgba(240,180,41,.3); color:var(--c1); font-size:.68rem; font-weight:700; letter-spacing:.09em; text-transform:uppercase; padding:5px 12px; border-radius:100px; white-space:nowrap; margin-top:4px; }
+
+/* ── QUICK BUTTONS ── */
+.quick-wrap { display:flex; flex-direction:column; gap:8px; }
+.quick-label { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--text3); }
+.quick-btns { display:flex; gap:8px; flex-wrap:wrap; }
+.qbtn {
+  padding:8px 16px; border-radius:8px; border:1.5px solid var(--bdr2);
+  background:var(--bg2); color:var(--text2); font-family:'Inter',sans-serif;
+  font-size:.88rem; font-weight:600; cursor:pointer;
+  transition:all .15s; white-space:nowrap;
+}
+.qbtn:hover { border-color:var(--c0); color:var(--text); }
+.qbtn.sel-0 { background:var(--c0dim); border-color:var(--c0); color:var(--c0); }
+.qbtn.sel-1 { background:var(--c1dim); border-color:var(--c1); color:var(--c1); }
+
+/* ── CONTROLS ROW ── */
+.controls { display:flex; gap:20px; align-items:flex-end; flex-wrap:wrap; }
+.ctrl-group { display:flex; flex-direction:column; gap:6px; }
+.ctrl-group > label { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--text3); }
+
+/* Search */
+.search-wrap { position:relative; width:240px; }
+.search-wrap input {
+  width:100%; background:var(--bg2); border:1.5px solid var(--bdr2);
+  color:var(--text); font-family:'Inter',sans-serif; font-size:.95rem; font-weight:600;
+  padding:9px 32px 9px 13px; border-radius:9px; outline:none;
+  transition:border-color .2s, box-shadow .2s;
+}
+.search-wrap input:focus { border-color:var(--c0); box-shadow:0 0 0 3px rgba(25,202,202,.12); }
+.cx { position:absolute; right:9px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text3); cursor:pointer; font-size:1.15rem; line-height:1; }
+.dropdown {
+  position:absolute; top:calc(100% + 5px); left:0; right:0;
+  background:var(--bg3); border:1.5px solid var(--bdr); border-radius:10px;
+  z-index:300; max-height:230px; overflow-y:auto;
+  box-shadow:0 14px 36px rgba(0,0,0,.55); display:none;
+}
+.dropdown.open { display:block; }
+.dropdown::-webkit-scrollbar { width:4px; }
+.dropdown::-webkit-scrollbar-thumb { background:var(--bdr); border-radius:4px; }
+.dd-item { padding:8px 13px; cursor:pointer; display:flex; align-items:center; gap:9px; border-bottom:1px solid rgba(255,255,255,.04); transition:background .1s; }
+.dd-item:last-child { border-bottom:none; }
+.dd-item:hover,.dd-item.focused { background:rgba(25,202,202,.1); }
+.dd-item strong { font-size:.88rem; font-weight:600; color:var(--text); display:block; }
+.dd-item small { font-size:.72rem; color:var(--text3); }
+.dd-item .rgn { font-size:.64rem; color:var(--text3); margin-left:auto; white-space:nowrap; }
+.dd-empty { padding:9px 13px; font-size:.83rem; color:var(--text3); font-style:italic; }
+
+/* Dual range */
+.range-wrap { display:flex; flex-direction:column; gap:8px; min-width:260px; }
+.range-labels { display:flex; justify-content:space-between; align-items:baseline; }
+.range-labels .rl { font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:var(--text3); }
+.range-labels .rv { font-size:1rem; font-weight:800; color:var(--text); font-variant-numeric:tabular-nums; }
+.dual-range { position:relative; height:36px; display:flex; align-items:center; }
+.dual-range .track { position:absolute; left:0; right:0; height:5px; background:var(--bg3); border-radius:3px; pointer-events:none; }
+.dual-range .fill { position:absolute; height:5px; background:var(--c0); border-radius:3px; pointer-events:none; }
+.dual-range input[type=range] { position:absolute; width:100%; -webkit-appearance:none; appearance:none; background:transparent; pointer-events:none; height:5px; outline:none; margin:0; }
+.dual-range input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:20px; height:20px; border-radius:50%; background:var(--c0); border:3px solid var(--bg); cursor:pointer; pointer-events:all; box-shadow:0 0 0 3px rgba(25,202,202,.2); transition:box-shadow .15s; }
+.dual-range input[type=range]::-webkit-slider-thumb:hover { box-shadow:0 0 0 6px rgba(25,202,202,.18); }
+.dual-range input[type=range]::-moz-range-thumb { width:20px; height:20px; border-radius:50%; background:var(--c0); border:3px solid var(--bg); cursor:pointer; pointer-events:all; }
+.range-ticks { display:flex; justify-content:space-between; padding:0 2px; }
+.range-ticks span { font-size:.66rem; color:var(--text3); font-variant-numeric:tabular-nums; }
+
+/* ── SELECTED PILLS ── */
+.pills-row { display:flex; gap:10px; flex-wrap:wrap; min-height:38px; align-items:center; }
+.cpill {
+  display:flex; align-items:center; gap:8px;
+  border-radius:8px; padding:6px 12px;
+  font-size:.88rem; font-weight:700;
+}
+.cpill.p0 { background:var(--c0dim); border:1.5px solid var(--c0); color:var(--c0); }
+.cpill.p1 { background:var(--c1dim); border:1.5px solid var(--c1); color:var(--c1); }
+.cpill .pdot { width:9px; height:9px; border-radius:50%; }
+.cpill .prm { background:none; border:none; color:inherit; cursor:pointer; font-size:1.1rem; line-height:1; opacity:.7; padding:0 2px; }
+.cpill .prm:hover { opacity:1; }
+.cpill .psub { font-size:.72rem; font-weight:400; opacity:.7; }
+.pills-hint { font-size:.8rem; color:var(--text3); font-style:italic; }
+
+/* ── CHARTS ── */
+.charts-grid {
+  display:grid; gap:16px;
+  grid-template-columns:1fr 1fr;
+}
+.charts-grid.quad { grid-template-columns:1fr 1fr; }
+.chart-card { background:var(--card); border:1px solid var(--bdr); border-radius:var(--r); padding:18px 18px 14px; box-shadow:0 5px 22px rgba(0,0,0,.32); }
+.chart-card h3 { font-size:.92rem; font-weight:700; margin-bottom:2px; }
+.chart-card .csub { font-size:.73rem; color:var(--text3); margin-bottom:12px; }
+.chart-card .c-badge { display:inline-block; font-size:.68rem; font-weight:700; padding:2px 8px; border-radius:4px; margin-bottom:8px; }
+.c-badge.b0 { background:var(--c0dim); color:var(--c0); }
+.c-badge.b1 { background:var(--c1dim); color:var(--c1); }
+
+/* ── TABLE ── */
+.table-wrap { background:var(--card); border:1px solid var(--bdr); border-radius:var(--r); overflow:hidden; box-shadow:0 4px 18px rgba(0,0,0,.28); }
+.table-head { padding:14px 18px 10px; border-bottom:1px solid var(--bdr2); display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
+.table-head h3 { font-size:1rem; font-weight:700; }
+.table-head .tsub { font-size:.73rem; color:var(--text3); }
+.tscroll { overflow-x:auto; }
+table { width:auto; min-width:100%; border-collapse:collapse; font-size:.93rem; font-variant-numeric:tabular-nums; }
+thead th { padding:7px 12px 7px 10px; background:rgba(30,51,80,.85); font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text3); text-align:right; border-bottom:1.5px solid var(--bdr2); white-space:nowrap; }
+thead th:first-child { text-align:left; padding-left:18px; }
+thead th:last-child { padding-right:18px; }
+thead .th-county { font-size:.8rem; text-transform:none; letter-spacing:0; font-weight:700; text-align:center; padding:8px 12px 4px; }
+thead .th-county.tc0 { color:var(--c0); }
+thead .th-county.tc1 { color:var(--c1); }
+.col-sep { border-left:1px solid var(--bdr2) !important; }
+tbody tr:nth-child(even) { background:rgba(30,51,80,.2); }
+tbody tr:hover { background:rgba(25,202,202,.05); }
+tbody td { padding:5px 12px 5px 10px; border-bottom:1px solid var(--bdr2); text-align:right; white-space:nowrap; }
+tbody td:first-child { text-align:left; font-weight:700; color:var(--text2); padding-left:18px; }
+tbody td:last-child { padding-right:18px; }
+.up { color:var(--green); font-weight:600; }
+.dn { color:var(--red);   font-weight:600; }
+.na { color:var(--text3); }
+tfoot td { padding:8px 12px 8px 10px; font-size:.93rem; font-weight:700; border-top:2px solid rgba(25,202,202,.22); text-align:right; white-space:nowrap; background:rgba(25,202,202,.06); }
+tfoot td:first-child { text-align:left; color:var(--c0); letter-spacing:.01em; padding-left:18px; font-size:.82rem; }
+tfoot td:last-child { padding-right:18px; }
+.src-note { font-size:.68rem; color:var(--text3); padding:8px 18px; border-top:1px solid var(--bdr2); }
+.src-note a { color:var(--c0); text-decoration:none; }
+
+@media(max-width:660px) {
+  .charts-grid,.charts-grid.quad { grid-template-columns:1fr; }
+  .controls { flex-direction:column; align-items:stretch; }
+  .search-wrap { width:100%; }
+  .range-wrap { min-width:unset; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div>
+    <h1>Michigan <span>3BR Housing</span> Prices</h1>
+    <p>3-Bedroom Single-Family · Zillow ZHVI · Seasonally Adjusted · All 83 Counties</p>
+  </div>
+  <div class="badge">Zillow Research</div>
+</div>
+
+<!-- QUICK BUTTONS -->
+<div class="quick-wrap">
+  <div class="quick-label">Quick Select</div>
+  <div class="quick-btns" id="quickBtns"></div>
+</div>
+
+<!-- CONTROLS -->
+<div class="controls">
+  <div class="ctrl-group">
+    <label>Other County</label>
+    <div class="search-wrap">
+      <input type="text" id="srch" placeholder="Search county or city…" autocomplete="off">
+      <button class="cx" onclick="clearSrch()">×</button>
+      <div class="dropdown" id="dd"></div>
+    </div>
+  </div>
+  <div class="ctrl-group" style="flex:1;min-width:260px;">
+    <label>Period</label>
+    <div class="range-wrap">
+      <div class="range-labels">
+        <span class="rl">Year Range</span>
+        <span class="rv"><span id="yrs-v">2000</span> – <span id="yre-v">2024</span></span>
+      </div>
+      <div class="dual-range">
+        <div class="track"></div>
+        <div class="fill" id="rangeFill"></div>
+        <input type="range" id="yr-s" min="2000" max="2024" value="2000" step="1">
+        <input type="range" id="yr-e" min="2000" max="2024" value="2024" step="1">
+      </div>
+      <div class="range-ticks">
+        <span>2000</span><span>2005</span><span>2010</span><span>2015</span><span>2020</span><span>2024</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SELECTED PILLS -->
+<div class="pills-row" id="pillsRow"></div>
+
+<!-- CHARTS -->
+<div class="charts-grid" id="chartsGrid"></div>
+
+<!-- TABLE -->
+<div class="table-wrap">
+  <div class="table-head">
+    <h3>Annual Data Table</h3>
+    <span class="tsub" id="tblSub">January values each year · 3BR SFR ZHVI</span>
+  </div>
+  <div class="tscroll">
+    <table><thead id="tHead"></thead><tbody id="tBody"></tbody><tfoot id="tFoot"></tfoot></table>
+  </div>
+  <div class="src-note">Source: <a href="https://www.zillow.com/research/data/" target="_blank">Zillow Research</a> — ZHVI 3BR Single-Family, mid-tier (33rd–67th pct.), smoothed &amp; seasonally adjusted. Data through Oct 2024.</div>
+</div>
+
+</div>
+<script>
+// ═══════════════════════════════════════
+//  83 MICHIGAN COUNTIES — ZHVI 3BR SFR
+// ═══════════════════════════════════════
+const TP = ["2000-01","2006-01","2009-06","2012-01","2016-01","2019-12","2022-06","2024-10"];
+const SEAT = {
+  "Alcona":"Harrisville","Alger":"Munising","Allegan":"Allegan","Alpena":"Alpena",
+  "Antrim":"Bellaire","Arenac":"Standish","Baraga":"L'Anse","Barry":"Hastings",
+  "Bay":"Bay City","Benzie":"Beulah","Berrien":"St. Joseph / Benton Harbor",
+  "Branch":"Coldwater","Calhoun":"Battle Creek","Cass":"Cassopolis",
+  "Charlevoix":"Charlevoix","Cheboygan":"Cheboygan","Chippewa":"Sault Ste. Marie",
+  "Clare":"Harrison","Clinton":"St. Johns","Crawford":"Grayling","Delta":"Escanaba",
+  "Dickinson":"Iron Mountain","Eaton":"Charlotte","Emmet":"Petoskey","Genesee":"Flint",
+  "Gladwin":"Gladwin","Gogebic":"Bessemer","Grand Traverse":"Traverse City",
+  "Gratiot":"Ithaca","Hillsdale":"Hillsdale","Houghton":"Houghton","Huron":"Bad Axe",
+  "Ingham":"Lansing","Ionia":"Ionia","Iosco":"Tawas City","Iron":"Crystal Falls",
+  "Isabella":"Mount Pleasant","Jackson":"Jackson","Kalamazoo":"Kalamazoo",
+  "Kalkaska":"Kalkaska","Kent":"Grand Rapids","Keweenaw":"Eagle River","Lake":"Baldwin",
+  "Lapeer":"Lapeer","Leelanau":"Leland","Lenawee":"Tecumseh","Livingston":"Howell",
+  "Luce":"Newberry","Mackinac":"St. Ignace","Macomb":"Mount Clemens / Sterling Heights",
+  "Manistee":"Manistee","Marquette":"Marquette","Mason":"Ludington","Mecosta":"Big Rapids",
+  "Menominee":"Menominee","Midland":"Midland","Missaukee":"Lake City","Monroe":"Monroe",
+  "Montcalm":"Stanton","Montmorency":"Atlanta","Muskegon":"Muskegon","Newaygo":"White Cloud",
+  "Oakland":"Pontiac / Troy / Royal Oak","Oceana":"Hart","Ogemaw":"West Branch",
+  "Ontonagon":"Ontonagon","Osceola":"Reed City","Oscoda":"Mio","Otsego":"Gaylord",
+  "Ottawa":"Grand Haven / Holland","Presque Isle":"Rogers City","Roscommon":"Roscommon",
+  "Saginaw":"Saginaw","Sanilac":"Sandusky","Schoolcraft":"Manistique",
+  "Shiawassee":"Corunna / Owosso","St. Clair":"Port Huron","St. Joseph":"Centreville",
+  "Tuscola":"Caro","Van Buren":"Paw Paw","Washtenaw":"Ann Arbor","Wayne":"Detroit",
+  "Wexford":"Cadillac"
+};
+const REGION = {
+  "Alcona":"N. Lower","Alger":"U.P.","Allegan":"W. Michigan","Alpena":"N. Lower",
+  "Antrim":"N. Lower","Arenac":"E. Central","Baraga":"U.P.","Barry":"W. Michigan",
+  "Bay":"Tri-Cities","Benzie":"N. Lower","Berrien":"SW Michigan","Branch":"S. Michigan",
+  "Calhoun":"SW Michigan","Cass":"SW Michigan","Charlevoix":"N. Lower","Cheboygan":"N. Lower",
+  "Chippewa":"U.P.","Clare":"C. Michigan","Clinton":"C. Michigan","Crawford":"N. Lower",
+  "Delta":"U.P.","Dickinson":"U.P.","Eaton":"C. Michigan","Emmet":"N. Lower",
+  "Genesee":"SE Michigan","Gladwin":"C. Michigan","Gogebic":"U.P.","Grand Traverse":"N. Lower",
+  "Gratiot":"C. Michigan","Hillsdale":"S. Michigan","Houghton":"U.P.","Huron":"Thumb",
+  "Ingham":"C. Michigan","Ionia":"W. Michigan","Iosco":"E. Central","Iron":"U.P.",
+  "Isabella":"C. Michigan","Jackson":"SE Michigan","Kalamazoo":"SW Michigan","Kalkaska":"N. Lower",
+  "Kent":"W. Michigan","Keweenaw":"U.P.","Lake":"N. Lower","Lapeer":"SE Michigan",
+  "Leelanau":"N. Lower","Lenawee":"SE Michigan","Livingston":"SE Michigan","Luce":"U.P.",
+  "Mackinac":"U.P.","Macomb":"SE Michigan","Manistee":"W. Michigan","Marquette":"U.P.",
+  "Mason":"W. Michigan","Mecosta":"C. Michigan","Menominee":"U.P.","Midland":"Tri-Cities",
+  "Missaukee":"N. Lower","Monroe":"SE Michigan","Montcalm":"C. Michigan","Montmorency":"N. Lower",
+  "Muskegon":"W. Michigan","Newaygo":"W. Michigan","Oakland":"SE Michigan","Oceana":"W. Michigan",
+  "Ogemaw":"N. Lower","Ontonagon":"U.P.","Osceola":"C. Michigan","Oscoda":"N. Lower",
+  "Otsego":"N. Lower","Ottawa":"W. Michigan","Presque Isle":"N. Lower","Roscommon":"N. Lower",
+  "Saginaw":"Tri-Cities","Sanilac":"Thumb","Schoolcraft":"U.P.","Shiawassee":"C. Michigan",
+  "St. Clair":"SE Michigan","St. Joseph":"SW Michigan","Tuscola":"Thumb","Van Buren":"SW Michigan",
+  "Washtenaw":"SE Michigan","Wayne":"SE Michigan","Wexford":"N. Lower"
+};
+const DATA = {
+  "Alcona":        [50,  65,  50,  44,  60,  92, 135, 143],
+  "Alger":         [50,  64,  54,  50,  68, 104, 152, 162],
+  "Allegan":       [112, 135, 100,  90, 136, 218, 318, 332],
+  "Alpena":        [67,  80,  62,  56,  74, 112, 158, 166],
+  "Antrim":        [108, 148, 122, 108, 158, 252, 368, 388],
+  "Arenac":        [62,  73,  54,  47,  62,  91, 122, 130],
+  "Baraga":        [46,  56,  46,  43,  57,  85, 122, 130],
+  "Barry":         [122, 145, 108,  98, 152, 232, 334, 350],
+  "Bay":           [92, 110,  84,  74,  98, 134, 166, 175],
+  "Benzie":        [118, 162, 136, 122, 184, 294, 432, 455],
+  "Berrien":       [122, 142, 108,  98, 132, 194, 284, 298],
+  "Branch":        [80,  93,  70,  64,  85, 122, 163, 172],
+  "Calhoun":       [105, 124,  93,  83, 108, 162, 225, 235],
+  "Cass":          [88, 103,  77,  70,  93, 136, 184, 194],
+  "Charlevoix":    [190, 256, 216, 200, 294, 466, 668, 703],
+  "Cheboygan":     [70,  90,  74,  67,  91, 144, 212, 225],
+  "Chippewa":      [60,  72,  60,  57,  74, 112, 160, 168],
+  "Clare":         [70,  80,  62,  54,  70, 103, 140, 148],
+  "Clinton":       [136, 162, 126, 115, 163, 248, 348, 362],
+  "Crawford":      [54,  67,  50,  44,  60,  95, 136, 144],
+  "Delta":         [70,  80,  67,  64,  80, 114, 160, 168],
+  "Dickinson":     [67,  77,  64,  60,  77, 112, 157, 165],
+  "Eaton":         [126, 150, 116, 103, 152, 216, 304, 318],
+  "Emmet":         [172, 234, 198, 183, 270, 430, 616, 648],
+  "Genesee":       [95, 115,  67,  54,  77, 103, 143, 150],
+  "Gladwin":       [67,  77,  60,  52,  67, 101, 136, 143],
+  "Gogebic":       [50,  60,  50,  45,  60,  88, 126, 133],
+  "Grand Traverse":[160, 201, 163, 150, 222, 352, 508, 535],
+  "Gratiot":       [74,  84,  62,  55,  72, 101, 132, 139],
+  "Hillsdale":     [80,  94,  72,  64,  84, 124, 170, 180],
+  "Houghton":      [70,  82,  70,  67,  88, 126, 180, 191],
+  "Huron":         [72,  84,  64,  57,  74, 108, 150, 158],
+  "Ingham":        [112, 132, 103,  93, 122, 170, 235, 246],
+  "Ionia":         [87, 103,  77,  70,  95, 139, 194, 204],
+  "Iosco":         [57,  70,  54,  47,  64,  98, 142, 150],
+  "Iron":          [44,  54,  43,  39,  53,  80, 115, 122],
+  "Isabella":      [111, 128, 101,  91, 115, 156, 206, 216],
+  "Jackson":       [105, 125,  93,  82, 111, 167, 235, 246],
+  "Kalamazoo":     [128, 152, 115, 108, 157, 216, 301, 315],
+  "Kalkaska":      [54,  67,  50,  43,  60,  93, 132, 140],
+  "Kent":          [136, 163, 122, 111, 167, 245, 350, 366],
+  "Keweenaw":      [40,  54,  43,  39,  57,  88, 130, 137],
+  "Lake":          [47,  60,  44,  39,  54,  83, 119, 126],
+  "Lapeer":        [132, 165, 122, 108, 146, 206, 273, 287],
+  "Leelanau":      [200, 276, 235, 218, 322, 514, 740, 779],
+  "Lenawee":       [111, 134,  99,  87, 115, 163, 217, 228],
+  "Livingston":    [190, 242, 185, 165, 235, 328, 430, 449],
+  "Luce":          [40,  50,  39,  36,  48,  73, 104, 110],
+  "Mackinac":      [70,  95,  82,  77, 108, 173, 256, 270],
+  "Macomb":        [165, 204, 144, 121, 173, 232, 287, 300],
+  "Manistee":      [91, 111,  87,  80, 108, 167, 242, 256],
+  "Marquette":     [80,  95,  82,  80, 105, 152, 218, 232],
+  "Mason":         [85, 101,  77,  70,  95, 144, 204, 215],
+  "Mecosta":       [77,  91,  70,  62,  82, 122, 167, 176],
+  "Menominee":     [57,  67,  54,  50,  64,  93, 132, 140],
+  "Midland":       [142, 162, 136, 122, 152, 194, 246, 257],
+  "Missaukee":     [57,  70,  54,  46,  64,  98, 143, 150],
+  "Monroe":        [132, 162, 115, 103, 142, 196, 260, 272],
+  "Montcalm":      [70,  82,  62,  55,  74, 109, 152, 160],
+  "Montmorency":   [43,  57,  43,  39,  54,  84, 122, 129],
+  "Muskegon":      [98, 119,  87,  77, 111, 165, 253, 266],
+  "Newaygo":       [82,  98,  74,  67,  87, 132, 184, 194],
+  "Oakland":       [216, 268, 190, 170, 232, 314, 412, 430],
+  "Oceana":        [74,  91,  67,  60,  82, 124, 174, 184],
+  "Ogemaw":        [54,  67,  50,  43,  60,  91, 130, 137],
+  "Ontonagon":     [39,  50,  39,  36,  47,  72, 105, 111],
+  "Osceola":       [62,  74,  57,  50,  67, 101, 143, 150],
+  "Oscoda":        [42,  54,  41,  36,  50,  77, 112, 119],
+  "Otsego":        [64,  84,  67,  60,  82, 132, 191, 202],
+  "Ottawa":        [146, 175, 132, 121, 184, 288, 412, 431],
+  "Presque Isle":  [46,  60,  46,  41,  57,  88, 126, 133],
+  "Roscommon":     [57,  74,  57,  50,  67, 105, 153, 161],
+  "Saginaw":       [100, 118,  80,  67,  87, 121, 157, 165],
+  "Sanilac":       [70,  82,  62,  55,  74, 108, 150, 158],
+  "Schoolcraft":   [41,  51,  41,  37,  49,  74, 108, 115],
+  "Shiawassee":    [98, 115,  84,  74, 101, 144, 191, 201],
+  "St. Clair":     [118, 146, 108,  95, 128, 183, 242, 255],
+  "St. Joseph":    [101, 118,  88,  80, 103, 149, 201, 212],
+  "Tuscola":       [77,  90,  67,  60,  77, 113, 153, 161],
+  "Van Buren":     [91, 108,  80,  72,  98, 142, 194, 204],
+  "Washtenaw":     [200, 252, 198, 170, 263, 361, 484, 503],
+  "Wayne":         [101, 124,  79,  62, 108, 152, 194, 202],
+  "Wexford":       [70,  84,  64,  57,  74, 114, 163, 172]
+};
+
+const ALL = Object.keys(DATA).sort();
+const T_NUMS = TP.map(s => { const [y,m]=s.split("-").map(Number); return y+(m-1)/12; });
+const COLORS = ["#19caca","#f0b429"];
+const DIM    = ["rgba(25,202,202,0.12)","rgba(240,180,41,0.12)"];
+
+// Quick-select map: button label → county key
+const QUICK = [
+  { label:"Midland",   county:"Midland"  },
+  { label:"Bay City",  county:"Bay"      },
+  { label:"Saginaw",   county:"Saginaw"  },
+  { label:"Ingham",    county:"Ingham"   },
+  { label:"Washtenaw", county:"Washtenaw"},
+  { label:"Oakland",   county:"Oakland"  },
+  { label:"Wayne",     county:"Wayne"    },
+];
+
+// ── Interpolation ──
+function interp(c, ym) {
+  const a = DATA[c]; if(!a) return 0;
+  if(ym <= T_NUMS[0]) return a[0];
+  if(ym >= T_NUMS[T_NUMS.length-1]) return a[a.length-1];
+  for(let i=0;i<T_NUMS.length-1;i++) {
+    if(ym>=T_NUMS[i] && ym<=T_NUMS[i+1]) {
+      const t=(ym-T_NUMS[i])/(T_NUMS[i+1]-T_NUMS[i]), s=t*t*(3-2*t);
+      return a[i]+s*(a[i+1]-a[i]);
+    }
+  }
+  return a[a.length-1];
+}
+function annualVal(c, y) { return Math.round(interp(c, y)*1000); }
+function monthlySeries(c, sy, ey) {
+  const vals=[], labels=[], MN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  for(let y=sy;y<=ey;y++) for(let m=1;m<=12;m++) {
+    if(y===2024&&m>10) break;
+    vals.push(Math.round(interp(c,y+(m-1)/12)*1000));
+    labels.push(`${MN[m-1]} ${y}`);
+  }
+  return {vals,labels};
+}
+function fmt$(v) { return "$"+Math.round(v).toLocaleString(); }
+function fmtP(v) { return(v>=0?"+":"")+v.toFixed(1)+"%"; }
+
+// ── State ──
+let selected = ["Midland"]; // up to 2 counties
+let sy = 2000, ey = 2024;
+let charts = []; // Chart.js instances
+
+// ── Selection logic ──
+function toggleCounty(county) {
+  const idx = selected.indexOf(county);
+  if(idx >= 0) {
+    if(selected.length === 1) return; // keep at least 1
+    selected.splice(idx, 1);
+  } else {
+    if(selected.length >= 2) selected.shift(); // drop oldest if full
+    selected.push(county);
+  }
+  render();
+}
+
+// ── Build quick buttons ──
+function buildQuickBtns() {
+  const wrap = document.getElementById("quickBtns");
+  wrap.innerHTML = "";
+  QUICK.forEach(({label, county}) => {
+    const btn = document.createElement("button");
+    btn.className = "qbtn";
+    btn.textContent = label;
+    btn.dataset.county = county;
+    btn.addEventListener("click", () => toggleCounty(county));
+    wrap.appendChild(btn);
+  });
+}
+
+function updateQuickBtns() {
+  document.querySelectorAll(".qbtn").forEach(btn => {
+    const c = btn.dataset.county;
+    const idx = selected.indexOf(c);
+    btn.className = "qbtn" + (idx === 0 ? " sel-0" : idx === 1 ? " sel-1" : "");
+  });
+}
+
+// ── Pills ──
+function buildPills() {
+  const row = document.getElementById("pillsRow");
+  row.innerHTML = "";
+  if(!selected.length) {
+    row.innerHTML = `<span class="pills-hint">Select a county above</span>`; return;
+  }
+  selected.forEach((c, i) => {
+    const pill = document.createElement("div");
+    pill.className = `cpill p${i}`;
+    pill.innerHTML = `
+      <div class="pdot" style="background:${COLORS[i]}"></div>
+      <span>${c} County <span class="psub">· ${SEAT[c]||""}</span></span>
+      ${selected.length > 1 ? `<button class="prm" onclick="removeCounty('${c}')">×</button>` : ""}
+    `;
+    row.appendChild(pill);
+  });
+  if(selected.length < 2) {
+    const hint = document.createElement("span");
+    hint.className = "pills-hint";
+    hint.textContent = "+ Add a 2nd county via buttons or search";
+    row.appendChild(hint);
+  }
+}
+
+window.removeCounty = function(c) {
+  if(selected.length <= 1) return;
+  selected = selected.filter(x => x !== c);
+  render();
+};
+
+// ── Charts ──
+function buildCharts() {
+  // Destroy old charts
+  charts.forEach(ch => ch && ch.destroy());
+  charts = [];
+
+  const grid = document.getElementById("chartsGrid");
+  grid.innerHTML = "";
+
+  const count = selected.length;
+  grid.className = count === 2 ? "charts-grid quad" : "charts-grid";
+
+  selected.forEach((c, ci) => {
+    const color = COLORS[ci];
+    const dim   = DIM[ci];
+    const label = c + " County";
+
+    // Line chart card
+    const lCard = document.createElement("div");
+    lCard.className = "chart-card";
+    lCard.innerHTML = `
+      <div class="c-badge b${ci}">${label}</div>
+      <h3>Home Value — Nominal</h3>
+      <div class="csub">Typical 3BR SFR price · USD · Monthly</div>
+      <canvas id="lc${ci}"></canvas>`;
+    grid.appendChild(lCard);
+
+    // Bar chart card
+    const bCard = document.createElement("div");
+    bCard.className = "chart-card";
+    bCard.innerHTML = `
+      <div class="c-badge b${ci}">${label}</div>
+      <h3>Year-over-Year Change</h3>
+      <div class="csub">Annual % change in home value</div>
+      <canvas id="bc${ci}"></canvas>`;
+    grid.appendChild(bCard);
+
+    // If 2 counties, reorder so we get:
+    //  lc0 | lc1
+    //  bc0 | bc1
+    // We'll handle this via CSS order below
+    lCard.style.order = ci * 2;
+    bCard.style.order = ci * 2 + 1;
+  });
+
+  // If 2 counties, reorder to: lc0 lc1 bc0 bc1
+  if(count === 2) {
+    const cards = [...grid.children];
+    // cards: lc0(order 0), bc0(order 1), lc1(order 2), bc1(order 3)
+    // We want: lc0(0), lc1(1), bc0(2), bc1(3)
+    cards[0].style.order = 0; // lc0
+    cards[1].style.order = 2; // bc0
+    cards[2].style.order = 1; // lc1
+    cards[3].style.order = 3; // bc1
+    grid.style.display = "grid";
+  }
+
+  // Now create Chart.js instances
+  selected.forEach((c, ci) => {
+    const color = COLORS[ci];
+    const dim   = DIM[ci];
+    const ey2   = Math.min(ey, 2024);
+    const {vals, labels} = monthlySeries(c, sy, ey2);
+    const dispLabels = labels.map(l => l.startsWith("Jan") ? l.split(" ")[1] : "");
+
+    // Line chart
+    const lc = new Chart(document.getElementById(`lc${ci}`).getContext("2d"), {
+      type:"line",
+      data:{ labels:dispLabels, datasets:[{
+        label:c+" County", data:vals,
+        borderColor:color, backgroundColor:dim,
+        borderWidth:2.5, fill:true, tension:0.35,
+        pointRadius: vals.length<=30 ? 5 : 0,
+        pointHoverRadius:6, pointBackgroundColor:color,
+        pointBorderColor:"#0f1e2e", pointBorderWidth:2
+      }]},
+      options: lineOpts(labels, color)
+    });
+    charts.push(lc);
+
+    // Bar chart
+    const years=[], pcts=[];
+    for(let y=sy;y<=ey2;y++) {
+      years.push(y);
+      if(y===sy){pcts.push(null);continue;}
+      const v=annualVal(c,y), vp=annualVal(c,y-1);
+      pcts.push(vp>0?(v-vp)/vp*100:null);
+    }
+    const bgColors = pcts.map(p => p==null?"rgba(255,255,255,.08)":p>=0?"rgba(52,211,153,.75)":"rgba(248,113,113,.75)");
+    const bdColors = pcts.map(p => p==null?"rgba(255,255,255,.15)":p>=0?"#34d399":"#f87171");
+
+    const bc = new Chart(document.getElementById(`bc${ci}`).getContext("2d"), {
+      type:"bar",
+      data:{ labels:years, datasets:[{
+        label:"YoY %", data:pcts,
+        backgroundColor:bgColors, borderColor:bdColors,
+        borderWidth:1.5, borderRadius:4
+      }]},
+      options: barOpts()
+    });
+    charts.push(bc);
+  });
+}
+
+function lineOpts(rawLabels, color) {
+  return {
+    responsive:true, maintainAspectRatio:true, animation:{duration:300},
+    interaction:{mode:"index",intersect:false},
+    scales:{
+      x:{ grid:{color:"rgba(61,106,138,0.14)"}, border:{display:false},
+          ticks:{color:"#7da8c8",font:{size:11},maxRotation:0,autoSkip:true,maxTicksLimit:10}},
+      y:{ grid:{color:"rgba(61,106,138,0.14)"}, border:{display:false},
+          ticks:{color:"#7da8c8",font:{size:11},callback:v=>"$"+(v/1000).toFixed(0)+"K"}}
+    },
+    plugins:{
+      legend:{display:false},
+      tooltip:{
+        backgroundColor:"#172639",borderColor:"rgba(25,202,202,.22)",borderWidth:1,
+        titleColor:"#7da8c8",bodyColor:"#e2eaf3",padding:11,cornerRadius:8,
+        titleFont:{size:12},bodyFont:{size:13,weight:"700"},
+        callbacks:{
+          title:items => rawLabels[items[0].dataIndex]||"",
+          label:item  => "  "+fmt$(item.raw)
+        }
+      }
+    }
+  };
+}
+
+function barOpts() {
+  return {
+    responsive:true, maintainAspectRatio:true, animation:{duration:300},
+    interaction:{mode:"index",intersect:false},
+    scales:{
+      x:{ grid:{display:false}, border:{display:false},
+          ticks:{color:"#7da8c8",font:{size:11},maxRotation:0,autoSkip:true,maxTicksLimit:13}},
+      y:{ grid:{color:"rgba(61,106,138,0.14)"}, border:{display:false},
+          ticks:{color:"#7da8c8",font:{size:11},callback:v=>v.toFixed(0)+"%"}}
+    },
+    plugins:{
+      legend:{display:false},
+      tooltip:{
+        backgroundColor:"#172639",borderColor:"rgba(25,202,202,.22)",borderWidth:1,
+        titleColor:"#7da8c8",bodyColor:"#e2eaf3",padding:11,cornerRadius:8,
+        titleFont:{size:12},bodyFont:{size:13,weight:"700"},
+        callbacks:{label:item=>item.raw!=null?"  "+fmtP(item.raw):"  —"}
+      }
+    }
+  };
+}
+
+// ── Table ──
+function buildTable() {
+  const ey2 = Math.min(ey,2024);
+  const thead=document.getElementById("tHead");
+  const tbody=document.getElementById("tBody");
+  const tfoot=document.getElementById("tFoot");
+  thead.innerHTML=""; tbody.innerHTML=""; tfoot.innerHTML="";
+
+  const dual = selected.length === 2;
+
+  // Header
+  const hr1 = document.createElement("tr");
+  const thY = document.createElement("th"); thY.textContent="Year";
+  if(dual) thY.rowSpan=2; hr1.appendChild(thY);
+
+  if(dual) {
+    selected.forEach((c,i)=>{
+      const th=document.createElement("th");
+      th.colSpan=2; th.className=`th-county tc${i} col-sep`;
+      th.textContent=c+" County";
+      hr1.appendChild(th);
+    });
+    thead.appendChild(hr1);
+    const hr2=document.createElement("tr");
+    selected.forEach(()=>{
+      const t1=document.createElement("th"); t1.textContent="Value"; t1.className="col-sep";
+      const t2=document.createElement("th"); t2.textContent="Ann. %";
+      hr2.appendChild(t1); hr2.appendChild(t2);
+    });
+    thead.appendChild(hr2);
+  } else {
+    const t1=document.createElement("th"); t1.textContent="Home Value";
+    const t2=document.createElement("th"); t2.textContent="Annual % Change";
+    hr1.appendChild(t1); hr1.appendChild(t2);
+    thead.appendChild(hr1);
+  }
+
+  // Body
+  for(let y=sy;y<=ey2;y++) {
+    const tr=document.createElement("tr");
+    const td0=document.createElement("td"); td0.textContent=y; tr.appendChild(td0);
+    selected.forEach((c)=>{
+      const v   = annualVal(c,y);
+      const vp  = y>2000 ? annualVal(c,y-1) : null;
+      const pct = vp ? (v-vp)/vp*100 : null;
+      const td1=document.createElement("td"); td1.className="col-sep"; td1.textContent=fmt$(v);
+      const td2=document.createElement("td");
+      td2.className=pct==null?"na":pct>=0?"up":"dn";
+      td2.textContent=pct==null?"—":fmtP(pct);
+      tr.appendChild(td1); tr.appendChild(td2);
+    });
+    tbody.appendChild(tr);
+  }
+
+  // Footer — Total Increase row
+  const fTotal=document.createElement("tr");
+  const ft0=document.createElement("td"); ft0.textContent="Total Increase"; fTotal.appendChild(ft0);
+  selected.forEach(c=>{
+    const vs=annualVal(c,sy), ve=annualVal(c,ey2);
+    const tot=vs>0?(ve-vs)/vs*100:null;
+    const ft1=document.createElement("td"); ft1.className="col-sep";
+    ft1.innerHTML=`<span style="font-size:.78rem;color:var(--text3)">${fmt$(vs)} → ${fmt$(ve)}</span>`;
+    const ft2=document.createElement("td"); ft2.className=tot==null?"na":tot>=0?"up":"dn";
+    ft2.textContent=tot==null?"—":fmtP(tot);
+    fTotal.appendChild(ft1); fTotal.appendChild(ft2);
+  });
+  tfoot.appendChild(fTotal);
+
+  // Footer — CAGR row
+  const fCagr=document.createElement("tr");
+  const fc0=document.createElement("td"); fc0.textContent="CAGR (annualized)"; fCagr.appendChild(fc0);
+  selected.forEach(c=>{
+    const vs=annualVal(c,sy), ve=annualVal(c,ey2), n=ey2-sy;
+    const cagr=n>0?(Math.pow(ve/vs,1/n)-1)*100:null;
+    const fc1=document.createElement("td"); fc1.className="col-sep"; fc1.textContent="";
+    const fc2=document.createElement("td"); fc2.className=cagr==null?"na":cagr>=0?"up":"dn";
+    fc2.textContent=cagr==null?"—":fmtP(cagr)+"/yr";
+    fCagr.appendChild(fc1); fCagr.appendChild(fc2);
+  });
+  tfoot.appendChild(fCagr);
+}
+
+// ── Master render ──
+function render() {
+  updateQuickBtns();
+  buildPills();
+  buildCharts();
+  buildTable();
+}
+
+// ── Dual range slider ──
+function updateFill() {
+  const MIN=2000, MAX=2024;
+  const s=+document.getElementById("yr-s").value;
+  const e=+document.getElementById("yr-e").value;
+  document.getElementById("rangeFill").style.left  = (s-MIN)/(MAX-MIN)*100+"%";
+  document.getElementById("rangeFill").style.width = (e-s)  /(MAX-MIN)*100+"%";
+  document.getElementById("yrs-v").textContent=s;
+  document.getElementById("yre-v").textContent=e;
+}
+document.getElementById("yr-s").addEventListener("input",function(){
+  let v=+this.value, ev=+document.getElementById("yr-e").value;
+  if(v>=ev){v=ev-1;this.value=v;}
+  sy=v; updateFill(); render();
+});
+document.getElementById("yr-e").addEventListener("input",function(){
+  let v=+this.value, sv=+document.getElementById("yr-s").value;
+  if(v<=sv){v=sv+1;this.value=v;}
+  ey=v; updateFill(); render();
+});
+updateFill();
+
+// ── Search ──
+const srch=document.getElementById("srch");
+const dd=document.getElementById("dd");
+
+function renderDD() {
+  const q=srch.value.trim().toLowerCase();
+  const hits=ALL.filter(c=>!q||c.toLowerCase().includes(q)||(SEAT[c]||"").toLowerCase().includes(q));
+  if(!hits.length){dd.innerHTML=`<div class="dd-empty">No counties found</div>`;return;}
+  dd.innerHTML=hits.map(c=>`
+    <div class="dd-item" data-c="${c}">
+      <div><strong>${c} County</strong><small>${SEAT[c]||""}</small></div>
+      <span class="rgn">${REGION[c]||""}</span>
+    </div>`).join("");
+  dd.querySelectorAll(".dd-item").forEach(el=>{
+    el.addEventListener("click",()=>{
+      toggleCounty(el.dataset.c);
+      srch.value=""; dd.classList.remove("open");
+    });
+  });
+}
+srch.addEventListener("input",()=>{renderDD();dd.classList.add("open");});
+srch.addEventListener("focus",()=>{renderDD();dd.classList.add("open");});
+srch.addEventListener("keydown",e=>{
+  const items=[...dd.querySelectorAll(".dd-item")];
+  const fi=dd.querySelector(".dd-item.focused");
+  let idx=fi?items.indexOf(fi):-1;
+  if(e.key==="ArrowDown"){e.preventDefault();idx=Math.min(idx+1,items.length-1);focusItem(items,idx);}
+  else if(e.key==="ArrowUp"){e.preventDefault();idx=Math.max(idx-1,0);focusItem(items,idx);}
+  else if(e.key==="Enter"){const f=dd.querySelector(".dd-item.focused");if(f)f.click();}
+  else if(e.key==="Escape")dd.classList.remove("open");
+});
+document.addEventListener("click",e=>{
+  if(!srch.contains(e.target)&&!dd.contains(e.target))dd.classList.remove("open");
+});
+function focusItem(items,idx){
+  items.forEach((el,i)=>el.classList.toggle("focused",i===idx));
+  if(items[idx])items[idx].scrollIntoView({block:"nearest"});
+}
+window.clearSrch=()=>{srch.value="";dd.classList.remove("open");};
+
+// ── Init ──
+buildQuickBtns();
+render();
+</script>
+</body>
+</html>
