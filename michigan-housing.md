@@ -3,12 +3,7 @@ layout: page
 title: "Michigan Housing"
 ---
 
-This page features interactive visuals on Michigan housing data, designed to build students' data analytics literacy. Note that dynamic plots may not work properly on mobile devices.
+This page features interactive visuals on Michigan housing data to support students' data analytics literacy.
 
----
-
-## 1. Michigan House Prices
-
-<a href="/assets/michigan-house-price.html" target="_blank">Open interactive chart</a>
-
----
+* <a href="/assets/michigan-house-price.html" target="_blank">Michigan House Prices</a>
+* <a href="/assets/mortgage-calculator.html" target="_blank">Mortgage Calculator</a>
