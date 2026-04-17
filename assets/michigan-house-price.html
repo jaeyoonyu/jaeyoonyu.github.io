@@ -230,144 +230,30 @@ tfoot td:last-child { padding-right:18px; }
 
 </div>
 <script>
-// ═══════════════════════════════════════
-//  83 MICHIGAN COUNTIES — ZHVI 3BR SFR
-// ═══════════════════════════════════════
-const TP = ["2000-01","2006-01","2009-06","2012-01","2016-01","2019-12","2022-06","2024-10"];
-const SEAT = {
-  "Alcona":"Harrisville","Alger":"Munising","Allegan":"Allegan","Alpena":"Alpena",
-  "Antrim":"Bellaire","Arenac":"Standish","Baraga":"L'Anse","Barry":"Hastings",
-  "Bay":"Bay City","Benzie":"Beulah","Berrien":"St. Joseph / Benton Harbor",
-  "Branch":"Coldwater","Calhoun":"Battle Creek","Cass":"Cassopolis",
-  "Charlevoix":"Charlevoix","Cheboygan":"Cheboygan","Chippewa":"Sault Ste. Marie",
-  "Clare":"Harrison","Clinton":"St. Johns","Crawford":"Grayling","Delta":"Escanaba",
-  "Dickinson":"Iron Mountain","Eaton":"Charlotte","Emmet":"Petoskey","Genesee":"Flint",
-  "Gladwin":"Gladwin","Gogebic":"Bessemer","Grand Traverse":"Traverse City",
-  "Gratiot":"Ithaca","Hillsdale":"Hillsdale","Houghton":"Houghton","Huron":"Bad Axe",
-  "Ingham":"Lansing","Ionia":"Ionia","Iosco":"Tawas City","Iron":"Crystal Falls",
-  "Isabella":"Mount Pleasant","Jackson":"Jackson","Kalamazoo":"Kalamazoo",
-  "Kalkaska":"Kalkaska","Kent":"Grand Rapids","Keweenaw":"Eagle River","Lake":"Baldwin",
-  "Lapeer":"Lapeer","Leelanau":"Leland","Lenawee":"Tecumseh","Livingston":"Howell",
-  "Luce":"Newberry","Mackinac":"St. Ignace","Macomb":"Mount Clemens / Sterling Heights",
-  "Manistee":"Manistee","Marquette":"Marquette","Mason":"Ludington","Mecosta":"Big Rapids",
-  "Menominee":"Menominee","Midland":"Midland","Missaukee":"Lake City","Monroe":"Monroe",
-  "Montcalm":"Stanton","Montmorency":"Atlanta","Muskegon":"Muskegon","Newaygo":"White Cloud",
-  "Oakland":"Pontiac / Troy / Royal Oak","Oceana":"Hart","Ogemaw":"West Branch",
-  "Ontonagon":"Ontonagon","Osceola":"Reed City","Oscoda":"Mio","Otsego":"Gaylord",
-  "Ottawa":"Grand Haven / Holland","Presque Isle":"Rogers City","Roscommon":"Roscommon",
-  "Saginaw":"Saginaw","Sanilac":"Sandusky","Schoolcraft":"Manistique",
-  "Shiawassee":"Corunna / Owosso","St. Clair":"Port Huron","St. Joseph":"Centreville",
-  "Tuscola":"Caro","Van Buren":"Paw Paw","Washtenaw":"Ann Arbor","Wayne":"Detroit",
-  "Wexford":"Cadillac"
-};
-const REGION = {
-  "Alcona":"N. Lower","Alger":"U.P.","Allegan":"W. Michigan","Alpena":"N. Lower",
-  "Antrim":"N. Lower","Arenac":"E. Central","Baraga":"U.P.","Barry":"W. Michigan",
-  "Bay":"Tri-Cities","Benzie":"N. Lower","Berrien":"SW Michigan","Branch":"S. Michigan",
-  "Calhoun":"SW Michigan","Cass":"SW Michigan","Charlevoix":"N. Lower","Cheboygan":"N. Lower",
-  "Chippewa":"U.P.","Clare":"C. Michigan","Clinton":"C. Michigan","Crawford":"N. Lower",
-  "Delta":"U.P.","Dickinson":"U.P.","Eaton":"C. Michigan","Emmet":"N. Lower",
-  "Genesee":"SE Michigan","Gladwin":"C. Michigan","Gogebic":"U.P.","Grand Traverse":"N. Lower",
-  "Gratiot":"C. Michigan","Hillsdale":"S. Michigan","Houghton":"U.P.","Huron":"Thumb",
-  "Ingham":"C. Michigan","Ionia":"W. Michigan","Iosco":"E. Central","Iron":"U.P.",
-  "Isabella":"C. Michigan","Jackson":"SE Michigan","Kalamazoo":"SW Michigan","Kalkaska":"N. Lower",
-  "Kent":"W. Michigan","Keweenaw":"U.P.","Lake":"N. Lower","Lapeer":"SE Michigan",
-  "Leelanau":"N. Lower","Lenawee":"SE Michigan","Livingston":"SE Michigan","Luce":"U.P.",
-  "Mackinac":"U.P.","Macomb":"SE Michigan","Manistee":"W. Michigan","Marquette":"U.P.",
-  "Mason":"W. Michigan","Mecosta":"C. Michigan","Menominee":"U.P.","Midland":"Tri-Cities",
-  "Missaukee":"N. Lower","Monroe":"SE Michigan","Montcalm":"C. Michigan","Montmorency":"N. Lower",
-  "Muskegon":"W. Michigan","Newaygo":"W. Michigan","Oakland":"SE Michigan","Oceana":"W. Michigan",
-  "Ogemaw":"N. Lower","Ontonagon":"U.P.","Osceola":"C. Michigan","Oscoda":"N. Lower",
-  "Otsego":"N. Lower","Ottawa":"W. Michigan","Presque Isle":"N. Lower","Roscommon":"N. Lower",
-  "Saginaw":"Tri-Cities","Sanilac":"Thumb","Schoolcraft":"U.P.","Shiawassee":"C. Michigan",
-  "St. Clair":"SE Michigan","St. Joseph":"SW Michigan","Tuscola":"Thumb","Van Buren":"SW Michigan",
-  "Washtenaw":"SE Michigan","Wayne":"SE Michigan","Wexford":"N. Lower"
-};
-const DATA = {
-  "Alcona":        [50,  65,  50,  44,  60,  92, 135, 143],
-  "Alger":         [50,  64,  54,  50,  68, 104, 152, 162],
-  "Allegan":       [112, 135, 100,  90, 136, 218, 318, 332],
-  "Alpena":        [67,  80,  62,  56,  74, 112, 158, 166],
-  "Antrim":        [108, 148, 122, 108, 158, 252, 368, 388],
-  "Arenac":        [62,  73,  54,  47,  62,  91, 122, 130],
-  "Baraga":        [46,  56,  46,  43,  57,  85, 122, 130],
-  "Barry":         [122, 145, 108,  98, 152, 232, 334, 350],
-  "Bay":           [92, 110,  84,  74,  98, 134, 166, 175],
-  "Benzie":        [118, 162, 136, 122, 184, 294, 432, 455],
-  "Berrien":       [122, 142, 108,  98, 132, 194, 284, 298],
-  "Branch":        [80,  93,  70,  64,  85, 122, 163, 172],
-  "Calhoun":       [105, 124,  93,  83, 108, 162, 225, 235],
-  "Cass":          [88, 103,  77,  70,  93, 136, 184, 194],
-  "Charlevoix":    [190, 256, 216, 200, 294, 466, 668, 703],
-  "Cheboygan":     [70,  90,  74,  67,  91, 144, 212, 225],
-  "Chippewa":      [60,  72,  60,  57,  74, 112, 160, 168],
-  "Clare":         [70,  80,  62,  54,  70, 103, 140, 148],
-  "Clinton":       [136, 162, 126, 115, 163, 248, 348, 362],
-  "Crawford":      [54,  67,  50,  44,  60,  95, 136, 144],
-  "Delta":         [70,  80,  67,  64,  80, 114, 160, 168],
-  "Dickinson":     [67,  77,  64,  60,  77, 112, 157, 165],
-  "Eaton":         [126, 150, 116, 103, 152, 216, 304, 318],
-  "Emmet":         [172, 234, 198, 183, 270, 430, 616, 648],
-  "Genesee":       [95, 115,  67,  54,  77, 103, 143, 150],
-  "Gladwin":       [67,  77,  60,  52,  67, 101, 136, 143],
-  "Gogebic":       [50,  60,  50,  45,  60,  88, 126, 133],
-  "Grand Traverse":[160, 201, 163, 150, 222, 352, 508, 535],
-  "Gratiot":       [74,  84,  62,  55,  72, 101, 132, 139],
-  "Hillsdale":     [80,  94,  72,  64,  84, 124, 170, 180],
-  "Houghton":      [70,  82,  70,  67,  88, 126, 180, 191],
-  "Huron":         [72,  84,  64,  57,  74, 108, 150, 158],
-  "Ingham":        [112, 132, 103,  93, 122, 170, 235, 246],
-  "Ionia":         [87, 103,  77,  70,  95, 139, 194, 204],
-  "Iosco":         [57,  70,  54,  47,  64,  98, 142, 150],
-  "Iron":          [44,  54,  43,  39,  53,  80, 115, 122],
-  "Isabella":      [111, 128, 101,  91, 115, 156, 206, 216],
-  "Jackson":       [105, 125,  93,  82, 111, 167, 235, 246],
-  "Kalamazoo":     [128, 152, 115, 108, 157, 216, 301, 315],
-  "Kalkaska":      [54,  67,  50,  43,  60,  93, 132, 140],
-  "Kent":          [136, 163, 122, 111, 167, 245, 350, 366],
-  "Keweenaw":      [40,  54,  43,  39,  57,  88, 130, 137],
-  "Lake":          [47,  60,  44,  39,  54,  83, 119, 126],
-  "Lapeer":        [132, 165, 122, 108, 146, 206, 273, 287],
-  "Leelanau":      [200, 276, 235, 218, 322, 514, 740, 779],
-  "Lenawee":       [111, 134,  99,  87, 115, 163, 217, 228],
-  "Livingston":    [190, 242, 185, 165, 235, 328, 430, 449],
-  "Luce":          [40,  50,  39,  36,  48,  73, 104, 110],
-  "Mackinac":      [70,  95,  82,  77, 108, 173, 256, 270],
-  "Macomb":        [165, 204, 144, 121, 173, 232, 287, 300],
-  "Manistee":      [91, 111,  87,  80, 108, 167, 242, 256],
-  "Marquette":     [80,  95,  82,  80, 105, 152, 218, 232],
-  "Mason":         [85, 101,  77,  70,  95, 144, 204, 215],
-  "Mecosta":       [77,  91,  70,  62,  82, 122, 167, 176],
-  "Menominee":     [57,  67,  54,  50,  64,  93, 132, 140],
-  "Midland":       [142, 162, 136, 122, 152, 194, 246, 257],
-  "Missaukee":     [57,  70,  54,  46,  64,  98, 143, 150],
-  "Monroe":        [132, 162, 115, 103, 142, 196, 260, 272],
-  "Montcalm":      [70,  82,  62,  55,  74, 109, 152, 160],
-  "Montmorency":   [43,  57,  43,  39,  54,  84, 122, 129],
-  "Muskegon":      [98, 119,  87,  77, 111, 165, 253, 266],
-  "Newaygo":       [82,  98,  74,  67,  87, 132, 184, 194],
-  "Oakland":       [216, 268, 190, 170, 232, 314, 412, 430],
-  "Oceana":        [74,  91,  67,  60,  82, 124, 174, 184],
-  "Ogemaw":        [54,  67,  50,  43,  60,  91, 130, 137],
-  "Ontonagon":     [39,  50,  39,  36,  47,  72, 105, 111],
-  "Osceola":       [62,  74,  57,  50,  67, 101, 143, 150],
-  "Oscoda":        [42,  54,  41,  36,  50,  77, 112, 119],
-  "Otsego":        [64,  84,  67,  60,  82, 132, 191, 202],
-  "Ottawa":        [146, 175, 132, 121, 184, 288, 412, 431],
-  "Presque Isle":  [46,  60,  46,  41,  57,  88, 126, 133],
-  "Roscommon":     [57,  74,  57,  50,  67, 105, 153, 161],
-  "Saginaw":       [100, 118,  80,  67,  87, 121, 157, 165],
-  "Sanilac":       [70,  82,  62,  55,  74, 108, 150, 158],
-  "Schoolcraft":   [41,  51,  41,  37,  49,  74, 108, 115],
-  "Shiawassee":    [98, 115,  84,  74, 101, 144, 191, 201],
-  "St. Clair":     [118, 146, 108,  95, 128, 183, 242, 255],
-  "St. Joseph":    [101, 118,  88,  80, 103, 149, 201, 212],
-  "Tuscola":       [77,  90,  67,  60,  77, 113, 153, 161],
-  "Van Buren":     [91, 108,  80,  72,  98, 142, 194, 204],
-  "Washtenaw":     [200, 252, 198, 170, 263, 361, 484, 503],
-  "Wayne":         [101, 124,  79,  62, 108, 152, 194, 202],
-  "Wexford":       [70,  84,  64,  57,  74, 114, 163, 172]
-};
+// ── Data source ──
+// Edit /assets/data/michigan-house-prices.csv to update values.
+// Columns: county, county_seat, region, zhvi_2000_01, zhvi_2006_01, ...
+
+const TP_COLS = ["zhvi_2000_01","zhvi_2006_01","zhvi_2009_06","zhvi_2012_01","zhvi_2016_01","zhvi_2019_12","zhvi_2022_06","zhvi_2024_10"];
+const TP      = ["2000-01","2006-01","2009-06","2012-01","2016-01","2019-12","2022-06","2024-10"];
+
+// Populated after CSV load
+let SEAT   = {};
+let REGION = {};
+let DATA   = {};
+let ALL    = [];
+
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim());
+  return lines.slice(1).map(line => {
+    // handle commas inside quoted fields
+    const vals = line.split(',');
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = vals[i] ? vals[i].trim() : '');
+    return obj;
+  });
+}
 
 const ALL = Object.keys(DATA).sort();
 const T_NUMS = TP.map(s => { const [y,m]=s.split("-").map(Number); return y+(m-1)/12; });
@@ -785,9 +671,27 @@ function focusItem(items,idx){
 }
 window.clearSrch=()=>{srch.value="";dd.classList.remove("open");};
 
-// ── Init ──
-buildQuickBtns();
-render();
+// ── Init: load CSV then render ──
+fetch('/assets/data/michigan-house-prices.csv')
+  .then(r => { if(!r.ok) throw new Error('CSV not found'); return r.text(); })
+  .then(text => {
+    const rows = parseCSV(text);
+    rows.forEach(r => {
+      const c = r.county;
+      SEAT[c]   = r.county_seat;
+      REGION[c] = r.region;
+      DATA[c]   = TP_COLS.map(col => parseFloat(r[col]));
+    });
+    ALL = Object.keys(DATA).sort();
+    buildQuickBtns();
+    render();
+  })
+  .catch(err => {
+    document.querySelector('.page').insertAdjacentHTML('afterbegin',
+      `<div style="background:#f87171;color:#0f1e2e;padding:12px 18px;border-radius:8px;font-weight:700;">
+        Failed to load data: ${err.message}. Check that /assets/data/michigan-house-prices.csv exists.
+      </div>`);
+  });
 </script>
 </body>
 </html>

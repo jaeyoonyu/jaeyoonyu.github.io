@@ -211,56 +211,20 @@ tfoot td:first-child { text-align:left; color:var(--c0); padding-left:18px; font
 
 </div>
 <script>
-// ═══════════════════════════════════════════════
-//  ANNUAL YEAR-END CLOSE DATA  (1990 – 2025)
-//  SP500:  S&P 500 Index
-//  COMP:   NASDAQ Composite
-//  NDX100: NASDAQ-100 Index
-//  RUT:    Russell 2000
-//  Source: Yahoo Finance / wallstreetnumbers.com
-// ═══════════════════════════════════════════════
-const YEARS = [1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,
-               2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,
-               2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,
-               2020,2021,2022,2023,2024,2025];
+// ── Data source ──
+// Edit /assets/data/stock-market.csv to update values.
+// Columns: year, sp500, nasdaq_composite, nasdaq_100, russell_2000
 
-const SP500 = [
-   330.22,  417.09,  435.71,  466.45,  459.27,  615.93,  740.74,  970.43, 1229.23, 1469.25,
-  1320.28, 1148.08,  879.82, 1111.92, 1211.92, 1248.29, 1418.30, 1468.36,  903.25, 1115.10,
-  1257.64, 1257.61, 1426.19, 1848.36, 2058.90, 2043.94, 2238.83, 2673.61, 2506.85, 3230.78,
-  3756.07, 4766.18, 3839.50, 4769.83, 5881.63, 5611.85
+const INDICES_META = [
+  { key:'sp500',   label:'S&P 500',          col:'sp500',            color:'#19caca', dim:'rgba(25,202,202,0.10)'  },
+  { key:'comp',    label:'NASDAQ Composite',  col:'nasdaq_composite', color:'#f0b429', dim:'rgba(240,180,41,0.10)'  },
+  { key:'ndx100',  label:'NASDAQ-100',        col:'nasdaq_100',       color:'#f87171', dim:'rgba(248,113,113,0.10)' },
+  { key:'russell', label:'Russell 2000',      col:'russell_2000',     color:'#a78bfa', dim:'rgba(167,139,250,0.10)' },
 ];
 
-// NASDAQ Composite (IXIC)
-const COMP = [
-   373.84,  586.35,  676.95,  776.80,  751.96, 1052.13, 1291.03, 1570.35, 2192.69, 4069.31,
-  2470.52, 1950.40, 1335.51, 2003.37, 2175.44, 2205.32, 2415.29, 2652.28, 1577.03, 2269.15,
-  2652.87, 2605.15, 3019.51, 4176.59, 4736.05, 5007.41, 5383.12, 6903.39, 6635.28, 8972.60,
- 12888.28,15644.97,10939.99,16825.93,19310.79,19161.63
-];
-
-// NASDAQ-100 (NDX) — source: wallstreetnumbers.com
-const NDX100 = [
-   200.53,  330.86,  360.19,  398.28,  404.27,  576.23,  821.36,  990.83, 1836.01, 3707.83,
-  2341.70, 1577.05,  984.37, 1467.92, 1621.12, 1645.20, 1756.90, 2084.93, 1211.65, 1860.31,
-  2217.86, 2277.83, 2660.93, 3592.00, 4236.28, 4593.27, 4863.62, 6396.42, 6329.97, 8733.07,
- 12888.28,16320.08,10939.76,16825.93,21012.17,25249.85
-];
-
-// Russell 2000 (RUT)
-const RUT = [
-   170.54,  253.82,  259.06,  295.96,  250.18,  314.90,  362.56,  437.02,  421.96,  504.75,
-   483.53,  488.50,  383.09,  556.91,  651.57,  673.22,  787.66,  766.03,  499.45,  625.39,
-   783.65,  740.92,  849.35, 1163.64, 1204.70, 1135.89, 1357.13, 1535.51, 1348.56, 1668.47,
-  1974.86, 2245.31, 1761.25, 2027.07, 2230.17, 2114.98
-];
-
-const INDICES = [
-  { key:'sp500',   label:'S&P 500',          data: SP500,  color:'#19caca', dim:'rgba(25,202,202,0.10)'  },
-  { key:'comp',    label:'NASDAQ Composite',  data: COMP,   color:'#f0b429', dim:'rgba(240,180,41,0.10)'  },
-  { key:'ndx100',  label:'NASDAQ-100',        data: NDX100, color:'#f87171', dim:'rgba(248,113,113,0.10)' },
-  { key:'russell', label:'Russell 2000',      data: RUT,    color:'#a78bfa', dim:'rgba(167,139,250,0.10)' },
-];
+// Populated after CSV load
+let YEARS   = [];
+let INDICES = [];
 
 // ── State ──
 let visible = [true, true, true, true];
@@ -268,6 +232,18 @@ let mode    = 'indexed'; // 'level' | 'indexed' | 'yoy'
 let sy      = 1990;
 let ey      = 2025;
 let mainChart = null;
+
+// ── CSV parser ──
+function parseCSV(text) {
+  const lines = text.trim().split('\n');
+  const headers = lines[0].split(',').map(h => h.trim());
+  return lines.slice(1).map(line => {
+    const vals = line.split(',');
+    const obj = {};
+    headers.forEach((h, i) => obj[h] = vals[i] ? vals[i].trim() : '');
+    return obj;
+  });
+}
 
 // ── Helpers ──
 function fmtN(v) {
@@ -518,8 +494,34 @@ document.getElementById('yr-e').addEventListener('input',function(){
 });
 updateFill();
 
-// ── Init ──
-render();
+// ── Init: load CSV then render ──
+fetch('/assets/data/stock-market.csv')
+  .then(r => { if(!r.ok) throw new Error('CSV not found'); return r.text(); })
+  .then(text => {
+    const rows = parseCSV(text);
+    YEARS = rows.map(r => +r.year);
+    INDICES = INDICES_META.map(meta => ({
+      ...meta,
+      data: rows.map(r => parseFloat(r[meta.col]))
+    }));
+    // Update slider min/max to match CSV range
+    const minY = YEARS[0], maxY = YEARS[YEARS.length-1];
+    sy = minY; ey = maxY;
+    ['yr-s','yr-e'].forEach(id => {
+      const el = document.getElementById(id);
+      el.min = minY; el.max = maxY;
+    });
+    document.getElementById('yr-s').value = minY;
+    document.getElementById('yr-e').value = maxY;
+    updateFill();
+    render();
+  })
+  .catch(err => {
+    document.querySelector('.page').insertAdjacentHTML('afterbegin',
+      `<div style="background:#f87171;color:#0f1e2e;padding:12px 18px;border-radius:8px;font-weight:700;">
+        Failed to load data: ${err.message}. Check that /assets/data/stock-market.csv exists.
+      </div>`);
+  });
 </script>
 </body>
 </html>
