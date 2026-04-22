@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive financial statements</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #faf7f0;
+    --paper-2: #f3eee3;
+    --card: #ffffff;
+    --ink: #1c1a15;
+    --ink-2: #4a463e;
+    --ink-3: #7a7466;
+    --ink-4: #b5ae9d;
+    --rule: #e4dccb;
+    --rule-strong: #d0c6b0;
+
+    --flow-bg: #f6e6be;
+    --flow-bg-hover: #f0dba0;
+    --flow-ink: #5b3d0a;
+    --flow-line: #b07a1a;
+
+    --edit-bg: #e6ecde;
+    --edit-bg-hover: #d8e2cc;
+    --edit-ink: #2c4116;
+    --edit-line: #5a7a2a;
+
+    --ratio-line: #a8a095;
+    --ratio-accent: #5a5550;
+    --ratio-bg: #f0ece2;
+
+    --font-serif: 'Fraunces', 'Georgia', serif;
+    --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 40px 24px 60px;
+    background-image:
+      radial-gradient(ellipse at top left, rgba(208,198,176,0.15), transparent 60%),
+      radial-gradient(ellipse at bottom right, rgba(208,198,176,0.12), transparent 55%);
+  }
+
+  .wrap { max-width: 1280px; margin: 0 auto; position: relative; }
+
+  .main-title {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    font-size: clamp(24px, 2.9vw, 32px);
+    line-height: 1.22;
+    letter-spacing: -0.015em;
+    margin: 0 0 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink);
+    font-variation-settings: "opsz" 120;
+    max-width: 80ch;
+  }
+  .main-title em {
+    font-style: italic;
+    color: var(--flow-line);
+    font-weight: 400;
+  }
+
+  /* ---------- STEP NAVIGATION ---------- */
+  .step-nav {
+    display: flex;
+    gap: 8px;
+    margin: 0 0 20px;
+    flex-wrap: wrap;
+  }
+  .step-btn {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 9px 16px;
+    background: #fff;
+    color: var(--ink-2);
+    border: 1px solid var(--rule-strong);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+    letter-spacing: -0.005em;
+  }
+  .step-btn:hover:not(.active) {
+    background: var(--paper-2);
+    border-color: var(--ink-3);
+    color: var(--ink);
+  }
+  .step-btn.active {
+    background: var(--ink);
+    color: #fff;
+    border-color: var(--ink);
+  }
+  .step-btn .step-n {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    margin-right: 6px;
+    opacity: 0.7;
+  }
+  .step-btn.active .step-n { opacity: 0.85; }
+
+  /* ---------- RATIO TABS ROW (always visible) ---------- */
+  .ratio-tabs-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 24px;
+    padding: 10px 14px;
+    background: var(--ratio-bg);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    flex-wrap: wrap;
+  }
+  .ratio-tabs-row .label {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-2);
+    font-weight: 500;
+    margin-right: 4px;
+  }
+  .rt-btn {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 7px 14px;
+    background: #fff;
+    color: var(--ink-2);
+    border: 1px solid var(--rule-strong);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .rt-btn:hover:not(.active) {
+    background: var(--paper-2);
+    border-color: var(--ink-3);
+    color: var(--ink);
+  }
+  .rt-btn.active {
+    background: var(--ratio-accent);
+    color: #fff;
+    border-color: var(--ratio-accent);
+  }
+  .rt-btn.clear {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--ink-3);
+    background: transparent;
+    border-color: transparent;
+  }
+  .rt-btn.clear:hover {
+    color: var(--ink);
+    background: transparent;
+    border-color: transparent;
+  }
+
+  /* ---------- PARAMETER SETUP ---------- */
+  .param-setup {
+    margin: 0 0 28px;
+  }
+  .param-setup .card {
+    padding: 20px 26px 22px;
+  }
+  .param-setup .card::before {
+    background: var(--edit-line);
+    opacity: 0.9;
+  }
+  .param-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 40px;
+    margin-top: 12px;
+  }
+  .param-item { display: flex; flex-direction: column; gap: 10px; }
+  .param-item-head { display: flex; align-items: center; gap: 10px; }
+  .param-item-head .dot {
+    width: 8px; height: 8px;
+    background: var(--edit-line);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .param-item-head .name {
+    font-family: var(--font-serif);
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    font-variation-settings: "opsz" 90;
+  }
+  .param-item-head .meta {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 12px;
+    color: var(--ink-3);
+    margin-left: auto;
+  }
+
+  /* ---------- TOP ASSUMPTIONS BANNER ---------- */
+  .top-assumptions {
+    margin: 0 0 28px;
+    padding: 16px 22px;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--edit-line);
+    border-radius: 4px;
+  }
+  .ta-head {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 12.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-3);
+    margin: 0 0 11px;
+    font-weight: 500;
+  }
+  .ta-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  .ta-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    font-size: 13px;
+    line-height: 1.55;
+    color: var(--ink-2);
+  }
+  .ta-badge {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    padding: 3px 9px;
+    background: var(--edit-line);
+    color: #fff;
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    margin-top: 1px;
+  }
+  .ta-item strong { color: var(--ink); font-weight: 500; }
+  .ta-rule {
+    display: inline-block;
+    padding: 1px 7px;
+    margin-left: 2px;
+    background: var(--edit-bg);
+    color: var(--edit-ink);
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* ---------- BOARD + SIDE PANEL LAYOUT ---------- */
+  .board-region {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 280px;
+    column-gap: 40px;
+    align-items: start;
+  }
+
+  .all-arrows-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: visible;
+    z-index: 2;
+  }
+
+  .board {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: 100px;
+    row-gap: 60px;
+    align-items: start;
+  }
+  .is  { grid-column: 1; grid-row: 1; }
+  .sre { grid-column: 1; grid-row: 2; }
+  .bs  { grid-column: 2; grid-row: 1 / 3; }
+
+  /* Keep the 2-col grid across ALL steps; Steps 1/2 just hide the right/bottom cards */
+  .board[data-step="1"] .sre,
+  .board[data-step="1"] .bs,
+  .board[data-step="2"] .bs {
+    display: none;
+  }
+
+  /* ---------- SIDE PANEL (right of board) ---------- */
+  .side-panel {
+    position: sticky;
+    top: 24px;
+    align-self: start;
+  }
+  .side-panel .card {
+    padding: 18px 20px 20px;
+  }
+  .side-panel .card::before {
+    background: var(--ratio-accent);
+    opacity: 0.9;
+  }
+  .sp-empty {
+    color: var(--ink-3);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 13.5px;
+    text-align: center;
+    padding: 40px 6px 30px;
+    line-height: 1.6;
+  }
+  .sp-empty::before {
+    content: '';
+    display: block;
+    width: 36px; height: 1px;
+    background: var(--rule-strong);
+    margin: 0 auto 14px;
+  }
+  .sp-empty::after {
+    content: '';
+    display: block;
+    width: 36px; height: 1px;
+    background: var(--rule-strong);
+    margin: 14px auto 0;
+  }
+  .sp-body { display: none; }
+  .sp-body.show { display: block; }
+
+  .sp-label {
+    font-size: 10.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-3);
+    margin: 0 0 4px;
+    font-weight: 500;
+  }
+  .sp-name {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin: 0 0 14px;
+    color: var(--ink);
+    font-variation-settings: "opsz" 100;
+  }
+  .sp-value {
+    font-family: var(--font-serif);
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0 0 18px;
+    font-variant-numeric: tabular-nums;
+  }
+  .sp-divider {
+    height: 1px;
+    background: var(--rule);
+    margin: 0 0 14px;
+  }
+  .sp-formula {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-2);
+    margin: 0 0 12px;
+    line-height: 1.5;
+  }
+  .sp-calc {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-2);
+    line-height: 1.75;
+  }
+  .sp-calc .hl-n, .sp-calc .hl-d {
+    font-weight: 500;
+    color: var(--ink);
+  }
+  .sp-calc .final {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--rule);
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .sp-hint {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--rule);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 11.5px;
+    color: var(--ink-3);
+    line-height: 1.55;
+  }
+
+  /* Dim highlight on rows contributing to the currently-selected ratio */
+  .row.ratio-hl {
+    background: var(--ratio-bg);
+  }
+  .row.ratio-hl.flow {
+    background: var(--flow-bg);
+    box-shadow: inset 3px 0 0 var(--ratio-accent);
+  }
+  .row.ratio-hl:not(.flow) {
+    box-shadow: inset 3px 0 0 var(--ratio-accent);
+  }
+  .total.ratio-hl {
+    background: var(--ratio-bg);
+    border-radius: 3px;
+    box-shadow: inset 3px 0 0 var(--ratio-accent);
+  }
+
+  /* ---------- CARD ---------- */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 22px 26px 20px;
+    position: relative;
+    box-shadow: 0 1px 0 rgba(28,26,21,0.02), 0 10px 30px -20px rgba(28,26,21,0.18);
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: -1px; right: -1px;
+    height: 4px;
+    background: var(--ink);
+    border-radius: 4px 4px 0 0;
+    opacity: 0.85;
+  }
+  .card .stmt-no {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 11px;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
+    margin-bottom: 2px;
+  }
+  .card h2 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    font-size: 22px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0;
+    color: var(--ink);
+    font-variation-settings: "opsz" 90;
+  }
+  .card .period {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-3);
+    margin: 6px 0 14px;
+  }
+
+  /* ---------- ROW ---------- */
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 10px;
+    border-radius: 3px;
+    position: relative;
+    min-height: 32px;
+    transition: background 0.2s, box-shadow 0.2s;
+  }
+  .row .label { font-size: 13.5px; }
+  .amt {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  .row.flow {
+    background: var(--flow-bg);
+    color: var(--flow-ink);
+    font-weight: 500;
+    transition: background 0.2s ease;
+  }
+  .row.flow.pulse { animation: pulseAmber 0.6s ease; }
+  @keyframes pulseAmber {
+    0%   { background: var(--flow-bg); }
+    35%  { background: var(--flow-bg-hover); box-shadow: 0 0 0 2px var(--flow-line) inset; }
+    100% { background: var(--flow-bg); }
+  }
+  .row.edit {
+    background: var(--edit-bg);
+    color: var(--edit-ink);
+    padding: 9px 10px;
+  }
+  .row.edit .label { font-weight: 500; }
+  .row.edit .label::before {
+    content: '';
+    display: inline-block;
+    width: 7px; height: 7px;
+    background: var(--edit-line);
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+    margin-bottom: 2px;
+  }
+
+  /* ---------- SEGMENTED CONTROL ---------- */
+  .seg {
+    display: inline-flex;
+    border: 1px solid var(--edit-line);
+    border-radius: 4px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 1px 0 rgba(90,122,42,0.1);
+  }
+  .seg-btn {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    padding: 5px 10px;
+    background: #fff;
+    color: var(--edit-ink);
+    border: none;
+    border-right: 1px solid var(--rule);
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .seg-btn:last-child { border-right: none; }
+  .seg-btn:hover:not(.active) { background: var(--edit-bg); }
+  .seg-btn.active { background: var(--edit-line); color: #fff; }
+  .seg-btn:focus { outline: none; box-shadow: inset 0 0 0 2px rgba(90,122,42,0.35); }
+  .seg-btn:focus.active { box-shadow: inset 0 0 0 2px rgba(255,255,255,0.5); }
+
+  .total {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 9px 10px 4px;
+    border-top: 1px solid var(--rule);
+    margin-top: 8px;
+    font-weight: 500;
+    font-size: 13.5px;
+  }
+  .section-label {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 13px;
+    color: var(--ink-2);
+    margin: 12px 10px 4px;
+    font-weight: 400;
+  }
+  .section-label:first-child { margin-top: 2px; }
+
+  /* Anchor dots on rows */
+  .row[data-anchor]::after {
+    content: '';
+    position: absolute;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--flow-line);
+    z-index: 2;
+    box-shadow: 0 0 0 2px var(--card);
+  }
+  .row.edit[data-anchor]::after { background: var(--edit-line); }
+  .row[data-anchor="bottom"]::after { left: 50%; bottom: -4px; transform: translateX(-50%); }
+  .row[data-anchor="top"]::after    { left: 50%; top: -4px;    transform: translateX(-50%); }
+  .row[data-anchor="right"]::after  { right: -4px; top: 50%;   transform: translateY(-50%); }
+  .row[data-anchor="left"]::after   { left: -4px; top: 50%;    transform: translateY(-50%); }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width: 1000px) {
+    body { padding: 24px 16px 40px; }
+    .board-region { grid-template-columns: 1fr; row-gap: 20px; }
+    .side-panel { position: relative; top: 0; }
+    .board {
+      grid-template-columns: 1fr;
+      row-gap: 24px;
+      column-gap: 0;
+    }
+    .is, .sre, .bs { grid-column: 1; grid-row: auto; }
+    .all-arrows-layer { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1 class="main-title">Comprehensive understanding of the effects of <em>Revenues</em> and <em>Expenses</em> on the three financial statements</h1>
+
+  <div class="step-nav" role="tablist" aria-label="Progressive disclosure">
+    <button class="step-btn active" data-step="1" role="tab" aria-selected="true"><span class="step-n">Step 1</span>Income statement</button>
+    <button class="step-btn" data-step="2" role="tab" aria-selected="false"><span class="step-n">Step 2</span>+ Retained earnings</button>
+    <button class="step-btn" data-step="3" role="tab" aria-selected="false"><span class="step-n">Step 3</span>+ Balance sheet</button>
+  </div>
+
+  <div class="ratio-tabs-row" id="ratio-tabs">
+    <span class="label">Select a ratio:</span>
+    <button class="rt-btn" data-ratio="roe">Return on equity</button>
+    <button class="rt-btn" data-ratio="de">Debt to equity</button>
+    <button class="rt-btn" data-ratio="cr">Current ratio</button>
+    <button class="rt-btn clear" data-ratio="">Clear</button>
+  </div>
+
+  <div class="top-assumptions">
+    <div class="ta-head">Simplifying assumptions</div>
+    <div class="ta-pair">
+      <div class="ta-item">
+        <span class="ta-badge">A/R</span>
+        <div>All sales occurred on account; <strong>none were collected</strong> this period. <span class="ta-rule">A/R = Sales revenue</span></div>
+      </div>
+      <div class="ta-item">
+        <span class="ta-badge">S/P</span>
+        <div>All salaries earned but <strong>none paid</strong> in cash. <span class="ta-rule">S/P = Salaries expense</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="param-setup">
+    <section class="card">
+      <div class="stmt-no">Scenario</div>
+      <h2>Parameter setup</h2>
+      <div class="period">Choose values to flow through the statements</div>
+
+      <div class="param-grid">
+        <div class="param-item">
+          <div class="param-item-head">
+            <span class="dot"></span>
+            <span class="name">Sales revenue</span>
+            <span class="meta">3 options</span>
+          </div>
+          <div class="seg" role="radiogroup" aria-label="Sales revenue">
+            <button class="seg-btn" role="radio" data-group="rev" data-val="45000">$45,000</button>
+            <button class="seg-btn active" role="radio" data-group="rev" data-val="50000" aria-checked="true">$50,000</button>
+            <button class="seg-btn" role="radio" data-group="rev" data-val="60000">$60,000</button>
+          </div>
+        </div>
+        <div class="param-item">
+          <div class="param-item-head">
+            <span class="dot"></span>
+            <span class="name">Salaries expense</span>
+            <span class="meta">3 options</span>
+          </div>
+          <div class="seg" role="radiogroup" aria-label="Salaries expense">
+            <button class="seg-btn" role="radio" data-group="sal" data-val="6000">$6,000</button>
+            <button class="seg-btn active" role="radio" data-group="sal" data-val="8000" aria-checked="true">$8,000</button>
+            <button class="seg-btn" role="radio" data-group="sal" data-val="12000">$12,000</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="board-region" id="board-region">
+    <svg class="all-arrows-layer" id="arrow-layer" xmlns="http://www.w3.org/2000/svg"></svg>
+
+    <div class="board" id="board" data-step="1">
+
+      <!-- ============== INCOME STATEMENT (top-left) ============== -->
+      <section class="card is">
+        <div class="stmt-no">Statement 1</div>
+        <h2>Income statement</h2>
+        <div class="period">For the year ended Dec 31, 20XX</div>
+
+        <div class="row edit" data-anchor="right" id="row-rev">
+          <span class="label">Sales revenue</span>
+          <span class="amt" id="v-rev">$50,000</span>
+        </div>
+        <div class="row"><span class="label">&minus; Cost of goods sold</span><span class="amt">(20,000)</span></div>
+        <div class="row edit" data-anchor="right" id="row-sal">
+          <span class="label">&minus; Salaries expense</span>
+          <span class="amt" id="v-sal">(8,000)</span>
+        </div>
+        <div class="row"><span class="label">&minus; Rent expense</span><span class="amt">(4,000)</span></div>
+        <div class="row flow" data-anchor="bottom" id="row-ni">
+          <span class="label">= Net income</span><span class="amt" id="v-ni">$18,000</span>
+        </div>
+      </section>
+
+      <!-- ============== STATEMENT OF RE (bottom-left) ============== -->
+      <section class="card sre">
+        <div class="stmt-no">Statement 2</div>
+        <h2>Statement of retained earnings</h2>
+        <div class="period">For the year ended Dec 31, 20XX</div>
+
+        <div class="row"><span class="label">Beginning retained earnings</span><span class="amt">$12,000</span></div>
+        <div class="row flow" data-anchor="top" id="row-ni-sre"><span class="label">+ Net income</span><span class="amt" id="v-ni-sre">18,000</span></div>
+        <div class="row"><span class="label">&minus; Dividends</span><span class="amt">(5,000)</span></div>
+        <div class="row flow" data-anchor="right" id="row-endre"><span class="label">= Ending retained earnings</span><span class="amt" id="v-endre">$25,000</span></div>
+      </section>
+
+      <!-- ============== BALANCE SHEET (right, single column) ============== -->
+      <section class="card bs">
+        <div class="stmt-no">Statement 3</div>
+        <h2>Balance sheet</h2>
+        <div class="period">As of Dec 31, 20XX</div>
+
+        <div class="section-label">Assets</div>
+        <div class="row" id="row-cash"><span class="label">Cash</span><span class="amt">$13,000</span></div>
+        <div class="row flow" data-anchor="left" id="row-ar"><span class="label">Accounts receivable</span><span class="amt" id="v-ar">50,000</span></div>
+        <div class="row" id="row-inv"><span class="label">Inventory</span><span class="amt">12,000</span></div>
+        <div class="row"><span class="label">Equipment</span><span class="amt">30,000</span></div>
+        <div class="total"><span>Total assets</span><span class="amt" id="v-ta">$105,000</span></div>
+
+        <div class="section-label">Liabilities</div>
+        <div class="row" id="row-ap"><span class="label">Accounts payable</span><span class="amt">$40,000</span></div>
+        <div class="row flow" data-anchor="left" id="row-sp"><span class="label">Salaries payable</span><span class="amt" id="v-sp">8,000</span></div>
+        <div class="row" id="row-np"><span class="label">Notes payable</span><span class="amt">12,000</span></div>
+        <div class="total" id="row-tl"><span>Total liabilities</span><span class="amt" id="v-tl">$60,000</span></div>
+
+        <div class="section-label">Stockholders' equity</div>
+        <div class="row" id="row-cs"><span class="label">Common stock</span><span class="amt">$20,000</span></div>
+        <div class="row flow" data-anchor="left" id="row-re"><span class="label">Retained earnings</span><span class="amt" id="v-re">25,000</span></div>
+        <div class="total" id="row-te"><span>Total shareholders' equity</span><span class="amt" id="v-te">$45,000</span></div>
+
+        <div class="total"><span>Total liab. &amp; equity</span><span class="amt" id="v-tle">$105,000</span></div>
+      </section>
+
+    </div><!-- /.board -->
+
+    <aside class="side-panel">
+      <section class="card" id="side-panel-card">
+        <div class="stmt-no">Analysis</div>
+        <h2>Ratio</h2>
+
+        <div class="sp-empty" id="sp-empty">
+          Select a ratio<br>above to see<br>its value and<br>the accounts<br>that flow into it.
+        </div>
+
+        <div class="sp-body" id="sp-body">
+          <div class="sp-label" id="sp-label">Return on equity</div>
+          <div class="sp-name" id="sp-name"></div>
+          <div class="sp-value" id="sp-value">&mdash;</div>
+          <div class="sp-divider"></div>
+          <div class="sp-formula" id="sp-formula"></div>
+          <div class="sp-calc" id="sp-calc"></div>
+          <div class="sp-hint">Dashed gray lines connect to contributing accounts.</div>
+        </div>
+      </section>
+    </aside>
+  </div><!-- /.board-region -->
+
+</div>
+
+<script>
+(function(){
+  // ==================== CONSTANTS ====================
+  var C = {
+    COGS: 20000, RENT: 4000,
+    BEG_RE: 12000, DIV: 5000,
+    CASH: 13000, INV: 12000, EQUIP: 30000,
+    AP: 40000, NP: 12000, CS: 20000,
+    BASE_REV: 50000, BASE_AR: 50000,
+    BASE_SAL: 8000, BASE_SP: 8000
+  };
+
+  var state = { rev: C.BASE_REV, sal: C.BASE_SAL, step: 1, ratio: null };
+
+  var svg       = document.getElementById('arrow-layer');
+  var region    = document.getElementById('board-region');
+  var board     = document.getElementById('board');
+
+  function fmt(n)  { return n.toLocaleString('en-US'); }
+  function fmtD(n) { return '$' + fmt(n); }
+
+  // ==================== RATIO DEFINITIONS ====================
+  var RATIOS = {
+    roe: {
+      label: 'Return on equity',
+      formula: 'Net income \u00F7 Total shareholders\u2019 equity',
+      rows: ['row-ni', 'row-te'],
+      compute: function(v) {
+        var pct = (v.totalEquity === 0) ? 0 : v.ni / v.totalEquity;
+        return {
+          value: (pct * 100).toFixed(1) + '%',
+          calc:
+            '<div><span class="hl-n">Net income</span> = ' + fmt(v.ni) + '</div>' +
+            '<div><span class="hl-d">Total equity</span> = ' + fmt(v.totalEquity) + '</div>' +
+            '<div class="final">' + fmt(v.ni) + ' \u00F7 ' + fmt(v.totalEquity) + ' = ' + (pct * 100).toFixed(1) + '%</div>'
+        };
+      }
+    },
+    de: {
+      label: 'Debt to equity',
+      formula: 'Total liabilities \u00F7 Total shareholders\u2019 equity',
+      rows: ['row-tl', 'row-te'],
+      compute: function(v) {
+        var r = (v.totalEquity === 0) ? 0 : v.totalLiab / v.totalEquity;
+        return {
+          value: r.toFixed(2),
+          calc:
+            '<div><span class="hl-n">Total liabilities</span> = ' + fmt(v.totalLiab) + '</div>' +
+            '<div><span class="hl-d">Total equity</span> = ' + fmt(v.totalEquity) + '</div>' +
+            '<div class="final">' + fmt(v.totalLiab) + ' \u00F7 ' + fmt(v.totalEquity) + ' = ' + r.toFixed(2) + '</div>'
+        };
+      }
+    },
+    cr: {
+      label: 'Current ratio',
+      formula: 'Current assets \u00F7 Current liabilities',
+      rows: ['row-cash', 'row-ar', 'row-inv', 'row-ap', 'row-sp'],
+      compute: function(v) {
+        var r = (v.currLiab === 0) ? 0 : v.currAssets / v.currLiab;
+        return {
+          value: r.toFixed(2),
+          calc:
+            '<div><span class="hl-n">Current assets</span> = Cash ' + fmt(C.CASH) + ' + AR ' + fmt(v.ar) + ' + Inv ' + fmt(C.INV) + ' = ' + fmt(v.currAssets) + '</div>' +
+            '<div><span class="hl-d">Current liabilities</span> = AP ' + fmt(C.AP) + ' + SP ' + fmt(v.sp) + ' = ' + fmt(v.currLiab) + '</div>' +
+            '<div class="final">' + fmt(v.currAssets) + ' \u00F7 ' + fmt(v.currLiab) + ' = ' + r.toFixed(2) + '</div>'
+        };
+      }
+    }
+  };
+
+  // ==================== CALC ====================
+  function calc() {
+    var rev = state.rev, sal = state.sal;
+    var ni    = rev - C.COGS - sal - C.RENT;
+    var endRE = C.BEG_RE + ni - C.DIV;
+    var ar    = C.BASE_AR + (rev - C.BASE_REV);
+    var sp    = C.BASE_SP + (sal - C.BASE_SAL);
+    var ta    = C.CASH + ar + C.INV + C.EQUIP;
+    var tle   = C.AP + C.NP + sp + C.CS + endRE;
+    var totalEquity = C.CS + endRE;
+    var totalLiab   = C.AP + C.NP + sp;
+    var currAssets  = C.CASH + ar + C.INV;
+    var currLiab    = C.AP + sp;
+    return {
+      rev: rev, sal: sal, ni: ni, endRE: endRE, ar: ar, sp: sp, ta: ta, tle: tle,
+      totalEquity: totalEquity, totalLiab: totalLiab,
+      currAssets: currAssets, currLiab: currLiab
+    };
+  }
+
+  // ==================== UPDATE ====================
+  var last = {};
+  function setText(id, t) { var e = document.getElementById(id); if (e) e.textContent = t; }
+
+  function pulseIf(rowId, key, val) {
+    if (last[key] === undefined || last[key] === val) return;
+    var r = document.getElementById(rowId);
+    if (!r) return;
+    r.classList.remove('pulse');
+    void r.offsetWidth;
+    r.classList.add('pulse');
+    setTimeout(function() { r.classList.remove('pulse'); }, 650);
+  }
+
+  function update(withPulse) {
+    var v = calc();
+
+    setText('v-rev',    fmtD(v.rev));
+    setText('v-sal',    '(' + fmt(v.sal) + ')');
+    setText('v-ni',     fmtD(v.ni));
+    setText('v-ni-sre', fmt(v.ni));
+    setText('v-endre',  fmtD(v.endRE));
+    setText('v-ar',     fmt(v.ar));
+    setText('v-sp',     fmt(v.sp));
+    setText('v-re',     fmt(v.endRE));
+    setText('v-ta',     fmtD(v.ta));
+    setText('v-tl',     fmtD(v.totalLiab));
+    setText('v-te',     fmtD(v.totalEquity));
+    setText('v-tle',    fmtD(v.tle));
+
+    if (withPulse) {
+      pulseIf('row-ni',     'ni',    v.ni);
+      pulseIf('row-ni-sre', 'ni',    v.ni);
+      pulseIf('row-endre',  'endRE', v.endRE);
+      pulseIf('row-re',     'endRE', v.endRE);
+      pulseIf('row-ar',     'ar',    v.ar);
+      pulseIf('row-sp',     'sp',    v.sp);
+    }
+
+    last = v;
+    renderSidePanel(v);
+    drawArrows(v);
+  }
+
+  // ==================== SIDE PANEL ====================
+  function renderSidePanel(v) {
+    var empty = document.getElementById('sp-empty');
+    var body  = document.getElementById('sp-body');
+    if (!empty || !body) return;
+
+    if (!state.ratio || !RATIOS[state.ratio]) {
+      empty.style.display = '';
+      body.classList.remove('show');
+      return;
+    }
+    var r = RATIOS[state.ratio];
+    var out = r.compute(v);
+    empty.style.display = 'none';
+    body.classList.add('show');
+    setText('sp-label', 'Ratio');
+    setText('sp-name', r.label);
+    setText('sp-value', out.value);
+    setText('sp-formula', r.formula);
+    document.getElementById('sp-calc').innerHTML = out.calc;
+  }
+
+  function updateRatioHighlights() {
+    document.querySelectorAll('.row.ratio-hl').forEach(function(r) {
+      r.classList.remove('ratio-hl');
+    });
+    if (!state.ratio || !RATIOS[state.ratio]) return;
+    RATIOS[state.ratio].rows.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el && el.offsetParent !== null) el.classList.add('ratio-hl');
+    });
+  }
+
+  // ==================== STEP NAVIGATION ====================
+  function setStep(n) {
+    state.step = n;
+    document.querySelectorAll('.step-btn').forEach(function(b) {
+      var isActive = (parseInt(b.getAttribute('data-step'), 10) === n);
+      b.classList.toggle('active', isActive);
+      b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+    board.setAttribute('data-step', String(n));
+
+    requestAnimationFrame(function() {
+      renderSidePanel(last);
+      updateRatioHighlights();
+      drawArrows(last);
+      setTimeout(function() { drawArrows(last); }, 60);
+    });
+  }
+
+  document.querySelectorAll('.step-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      setStep(parseInt(btn.getAttribute('data-step'), 10));
+    });
+  });
+
+  // ==================== RATIO TABS ====================
+  document.querySelectorAll('.rt-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var key = btn.getAttribute('data-ratio');
+      if (key === '') {
+        // Clear button
+        state.ratio = null;
+        document.querySelectorAll('.rt-btn').forEach(function(b) { b.classList.remove('active'); });
+      } else if (state.ratio === key) {
+        // Toggle off if clicking the same ratio
+        state.ratio = null;
+        btn.classList.remove('active');
+      } else {
+        state.ratio = key;
+        document.querySelectorAll('.rt-btn').forEach(function(b) {
+          if (!b.classList.contains('clear')) b.classList.remove('active');
+        });
+        btn.classList.add('active');
+      }
+      renderSidePanel(last);
+      updateRatioHighlights();
+      drawArrows(last);
+    });
+  });
+
+  // ==================== SEGMENTED CONTROL ====================
+  document.querySelectorAll('.seg-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var group = btn.getAttribute('data-group');
+      var val = parseInt(btn.getAttribute('data-val'), 10);
+      document.querySelectorAll('.seg-btn[data-group="' + group + '"]').forEach(function(b) {
+        b.classList.remove('active');
+        b.setAttribute('aria-checked', 'false');
+      });
+      btn.classList.add('active');
+      btn.setAttribute('aria-checked', 'true');
+      if (group === 'rev') state.rev = val;
+      if (group === 'sal') state.sal = val;
+      update(true);
+    });
+  });
+
+  // ==================== ARROWS ====================
+  function hPath(src, dst) {
+    var dx = dst.x - src.x;
+    var c = Math.max(60, Math.min(140, dx * 0.45));
+    return 'M ' + src.x + ' ' + src.y +
+           ' C ' + (src.x + c) + ' ' + src.y + ', ' +
+                   (dst.x - c) + ' ' + dst.y + ', ' +
+                    dst.x      + ' ' + dst.y;
+  }
+  function vPath(src, dst) {
+    var dy = dst.y - src.y;
+    var c = Math.max(26, dy * 0.5);
+    return 'M ' + src.x + ' ' + src.y +
+           ' C ' + src.x + ' ' + (src.y + c) + ', ' +
+                   dst.x + ' ' + (dst.y - c) + ', ' +
+                   dst.x + ' ' + dst.y;
+  }
+  function cssvar(n) {
+    return getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  }
+
+  function anchorInRegion(el, side) {
+    if (!el) return null;
+    if (el.offsetParent === null) return null;
+    var r = el.getBoundingClientRect();
+    var rR = region.getBoundingClientRect();
+    var L = r.left - rR.left, T = r.top - rR.top;
+    switch (side) {
+      case 'right':  return { x: L + r.width,    y: T + r.height/2 };
+      case 'left':   return { x: L,              y: T + r.height/2 };
+      case 'top':    return { x: L + r.width/2,  y: T };
+      case 'bottom': return { x: L + r.width/2,  y: T + r.height };
+    }
+  }
+
+  function labelBox(lx, ly, label, value, bg, stroke, fg) {
+    var labelLen = Math.max(label.length, value.length);
+    var w = Math.max(92, labelLen * 6.3 + 18);
+    var h = 36;
+    var m = '';
+    m += '<g transform="translate(' + lx + ',' + ly + ')">';
+    m += '<rect x="' + (-w/2) + '" y="' + (-h/2) + '" width="' + w + '" height="' + h + '" rx="4" fill="' + bg + '" stroke="' + stroke + '" stroke-width="1"/>';
+    m += '<text x="0" y="-3" text-anchor="middle" dominant-baseline="middle" font-family="\'DM Sans\', sans-serif" font-size="11" font-weight="500" fill="' + fg + '" letter-spacing="0.02em">' + escSVG(label) + '</text>';
+    m += '<text x="0" y="10" text-anchor="middle" dominant-baseline="middle" font-family="\'JetBrains Mono\', monospace" font-size="11" font-weight="500" fill="' + fg + '">' + escSVG(value) + '</text>';
+    m += '</g>';
+    return m;
+  }
+
+  function escSVG(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  function drawArrows(v) {
+    if (!v || Object.keys(v).length === 0) return;
+    if (window.innerWidth <= 1000) { svg.innerHTML = ''; return; }
+
+    var rR = region.getBoundingClientRect();
+    svg.setAttribute('viewBox', '0 0 ' + rR.width + ' ' + rR.height);
+    svg.setAttribute('width', rR.width);
+    svg.setAttribute('height', rR.height);
+    svg.style.width = rR.width + 'px';
+    svg.style.height = rR.height + 'px';
+
+    var A = {
+      rev:   anchorInRegion(document.getElementById('row-rev'),    'right'),
+      sal:   anchorInRegion(document.getElementById('row-sal'),    'right'),
+      niIS:  anchorInRegion(document.getElementById('row-ni'),     'bottom'),
+      niSRE: anchorInRegion(document.getElementById('row-ni-sre'), 'top'),
+      endRE: anchorInRegion(document.getElementById('row-endre'),  'right'),
+      ar:    anchorInRegion(document.getElementById('row-ar'),     'left'),
+      sp:    anchorInRegion(document.getElementById('row-sp'),     'left'),
+      re:    anchorInRegion(document.getElementById('row-re'),     'left')
+    };
+
+    var greenLine = cssvar('--edit-line');
+    var greenBg   = cssvar('--edit-bg');
+    var greenFg   = cssvar('--edit-ink');
+    var amberLine = cssvar('--flow-line');
+    var amberBg   = cssvar('--flow-bg');
+    var amberFg   = cssvar('--flow-ink');
+    var ratioLine = cssvar('--ratio-line');
+
+    var m = '';
+    m += '<defs>';
+    m += '<marker id="ah-g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">';
+    m += '<path d="M1 1 L9 5 L1 9" fill="none" stroke="' + greenLine + '" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>';
+    m += '</marker>';
+    m += '<marker id="ah-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">';
+    m += '<path d="M1 1 L9 5 L1 9" fill="none" stroke="' + amberLine + '" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>';
+    m += '</marker>';
+    m += '</defs>';
+
+    // Flow arrows (green/amber, existing)
+    if (A.rev && A.ar) {
+      m += '<path d="' + hPath(A.rev, A.ar) + '" fill="none" stroke="' + greenLine + '" stroke-width="1.75" stroke-linecap="round" marker-end="url(#ah-g)"/>';
+      m += labelBox((A.rev.x + A.ar.x)/2, (A.rev.y + A.ar.y)/2 - 14,
+           'Accounts receivable', fmtD(v.ar), greenBg, greenLine, greenFg);
+    }
+    if (A.sal && A.sp) {
+      m += '<path d="' + hPath(A.sal, A.sp) + '" fill="none" stroke="' + greenLine + '" stroke-width="1.75" stroke-linecap="round" marker-end="url(#ah-g)"/>';
+      m += labelBox((A.sal.x + A.sp.x)/2, (A.sal.y + A.sp.y)/2 - 14,
+           'Salaries payable', fmtD(v.sp), greenBg, greenLine, greenFg);
+    }
+    if (A.niIS && A.niSRE) {
+      m += '<path d="' + vPath(A.niIS, A.niSRE) + '" fill="none" stroke="' + amberLine + '" stroke-width="1.75" stroke-linecap="round" marker-end="url(#ah-a)"/>';
+      m += labelBox((A.niIS.x + A.niSRE.x)/2 + 62, (A.niIS.y + A.niSRE.y)/2,
+           'Net income', fmtD(v.ni), amberBg, amberLine, amberFg);
+    }
+    if (A.endRE && A.re) {
+      m += '<path d="' + hPath(A.endRE, A.re) + '" fill="none" stroke="' + amberLine + '" stroke-width="1.75" stroke-linecap="round" marker-end="url(#ah-a)"/>';
+      m += labelBox((A.endRE.x + A.re.x)/2, (A.endRE.y + A.re.y)/2 - 14,
+           'Retained earnings', fmtD(v.endRE), amberBg, amberLine, amberFg);
+    }
+
+    // Dashed gray lines to ratio panel (drawn whenever a ratio is selected,
+    // regardless of step; rows that aren't currently visible are skipped by the
+    // offsetParent guard inside anchorInRegion)
+    if (state.ratio && RATIOS[state.ratio]) {
+      var panelCard = document.getElementById('side-panel-card');
+      if (panelCard && panelCard.offsetParent !== null) {
+        var panelRect = panelCard.getBoundingClientRect();
+        var panelL = panelRect.left - rR.left;
+        var panelT = panelRect.top  - rR.top;
+        // Target: left edge of the panel, slightly inset
+        // Use the vertical center of the value text as y target for nicer aim
+        var valueEl = document.getElementById('sp-value');
+        var targetY = panelT + panelRect.height / 2;
+        if (valueEl && valueEl.offsetParent !== null) {
+          var vR = valueEl.getBoundingClientRect();
+          targetY = vR.top - rR.top + vR.height / 2;
+        }
+        var targetX = panelL + 2;
+
+        RATIOS[state.ratio].rows.forEach(function(rowId) {
+          var el = document.getElementById(rowId);
+          if (!el || el.offsetParent === null) return;
+          var src = anchorInRegion(el, 'right');
+          if (!src) return;
+          var dst = { x: targetX, y: targetY };
+          var dx = dst.x - src.x;
+          var c1 = Math.max(30, dx * 0.3);
+          var path = 'M ' + src.x + ' ' + src.y +
+                     ' C ' + (src.x + c1) + ' ' + src.y + ', ' +
+                             (dst.x - c1) + ' ' + dst.y + ', ' +
+                              dst.x      + ' ' + dst.y;
+          m += '<path d="' + path + '" fill="none" stroke="' + ratioLine + '" stroke-width="1" stroke-dasharray="4 4" stroke-linecap="round" opacity="0.7"/>';
+          // Small dot at target side
+          m += '<circle cx="' + src.x + '" cy="' + src.y + '" r="2.5" fill="' + ratioLine + '" opacity="0.7"/>';
+        });
+      }
+    }
+
+    svg.innerHTML = m;
+  }
+
+  // ==================== INIT ====================
+  window.addEventListener('resize', function() {
+    drawArrows(last);
+  });
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function() { update(false); });
+  }
+  update(false);
+  setTimeout(function() { update(false); }, 250);
+  setTimeout(function() { update(false); }, 700);
+
+})();
+</script>
+</body>
+</html>

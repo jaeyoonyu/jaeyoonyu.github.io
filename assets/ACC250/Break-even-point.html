@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Break-Even Tradeoff — Interactive Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,400&family=Newsreader:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F5EFE6;
+  --bg-card: #FAF6EE;
+  --ink: #1A1612;
+  --ink-soft: #4A4238;
+  --ink-faint: #8A8070;
+  --rule: #D8CFBE;
+  --accent: #B8432A;
+  --accent-soft: #E8C5B8;
+  --sage: #4F7050;
+  --sage-soft: #C5D4C5;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+body {
+  background-image:
+    radial-gradient(circle at 15% 0%, rgba(184,67,42,0.05) 0%, transparent 42%),
+    radial-gradient(circle at 85% 100%, rgba(79,112,80,0.04) 0%, transparent 42%);
+  min-height: 100vh;
+}
+.container {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 28px 40px 36px;
+}
+
+/* Header */
+.page-header { margin-bottom: 20px; }
+.header-row {
+  display: flex;
+  align-items: baseline;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+.eyebrow {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.eyebrow::before, .eyebrow::after {
+  content: '';
+  flex: 0 0 auto;
+  width: 28px;
+  height: 1px;
+  background: var(--accent);
+  opacity: 0.5;
+}
+.eyebrow::after { flex: 1; }
+h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: clamp(32px, 3.4vw, 46px);
+  line-height: 1;
+  letter-spacing: -0.022em;
+  font-variation-settings: 'SOFT' 50, 'opsz' 144;
+  margin: 0;
+  flex: 0 0 auto;
+}
+h1 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--accent);
+}
+.lede {
+  font-family: 'Newsreader', serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  max-width: 560px;
+  margin: 0;
+  font-style: italic;
+  flex: 1;
+}
+
+/* Options */
+.options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin-bottom: 20px;
+  border: 1px solid var(--rule);
+}
+.option {
+  background: var(--bg-card);
+  border: none;
+  border-right: 1px solid var(--rule);
+  padding: 10px 16px 12px;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+  transition: background 0.25s, color 0.25s;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.option:last-child { border-right: none; }
+.option:hover { background: #FDF9F1; }
+.option.is-active { background: var(--ink); color: var(--bg); }
+.option.is-active .option-tag,
+.option.is-active .option-desc { color: rgba(245, 239, 230, 0.6); }
+.option.is-active .option-value { color: var(--accent-soft); }
+
+.option-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 2px;
+}
+.option-name {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: 17px;
+  letter-spacing: -0.01em;
+  color: inherit;
+  margin-bottom: 1px;
+  font-variation-settings: 'SOFT' 50, 'opsz' 96;
+}
+.option-value {
+  font-family: 'Fraunces', serif;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  margin: 2px 0 3px;
+}
+.option-desc {
+  font-family: 'Newsreader', serif;
+  font-style: italic;
+  font-size: 12px;
+  color: var(--ink-soft);
+  line-height: 1.3;
+}
+
+/* Main row: metrics left + chart right */
+.main-row {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+  align-items: stretch;
+}
+.metrics-panel {
+  border: 1px solid var(--rule);
+  background: var(--bg-card);
+  display: flex;
+  flex-direction: column;
+}
+.panel-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding: 12px 20px 10px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--bg);
+}
+.chart-panel { display: flex; flex-direction: column; }
+.input-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 18px;
+  display: block;
+}
+.input-hint {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--ink-faint);
+  margin-top: 14px;
+  letter-spacing: 0.04em;
+}
+
+/* Section titles */
+.section-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-title .num {
+  color: var(--accent);
+  font-weight: 500;
+}
+.section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+/* Cost Structure Table */
+#metrics { padding: 8px 20px 14px; }
+.cost-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+.cost-table th,
+.cost-table td {
+  padding: 10px 0;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+  vertical-align: baseline;
+}
+.cost-table tr:last-child th,
+.cost-table tr:last-child td {
+  border-bottom: none;
+}
+.cost-table th {
+  font-family: 'Newsreader', serif;
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--ink);
+  font-style: normal;
+}
+.cost-table td {
+  font-family: 'Fraunces', serif;
+  font-weight: 400;
+  font-size: 19px;
+  color: var(--ink);
+  text-align: right;
+  letter-spacing: -0.01em;
+}
+.cost-table td.cm {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Break-Even Calculation */
+.bep-calc {
+  padding: 14px 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  justify-content: center;
+}
+.bep-step {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.bep-step-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.bep-formula {
+  font-family: 'Newsreader', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-soft);
+  line-height: 1.3;
+}
+.bep-formula .var {
+  color: var(--ink);
+  font-style: normal;
+  font-weight: 500;
+}
+.bep-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.45;
+}
+.bep-result {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Profit Table */
+.profit-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  font-variant-numeric: tabular-nums;
+}
+.profit-table thead th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink);
+  padding: 12px 18px 10px;
+  text-align: right;
+  border-bottom: 1px solid var(--ink);
+  font-weight: 500;
+  background: var(--bg);
+}
+.profit-table thead th:first-child { text-align: left; }
+.profit-table tbody td {
+  font-family: 'Fraunces', serif;
+  font-size: 15px;
+  color: var(--ink);
+  padding: 6px 18px;
+  text-align: right;
+  border-bottom: 1px solid var(--rule);
+  letter-spacing: -0.01em;
+}
+.profit-table tbody td.units {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  text-align: left;
+  color: var(--ink-soft);
+  letter-spacing: 0.02em;
+}
+.profit-table tbody tr:last-child td { border-bottom: none; }
+.profit-table tbody tr.gain td { background: #E4EDD9; }
+.profit-table tbody tr.loss td { background: #F3DAD2; }
+.profit-table tbody tr.bep-row td {
+  background: #F7E9B5;
+  font-weight: 600;
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+.profit-table tbody td.loss { color: var(--accent); font-weight: 500; }
+.profit-table tbody td.gain { color: var(--sage); font-weight: 500; }
+
+/* Chart */
+.chart-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--rule);
+  padding: 16px 20px 14px;
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+svg.chart {
+  width: 100%;
+  height: auto;
+  max-height: 380px;
+  display: block;
+  overflow: visible;
+  flex: 1;
+}
+.legend {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+.legend-item { display: flex; align-items: center; gap: 10px; }
+.swatch { width: 22px; height: 2px; flex: 0 0 auto; }
+.swatch.dashed {
+  background: transparent;
+  border-top: 1px dashed var(--ink-soft);
+  height: 0;
+  margin-top: 1px;
+}
+.swatch.fill { height: 12px; border-radius: 1px; }
+
+/* Lower row: scenarios + insight side by side */
+.lower-row {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 24px;
+  margin-bottom: 20px;
+  align-items: stretch;
+}
+.strip-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 8px;
+}
+
+/* Insight */
+.insight {
+  background: var(--bg-card);
+  border-left: 3px solid var(--accent);
+  padding: 14px 20px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.insight-text {
+  font-family: 'Newsreader', serif;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--ink);
+  margin: 0;
+}
+.insight-text em {
+  color: var(--accent);
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* Assumptions (collapsed by default) */
+.assumptions-details {
+  border-top: 1px solid var(--rule);
+  padding-top: 12px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.assumptions-details summary {
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  cursor: pointer;
+  user-select: none;
+  padding: 4px 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.assumptions-details summary::-webkit-details-marker { display: none; }
+.assumptions-details summary::before {
+  content: '+';
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  color: var(--accent);
+  line-height: 1;
+  transition: transform 0.2s;
+  display: inline-block;
+}
+.assumptions-details[open] summary::before {
+  content: '−';
+}
+.assumptions-details summary:hover { color: var(--ink); }
+.assumptions {
+  font-size: 12px;
+  color: var(--ink-soft);
+  line-height: 1.75;
+  padding-top: 10px;
+}
+.assumptions strong { color: var(--ink); font-weight: 700; }
+.formula {
+  display: inline-block;
+  padding: 2px 8px;
+  background: var(--bg);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  margin: 2px 0;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .container { padding: 24px 20px 32px; }
+  .main-row { grid-template-columns: 1fr; gap: 14px; }
+  .lower-row { grid-template-columns: 1fr; gap: 14px; }
+  .header-row { flex-direction: column; gap: 10px; }
+  .options { grid-template-columns: 1fr; }
+  .option { border-right: none; border-bottom: 1px solid var(--rule); padding: 10px 16px; }
+  .option:last-child { border-bottom: none; }
+  .profit-table tbody td { font-size: 14px; padding: 8px 14px; }
+  .profit-table thead th { font-size: 9px; padding: 10px 14px 8px; }
+  svg.chart { max-height: none; }
+  .legend { gap: 14px; font-size: 10px; }
+}
+
+/* SVG styles */
+.axis-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  fill: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-weight: 500;
+}
+.axis-tick {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  fill: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+.grid-line { stroke: var(--rule); stroke-width: 0.6; }
+.axis-line { stroke: var(--ink); stroke-width: 1.2; }
+.region-profit { fill: var(--sage); opacity: 0.14; }
+.region-loss { fill: var(--accent); opacity: 0.10; }
+.annotation-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  fill: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+.region-label {
+  font-family: 'Newsreader', serif;
+  font-style: italic;
+  font-size: 18px;
+  font-weight: 400;
+}
+.region-label.profit { fill: var(--sage); }
+.region-label.loss { fill: var(--accent); opacity: 0.85; }
+
+/* entrance */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.chart-wrap, .insight, .metrics, .scenarios {
+  animation: fadeUp 0.45s ease both;
+}</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="page-header">
+    <div class="eyebrow">Management Accounting · Interactive Lab</div>
+    <div class="header-row">
+      <h1>The Break-Even <em>Tradeoff</em></h1>
+      <p class="lede">Higher fixed investment buys efficiency — but also raises the sales threshold the firm must clear to earn anything.</p>
+    </div>
+  </header>
+
+  <div class="options" id="options">
+    <button class="option" data-key="lean" type="button">
+      <div class="option-tag">Option A</div>
+      <div class="option-name">Manual</div>
+      <div class="option-value">$20K</div>
+      <div class="option-desc">Low-tech · labor-intensive</div>
+    </button>
+    <button class="option is-active" data-key="balanced" type="button">
+      <div class="option-tag">Option B</div>
+      <div class="option-name">Hybrid</div>
+      <div class="option-value">$120K</div>
+      <div class="option-desc">Moderate automation</div>
+    </button>
+    <button class="option" data-key="automated" type="button">
+      <div class="option-tag">Option C</div>
+      <div class="option-name">Automated</div>
+      <div class="option-value">$400K</div>
+      <div class="option-desc">High-tech · capital-intensive</div>
+    </button>
+  </div>
+
+  <div class="main-row">
+    <aside class="metrics-panel">
+      <div class="panel-title">Cost Structure</div>
+      <div class="metrics" id="metrics"></div>
+      <div class="panel-title">Break-Even Calculation</div>
+      <div class="bep-calc" id="bep"></div>
+    </aside>
+    <div class="chart-panel">
+      <div class="chart-wrap">
+        <svg class="chart" id="chart" viewBox="0 0 1200 400" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="legend">
+          <div class="legend-item"><span class="swatch" style="background:var(--ink)"></span>Revenue</div>
+          <div class="legend-item"><span class="swatch" style="background:var(--accent)"></span>Total Cost</div>
+          <div class="legend-item"><span class="swatch dashed"></span>Fixed Cost</div>
+          <div class="legend-item"><span class="swatch fill" style="background:var(--sage);opacity:0.25"></span>Profit</div>
+          <div class="legend-item"><span class="swatch fill" style="background:var(--accent);opacity:0.18"></span>Loss</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lower-row">
+    <div class="scenarios-block">
+      <div class="strip-title">Profit at Different Sales Volumes</div>
+      <div class="scenarios" id="scenarios"></div>
+    </div>
+    <div class="insight">
+      <p class="insight-text" id="insight"></p>
+    </div>
+  </div>
+
+  <details class="assumptions-details">
+    <summary>Model Assumptions</summary>
+    <div class="assumptions">
+      <strong>Selling price</strong> is held fixed at <strong>$100 per unit</strong> across all three strategies.
+      <strong>Higher investment → lower variable cost per unit</strong>, reflecting real-world automation: capital equipment reduces per-unit labor and material costs.
+      <strong>Option A</strong> (Manual): FC = $20K, VC = $80, CM = $20, BE = 1,000 units.
+      <strong>Option B</strong> (Hybrid): FC = $120K, VC = $60, CM = $40, BE = 3,000 units.
+      <strong>Option C</strong> (Automated): FC = $400K, VC = $20, CM = $80, BE = 5,000 units.
+      <strong>Break-even units</strong> = Fixed Cost ÷ Contribution Margin per Unit.
+    </div>
+  </details>
+
+</div>
+
+<script>
+// ── Model ──────────────────────────────────────────────
+const PRICE = 100;
+
+const PRESETS = {
+  lean:      { label: 'Option A · Manual',    FC:  20000, VC: 80 },
+  balanced:  { label: 'Option B · Hybrid',    FC: 120000, VC: 60 },
+  automated: { label: 'Option C · Automated', FC: 400000, VC: 20 },
+};
+
+// Fixed chart domain — accommodates all three strategies
+// so the axes stay still during animation (only lines move).
+const FIXED_DOMAIN = { maxUnits: 10000, maxY: 1000000 };
+
+// ── Formatting ─────────────────────────────────────────
+const fmt$ = (n) => {
+  if (!isFinite(n)) return '—';
+  const sign = n < 0 ? '−' : '';
+  return sign + '$' + Math.abs(Math.round(n)).toLocaleString('en-US');
+};
+const fmtU = (n) => !isFinite(n) ? '—' : Math.round(n).toLocaleString('en-US');
+const fmt2 = (n) => n.toFixed(2);
+const parseInput = (v) => {
+  const cleaned = (v || '').replace(/[^0-9.]/g, '');
+  const n = parseFloat(cleaned);
+  return isNaN(n) ? 0 : n;
+};
+
+// Round a value up to a visually clean chart bound
+function nicerRound(v) {
+  if (v <= 0) return 1;
+  if (v < 100)    return Math.ceil(v / 10) * 10;
+  if (v < 1000)   return Math.ceil(v / 100) * 100;
+  if (v < 10000)  return Math.ceil(v / 500) * 500;
+  if (v < 100000) return Math.ceil(v / 5000) * 5000;
+  if (v < 1000000) return Math.ceil(v / 50000) * 50000;
+  return Math.ceil(v / 500000) * 500000;
+}
+function fmtAxis$(n) {
+  if (n >= 1000000) return '$' + (n/1000000).toFixed(n % 1000000 === 0 ? 0 : 1) + 'M';
+  if (n >= 1000)    return '$' + Math.round(n/1000) + 'K';
+  return '$' + n;
+}
+function fmtAxisU(n) {
+  if (n >= 1000000) return (n/1000000).toFixed(n % 1000000 === 0 ? 0 : 1) + 'M';
+  if (n >= 10000)   return Math.round(n/1000) + 'K';
+  if (n >= 1000)    return (n/1000).toFixed(n % 1000 === 0 ? 0 : 1) + 'K';
+  return n.toLocaleString();
+}
+
+// Format a dollar amount: skip decimals when the value is a whole dollar
+function fmt$Clean(n) {
+  const rounded = Math.round(n * 100) / 100;
+  if (Math.abs(rounded - Math.round(rounded)) < 0.005) {
+    return '$' + Math.round(rounded).toLocaleString('en-US');
+  }
+  return '$' + rounded.toFixed(2);
+}
+function fmtPctClean(n) {
+  const rounded = Math.round(n * 10) / 10;
+  if (Math.abs(rounded - Math.round(rounded)) < 0.05) {
+    return Math.round(rounded) + '%';
+  }
+  return rounded.toFixed(1) + '%';
+}
+
+// ── Metrics (Cost Structure Table) ─────────────────────
+function renderMetrics(m) {
+  const el = document.getElementById('metrics');
+  const rows = [
+    { label: 'Fixed Cost',            value: fmt$(m.FC) },
+    { label: 'Selling Price / Unit',  value: '$' + PRICE },
+    { label: 'Variable Cost / Unit',  value: fmt$Clean(m.VC) },
+    { label: 'Contribution Margin',   value: fmt$Clean(m.CM), highlight: true },
+  ];
+  el.innerHTML = `
+    <table class="cost-table">
+      <tbody>
+        ${rows.map(r => `
+          <tr>
+            <th scope="row">${r.label}</th>
+            <td class="${r.highlight ? 'cm' : ''}">${r.value}</td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+// ── Break-Even Calculation ─────────────────────────────
+function renderBep(m) {
+  const el = document.getElementById('bep');
+  const fcStr = fmt$(m.FC);
+  const cmStr = '$' + Math.round(m.CM);
+  const hasBE = m.CM > 0 && isFinite(m.BEu);
+  const beStr = hasBE ? Math.round(m.BEu).toLocaleString() : '∞';
+
+  el.innerHTML = `
+    <div class="bep-step">
+      <div class="bep-step-label">BE Units</div>
+      <div class="bep-formula"><span class="var">Fixed Cost</span> ÷ <span class="var">Contribution Margin</span></div>
+      <div class="bep-sub">= ${fcStr} ÷ ${cmStr} = <span class="bep-result">${beStr} units</span></div>
+    </div>
+  `;
+}
+
+// ── Chart ──────────────────────────────────────────────
+function computeDomain(m) {
+  let maxUnits;
+  if (m.CM <= 0 || !isFinite(m.BEu) || m.BEu === 0) {
+    maxUnits = nicerRound(Math.max(m.FC / 10, 1000));
+  } else {
+    maxUnits = nicerRound(m.BEu * 2.2);
+  }
+  const maxRev = maxUnits * PRICE;
+  const maxTC  = m.FC + maxUnits * m.VC;
+  const maxY   = nicerRound(Math.max(maxRev, maxTC) * 1.05);
+  return { maxUnits, maxY };
+}
+
+function renderChart(m, domainOverride) {
+  const svg = document.getElementById('chart');
+  const W = 1200, H = 400;
+  const pad = { t: 28, r: 44, b: 62, l: 116 };
+  const iw = W - pad.l - pad.r;
+  const ih = H - pad.t - pad.b;
+
+  // Use provided domain (during animation) or compute fresh (static render)
+  const dom = domainOverride || computeDomain(m);
+  const maxUnits = dom.maxUnits;
+  const maxY     = dom.maxY;
+  const maxRev   = maxUnits * PRICE;
+  const maxTC    = m.FC + maxUnits * m.VC;
+
+  const xScale = (u) => pad.l + (u / maxUnits) * iw;
+  const yScale = (y) => pad.t + ih - (y / maxY) * ih;
+
+  // Key points
+  const revStart = { x: xScale(0),        y: yScale(0) };
+  const revEnd   = { x: xScale(maxUnits), y: yScale(maxRev) };
+  const tcStart  = { x: xScale(0),        y: yScale(m.FC) };
+  const tcEnd    = { x: xScale(maxUnits), y: yScale(maxTC) };
+  const fcStart  = { x: xScale(0),        y: yScale(m.FC) };
+  const fcEnd    = { x: xScale(maxUnits), y: yScale(m.FC) };
+
+  let bePoint = null;
+  if (m.CM > 0 && m.BEu > 0 && m.BEu <= maxUnits) {
+    bePoint = { x: xScale(m.BEu), y: yScale(m.BEu * PRICE) };
+  }
+
+  // Gridlines & tick labels
+  const yTicks = 5, xTicks = 5;
+  let grid = '';
+  for (let i = 0; i <= yTicks; i++) {
+    const y = pad.t + (ih * i) / yTicks;
+    const val = maxY - (maxY * i) / yTicks;
+    grid += `<line class="grid-line" x1="${pad.l}" y1="${y}" x2="${W - pad.r}" y2="${y}" />`;
+    grid += `<text class="axis-tick" x="${pad.l - 14}" y="${y + 5}" text-anchor="end">${fmtAxis$(val)}</text>`;
+  }
+  for (let i = 0; i <= xTicks; i++) {
+    const x = pad.l + (iw * i) / xTicks;
+    const val = Math.round((maxUnits * i) / xTicks);
+    grid += `<text class="axis-tick" x="${x}" y="${H - pad.b + 24}" text-anchor="middle">${fmtAxisU(val)}</text>`;
+  }
+
+  // Profit / loss regions
+  let regions = '';
+  if (bePoint) {
+    regions += `<path class="region-loss" d="M ${revStart.x} ${revStart.y} L ${bePoint.x} ${bePoint.y} L ${tcStart.x} ${tcStart.y} Z" />`;
+    regions += `<path class="region-profit" d="M ${bePoint.x} ${bePoint.y} L ${revEnd.x} ${revEnd.y} L ${tcEnd.x} ${tcEnd.y} Z" />`;
+  } else if (m.CM <= 0) {
+    // Entire chart is loss
+    regions += `<path class="region-loss" d="M ${revStart.x} ${revStart.y} L ${revEnd.x} ${revEnd.y} L ${tcEnd.x} ${tcEnd.y} L ${tcStart.x} ${tcStart.y} Z" />`;
+  }
+
+  // Region labels (only if there's room)
+  let regionLabels = '';
+  if (bePoint && m.BEu / maxUnits > 0.12 && m.BEu / maxUnits < 0.88) {
+    // Loss label — left of BE
+    const lx = (revStart.x + bePoint.x) / 2;
+    const ly = (revStart.y + tcStart.y) / 2 + 4;
+    regionLabels += `<text class="region-label loss" x="${lx}" y="${ly}" text-anchor="middle">loss</text>`;
+    // Profit label — right of BE
+    const px = (bePoint.x + revEnd.x) / 2 + 8;
+    const py = (revEnd.y + tcEnd.y) / 2 + 4;
+    regionLabels += `<text class="region-label profit" x="${px}" y="${py}" text-anchor="middle">profit</text>`;
+  }
+
+  // Lines
+  const lines = `
+    <line x1="${fcStart.x}" y1="${fcStart.y}" x2="${fcEnd.x}" y2="${fcEnd.y}"
+      stroke="var(--ink-soft)" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.65" />
+    <line x1="${tcStart.x}" y1="${tcStart.y}" x2="${tcEnd.x}" y2="${tcEnd.y}"
+      stroke="var(--accent)" stroke-width="2" />
+    <line x1="${revStart.x}" y1="${revStart.y}" x2="${revEnd.x}" y2="${revEnd.y}"
+      stroke="var(--ink)" stroke-width="2" />
+  `;
+
+  // Break-even marker
+  let beMarker = '';
+  if (bePoint) {
+    // Decide annotation side: if BE is in the right third, put label to the left
+    const labelRight = bePoint.x < pad.l + iw * 0.7;
+    const tx = labelRight ? bePoint.x + 14 : bePoint.x - 14;
+    const anchor = labelRight ? 'start' : 'end';
+    beMarker = `
+      <line x1="${bePoint.x}" y1="${bePoint.y}" x2="${bePoint.x}" y2="${H - pad.b}"
+        stroke="var(--accent)" stroke-width="0.8" stroke-dasharray="2 3" opacity="0.7" />
+      <circle cx="${bePoint.x}" cy="${bePoint.y}" r="11" fill="none" stroke="var(--accent)" stroke-width="1" opacity="0.35" />
+      <circle cx="${bePoint.x}" cy="${bePoint.y}" r="5" fill="var(--accent)" />
+      <text class="annotation-text" x="${tx}" y="${bePoint.y - 10}" text-anchor="${anchor}">Break-Even · ${fmtU(m.BEu)} u</text>
+    `;
+  }
+
+  // Axis lines & titles
+  const axes = `
+    <line class="axis-line" x1="${pad.l}" y1="${pad.t}" x2="${pad.l}" y2="${H - pad.b}" />
+    <line class="axis-line" x1="${pad.l}" y1="${H - pad.b}" x2="${W - pad.r}" y2="${H - pad.b}" />
+    <text class="axis-label" x="${pad.l + iw/2}" y="${H - 8}" text-anchor="middle">Units Sold</text>
+    <text class="axis-label" transform="translate(30, ${pad.t + ih/2}) rotate(-90)" text-anchor="middle">Revenue &amp; Cost ($)</text>
+  `;
+
+  svg.innerHTML = grid + regions + regionLabels + lines + axes + beMarker;
+}
+
+// ── Scenarios (Profit Table) ───────────────────────────
+function renderScenarios(m) {
+  const el = document.getElementById('scenarios');
+  const volumes = [1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000];
+  const fcStr = fmt$(m.FC);
+
+  const rows = volumes.map(units => {
+    const contribution = units * m.CM;
+    const profit = contribution - m.FC;
+    const isLoss = profit < 0;
+    const profitStr = isLoss
+      ? `(${fmt$(Math.abs(profit))})`
+      : fmt$(profit);
+    const isBE = m.CM > 0 && Math.abs(units - m.BEu) < 0.5;
+    let rowCls = '';
+    if (isBE) rowCls = 'bep-row';
+    else if (Math.abs(profit) < 0.5) rowCls = '';
+    else rowCls = isLoss ? 'loss' : 'gain';
+    const cellCls = isBE ? '' : (Math.abs(profit) < 0.5 ? '' : isLoss ? 'loss' : 'gain');
+    return `
+      <tr${rowCls ? ` class="${rowCls}"` : ''}>
+        <td class="units">${units.toLocaleString()}</td>
+        <td>${fmt$(contribution)}</td>
+        <td>${fcStr}</td>
+        <td class="${cellCls}">${profitStr}</td>
+      </tr>`;
+  }).join('');
+
+  el.innerHTML = `
+    <table class="profit-table">
+      <thead>
+        <tr>
+          <th scope="col">Units Sold</th>
+          <th scope="col">Total Contribution</th>
+          <th scope="col">Fixed Cost</th>
+          <th scope="col">Profit / (Loss)</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+  `;
+}
+
+// ── Insight ────────────────────────────────────────────
+function renderInsight(m) {
+  const el = document.getElementById('insight');
+  const texts = {
+    lean:      `<em>Option A — Manual.</em> A lean, low-risk structure. Break-even arrives quickly at just <em>1,000 units</em>, which is attractive when demand is uncertain. But variable cost stays high at <em>$80</em>, so each unit past break-even adds only <em>$20</em> to profit. <em>Low risk, low reward.</em>`,
+    balanced:  `<em>Option B — Hybrid.</em> A balanced position. Break-even lands at <em>3,000 units</em>, and each unit beyond that contributes <em>$40</em>. This structure suits firms with <em>moderate and reasonably reliable</em> sales expectations — enough volume to justify the investment, but not so dependent on it that a bad quarter is catastrophic.`,
+    automated: `<em>Option C — Automated.</em> Aggressive automation. Break-even stretches to <em>5,000 units</em> — the firm must sell substantially more before earning its first dollar of profit — but each unit past break-even is worth a fat <em>$80</em>. Profitable only if the firm is confident of <em>high, steady volume</em>. Missing the forecast here hurts.`,
+  };
+  el.innerHTML = texts[m.key] || texts.balanced;
+}
+
+// ── Animation engine ───────────────────────────────────
+const ANIM_DURATION = 1800; // ms — long enough for students to follow
+const easeInOutCubic = (t) => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+const lerp = (a, b, t) => a + (b - a) * t;
+
+let currentState = null;
+let animationId  = null;
+
+function computeState(key) {
+  const p = PRESETS[key];
+  const FC  = p.FC;
+  const VC  = p.VC;
+  const CM  = PRICE - VC;
+  const BEu = CM > 0 ? FC / CM : Infinity;
+  const BEr = BEu * PRICE;
+  return { FC, VC, CM, BEu, BEr, key };
+}
+
+function interpState(a, b, t) {
+  // Safely interpolate, handling Infinity in BEu
+  let BEu;
+  const aFin = isFinite(a.BEu), bFin = isFinite(b.BEu);
+  if (aFin && bFin)      BEu = lerp(a.BEu, b.BEu, t);
+  else if (aFin && !bFin) BEu = a.BEu;
+  else if (!aFin && bFin) BEu = b.BEu;
+  else                    BEu = Infinity;
+  return {
+    FC:  lerp(a.FC, b.FC, t),
+    VC:  lerp(a.VC, b.VC, t),
+    CM:  lerp(a.CM, b.CM, t),
+    BEu,
+    BEr: isFinite(BEu) ? BEu * PRICE : Infinity,
+  };
+}
+
+// ── Apply (triggered by clicking an option) ────────────
+function apply(key) {
+  const newState = computeState(key);
+
+  // Update option card active state
+  document.querySelectorAll('.option').forEach(el => {
+    el.classList.toggle('is-active', el.dataset.key === key);
+  });
+
+  // Text and numbers snap to target immediately — only the CHART animates
+  renderInsight(newState);
+  renderScenarios(newState);
+  renderMetrics(newState);
+  renderBep(newState);
+
+  // Cancel any in-flight animation
+  if (animationId !== null) {
+    cancelAnimationFrame(animationId);
+    animationId = null;
+  }
+
+  // First render: no animation
+  if (currentState === null) {
+    currentState = newState;
+    renderChart(newState, FIXED_DOMAIN);
+    return;
+  }
+
+  // Animate the chart from current (possibly mid-animation) → target
+  const fromState = { ...currentState };
+  const startTime = performance.now();
+
+  function frame() {
+    const elapsed = performance.now() - startTime;
+    const raw = Math.min(1, elapsed / ANIM_DURATION);
+    const t   = easeInOutCubic(raw);
+    const interp = interpState(fromState, newState, t);
+
+    currentState = interp;
+    renderChart(interp, FIXED_DOMAIN);
+
+    if (raw < 1) {
+      animationId = requestAnimationFrame(frame);
+    } else {
+      animationId = null;
+      currentState = newState;
+    }
+  }
+  animationId = requestAnimationFrame(frame);
+}
+
+// Option card wiring
+document.querySelectorAll('.option').forEach(el => {
+  el.addEventListener('click', () => apply(el.dataset.key));
+});
+
+// Initial render
+apply('balanced');
+
+// Re-render on resize (no animation)
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    if (currentState) {
+      renderMetrics(currentState);
+      renderBep(currentState);
+      renderChart(currentState, FIXED_DOMAIN);
+      renderScenarios(currentState);
+    }
+  }, 150);
+});
+</script>
+</body>
+</html>
