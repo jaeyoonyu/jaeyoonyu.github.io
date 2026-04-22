@@ -1,0 +1,84 @@
+county,county_seat,region,zhvi_2000_01,zhvi_2006_01,zhvi_2009_06,zhvi_2012_01,zhvi_2016_01,zhvi_2019_12,zhvi_2022_06,zhvi_2024_10
+Alcona,Harrisville,N. Lower,50,65,50,44,60,92,135,143
+Alger,Munising,U.P.,50,64,54,50,68,104,152,162
+Allegan,Allegan,W. Michigan,112,135,100,90,136,218,318,332
+Alpena,Alpena,N. Lower,67,80,62,56,74,112,158,166
+Antrim,Bellaire,N. Lower,108,148,122,108,158,252,368,388
+Arenac,Standish,E. Central,62,73,54,47,62,91,122,130
+Baraga,L'Anse,U.P.,46,56,46,43,57,85,122,130
+Barry,Hastings,W. Michigan,122,145,108,98,152,232,334,350
+Bay,Bay City,Tri-Cities,92,110,84,74,98,134,166,175
+Benzie,Beulah,N. Lower,118,162,136,122,184,294,432,455
+Berrien,St. Joseph / Benton Harbor,SW Michigan,122,142,108,98,132,194,284,298
+Branch,Coldwater,S. Michigan,80,93,70,64,85,122,163,172
+Calhoun,Battle Creek,SW Michigan,105,124,93,83,108,162,225,235
+Cass,Cassopolis,SW Michigan,88,103,77,70,93,136,184,194
+Charlevoix,Charlevoix,N. Lower,190,256,216,200,294,466,668,703
+Cheboygan,Cheboygan,N. Lower,70,90,74,67,91,144,212,225
+Chippewa,Sault Ste. Marie,U.P.,60,72,60,57,74,112,160,168
+Clare,Harrison,C. Michigan,70,80,62,54,70,103,140,148
+Clinton,St. Johns,C. Michigan,136,162,126,115,163,248,348,362
+Crawford,Grayling,N. Lower,54,67,50,44,60,95,136,144
+Delta,Escanaba,U.P.,70,80,67,64,80,114,160,168
+Dickinson,Iron Mountain,U.P.,67,77,64,60,77,112,157,165
+Eaton,Charlotte,C. Michigan,126,150,116,103,152,216,304,318
+Emmet,Petoskey,N. Lower,172,234,198,183,270,430,616,648
+Genesee,Flint,SE Michigan,95,115,67,54,77,103,143,150
+Gladwin,Gladwin,C. Michigan,67,77,60,52,67,101,136,143
+Gogebic,Bessemer,U.P.,50,60,50,45,60,88,126,133
+Grand Traverse,Traverse City,N. Lower,160,201,163,150,222,352,508,535
+Gratiot,Ithaca,C. Michigan,74,84,62,55,72,101,132,139
+Hillsdale,Hillsdale,S. Michigan,80,94,72,64,84,124,170,180
+Houghton,Houghton,U.P.,70,82,70,67,88,126,180,191
+Huron,Bad Axe,Thumb,72,84,64,57,74,108,150,158
+Ingham,Lansing,C. Michigan,112,132,103,93,122,170,235,246
+Ionia,Ionia,W. Michigan,87,103,77,70,95,139,194,204
+Iosco,Tawas City,E. Central,57,70,54,47,64,98,142,150
+Iron,Crystal Falls,U.P.,44,54,43,39,53,80,115,122
+Isabella,Mount Pleasant,C. Michigan,111,128,101,91,115,156,206,216
+Jackson,Jackson,SE Michigan,105,125,93,82,111,167,235,246
+Kalamazoo,Kalamazoo,SW Michigan,128,152,115,108,157,216,301,315
+Kalkaska,Kalkaska,N. Lower,54,67,50,43,60,93,132,140
+Kent,Grand Rapids,W. Michigan,136,163,122,111,167,245,350,366
+Keweenaw,Eagle River,U.P.,40,54,43,39,57,88,130,137
+Lake,Baldwin,N. Lower,47,60,44,39,54,83,119,126
+Lapeer,Lapeer,SE Michigan,132,165,122,108,146,206,273,287
+Leelanau,Leland,N. Lower,200,276,235,218,322,514,740,779
+Lenawee,Tecumseh,SE Michigan,111,134,99,87,115,163,217,228
+Livingston,Howell,SE Michigan,190,242,185,165,235,328,430,449
+Luce,Newberry,U.P.,40,50,39,36,48,73,104,110
+Mackinac,St. Ignace,U.P.,70,95,82,77,108,173,256,270
+Macomb,Mount Clemens / Sterling Heights,SE Michigan,165,204,144,121,173,232,287,300
+Manistee,Manistee,W. Michigan,91,111,87,80,108,167,242,256
+Marquette,Marquette,U.P.,80,95,82,80,105,152,218,232
+Mason,Ludington,W. Michigan,85,101,77,70,95,144,204,215
+Mecosta,Big Rapids,C. Michigan,77,91,70,62,82,122,167,176
+Menominee,Menominee,U.P.,57,67,54,50,64,93,132,140
+Midland,Midland,Tri-Cities,142,162,136,122,152,194,246,257
+Missaukee,Lake City,N. Lower,57,70,54,46,64,98,143,150
+Monroe,Monroe,SE Michigan,132,162,115,103,142,196,260,272
+Montcalm,Stanton,C. Michigan,70,82,62,55,74,109,152,160
+Montmorency,Atlanta,N. Lower,43,57,43,39,54,84,122,129
+Muskegon,Muskegon,W. Michigan,98,119,87,77,111,165,253,266
+Newaygo,White Cloud,W. Michigan,82,98,74,67,87,132,184,194
+Oakland,Pontiac / Troy / Royal Oak,SE Michigan,216,268,190,170,232,314,412,430
+Oceana,Hart,W. Michigan,74,91,67,60,82,124,174,184
+Ogemaw,West Branch,N. Lower,54,67,50,43,60,91,130,137
+Ontonagon,Ontonagon,U.P.,39,50,39,36,47,72,105,111
+Osceola,Reed City,C. Michigan,62,74,57,50,67,101,143,150
+Oscoda,Mio,N. Lower,42,54,41,36,50,77,112,119
+Otsego,Gaylord,N. Lower,64,84,67,60,82,132,191,202
+Ottawa,Grand Haven / Holland,W. Michigan,146,175,132,121,184,288,412,431
+Presque Isle,Rogers City,N. Lower,46,60,46,41,57,88,126,133
+Roscommon,Roscommon,N. Lower,57,74,57,50,67,105,153,161
+Saginaw,Saginaw,Tri-Cities,100,118,80,67,87,121,157,165
+Sanilac,Sandusky,Thumb,70,82,62,55,74,108,150,158
+Schoolcraft,Manistique,U.P.,41,51,41,37,49,74,108,115
+Shiawassee,Corunna / Owosso,C. Michigan,98,115,84,74,101,144,191,201
+St. Clair,Port Huron,SE Michigan,118,146,108,95,128,183,242,255
+St. Joseph,Centreville,SW Michigan,101,118,88,80,103,149,201,212
+Tuscola,Caro,Thumb,77,90,67,60,77,113,153,161
+Van Buren,Paw Paw,SW Michigan,91,108,80,72,98,142,194,204
+Washtenaw,Ann Arbor,SE Michigan,200,252,198,170,263,361,484,503
+Wayne,Detroit,SE Michigan,101,124,79,62,108,152,194,202
+Wexford,Cadillac,N. Lower,70,84,64,57,74,114,163,172

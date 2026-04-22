@@ -6,4 +6,5 @@ Gemfile
 Gemfile.lock
 _code/data/compustat_from_1990.csv
 *.csv
+!assets/data/*.csv
 _code/work-in-progress/

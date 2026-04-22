@@ -243,19 +243,7 @@ let REGION = {};
 let DATA   = {};
 let ALL    = [];
 
-function parseCSV(text) {
-  const lines = text.trim().split('\n');
-  const headers = lines[0].split(',').map(h => h.trim());
-  return lines.slice(1).map(line => {
-    // handle commas inside quoted fields
-    const vals = line.split(',');
-    const obj = {};
-    headers.forEach((h, i) => obj[h] = vals[i] ? vals[i].trim() : '');
-    return obj;
-  });
-}
 
-const ALL = Object.keys(DATA).sort();
 const T_NUMS = TP.map(s => { const [y,m]=s.split("-").map(Number); return y+(m-1)/12; });
 const COLORS = ["#19caca","#f0b429"];
 const DIM    = ["rgba(25,202,202,0.12)","rgba(240,180,41,0.12)"];
@@ -671,27 +659,101 @@ function focusItem(items,idx){
 }
 window.clearSrch=()=>{srch.value="";dd.classList.remove("open");};
 
-// ── Init: load CSV then render ──
-fetch('/assets/data/michigan-house-prices.csv')
-  .then(r => { if(!r.ok) throw new Error('CSV not found'); return r.text(); })
-  .then(text => {
-    const rows = parseCSV(text);
-    rows.forEach(r => {
-      const c = r.county;
-      SEAT[c]   = r.county_seat;
-      REGION[c] = r.region;
-      DATA[c]   = TP_COLS.map(col => parseFloat(r[col]));
-    });
-    ALL = Object.keys(DATA).sort();
-    buildQuickBtns();
-    render();
-  })
-  .catch(err => {
-    document.querySelector('.page').insertAdjacentHTML('afterbegin',
-      `<div style="background:#f87171;color:#0f1e2e;padding:12px 18px;border-radius:8px;font-weight:700;">
-        Failed to load data: ${err.message}. Check that /assets/data/michigan-house-prices.csv exists.
-      </div>`);
-  });
+// ── Inline data ──
+const CSV_ROWS = [
+  {county:"Alcona",county_seat:"Harrisville",region:"N. Lower",zhvi_2000_01:50,zhvi_2006_01:65,zhvi_2009_06:50,zhvi_2012_01:44,zhvi_2016_01:60,zhvi_2019_12:92,zhvi_2022_06:135,zhvi_2024_10:143},
+  {county:"Alger",county_seat:"Munising",region:"U.P.",zhvi_2000_01:50,zhvi_2006_01:64,zhvi_2009_06:54,zhvi_2012_01:50,zhvi_2016_01:68,zhvi_2019_12:104,zhvi_2022_06:152,zhvi_2024_10:162},
+  {county:"Allegan",county_seat:"Allegan",region:"W. Michigan",zhvi_2000_01:112,zhvi_2006_01:135,zhvi_2009_06:100,zhvi_2012_01:90,zhvi_2016_01:136,zhvi_2019_12:218,zhvi_2022_06:318,zhvi_2024_10:332},
+  {county:"Alpena",county_seat:"Alpena",region:"N. Lower",zhvi_2000_01:67,zhvi_2006_01:80,zhvi_2009_06:62,zhvi_2012_01:56,zhvi_2016_01:74,zhvi_2019_12:112,zhvi_2022_06:158,zhvi_2024_10:166},
+  {county:"Antrim",county_seat:"Bellaire",region:"N. Lower",zhvi_2000_01:108,zhvi_2006_01:148,zhvi_2009_06:122,zhvi_2012_01:108,zhvi_2016_01:158,zhvi_2019_12:252,zhvi_2022_06:368,zhvi_2024_10:388},
+  {county:"Arenac",county_seat:"Standish",region:"E. Central",zhvi_2000_01:62,zhvi_2006_01:73,zhvi_2009_06:54,zhvi_2012_01:47,zhvi_2016_01:62,zhvi_2019_12:91,zhvi_2022_06:122,zhvi_2024_10:130},
+  {county:"Baraga",county_seat:"L'Anse",region:"U.P.",zhvi_2000_01:46,zhvi_2006_01:56,zhvi_2009_06:46,zhvi_2012_01:43,zhvi_2016_01:57,zhvi_2019_12:85,zhvi_2022_06:122,zhvi_2024_10:130},
+  {county:"Barry",county_seat:"Hastings",region:"W. Michigan",zhvi_2000_01:122,zhvi_2006_01:145,zhvi_2009_06:108,zhvi_2012_01:98,zhvi_2016_01:152,zhvi_2019_12:232,zhvi_2022_06:334,zhvi_2024_10:350},
+  {county:"Bay",county_seat:"Bay City",region:"Tri-Cities",zhvi_2000_01:92,zhvi_2006_01:110,zhvi_2009_06:84,zhvi_2012_01:74,zhvi_2016_01:98,zhvi_2019_12:134,zhvi_2022_06:166,zhvi_2024_10:175},
+  {county:"Benzie",county_seat:"Beulah",region:"N. Lower",zhvi_2000_01:118,zhvi_2006_01:162,zhvi_2009_06:136,zhvi_2012_01:122,zhvi_2016_01:184,zhvi_2019_12:294,zhvi_2022_06:432,zhvi_2024_10:455},
+  {county:"Berrien",county_seat:"St. Joseph / Benton Harbor",region:"SW Michigan",zhvi_2000_01:122,zhvi_2006_01:142,zhvi_2009_06:108,zhvi_2012_01:98,zhvi_2016_01:132,zhvi_2019_12:194,zhvi_2022_06:284,zhvi_2024_10:298},
+  {county:"Branch",county_seat:"Coldwater",region:"S. Michigan",zhvi_2000_01:80,zhvi_2006_01:93,zhvi_2009_06:70,zhvi_2012_01:64,zhvi_2016_01:85,zhvi_2019_12:122,zhvi_2022_06:163,zhvi_2024_10:172},
+  {county:"Calhoun",county_seat:"Battle Creek",region:"SW Michigan",zhvi_2000_01:105,zhvi_2006_01:124,zhvi_2009_06:93,zhvi_2012_01:83,zhvi_2016_01:108,zhvi_2019_12:162,zhvi_2022_06:225,zhvi_2024_10:235},
+  {county:"Cass",county_seat:"Cassopolis",region:"SW Michigan",zhvi_2000_01:88,zhvi_2006_01:103,zhvi_2009_06:77,zhvi_2012_01:70,zhvi_2016_01:93,zhvi_2019_12:136,zhvi_2022_06:184,zhvi_2024_10:194},
+  {county:"Charlevoix",county_seat:"Charlevoix",region:"N. Lower",zhvi_2000_01:190,zhvi_2006_01:256,zhvi_2009_06:216,zhvi_2012_01:200,zhvi_2016_01:294,zhvi_2019_12:466,zhvi_2022_06:668,zhvi_2024_10:703},
+  {county:"Cheboygan",county_seat:"Cheboygan",region:"N. Lower",zhvi_2000_01:70,zhvi_2006_01:90,zhvi_2009_06:74,zhvi_2012_01:67,zhvi_2016_01:91,zhvi_2019_12:144,zhvi_2022_06:212,zhvi_2024_10:225},
+  {county:"Chippewa",county_seat:"Sault Ste. Marie",region:"U.P.",zhvi_2000_01:60,zhvi_2006_01:72,zhvi_2009_06:60,zhvi_2012_01:57,zhvi_2016_01:74,zhvi_2019_12:112,zhvi_2022_06:160,zhvi_2024_10:168},
+  {county:"Clare",county_seat:"Harrison",region:"C. Michigan",zhvi_2000_01:70,zhvi_2006_01:80,zhvi_2009_06:62,zhvi_2012_01:54,zhvi_2016_01:70,zhvi_2019_12:103,zhvi_2022_06:140,zhvi_2024_10:148},
+  {county:"Clinton",county_seat:"St. Johns",region:"C. Michigan",zhvi_2000_01:136,zhvi_2006_01:162,zhvi_2009_06:126,zhvi_2012_01:115,zhvi_2016_01:163,zhvi_2019_12:248,zhvi_2022_06:348,zhvi_2024_10:362},
+  {county:"Crawford",county_seat:"Grayling",region:"N. Lower",zhvi_2000_01:54,zhvi_2006_01:67,zhvi_2009_06:50,zhvi_2012_01:44,zhvi_2016_01:60,zhvi_2019_12:95,zhvi_2022_06:136,zhvi_2024_10:144},
+  {county:"Delta",county_seat:"Escanaba",region:"U.P.",zhvi_2000_01:70,zhvi_2006_01:80,zhvi_2009_06:67,zhvi_2012_01:64,zhvi_2016_01:80,zhvi_2019_12:114,zhvi_2022_06:160,zhvi_2024_10:168},
+  {county:"Dickinson",county_seat:"Iron Mountain",region:"U.P.",zhvi_2000_01:67,zhvi_2006_01:77,zhvi_2009_06:64,zhvi_2012_01:60,zhvi_2016_01:77,zhvi_2019_12:112,zhvi_2022_06:157,zhvi_2024_10:165},
+  {county:"Eaton",county_seat:"Charlotte",region:"C. Michigan",zhvi_2000_01:126,zhvi_2006_01:150,zhvi_2009_06:116,zhvi_2012_01:103,zhvi_2016_01:152,zhvi_2019_12:216,zhvi_2022_06:304,zhvi_2024_10:318},
+  {county:"Emmet",county_seat:"Petoskey",region:"N. Lower",zhvi_2000_01:172,zhvi_2006_01:234,zhvi_2009_06:198,zhvi_2012_01:183,zhvi_2016_01:270,zhvi_2019_12:430,zhvi_2022_06:616,zhvi_2024_10:648},
+  {county:"Genesee",county_seat:"Flint",region:"SE Michigan",zhvi_2000_01:95,zhvi_2006_01:115,zhvi_2009_06:67,zhvi_2012_01:54,zhvi_2016_01:77,zhvi_2019_12:103,zhvi_2022_06:143,zhvi_2024_10:150},
+  {county:"Gladwin",county_seat:"Gladwin",region:"C. Michigan",zhvi_2000_01:67,zhvi_2006_01:77,zhvi_2009_06:60,zhvi_2012_01:52,zhvi_2016_01:67,zhvi_2019_12:101,zhvi_2022_06:136,zhvi_2024_10:143},
+  {county:"Gogebic",county_seat:"Bessemer",region:"U.P.",zhvi_2000_01:50,zhvi_2006_01:60,zhvi_2009_06:50,zhvi_2012_01:45,zhvi_2016_01:60,zhvi_2019_12:88,zhvi_2022_06:126,zhvi_2024_10:133},
+  {county:"Grand Traverse",county_seat:"Traverse City",region:"N. Lower",zhvi_2000_01:160,zhvi_2006_01:201,zhvi_2009_06:163,zhvi_2012_01:150,zhvi_2016_01:222,zhvi_2019_12:352,zhvi_2022_06:508,zhvi_2024_10:535},
+  {county:"Gratiot",county_seat:"Ithaca",region:"C. Michigan",zhvi_2000_01:74,zhvi_2006_01:84,zhvi_2009_06:62,zhvi_2012_01:55,zhvi_2016_01:72,zhvi_2019_12:101,zhvi_2022_06:132,zhvi_2024_10:139},
+  {county:"Hillsdale",county_seat:"Hillsdale",region:"S. Michigan",zhvi_2000_01:80,zhvi_2006_01:94,zhvi_2009_06:72,zhvi_2012_01:64,zhvi_2016_01:84,zhvi_2019_12:124,zhvi_2022_06:170,zhvi_2024_10:180},
+  {county:"Houghton",county_seat:"Houghton",region:"U.P.",zhvi_2000_01:70,zhvi_2006_01:82,zhvi_2009_06:70,zhvi_2012_01:67,zhvi_2016_01:88,zhvi_2019_12:126,zhvi_2022_06:180,zhvi_2024_10:191},
+  {county:"Huron",county_seat:"Bad Axe",region:"Thumb",zhvi_2000_01:72,zhvi_2006_01:84,zhvi_2009_06:64,zhvi_2012_01:57,zhvi_2016_01:74,zhvi_2019_12:108,zhvi_2022_06:150,zhvi_2024_10:158},
+  {county:"Ingham",county_seat:"Lansing",region:"C. Michigan",zhvi_2000_01:112,zhvi_2006_01:132,zhvi_2009_06:103,zhvi_2012_01:93,zhvi_2016_01:122,zhvi_2019_12:170,zhvi_2022_06:235,zhvi_2024_10:246},
+  {county:"Ionia",county_seat:"Ionia",region:"W. Michigan",zhvi_2000_01:87,zhvi_2006_01:103,zhvi_2009_06:77,zhvi_2012_01:70,zhvi_2016_01:95,zhvi_2019_12:139,zhvi_2022_06:194,zhvi_2024_10:204},
+  {county:"Iosco",county_seat:"Tawas City",region:"E. Central",zhvi_2000_01:57,zhvi_2006_01:70,zhvi_2009_06:54,zhvi_2012_01:47,zhvi_2016_01:64,zhvi_2019_12:98,zhvi_2022_06:142,zhvi_2024_10:150},
+  {county:"Iron",county_seat:"Crystal Falls",region:"U.P.",zhvi_2000_01:44,zhvi_2006_01:54,zhvi_2009_06:43,zhvi_2012_01:39,zhvi_2016_01:53,zhvi_2019_12:80,zhvi_2022_06:115,zhvi_2024_10:122},
+  {county:"Isabella",county_seat:"Mount Pleasant",region:"C. Michigan",zhvi_2000_01:111,zhvi_2006_01:128,zhvi_2009_06:101,zhvi_2012_01:91,zhvi_2016_01:115,zhvi_2019_12:156,zhvi_2022_06:206,zhvi_2024_10:216},
+  {county:"Jackson",county_seat:"Jackson",region:"SE Michigan",zhvi_2000_01:105,zhvi_2006_01:125,zhvi_2009_06:93,zhvi_2012_01:82,zhvi_2016_01:111,zhvi_2019_12:167,zhvi_2022_06:235,zhvi_2024_10:246},
+  {county:"Kalamazoo",county_seat:"Kalamazoo",region:"SW Michigan",zhvi_2000_01:128,zhvi_2006_01:152,zhvi_2009_06:115,zhvi_2012_01:108,zhvi_2016_01:157,zhvi_2019_12:216,zhvi_2022_06:301,zhvi_2024_10:315},
+  {county:"Kalkaska",county_seat:"Kalkaska",region:"N. Lower",zhvi_2000_01:54,zhvi_2006_01:67,zhvi_2009_06:50,zhvi_2012_01:43,zhvi_2016_01:60,zhvi_2019_12:93,zhvi_2022_06:132,zhvi_2024_10:140},
+  {county:"Kent",county_seat:"Grand Rapids",region:"W. Michigan",zhvi_2000_01:136,zhvi_2006_01:163,zhvi_2009_06:122,zhvi_2012_01:111,zhvi_2016_01:167,zhvi_2019_12:245,zhvi_2022_06:350,zhvi_2024_10:366},
+  {county:"Keweenaw",county_seat:"Eagle River",region:"U.P.",zhvi_2000_01:40,zhvi_2006_01:54,zhvi_2009_06:43,zhvi_2012_01:39,zhvi_2016_01:57,zhvi_2019_12:88,zhvi_2022_06:130,zhvi_2024_10:137},
+  {county:"Lake",county_seat:"Baldwin",region:"N. Lower",zhvi_2000_01:47,zhvi_2006_01:60,zhvi_2009_06:44,zhvi_2012_01:39,zhvi_2016_01:54,zhvi_2019_12:83,zhvi_2022_06:119,zhvi_2024_10:126},
+  {county:"Lapeer",county_seat:"Lapeer",region:"SE Michigan",zhvi_2000_01:132,zhvi_2006_01:165,zhvi_2009_06:122,zhvi_2012_01:108,zhvi_2016_01:146,zhvi_2019_12:206,zhvi_2022_06:273,zhvi_2024_10:287},
+  {county:"Leelanau",county_seat:"Leland",region:"N. Lower",zhvi_2000_01:200,zhvi_2006_01:276,zhvi_2009_06:235,zhvi_2012_01:218,zhvi_2016_01:322,zhvi_2019_12:514,zhvi_2022_06:740,zhvi_2024_10:779},
+  {county:"Lenawee",county_seat:"Tecumseh",region:"SE Michigan",zhvi_2000_01:111,zhvi_2006_01:134,zhvi_2009_06:99,zhvi_2012_01:87,zhvi_2016_01:115,zhvi_2019_12:163,zhvi_2022_06:217,zhvi_2024_10:228},
+  {county:"Livingston",county_seat:"Howell",region:"SE Michigan",zhvi_2000_01:190,zhvi_2006_01:242,zhvi_2009_06:185,zhvi_2012_01:165,zhvi_2016_01:235,zhvi_2019_12:328,zhvi_2022_06:430,zhvi_2024_10:449},
+  {county:"Luce",county_seat:"Newberry",region:"U.P.",zhvi_2000_01:40,zhvi_2006_01:50,zhvi_2009_06:39,zhvi_2012_01:36,zhvi_2016_01:48,zhvi_2019_12:73,zhvi_2022_06:104,zhvi_2024_10:110},
+  {county:"Mackinac",county_seat:"St. Ignace",region:"U.P.",zhvi_2000_01:70,zhvi_2006_01:95,zhvi_2009_06:82,zhvi_2012_01:77,zhvi_2016_01:108,zhvi_2019_12:173,zhvi_2022_06:256,zhvi_2024_10:270},
+  {county:"Macomb",county_seat:"Mount Clemens / Sterling Heights",region:"SE Michigan",zhvi_2000_01:165,zhvi_2006_01:204,zhvi_2009_06:144,zhvi_2012_01:121,zhvi_2016_01:173,zhvi_2019_12:232,zhvi_2022_06:287,zhvi_2024_10:300},
+  {county:"Manistee",county_seat:"Manistee",region:"W. Michigan",zhvi_2000_01:91,zhvi_2006_01:111,zhvi_2009_06:87,zhvi_2012_01:80,zhvi_2016_01:108,zhvi_2019_12:167,zhvi_2022_06:242,zhvi_2024_10:256},
+  {county:"Marquette",county_seat:"Marquette",region:"U.P.",zhvi_2000_01:80,zhvi_2006_01:95,zhvi_2009_06:82,zhvi_2012_01:80,zhvi_2016_01:105,zhvi_2019_12:152,zhvi_2022_06:218,zhvi_2024_10:232},
+  {county:"Mason",county_seat:"Ludington",region:"W. Michigan",zhvi_2000_01:85,zhvi_2006_01:101,zhvi_2009_06:77,zhvi_2012_01:70,zhvi_2016_01:95,zhvi_2019_12:144,zhvi_2022_06:204,zhvi_2024_10:215},
+  {county:"Mecosta",county_seat:"Big Rapids",region:"C. Michigan",zhvi_2000_01:77,zhvi_2006_01:91,zhvi_2009_06:70,zhvi_2012_01:62,zhvi_2016_01:82,zhvi_2019_12:122,zhvi_2022_06:167,zhvi_2024_10:176},
+  {county:"Menominee",county_seat:"Menominee",region:"U.P.",zhvi_2000_01:57,zhvi_2006_01:67,zhvi_2009_06:54,zhvi_2012_01:50,zhvi_2016_01:64,zhvi_2019_12:93,zhvi_2022_06:132,zhvi_2024_10:140},
+  {county:"Midland",county_seat:"Midland",region:"Tri-Cities",zhvi_2000_01:142,zhvi_2006_01:162,zhvi_2009_06:136,zhvi_2012_01:122,zhvi_2016_01:152,zhvi_2019_12:194,zhvi_2022_06:246,zhvi_2024_10:257},
+  {county:"Missaukee",county_seat:"Lake City",region:"N. Lower",zhvi_2000_01:57,zhvi_2006_01:70,zhvi_2009_06:54,zhvi_2012_01:46,zhvi_2016_01:64,zhvi_2019_12:98,zhvi_2022_06:143,zhvi_2024_10:150},
+  {county:"Monroe",county_seat:"Monroe",region:"SE Michigan",zhvi_2000_01:132,zhvi_2006_01:162,zhvi_2009_06:115,zhvi_2012_01:103,zhvi_2016_01:142,zhvi_2019_12:196,zhvi_2022_06:260,zhvi_2024_10:272},
+  {county:"Montcalm",county_seat:"Stanton",region:"C. Michigan",zhvi_2000_01:70,zhvi_2006_01:82,zhvi_2009_06:62,zhvi_2012_01:55,zhvi_2016_01:74,zhvi_2019_12:109,zhvi_2022_06:152,zhvi_2024_10:160},
+  {county:"Montmorency",county_seat:"Atlanta",region:"N. Lower",zhvi_2000_01:43,zhvi_2006_01:57,zhvi_2009_06:43,zhvi_2012_01:39,zhvi_2016_01:54,zhvi_2019_12:84,zhvi_2022_06:122,zhvi_2024_10:129},
+  {county:"Muskegon",county_seat:"Muskegon",region:"W. Michigan",zhvi_2000_01:98,zhvi_2006_01:119,zhvi_2009_06:87,zhvi_2012_01:77,zhvi_2016_01:111,zhvi_2019_12:165,zhvi_2022_06:253,zhvi_2024_10:266},
+  {county:"Newaygo",county_seat:"White Cloud",region:"W. Michigan",zhvi_2000_01:82,zhvi_2006_01:98,zhvi_2009_06:74,zhvi_2012_01:67,zhvi_2016_01:87,zhvi_2019_12:132,zhvi_2022_06:184,zhvi_2024_10:194},
+  {county:"Oakland",county_seat:"Pontiac / Troy / Royal Oak",region:"SE Michigan",zhvi_2000_01:216,zhvi_2006_01:268,zhvi_2009_06:190,zhvi_2012_01:170,zhvi_2016_01:232,zhvi_2019_12:314,zhvi_2022_06:412,zhvi_2024_10:430},
+  {county:"Oceana",county_seat:"Hart",region:"W. Michigan",zhvi_2000_01:74,zhvi_2006_01:91,zhvi_2009_06:67,zhvi_2012_01:60,zhvi_2016_01:82,zhvi_2019_12:124,zhvi_2022_06:174,zhvi_2024_10:184},
+  {county:"Ogemaw",county_seat:"West Branch",region:"N. Lower",zhvi_2000_01:54,zhvi_2006_01:67,zhvi_2009_06:50,zhvi_2012_01:43,zhvi_2016_01:60,zhvi_2019_12:91,zhvi_2022_06:130,zhvi_2024_10:137},
+  {county:"Ontonagon",county_seat:"Ontonagon",region:"U.P.",zhvi_2000_01:39,zhvi_2006_01:50,zhvi_2009_06:39,zhvi_2012_01:36,zhvi_2016_01:47,zhvi_2019_12:72,zhvi_2022_06:105,zhvi_2024_10:111},
+  {county:"Osceola",county_seat:"Reed City",region:"C. Michigan",zhvi_2000_01:62,zhvi_2006_01:74,zhvi_2009_06:57,zhvi_2012_01:50,zhvi_2016_01:67,zhvi_2019_12:101,zhvi_2022_06:143,zhvi_2024_10:150},
+  {county:"Oscoda",county_seat:"Mio",region:"N. Lower",zhvi_2000_01:42,zhvi_2006_01:54,zhvi_2009_06:41,zhvi_2012_01:36,zhvi_2016_01:50,zhvi_2019_12:77,zhvi_2022_06:112,zhvi_2024_10:119},
+  {county:"Otsego",county_seat:"Gaylord",region:"N. Lower",zhvi_2000_01:64,zhvi_2006_01:84,zhvi_2009_06:67,zhvi_2012_01:60,zhvi_2016_01:82,zhvi_2019_12:132,zhvi_2022_06:191,zhvi_2024_10:202},
+  {county:"Ottawa",county_seat:"Grand Haven / Holland",region:"W. Michigan",zhvi_2000_01:146,zhvi_2006_01:175,zhvi_2009_06:132,zhvi_2012_01:121,zhvi_2016_01:184,zhvi_2019_12:288,zhvi_2022_06:412,zhvi_2024_10:431},
+  {county:"Presque Isle",county_seat:"Rogers City",region:"N. Lower",zhvi_2000_01:46,zhvi_2006_01:60,zhvi_2009_06:46,zhvi_2012_01:41,zhvi_2016_01:57,zhvi_2019_12:88,zhvi_2022_06:126,zhvi_2024_10:133},
+  {county:"Roscommon",county_seat:"Roscommon",region:"N. Lower",zhvi_2000_01:57,zhvi_2006_01:74,zhvi_2009_06:57,zhvi_2012_01:50,zhvi_2016_01:67,zhvi_2019_12:105,zhvi_2022_06:153,zhvi_2024_10:161},
+  {county:"Saginaw",county_seat:"Saginaw",region:"Tri-Cities",zhvi_2000_01:100,zhvi_2006_01:118,zhvi_2009_06:80,zhvi_2012_01:67,zhvi_2016_01:87,zhvi_2019_12:121,zhvi_2022_06:157,zhvi_2024_10:165},
+  {county:"Sanilac",county_seat:"Sandusky",region:"Thumb",zhvi_2000_01:70,zhvi_2006_01:82,zhvi_2009_06:62,zhvi_2012_01:55,zhvi_2016_01:74,zhvi_2019_12:108,zhvi_2022_06:150,zhvi_2024_10:158},
+  {county:"Schoolcraft",county_seat:"Manistique",region:"U.P.",zhvi_2000_01:41,zhvi_2006_01:51,zhvi_2009_06:41,zhvi_2012_01:37,zhvi_2016_01:49,zhvi_2019_12:74,zhvi_2022_06:108,zhvi_2024_10:115},
+  {county:"Shiawassee",county_seat:"Corunna / Owosso",region:"C. Michigan",zhvi_2000_01:98,zhvi_2006_01:115,zhvi_2009_06:84,zhvi_2012_01:74,zhvi_2016_01:101,zhvi_2019_12:144,zhvi_2022_06:191,zhvi_2024_10:201},
+  {county:"St. Clair",county_seat:"Port Huron",region:"SE Michigan",zhvi_2000_01:118,zhvi_2006_01:146,zhvi_2009_06:108,zhvi_2012_01:95,zhvi_2016_01:128,zhvi_2019_12:183,zhvi_2022_06:242,zhvi_2024_10:255},
+  {county:"St. Joseph",county_seat:"Centreville",region:"SW Michigan",zhvi_2000_01:101,zhvi_2006_01:118,zhvi_2009_06:88,zhvi_2012_01:80,zhvi_2016_01:103,zhvi_2019_12:149,zhvi_2022_06:201,zhvi_2024_10:212},
+  {county:"Tuscola",county_seat:"Caro",region:"Thumb",zhvi_2000_01:77,zhvi_2006_01:90,zhvi_2009_06:67,zhvi_2012_01:60,zhvi_2016_01:77,zhvi_2019_12:113,zhvi_2022_06:153,zhvi_2024_10:161},
+  {county:"Van Buren",county_seat:"Paw Paw",region:"SW Michigan",zhvi_2000_01:91,zhvi_2006_01:108,zhvi_2009_06:80,zhvi_2012_01:72,zhvi_2016_01:98,zhvi_2019_12:142,zhvi_2022_06:194,zhvi_2024_10:204},
+  {county:"Washtenaw",county_seat:"Ann Arbor",region:"SE Michigan",zhvi_2000_01:200,zhvi_2006_01:252,zhvi_2009_06:198,zhvi_2012_01:170,zhvi_2016_01:263,zhvi_2019_12:361,zhvi_2022_06:484,zhvi_2024_10:503},
+  {county:"Wayne",county_seat:"Detroit",region:"SE Michigan",zhvi_2000_01:101,zhvi_2006_01:124,zhvi_2009_06:79,zhvi_2012_01:62,zhvi_2016_01:108,zhvi_2019_12:152,zhvi_2022_06:194,zhvi_2024_10:202},
+  {county:"Wexford",county_seat:"Cadillac",region:"N. Lower",zhvi_2000_01:70,zhvi_2006_01:84,zhvi_2009_06:64,zhvi_2012_01:57,zhvi_2016_01:74,zhvi_2019_12:114,zhvi_2022_06:163,zhvi_2024_10:172},
+];
+CSV_ROWS.forEach(r => {
+  const c = r.county;
+  SEAT[c]   = r.county_seat;
+  REGION[c] = r.region;
+  DATA[c]   = TP_COLS.map(col => r[col]);
+});
+ALL = Object.keys(DATA).sort();
+buildQuickBtns();
+render();
 </script>
 </body>
 </html>
