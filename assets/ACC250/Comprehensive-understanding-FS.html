@@ -176,9 +176,9 @@ html, body {
 .board {
   position: relative;
   display: grid;
-  flex: 1 1 0; min-width: 0;
-  grid-template-columns: minmax(0,1fr) minmax(0,1fr);
-  column-gap: 50px; row-gap: 18px;
+  flex-shrink: 0;
+  grid-template-columns: 440px 500px;
+  column-gap: 90px; row-gap: 18px;
   align-items: start;
 }
 .is  { grid-column: 1; grid-row: 1; }
