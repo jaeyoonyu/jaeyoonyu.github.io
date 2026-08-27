@@ -7,7 +7,7 @@ title: "About me"
 
 Please click here to view my <a href="https://drive.google.com/file/d/1jsByv92KTCG9nwYRf_zqXYodfTfWhmc2/view?usp=sharing" target="_blank">Curriculum Vitae.</a>
 
-
+Check this out for my slide deck - <a href="{{ site.baseurl }}/assets/CMU-CBA-AI-talk-20260827.html" target="_blank">Use of AI for teaching</a>
 
 Jaeyoon Yu  
 [yu10j@cmich.edu](mailto: yu10j@cmich.edu)
