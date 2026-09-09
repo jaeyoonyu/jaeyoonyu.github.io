@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ACC 250 — Ch0 Review Questions</title>
+<style>
+
+:root { --bg:#f1f1ef; --ink:#16263a; --muted:#5c6863; --accent:#1a7a5e;
+        --red:#b3200f; --card:#fff; --border:#dfe3e0; }
+* { box-sizing:border-box; }
+html, body { margin:0; height:100%; background:#0d1310; }
+body { font:16px/1.5 "Segoe UI",system-ui,sans-serif; color:var(--ink);
+  display:flex; align-items:center; justify-content:center; overflow:hidden; }
+#stage { position:relative; width:1600px; height:900px; transform-origin:center center;
+  background:var(--bg); box-shadow:0 18px 60px rgba(0,0,0,.5); overflow:hidden; }
+.s { position:absolute; inset:0; padding:64px 90px 80px; display:none;
+  flex-direction:column; justify-content:center; }
+.s.on { display:flex; animation:in .32s ease both; }
+@keyframes in { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+
+h1 { font-family:Charter,"Bitstream Charter",Cambria,Georgia,serif;
+  font-size:70px; line-height:1.12; margin:0 0 22px; font-weight:700; }
+.title { justify-content:center; }
+.title .tstack { max-width:1300px; }
+.title-date { position:absolute; left:90px; right:90px; bottom:48px; margin:0;
+  color:var(--muted); font-size:20px; }
+h2 { font-family:Charter,"Bitstream Charter",Cambria,Georgia,serif; font-size:46px; margin:0 0 26px;
+  font-weight:700; color:var(--ink); }
+h2::after { content:""; display:block; width:110px; height:6px; background:var(--accent);
+  border-radius:3px; margin-top:14px; }
+h3 { font-family:Charter,Cambria,Georgia,serif; font-size:28px; margin:0 0 12px; font-weight:700; }
+p { margin:.35em 0; }
+.eyebrow { font-size:19px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--accent); font-weight:700; margin:0 0 14px; }
+.lede { font-size:29px; line-height:1.45; color:var(--muted); margin:.2em 0; }
+.fine { font-size:20px; color:var(--muted); line-height:1.5; }
+.hl  { color:var(--accent); font-weight:700; }
+.hlr { color:var(--red); font-weight:700; }
+
+/* ---- definition / question / answer blocks ---- */
+.def { background:var(--card); border:1px solid var(--border); border-left:8px solid var(--accent);
+  border-radius:12px; padding:24px 30px; box-shadow:0 4px 16px rgba(0,0,0,.07); }
+.def .term { font:700 32px Charter,Cambria,Georgia,serif; color:var(--accent); margin:0 0 8px; }
+.def p { font-size:28px; line-height:1.42; margin:0; }
+
+.ask { background:#fdf6e3; border:1px solid #e8dcb8; border-left:8px solid #b8901f;
+  border-radius:12px; padding:22px 28px; }
+.ask .qlab { font:700 17px "Segoe UI",sans-serif; letter-spacing:.15em; text-transform:uppercase;
+  color:#8a6d1f; display:block; margin-bottom:8px; }
+.ask p { font-size:27px; line-height:1.4; margin:0; }
+
+.tests { display:grid; gap:14px; margin-top:22px; }
+.test { display:grid; grid-template-columns:52px 1fr; align-items:start; gap:18px;
+  background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 22px;
+  font-size:25px; line-height:1.35; box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.test .n { width:52px; height:52px; border-radius:50%; background:var(--accent); color:#fff;
+  display:grid; place-items:center; font:700 25px "Segoe UI",sans-serif; }
+
+.items { list-style:none; margin:18px 0 0; padding:0; display:grid; gap:13px; }
+.items li { display:grid; grid-template-columns:1fr 190px; align-items:center; gap:22px;
+  background:var(--card); border:1px solid var(--border); border-radius:11px;
+  padding:15px 22px; font-size:25px; line-height:1.3; box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.items li .why { grid-column:1/-1; font-size:20px; color:var(--muted); margin-top:-2px; }
+.chip { justify-self:end; padding:7px 16px; border-radius:999px; font:700 19px "Segoe UI",sans-serif;
+  letter-spacing:.04em; text-align:center; white-space:nowrap; }
+.chip.yes { background:#dff2e8; color:#12664c; border:1px solid #a9d6b8; }
+.chip.no  { background:#fbe6e2; color:var(--red); border:1px solid #eab8ae; }
+
+.answer { margin-top:22px; background:var(--accent); color:#fff; border-radius:12px;
+  padding:16px 28px; font:700 32px Charter,Cambria,Georgia,serif; display:inline-block; }
+.answer.neg { background:var(--red); }
+.key { margin-top:22px; background:#dff2e8; border:2px solid var(--accent); border-radius:14px;
+  padding:20px 32px; text-align:center; color:#12664c;
+  font:700 31px/1.34 Charter,"Bitstream Charter",Cambria,Georgia,serif;
+  box-shadow:0 5px 20px rgba(26,122,94,.16); }
+.key .klab { display:block; margin-bottom:8px; color:var(--accent);
+  font:700 16px/1 "Segoe UI",sans-serif; letter-spacing:.18em; text-transform:uppercase; }
+.key .hl { color:var(--accent); }
+.note { margin-top:14px; background:var(--card); border:1px solid var(--border);
+  border-left:8px solid var(--accent); border-radius:12px; padding:16px 22px;
+  font-size:25px; line-height:1.35; color:var(--ink); box-shadow:0 3px 12px rgba(0,0,0,.05); }
+
+.two { display:grid; grid-template-columns:1fr 1fr; gap:34px; align-items:start; }
+
+/* ---- statements ---- */
+.stmt { background:var(--card); border:1px solid var(--border); border-radius:12px;
+  padding:18px 26px 14px; box-shadow:0 4px 16px rgba(0,0,0,.07); }
+.stmt h3 { font-size:25px; margin:0 0 10px; }
+.stmt table { width:100%; border-collapse:collapse; font-size:24px; }
+.stmt th { color:var(--muted); font-size:17px; letter-spacing:.06em; text-transform:uppercase;
+  text-align:right; border-bottom:2px solid var(--ink); padding:5px 8px; }
+.stmt th:first-child, .stmt td:first-child { text-align:left; }
+.stmt td { padding:7px 8px; text-align:right; border-bottom:1px solid #e7ebe8; }
+.stmt tr.total td { font-weight:700; border-top:2px solid var(--ink); border-bottom:2px solid var(--ink); }
+.scen { font-size:23px; line-height:1.42; }
+.scen h3 { font-size:25px; margin:0 0 8px; }
+.scen ul { margin:0 0 16px; padding-left:1.15em; }
+.scen li { margin:.28em 0; }
+
+.notes { margin-top:16px; background:var(--card); border:1px solid var(--border);
+  border-left:8px solid #b8901f; border-radius:12px; padding:14px 24px; }
+.notes p { margin:6px 0; font-size:20px; line-height:1.4; }
+.notes b { color:#8a6d1f; }
+.eq { margin-top:8px; text-align:center; font:700 38px Charter,Cambria,Georgia,serif; }
+
+[data-step] { opacity:0; visibility:hidden; transition:opacity .2s ease; }
+[data-step].on { opacity:1; visibility:visible; }
+
+#bar { position:absolute; left:0; bottom:0; height:5px; background:var(--accent); z-index:5; }
+#num { position:absolute; right:26px; bottom:16px; font-size:17px; color:var(--muted); z-index:5; }
+#hint { position:fixed; left:14px; bottom:10px; font-size:13px; color:#5d6b64; z-index:9; }
+
+/* ---- MCQ ---- */
+.opts { list-style:none; margin:20px 0 0; padding:0; display:grid; gap:11px; }
+.opts li { display:grid; grid-template-columns:48px 1fr 44px; align-items:center; gap:16px;
+  background:var(--card); border:1px solid var(--border); border-radius:11px;
+  padding:13px 20px; font-size:25px; line-height:1.3; box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.opts .lab { width:48px; height:48px; border-radius:50%; background:#eef1ef; color:var(--ink);
+  display:grid; place-items:center; font:700 22px "Segoe UI",sans-serif; }
+.opts .mk { text-align:center; font-size:30px; font-weight:700; }
+.opts .mk.ok { color:var(--accent); }
+.opts .mk.no { color:#c6cdc8; }
+.ans { margin-top:20px; background:#dff2e8; border:2px solid var(--accent); border-radius:14px;
+  padding:16px 28px; color:#12664c; font-size:24px; line-height:1.42; }
+.ans b { font:700 27px Charter,"Bitstream Charter",Cambria,Georgia,serif; }
+.given { background:var(--card); border:1px solid var(--border); border-left:8px solid var(--accent);
+  border-radius:12px; padding:16px 22px; font-size:20px; line-height:1.45;
+  box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.given h3 { font-size:22px; margin:0 0 4px; }
+.given h3.y2 { margin-top:14px; }
+.given ul { margin:0; padding-left:1.1em; }
+.given li { margin:.18em 0; }
+.two .opts li { font-size:23px; padding:11px 18px; }
+.two .ans { font-size:21px; padding:14px 22px; }
+
+/* ---- fill-in-the-blank statements ---- */
+.bl { display:inline-block; min-width:104px; padding:2px 10px; border:2px dashed #c3ccc6;
+  border-radius:8px; color:var(--accent); font-weight:700; }
+.stmt.q table { font-size:22px; }
+.stmt.q td { padding:8px 8px; }
+.stmt.q .given-amt { color:var(--muted); }
+
+/* ================= one-page handout (Ctrl+P) =================
+   Screen stays a slide deck; print flattens it onto one sheet.
+   Answers are hidden by default. Press K for the answer key. */
+.printhead, .printfoot { display:none; }
+@media print {
+  @page { size:letter portrait; margin:9mm 11mm; }
+  html, body { height:auto; background:#fff; display:block; overflow:visible; color:#000; }
+  body { font:8.5pt/1.26 "Segoe UI",system-ui,sans-serif; }
+  #stage { position:static; width:auto; height:auto; transform:none !important;
+           background:#fff; box-shadow:none; overflow:visible; }
+  .s { position:static; display:block !important; padding:0; margin:0 0 3.1mm;
+       animation:none; break-inside:avoid; }
+  .s.title, #bar, #num, #hint, .notes, .ans { display:none !important; }
+
+  .printhead { display:block; margin:0 0 2.4mm; padding-bottom:1.2mm;
+    border-bottom:1.4pt solid #000; font:700 11.5pt Charter,Cambria,Georgia,serif; }
+  .printhead span { float:right; font:400 8.5pt "Segoe UI",sans-serif; }
+  .printfoot { display:block; margin-top:1.6mm; font-size:7.2pt; color:#444; }
+
+  .eyebrow { margin:0 0 .9mm; font-size:7.2pt; letter-spacing:.10em; color:#000; }
+  .ask { background:none; border:0; border-left:2.4pt solid #000; border-radius:0;
+         padding:0 0 0 3mm; }
+  .ask .qlab { display:inline; margin:0 2mm 0 0; font-size:7.2pt; color:#000; }
+  .ask p { display:inline; font-size:9pt; }
+
+  .opts { margin:1mm 0 0; gap:0; }
+  .opts li { display:grid; grid-template-columns:6mm 1fr; gap:2mm; align-items:start;
+             background:none; border:0; border-radius:0; box-shadow:none;
+             padding:.2mm 0; font-size:8.5pt; }
+  .opts .lab { width:auto; height:auto; background:none; border-radius:0; place-items:start;
+               font:700 8.5pt/1.26 "Segoe UI",sans-serif; }
+  .opts .mk { display:none; }
+
+  .two { display:grid; grid-template-columns:0.9fr 1.1fr; gap:3.4mm; align-items:start; }
+  .given { box-shadow:none; border:.6pt solid #999; border-left:2.4pt solid #000;
+           border-radius:0; padding:1.6mm 2.4mm; font-size:7.6pt; line-height:1.28; }
+  .given h3 { font-size:8.2pt; margin:0 0 .5mm; }
+  .given h3.y2 { margin-top:2mm; }
+
+  .stmt { box-shadow:none; border:.6pt solid #999; border-radius:0; padding:1.6mm 2.4mm; }
+  .stmt + .stmt, .stmt[style] { margin-top:2.4mm !important; }
+  .stmt h3 { font-size:8.6pt; margin:0 0 .8mm; }
+  .stmt.q table { font-size:8.2pt; }
+  .stmt th { font-size:6.8pt; padding:.5mm 2mm; }
+  .stmt.q td { padding:.85mm 2mm; }
+  .bl { min-width:19mm; padding:.4mm 1.6mm; border:.8pt dashed #666; color:#000; }
+  .bl > span { visibility:hidden !important; }
+
+  /* K = answer key */
+  html.showkey .bl > span,
+  html.showkey [data-step] { visibility:visible !important; opacity:1 !important; }
+  html.showkey .opts .mk { display:block; }
+  html.showkey .ans { display:block; background:none; border:0; border-left:2.4pt solid #000;
+                      border-radius:0; padding:0 0 0 3mm; margin-top:1.4mm;
+                      color:#000; font-size:8.5pt; }
+  html.showkey .notes { display:block; background:none; border:0; border-left:2.4pt solid #000;
+                        border-radius:0; padding:0 0 0 3mm; margin-top:2mm; }
+  html.showkey .notes p { font-size:8.5pt; margin:.6mm 0; }
+}
+</style>
+</head>
+<body>
+<h1 class="printhead">ACC 250 &middot; Chapter 0 Review <span>Name: ______________________</span></h1>
+<div id="stage">
+
+<!-- ==== COVER ================================================== -->
+<section class="s title">
+  <div class="tstack">
+    <p class="eyebrow">ACC 250 &middot; Introduction to Financial Accounting</p>
+    <h1>Chapter 0 &mdash; Review Questions</h1>
+    <p class="lede">Four questions on revenues and expenses,<br>
+       then one two-year problem worked end to end.</p>
+  </div>
+  <p class="title-date">Fall 2026</p>
+</section>
+
+<!-- ==== Q1 ==================================================== -->
+<section class="s">
+  <p class="eyebrow">Revenues &middot; 1 of 2</p>
+  <div class="ask">
+    <span class="qlab">Q1</span>
+    <p>A bakery is closing its books for April. <strong>Which one is April revenue?</strong></p>
+  </div>
+  <ol class="opts">
+    <li><span class="lab">A</span><span>Received $2,000 cash for cakes to be delivered in May.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">B</span><span>Delivered $3,000 of cakes; the customer pays in May.</span><span class="mk ok" data-step="1">&#10004;</span></li>
+    <li><span class="lab">C</span><span>Borrowed $5,000 from a bank.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">D</span><span>Received $4,000 from the owner in exchange for stock.</span><span class="mk no" data-step="1">&#10008;</span></li>
+  </ol>
+  <p class="ans" data-step="2"><b>B.</b> Revenue follows delivery, not cash. The cakes went out in April, so April earned the $3,000. A, C and D bring in cash without a sale.</p>
+</section>
+
+<!-- ==== Q2 ==================================================== -->
+<section class="s">
+  <p class="eyebrow">Revenues &middot; 2 of 2</p>
+  <div class="ask">
+    <span class="qlab">Q2</span>
+    <p>In June a shop delivered $8,000 of goods, received $1,500 in advance for a July order, and collected $900 for goods it had delivered in May. <strong>How much is June revenue?</strong></p>
+  </div>
+  <ol class="opts">
+    <li><span class="lab">A</span><span>$8,000</span><span class="mk ok" data-step="1">&#10004;</span></li>
+    <li><span class="lab">B</span><span>$8,900</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">C</span><span>$9,500</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">D</span><span>$10,400</span><span class="mk no" data-step="1">&#10008;</span></li>
+  </ol>
+  <p class="ans" data-step="2"><b>A.</b> Only the June delivery is earned in June. The $1,500 has not been delivered yet, and the $900 was earned in May.</p>
+</section>
+
+<!-- ==== Q3 ==================================================== -->
+<section class="s">
+  <p class="eyebrow">Expenses &middot; 1 of 2</p>
+  <div class="ask">
+    <span class="qlab">Q3</span>
+    <p><strong>Which one is an expense of this month?</strong></p>
+  </div>
+  <ol class="opts">
+    <li><span class="lab">A</span><span>Paid $600 of dividends to the shareholders.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">B</span><span>Paid $1,200 of wages for work done this month.</span><span class="mk ok" data-step="1">&#10004;</span></li>
+    <li><span class="lab">C</span><span>Received $5,000 of cash from issuing stock.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">D</span><span>Collected $900 from a customer for goods delivered last month.</span><span class="mk no" data-step="1">&#10008;</span></li>
+  </ol>
+  <p class="ans" data-step="2"><b>B.</b> Wages are a cost of operating the business, used up this month. Dividends are a distribution of profits, not a cost of doing business.</p>
+</section>
+
+<!-- ==== Q4 ==================================================== -->
+<section class="s">
+  <p class="eyebrow">Expenses &middot; 2 of 2</p>
+  <div class="ask">
+    <span class="qlab">Q4</span>
+    <p>A company reports revenues of $50,000 and expenses of $32,000, and pays $5,000 of dividends. <strong>Which statement is correct?</strong></p>
+  </div>
+  <ol class="opts">
+    <li><span class="lab">A</span><span>Net income is $13,000, because dividends are an expense.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">B</span><span>Net income is $18,000, and retained earnings increase by $13,000.</span><span class="mk ok" data-step="1">&#10004;</span></li>
+    <li><span class="lab">C</span><span>Net income is $18,000, and retained earnings increase by $18,000.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">D</span><span>Net income is $18,000, and retained earnings do not change.</span><span class="mk no" data-step="1">&#10008;</span></li>
+  </ol>
+  <p class="ans" data-step="2"><b>B.</b> Dividends never enter the income statement: 50,000 &minus; 32,000 = $18,000. They reduce retained earnings one line below it: 18,000 &minus; 5,000 = $13,000.</p>
+</section>
+
+<!-- ==== FILL-IN THE STATEMENTS ================================= -->
+<section class="s">
+  <p class="eyebrow">Q5 &middot; Fill in the blanks for Blue Cart Co.</p>
+  <div class="two" style="grid-template-columns:0.88fr 1.12fr">
+    <div class="given">
+      <h3>Blue Cart Co. &mdash; Year 1 (opened January 1)</h3>
+      <ul>
+        <li>Owner invested <strong>$2,000</strong> for stock</li>
+        <li>Delivered services, <strong>$9,000</strong></li>
+        <li>Received <strong>$1,200</strong> in advance for Year 2 services</li>
+        <li>Supplies used <strong>$3,000</strong>; rent <strong>$1,500</strong>; utilities <strong>$500</strong></li>
+        <li>Paid dividends, <strong>$1,000</strong></li>
+      </ul>
+      <h3 class="y2">Year 2</h3>
+      <ul>
+        <li>Delivered services, <strong>$14,000</strong> (includes the $1,200 paid in advance)</li>
+        <li>Supplies used <strong>$6,000</strong>; rent <strong>$1,800</strong>; utilities <strong>$700</strong></li>
+        <li>Paid dividends, <strong>$2,000</strong></li>
+      </ul>
+    </div>
+    <div>
+      <div class="stmt q">
+        <h3>Income Statement</h3>
+        <table>
+          <thead><tr><th></th><th>Year 1</th><th>Year 2</th></tr></thead>
+          <tbody>
+            <tr><td>Revenues</td><td><span class="bl"><span data-step="1">$9,000</span></span></td><td><span class="bl"><span data-step="7">$14,000</span></span></td></tr>
+            <tr><td>Expenses</td><td><span class="bl"><span data-step="2">5,000</span></span></td><td><span class="bl"><span data-step="8">8,500</span></span></td></tr>
+            <tr class="total"><td>Net Income</td><td><span class="bl"><span data-step="3">$4,000</span></span></td><td><span class="bl"><span data-step="9">$5,500</span></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="stmt q" style="margin-top:16px">
+        <h3>Statement of Retained Earnings</h3>
+        <table>
+          <thead><tr><th></th><th>Year 1</th><th>Year 2</th></tr></thead>
+          <tbody>
+            <tr><td>Beginning RE</td><td><span class="bl"><span data-step="4">$0</span></span></td><td><span class="bl"><span data-step="10">$3,000</span></span></td></tr>
+            <tr><td>Add: Net Income</td><td><span class="bl"><span data-step="5">4,000</span></span></td><td><span class="bl"><span data-step="11">5,500</span></span></td></tr>
+            <tr><td>Less: Dividends</td><td class="given-amt">(1,000)</td><td class="given-amt">(2,000)</td></tr>
+            <tr class="total"><td>Ending RE</td><td><span class="bl"><span data-step="6">$3,000</span></span></td><td><span class="bl"><span data-step="12">$6,500</span></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="notes">
+    <p data-step="13"><b>Watch the two that never appear.</b>
+      The owner's $2,000 of stock is cash without a sale.<br>
+      The $1,200 received in advance is Year 1 cash but Year 2 revenue &mdash;
+      it is earned only when the service is delivered.</p>
+  </div>
+</section>
+
+<div id="bar"></div><div id="num"></div>
+</div>
+<p class="printfoot">Revenues are earned when goods or services are delivered.
+Expenses are costs of operating the business used up in the period.
+Ending RE = Beginning RE + Net Income &minus; Dividends.</p>
+<div id="hint">click right / ← → / Space · Ctrl+← → jumps a whole slide · F fullscreen &middot; K answer key for printing &middot; Ctrl+P one-page handout</div>
+
+<script>
+
+const stage = document.getElementById('stage');
+const S = [...document.querySelectorAll('.s')];
+const bar = document.getElementById('bar'), num = document.getElementById('num');
+let i = 0, step = 0;
+
+const maxStep = s => [...s.querySelectorAll('[data-step]')]
+  .reduce((m, el) => Math.max(m, +el.dataset.step || 0), 0);
+
+function paint() {
+  S.forEach((s, k) => s.classList.toggle('on', k === i));
+  S[i].querySelectorAll('[data-step]').forEach(el => el.classList.toggle('on', +el.dataset.step <= step));
+  bar.style.width = ((i + 1) / S.length * 100) + '%';
+  num.textContent = (i + 1) + ' / ' + S.length;
+  location.hash = i + 1;
+}
+function go(n, atEnd) {
+  if (n < 0 || n > S.length - 1) return;          // past either end: leave the slide alone
+  i = n;
+  step = atEnd ? maxStep(S[i]) : 0;
+  paint();
+}
+function next() { if (step < maxStep(S[i])) { step++; paint(); } else go(i + 1, false); }
+function prev() { if (step > 0) { step--; paint(); } else go(i - 1, true); }
+
+function fit() {
+  const k = Math.min(innerWidth / 1600, innerHeight / 900);
+  stage.style.transform = `scale(${k})`;
+}
+addEventListener('resize', fit);
+addEventListener('keydown', e => {
+  const k = e.key;
+  if (e.ctrlKey || e.metaKey) {                       // whole-slide jumps
+    if (k === 'ArrowRight' || k === 'ArrowDown') { go(i + 1, false); e.preventDefault(); }
+    else if (k === 'ArrowLeft' || k === 'ArrowUp') { go(i - 1, false); e.preventDefault(); }
+    else if (k === 'Home') { go(0, false); e.preventDefault(); }
+    else if (k === 'End') { go(S.length - 1, false); e.preventDefault(); }
+    return;
+  }
+  if (k === 'ArrowRight' || k === 'ArrowDown' || k === ' ' || k === 'PageDown' || k === 'Enter') { next(); e.preventDefault(); }
+  else if (k === 'ArrowLeft' || k === 'ArrowUp' || k === 'PageUp' || k === 'Backspace') { prev(); e.preventDefault(); }
+  else if (k === 'f' || k === 'F') { document.documentElement.requestFullscreen?.(); }
+  else if (k === 'k' || k === 'K') { document.documentElement.classList.toggle('showkey'); }
+});
+stage.addEventListener('click', e => { e.clientX < innerWidth * .28 ? prev() : next(); });
+
+fit();
+go(Math.max(0, (parseInt(location.hash.slice(1)) || 1) - 1), false);
+</script>
+</body></html>
