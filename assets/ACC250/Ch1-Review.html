@@ -1,8 +1,9 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ACC 250 — Ch0 Review Questions</title>
+<title>ACC 250 — Ch1 Review Questions</title>
 <style>
+
 
 :root { --bg:#f1f1ef; --ink:#16263a; --muted:#5c6863; --accent:#1a7a5e;
         --red:#b3200f; --card:#fff; --border:#dfe3e0; }
@@ -144,7 +145,7 @@ p { margin:.35em 0; }
    Answers are hidden by default. Press K for the answer key. */
 .printhead, .printfoot { display:none; }
 @media print {
-  @page { size:letter portrait; margin:9mm 11mm; }
+  @page { size:letter portrait; margin:5mm 10mm; }
   html, body { height:auto; background:#fff; display:block; overflow:visible; color:#000; }
   body { font:8.5pt/1.26 "Segoe UI",system-ui,sans-serif; }
   #stage { position:static; width:auto; height:auto; transform:none !important;
@@ -153,18 +154,18 @@ p { margin:.35em 0; }
        animation:none; break-inside:avoid; }
   .s.title, #bar, #num, #hint, .notes, .ans { display:none !important; }
 
-  .printhead { display:block; margin:0 0 2.4mm; padding-bottom:1.2mm;
+  .printhead { display:block; margin:0 0 1.6mm; padding-bottom:1mm;
     border-bottom:1.4pt solid #000; font:700 11.5pt Charter,Cambria,Georgia,serif; }
   .printhead span { float:right; font:400 8.5pt "Segoe UI",sans-serif; }
-  .printfoot { display:block; margin-top:1.6mm; font-size:7.2pt; color:#444; }
+  .printfoot { display:block; margin-top:1.2mm; font-size:6.5pt; line-height:1.3; color:#444; }
 
-  .eyebrow { margin:0 0 .9mm; font-size:7.2pt; letter-spacing:.10em; color:#000; }
+  .eyebrow { margin:0 0 .5mm; font-size:6.6pt; letter-spacing:.08em; color:#000; }
   .ask { background:none; border:0; border-left:2.4pt solid #000; border-radius:0;
          padding:0 0 0 3mm; }
   .ask .qlab { display:inline; margin:0 2mm 0 0; font-size:7.2pt; color:#000; }
   .ask p { display:inline; font-size:9pt; }
 
-  .opts { margin:1mm 0 0; gap:0; }
+  .opts { margin:.6mm 0 0; gap:0; }
   .opts li { display:grid; grid-template-columns:6mm 1fr; gap:2mm; align-items:start;
              background:none; border:0; border-radius:0; box-shadow:none;
              padding:.2mm 0; font-size:8.5pt; }
@@ -199,6 +200,34 @@ p { margin:.35em 0; }
   html.showkey .notes p { font-size:8.5pt; margin:.6mm 0; }
 }
 
+/* ---- Ch1: five options, and the scenario beside three statements ---- */
+.opts li { font-size:23px; padding:11px 18px; }
+.three { display:grid; grid-template-columns:0.9fr 1fr 1.04fr; gap:24px; align-items:start; }
+.three .stmt table { font-size:21px; }
+.three .stmt td { padding:6px 7px; }
+.three .stmt h3 { font-size:21px; margin:0 0 8px; }
+.three .given { font-size:19px; }
+.three .bl { min-width:92px; font-size:22px; }
+/* a question that reuses the previous question's options: the pointer is
+   print-only, because on screen every question shows its own options */
+.repeat-note { display:none; }
+
+@media print {
+  body { font:6.9pt/1.2 "Segoe UI",system-ui,sans-serif; }
+  .s { margin:0 0 1mm; }
+  .ask p { font-size:7.4pt; }
+  .opts li { font-size:6.9pt; padding:0; }
+  .opts .lab { font:700 6.9pt/1.2 "Segoe UI",sans-serif; }
+  .opts.repeat { display:none; }
+  .repeat-note { display:block; margin:.6mm 0 0 3mm; font-size:6.9pt; font-style:italic; }
+  .three { display:grid; grid-template-columns:0.9fr 1fr 1.04fr; gap:3mm; align-items:start; }
+  .three .stmt table { font-size:6.7pt; }
+  .three .stmt h3 { font-size:7.6pt; }
+  .three .given { font-size:6.4pt; line-height:1.2; }
+  .three .bl { min-width:13mm; }
+  .stmt.q td { padding:.6mm 2mm; }
+}
+
 /* ---- left navigation rail (outside the stage; N toggles) ---- */
 :root { --railw: 236px; }
 body { padding-left:var(--railw); }
@@ -227,7 +256,7 @@ body.norail #hint { left:14px; }
 </style>
 </head>
 <body>
-<h1 class="printhead">ACC 250 &middot; Chapter 0 Review <span>Name: ______________________</span></h1>
+<h1 class="printhead">ACC 250 &middot; Chapter 1 Review <span>Name: ______________________</span></h1>
 <nav id="rail" aria-label="Slides"><div class="rhead">Slides</div><ol></ol></nav>
 <div id="stage">
 
@@ -235,144 +264,209 @@ body.norail #hint { left:14px; }
 <section class="s title">
   <div class="tstack">
     <p class="eyebrow">ACC 250 &middot; Introduction to Financial Accounting</p>
-    <h1>Chapter 0 &mdash; Review Questions</h1>
-    <p class="lede">Four questions on revenues and expenses,<br>
-       then one two-year problem worked end to end.</p>
+    <h1>Chapter 1 &mdash; Review Questions</h1>
+    <p class="lede">Seven questions on the corporation, the accounting equation,<br>
+       and the statements, and then one set of statements to fill in.</p>
   </div>
   <p class="title-date">Fall 2026</p>
 </section>
 
 <!-- ==== Q1 ==================================================== -->
 <section class="s">
-  <p class="eyebrow">Revenues &middot; 1 of 2</p>
+  <p class="eyebrow">The corporation</p>
   <div class="ask">
     <span class="qlab">Q1</span>
-    <p>A bakery is closing its books for April. <strong>Which one is April revenue?</strong></p>
+    <p>A corporation cannot pay $500,000 that it owes to its creditors, and it has no assets left. <strong>What happens to its shareholders?</strong></p>
   </div>
   <ol class="opts">
-    <li><span class="lab">A</span><span>Received $2,000 cash for cakes to be delivered in May.</span><span class="mk no" data-step="1">&#10008;</span></li>
-    <li><span class="lab">B</span><span>Delivered $3,000 of cakes; the customer pays in May.</span><span class="mk ok" data-step="1">&#10004;</span></li>
-    <li><span class="lab">C</span><span>Borrowed $5,000 from a bank.</span><span class="mk no" data-step="1">&#10008;</span></li>
-    <li><span class="lab">D</span><span>Received $4,000 from the owner in exchange for stock.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">A</span><span>Each shareholder must pay the remaining debt out of personal assets.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">B</span><span>Shareholders can lose what they invested, but their personal assets are protected.</span><span class="mk ok" data-step="1">&#10004;</span></li>
+    <li><span class="lab">C</span><span>The debt disappears, because a corporation is a separate legal entity.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">D</span><span>The shareholders&rsquo; personal assets can be taken, because a corporation and its owners are the same entity.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">E</span><span>Shareholders must pay the remaining debt in proportion to the number of shares they own.</span><span class="mk no" data-step="1">&#10008;</span></li>
   </ol>
-  <p class="ans" data-step="2"><b>B.</b> Revenue follows delivery, not cash. The cakes went out in April, so April earned the $3,000. A, C and D bring in cash without a sale.</p>
+  <p class="ans" data-step="2"><b>B.</b> A corporation is a separate legal entity, so its liabilities are not the liabilities of its owners, and a shareholder&rsquo;s loss is limited to the amount invested. Being a separate entity protects the owners, but it does not make the debt go away: the corporation still owes it, which is why option C is wrong.</p>
 </section>
 
 <!-- ==== Q2 ==================================================== -->
 <section class="s">
-  <p class="eyebrow">Revenues &middot; 2 of 2</p>
+  <p class="eyebrow">A = L + SHE &middot; 1 of 3 &mdash; assets</p>
   <div class="ask">
     <span class="qlab">Q2</span>
-    <p>In June a shop delivered $8,000 of goods, received $1,500 in advance for a July order, and collected $900 for goods it had delivered in May. <strong>How much is June revenue?</strong></p>
+    <p>A bakery reports the five items below. <strong>Which one of them is an asset?</strong></p>
   </div>
   <ol class="opts">
-    <li><span class="lab">A</span><span>$8,000</span><span class="mk ok" data-step="1">&#10004;</span></li>
-    <li><span class="lab">B</span><span>$8,900</span><span class="mk no" data-step="1">&#10008;</span></li>
-    <li><span class="lab">C</span><span>$9,500</span><span class="mk no" data-step="1">&#10008;</span></li>
-    <li><span class="lab">D</span><span>$10,400</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">A</span><span>The company earned $70,000 of revenues by selling bread to its customers.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">B</span><span>The company owes $5,000 to a flour supplier for goods it has already received.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">C</span><span>The company owns an oven that it bought for $25,000 and still uses.</span><span class="mk ok" data-step="1">&#10004;</span></li>
+    <li><span class="lab">D</span><span>The owner paid $40,000 into the business in exchange for stock.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">E</span><span>The company paid $6,000 of dividends to its owner during the year.</span><span class="mk no" data-step="1">&#10008;</span></li>
   </ol>
-  <p class="ans" data-step="2"><b>A.</b> Only the June delivery is earned in June. The $1,500 has not been delivered yet, and the $900 was earned in May.</p>
+  <p class="ans" data-step="2"><b>C.</b> An asset is a resource the company owns or controls that will provide a future benefit, and the oven is exactly that. Option B is an obligation and option D is an owner&rsquo;s claim, while options A and E belong to the income statement and the statement of retained earnings rather than to the balance sheet.</p>
 </section>
 
 <!-- ==== Q3 ==================================================== -->
 <section class="s">
-  <p class="eyebrow">Expenses &middot; 1 of 2</p>
+  <p class="eyebrow">A = L + SHE &middot; 2 of 3 &mdash; liabilities</p>
   <div class="ask">
     <span class="qlab">Q3</span>
-    <p><strong>Which one is an expense of this month?</strong></p>
+    <p>A bakery reports the five items below. <strong>Which one of them is a liability?</strong></p>
   </div>
-  <ol class="opts">
-    <li><span class="lab">A</span><span>Paid $600 of dividends to the shareholders.</span><span class="mk no" data-step="1">&#10008;</span></li>
-    <li><span class="lab">B</span><span>Paid $1,200 of wages for work done this month.</span><span class="mk ok" data-step="1">&#10004;</span></li>
-    <li><span class="lab">C</span><span>Received $5,000 of cash from issuing stock.</span><span class="mk no" data-step="1">&#10008;</span></li>
-    <li><span class="lab">D</span><span>Collected $900 from a customer for goods delivered last month.</span><span class="mk no" data-step="1">&#10008;</span></li>
+  <ol class="opts repeat">
+    <li><span class="lab">A</span><span>The company earned $70,000 of revenues by selling bread to its customers.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">B</span><span>The company owes $5,000 to a flour supplier for goods it has already received.</span><span class="mk ok" data-step="1">&#10004;</span></li>
+    <li><span class="lab">C</span><span>The company owns an oven that it bought for $25,000 and still uses.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">D</span><span>The owner paid $40,000 into the business in exchange for stock.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">E</span><span>The company paid $6,000 of dividends to its owner during the year.</span><span class="mk no" data-step="1">&#10008;</span></li>
   </ol>
-  <p class="ans" data-step="2"><b>B.</b> Wages are a cost of operating the business, used up this month. Dividends are a distribution of profits, not a cost of doing business.</p>
+  <p class="repeat-note">Use the same five options as Question 2.</p>
+  <p class="ans" data-step="2"><b>B.</b> A liability is an obligation that arose from a past transaction and will be settled by an outflow of resources, and the bakery has already received the flour it must pay for. The owner&rsquo;s $40,000 in option D is also money the company received, but an owner is not a lender, so that amount is equity rather than a liability.</p>
 </section>
 
 <!-- ==== Q4 ==================================================== -->
 <section class="s">
-  <p class="eyebrow">Expenses &middot; 2 of 2</p>
+  <p class="eyebrow">A = L + SHE &middot; 3 of 3 &mdash; shareholders&rsquo; equity</p>
   <div class="ask">
     <span class="qlab">Q4</span>
-    <p>A company reports revenues of $50,000 and expenses of $32,000, and pays $5,000 of dividends. <strong>Which statement is correct?</strong></p>
+    <p>A bakery reports the five items below. <strong>Which one of them is part of shareholders&rsquo; equity?</strong></p>
+  </div>
+  <ol class="opts repeat">
+    <li><span class="lab">A</span><span>The company earned $70,000 of revenues by selling bread to its customers.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">B</span><span>The company owes $5,000 to a flour supplier for goods it has already received.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">C</span><span>The company owns an oven that it bought for $25,000 and still uses.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">D</span><span>The owner paid $40,000 into the business in exchange for stock.</span><span class="mk ok" data-step="1">&#10004;</span></li>
+    <li><span class="lab">E</span><span>The company paid $6,000 of dividends to its owner during the year.</span><span class="mk no" data-step="1">&#10008;</span></li>
+  </ol>
+  <p class="repeat-note">Use the same five options as Question 2.</p>
+  <p class="ans" data-step="2"><b>D.</b> Equity has only two sources: what the owners put in, and the profits the company has earned and kept. Option D is the first of those, contributed capital. Option A raises equity only after it has run through net income into retained earnings, and option E reduces retained earnings, so neither is itself an equity account.</p>
+</section>
+
+<!-- ==== Q5 ==================================================== -->
+<section class="s">
+  <p class="eyebrow">A = L + SHE &middot; the residual</p>
+  <div class="ask">
+    <span class="qlab">Q5</span>
+    <p>A company reports total assets of $180,000 and total liabilities of $65,000. <strong>How much is its shareholders&rsquo; equity?</strong></p>
   </div>
   <ol class="opts">
-    <li><span class="lab">A</span><span>Net income is $13,000, because dividends are an expense.</span><span class="mk no" data-step="1">&#10008;</span></li>
-    <li><span class="lab">B</span><span>Net income is $18,000, and retained earnings increase by $13,000.</span><span class="mk ok" data-step="1">&#10004;</span></li>
-    <li><span class="lab">C</span><span>Net income is $18,000, and retained earnings increase by $18,000.</span><span class="mk no" data-step="1">&#10008;</span></li>
-    <li><span class="lab">D</span><span>Net income is $18,000, and retained earnings do not change.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">A</span><span>Its shareholders&rsquo; equity is $65,000.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">B</span><span>Its shareholders&rsquo; equity is $115,000.</span><span class="mk ok" data-step="1">&#10004;</span></li>
+    <li><span class="lab">C</span><span>Its shareholders&rsquo; equity is $180,000.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">D</span><span>Its shareholders&rsquo; equity is $245,000.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">E</span><span>Its shareholders&rsquo; equity cannot be determined without more information.</span><span class="mk no" data-step="1">&#10008;</span></li>
   </ol>
-  <p class="ans" data-step="2"><b>B.</b> Dividends never enter the income statement: 50,000 &minus; 32,000 = $18,000. They reduce retained earnings one line below it: 18,000 &minus; 5,000 = $13,000.</p>
+  <p class="ans" data-step="2"><b>B.</b> Equity is the residual, so it is found by subtraction: $180,000 &minus; $65,000 = $115,000. It is never counted up on its own.</p>
+</section>
+
+<!-- ==== Q6 ==================================================== -->
+<section class="s">
+  <p class="eyebrow">The statements &middot; 1 of 2</p>
+  <div class="ask">
+    <span class="qlab">Q6</span>
+    <p>A company pays $8,000 of dividends to its shareholders. <strong>Where do those dividends appear?</strong></p>
+  </div>
+  <ol class="opts">
+    <li><span class="lab">A</span><span>They appear on the income statement, as an expense.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">B</span><span>They appear on the statement of retained earnings, subtracted after net income.</span><span class="mk ok" data-step="1">&#10004;</span></li>
+    <li><span class="lab">C</span><span>They appear on the balance sheet, as a liability.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">D</span><span>They appear on the income statement and on the balance sheet.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">E</span><span>They do not appear on any of the three statements.</span><span class="mk no" data-step="1">&#10008;</span></li>
+  </ol>
+  <p class="ans" data-step="2"><b>B.</b> Dividends are a distribution of profit rather than a cost of operating the business, so they never enter net income. They reduce retained earnings one line below it.</p>
+</section>
+
+<!-- ==== Q7 ==================================================== -->
+<section class="s">
+  <p class="eyebrow">The statements &middot; 2 of 2</p>
+  <div class="ask">
+    <span class="qlab">Q7</span>
+    <p><strong>Which one of the following statements is correct?</strong></p>
+  </div>
+  <ol class="opts">
+    <li><span class="lab">A</span><span>The balance sheet reports the revenues and expenses of a period.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">B</span><span>Net income is added to beginning retained earnings on the statement of retained earnings.</span><span class="mk ok" data-step="1">&#10004;</span></li>
+    <li><span class="lab">C</span><span>Ending retained earnings is reported at the bottom of the income statement.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">D</span><span>Dividends are subtracted on the income statement to arrive at net income.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">E</span><span>Contributed capital increases whenever the company earns net income.</span><span class="mk no" data-step="1">&#10008;</span></li>
+  </ol>
+  <p class="ans" data-step="2"><b>B.</b> Net income is the one number that crosses from the income statement into the statement of retained earnings. The balance sheet reports a point in time rather than a period, dividends never touch net income, and earnings raise retained earnings rather than contributed capital.</p>
 </section>
 
 <!-- ==== FILL-IN THE STATEMENTS ================================= -->
 <section class="s">
-  <p class="eyebrow">Q5 &middot; Blue Cart Co.</p>
+  <p class="eyebrow">Q8 &middot; Harbor Books</p>
   <div class="ask" style="margin-bottom:14px">
-    <span class="qlab">Q5</span>
-    <p>Blue Cart Co. opened on January 1 of Year 1, and its first two years are described below.
-       <strong>Fill in every blank on the two statements.</strong></p>
+    <span class="qlab">Q8</span>
+    <p>Harbor Books opened on January 1 of Year 1, and its first year is described below.
+       <strong>Fill in every blank on the three statements.</strong></p>
   </div>
-  <div class="two" style="grid-template-columns:0.88fr 1.12fr">
+  <div class="three">
     <div class="given">
-      <h3>Blue Cart Co. &mdash; Year 1</h3>
+      <h3>Harbor Books &mdash; Year 1</h3>
       <ul>
-        <li>The owner invested $2,000 in the business in exchange for stock.</li>
-        <li>The company delivered $9,000 of services to customers.</li>
-        <li>It received $1,200 in advance for services it will deliver in Year 2.</li>
-        <li>It used $3,000 of supplies, paid $1,500 of rent, and paid $500 of utilities.</li>
-        <li>It paid $1,000 of dividends to the owner.</li>
-      </ul>
-      <h3 class="y2">Year 2</h3>
-      <ul>
-        <li>It delivered $14,000 of services, which includes the $1,200 paid in advance.</li>
-        <li>It used $6,000 of supplies, paid $1,800 of rent, and paid $700 of utilities.</li>
-        <li>It paid $2,000 of dividends to the owner.</li>
+        <li>The owner invested $30,000 in the business in exchange for stock.</li>
+        <li>The company delivered $70,000 of books to customers and collected all of it.</li>
+        <li>It used $28,000 of supplies, paid $17,000 of wages, and paid $10,000 of rent.</li>
+        <li>It still owes a supplier $3,000 on December 31.</li>
+        <li>It bought shelving for $12,000 and still owns it.</li>
+        <li>It paid $5,000 of dividends to the owner.</li>
+        <li>Its cash balance on December 31 is $31,000.</li>
       </ul>
     </div>
     <div>
       <div class="stmt q">
         <h3>Income Statement</h3>
         <table>
-          <thead><tr><th></th><th>Year 1</th><th>Year 2</th></tr></thead>
           <tbody>
-            <tr><td>Revenues</td><td><span class="bl"><span data-step="1">$9,000</span></span></td><td><span class="bl"><span data-step="7">$14,000</span></span></td></tr>
-            <tr><td>Expenses</td><td><span class="bl"><span data-step="2">5,000</span></span></td><td><span class="bl"><span data-step="8">8,500</span></span></td></tr>
-            <tr class="total"><td>Net Income</td><td><span class="bl"><span data-step="3">$4,000</span></span></td><td><span class="bl"><span data-step="9">$5,500</span></span></td></tr>
+            <tr><td>Revenues</td><td><span class="bl"><span data-step="1">$70,000</span></span></td></tr>
+            <tr><td>Expenses</td><td><span class="bl"><span data-step="2">55,000</span></span></td></tr>
+            <tr class="total"><td>Net Income</td><td><span class="bl"><span data-step="3">$15,000</span></span></td></tr>
           </tbody>
         </table>
       </div>
-      <div class="stmt q" style="margin-top:16px">
+      <div class="stmt q" style="margin-top:14px">
         <h3>Statement of Retained Earnings</h3>
         <table>
-          <thead><tr><th></th><th>Year 1</th><th>Year 2</th></tr></thead>
           <tbody>
-            <tr><td>Beginning RE</td><td><span class="bl"><span data-step="4">$0</span></span></td><td><span class="bl"><span data-step="10">$3,000</span></span></td></tr>
-            <tr><td>Add: Net Income</td><td><span class="bl"><span data-step="5">4,000</span></span></td><td><span class="bl"><span data-step="11">5,500</span></span></td></tr>
-            <tr><td>Less: Dividends</td><td class="given-amt">(1,000)</td><td class="given-amt">(2,000)</td></tr>
-            <tr class="total"><td>Ending RE</td><td><span class="bl"><span data-step="6">$3,000</span></span></td><td><span class="bl"><span data-step="12">$6,500</span></span></td></tr>
+            <tr><td>Beginning RE</td><td><span class="bl"><span data-step="4">$0</span></span></td></tr>
+            <tr><td>Add: Net Income</td><td><span class="bl"><span data-step="5">15,000</span></span></td></tr>
+            <tr><td>Less: Dividends</td><td class="given-amt">(5,000)</td></tr>
+            <tr class="total"><td>Ending RE</td><td><span class="bl"><span data-step="6">$10,000</span></span></td></tr>
           </tbody>
         </table>
       </div>
     </div>
+    <div class="stmt q">
+      <h3>Balance Sheet &mdash; Dec 31</h3>
+      <table>
+        <tbody>
+          <tr><td>Cash</td><td class="given-amt">$31,000</td></tr>
+          <tr><td>Equipment</td><td class="given-amt">12,000</td></tr>
+          <tr class="total"><td>Total Assets</td><td><span class="bl"><span data-step="7">$43,000</span></span></td></tr>
+          <tr><td>Accounts Payable</td><td class="given-amt">$3,000</td></tr>
+          <tr><td>Contributed Capital</td><td class="given-amt">30,000</td></tr>
+          <tr><td>Retained Earnings</td><td><span class="bl"><span data-step="8">10,000</span></span></td></tr>
+          <tr class="total"><td>Total L &amp; SHE</td><td><span class="bl"><span data-step="9">$43,000</span></span></td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
   <div class="notes">
-    <p data-step="13"><b>Watch the two that never appear.</b>
-      The owner's $2,000 of stock is cash without a sale.<br>
-      The $1,200 received in advance is Year 1 cash but Year 2 revenue &mdash;
-      it is earned only when the service is delivered.</p>
+    <p data-step="10"><b>Check the two links.</b>
+      Net income leaves the income statement and enters the statement of retained earnings.<br>
+      Ending retained earnings leaves that statement and lands inside equity on the balance sheet.</p>
   </div>
 </section>
 
 <div id="bar"></div><div id="num"></div>
 </div>
-<p class="printfoot">Revenues are earned when goods or services are delivered.<br>
-Expenses are costs of operating the business used up in the period.<br>
-Ending RE = Beginning RE + Net Income &minus; Dividends.</p>
+<p class="printfoot">A corporation is a separate legal entity, and a shareholder&rsquo;s loss is limited to the amount invested.<br>
+Assets = Liabilities + Shareholders&rsquo; Equity.<br>
+Net income carries to the statement of retained earnings, and ending retained earnings carries onto the balance sheet.</p>
 <div id="hint">click right / ← → / Space · Ctrl+← → jumps a whole slide · F fullscreen &middot; N hides the rail &middot; K answer key for printing &middot; Ctrl+P one-page handout</div>
 
 <script>
+
 
 const stage = document.getElementById('stage');
 const S = [...document.querySelectorAll('.s')];
