@@ -344,6 +344,12 @@ p { margin:.35em 0; }
   .je td { padding:1.7mm 2.4mm; }
   .je td.cr { padding-left:9mm; }
   .je .bl { min-width:50mm; font-size:10.5pt; }
+  /* Every account blank is the same one-line box. The hidden answer still takes
+     up space, and a long one ("7. Service Revenue (+R, +SHE)") wrapped to two
+     lines, so Q10-Q11 printed taller and wider than the other entries. */
+  .je .bl { width:50mm; min-width:0; white-space:nowrap; overflow:hidden;
+    vertical-align:middle; }
+  html.showkey .je .bl { width:auto; min-width:50mm; overflow:visible; }
 
   .balq { box-shadow:none; border:.8pt solid #999; border-radius:0;
     padding:1.4mm 3mm; margin-top:1.2mm; }
@@ -370,6 +376,33 @@ p { margin:.35em 0; }
     text-align:center; }
 }
 
+/* ---- Q3-Q6: four definitions against one list of four accounts ----
+   The accounts are listed once, across the slide; each definition is its own
+   numbered question with its letter revealed in turn. */
+.opts.four { grid-template-columns:repeat(4,1fr); gap:12px; }
+.opts.four li { grid-template-columns:48px 1fr; }
+.dq { list-style:none; margin:18px 0 0; padding:0; display:grid; gap:10px; }
+.dq li { display:grid; grid-template-columns:64px 1fr 96px; align-items:center; gap:16px;
+  background:var(--card); border:1px solid var(--border); border-radius:11px;
+  padding:11px 20px; font-size:23px; line-height:1.3; box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.dq .qn { font:700 19px "Segoe UI",sans-serif; letter-spacing:.1em; color:#8a6d1f; }
+.dq .bl { min-width:0; text-align:center; font-size:24px; }
+@media print {
+  /* Page 1 now carries nine questions (Q1-Q9), so the option rows run tighter
+     than Ch2's airy 1.5 mm; the type size is unchanged. */
+  .opts li { padding:.85mm 0; }
+  .opts { margin-top:1mm; }
+  .opts.four { display:grid; grid-template-columns:repeat(4,auto); justify-content:start;
+    gap:0 9mm; margin-top:1.2mm; }
+  .opts.four li { grid-template-columns:5mm 1fr; }
+  html.showkey .opts.four li { grid-template-columns:5mm 1fr; }
+  .dq { margin:1mm 0 0; gap:0; }
+  .dq li { grid-template-columns:9mm 1fr 14mm; gap:2.4mm; align-items:center;
+    background:none; border:0; border-radius:0; box-shadow:none;
+    padding:1mm 0; font:10.5pt/1.4 "Times New Roman",Times,serif; }
+  .dq .qn { font:700 8.4pt "Times New Roman",Times,serif; letter-spacing:.08em; color:#000; }
+  .dq .bl { min-width:0; padding:.3mm 1mm; font-size:10.5pt; }
+}
 /* ---- left navigation rail (outside the stage; N toggles) ---- */
 :root { --railw: 236px; }
 body { padding-left:var(--railw); }
@@ -407,7 +440,7 @@ body.norail #hint { left:14px; }
   <div class="tstack">
     <p class="eyebrow">ACC 250 &middot; Introduction to Financial Accounting</p>
     <h1>Chapter 3 &mdash; Review Questions</h1>
-    <p class="lede">Three questions on when revenue and expense are recognized,<br>
+    <p class="lede">Nine questions on recognizing revenue and expense and on the timing accounts,<br>
        then one month of operating transactions to record and two totals to work out.</p>
   </div>
   <p class="title-date">Fall 2026</p>
@@ -415,9 +448,65 @@ body.norail #hint { left:14px; }
 
 <!-- ==== Q1 ==================================================== -->
 <section class="s">
-  <p class="eyebrow">Revenue recognition</p>
+  <p class="eyebrow">What revenue comes with</p>
   <div class="ask">
     <span class="qlab">Q1</span>
+    <p><strong>Which statement about recognizing revenue is NOT correct?</strong></p>
+  </div>
+  <ol class="opts">
+    <li><span class="lab">A</span><span>Revenue can be recognized together with an increase in Cash.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">B</span><span>Revenue can be recognized together with an increase in Accounts Receivable.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">C</span><span>Revenue can be recognized together with an increase in Deferred Revenue.</span><span class="mk ok" data-step="1">&#10004;</span></li>
+    <li><span class="lab">D</span><span>Revenue can be recognized in a period in which no cash is received.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">E</span><span>None of the above.</span><span class="mk no" data-step="1">&#10008;</span></li>
+  </ol>
+  <p class="ans" data-step="2"><b>C.</b> Revenue comes with an increase in an asset or a decrease in a liability: Cash for a cash sale (A), Accounts Receivable for a sale on account (B). A sale on account brings in no cash, so D is true too. Deferred Revenue <em>increases</em> when a customer pays before delivery; nothing has been delivered yet, so that cash is a liability, not revenue. Revenue comes later, when the work is done and Deferred Revenue <em>decreases</em>.</p>
+</section>
+
+<!-- ==== Q2 ==================================================== -->
+<section class="s">
+  <p class="eyebrow">What an expense comes with</p>
+  <div class="ask">
+    <span class="qlab">Q2</span>
+    <p><strong>Which statement about recognizing an expense is NOT correct?</strong></p>
+  </div>
+  <ol class="opts">
+    <li><span class="lab">A</span><span>An expense can be recognized together with a decrease in Cash.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">B</span><span>An expense can be recognized together with an increase in Accounts Payable.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">C</span><span>An expense can be recognized together with an increase in Supplies.</span><span class="mk ok" data-step="1">&#10004;</span></li>
+    <li><span class="lab">D</span><span>An expense can be recognized together with an increase in Wages Payable.</span><span class="mk no" data-step="1">&#10008;</span></li>
+    <li><span class="lab">E</span><span>An expense can be recognized together with a decrease in Prepaid Insurance.</span><span class="mk no" data-step="1">&#10008;</span></li>
+  </ol>
+  <p class="ans" data-step="2"><b>C.</b> An expense comes with a decrease in an asset or an increase in a liability: Cash paid for a cost (A), a bill not yet paid (B), wages owed (D), or insurance coverage used up (E). Buying supplies increases Supplies, an asset; the expense comes later, when the supplies are used and Supplies decreases.</p>
+</section>
+
+<!-- ==== Q3-Q6 ================================================= -->
+<section class="s" data-nav="Q3&ndash;Q6 &middot; Four timing accounts">
+  <p class="eyebrow">Q3&ndash;Q6 &middot; Four timing accounts</p>
+  <div class="ask">
+    <span class="qlab">Q3&ndash;Q6</span>
+    <p><strong>Which account does each definition describe?</strong> Answer each question with a letter from A to D.</p>
+  </div>
+  <ol class="opts four">
+    <li><span class="lab">A</span><span>Accounts Receivable</span></li>
+    <li><span class="lab">B</span><span>Accounts Payable</span></li>
+    <li><span class="lab">C</span><span>Deferred Revenue</span></li>
+    <li><span class="lab">D</span><span>Prepaid Expenses</span></li>
+  </ol>
+  <ol class="dq">
+    <li><span class="qn">Q3</span><span>Cash received before the service is performed or the product is delivered.</span><span class="bl"><span data-step="1">C</span></span></li>
+    <li><span class="qn">Q4</span><span>Amounts customers owe you for products and services sold on credit.</span><span class="bl"><span data-step="2">A</span></span></li>
+    <li><span class="qn">Q5</span><span>Amounts paid in advance for products and services that will be received in the future.</span><span class="bl"><span data-step="3">D</span></span></li>
+    <li><span class="qn">Q6</span><span>Amounts owed to suppliers for products and services purchased on credit.</span><span class="bl"><span data-step="4">B</span></span></li>
+  </ol>
+  <p class="ans" data-step="5"><b>C, A, D, B.</b> The four come in mirror pairs. Selling or buying on credit leaves an amount owed: customers owe you (Accounts Receivable, an asset), and you owe suppliers (Accounts Payable, a liability). Cash moving before delivery leaves work still to happen: a customer paid you first (Deferred Revenue, a liability), or you paid a supplier first (Prepaid Expenses, an asset).</p>
+</section>
+
+<!-- ==== Q7 ==================================================== -->
+<section class="s">
+  <p class="eyebrow">Revenue recognition</p>
+  <div class="ask">
+    <span class="qlab">Q7</span>
     <p>During March, Lakeside Florist delivered $18,000 of flowers and collected the cash, delivered $7,000 of flowers to a hotel that will pay in April, and received $2,000 from a bride for a wedding it will decorate in May. <strong>How much revenue should it recognize in March?</strong></p>
   </div>
   <ol class="opts short">
@@ -430,11 +519,11 @@ body.norail #hint { left:14px; }
   <p class="ans" data-step="2"><b>C.</b> Revenue is recognized when the goods are delivered, whatever the cash does. The $18,000 and the $7,000 were both delivered in March, so both count &mdash; $25,000. The $2,000 is cash in hand for flowers not yet delivered, so it is a liability (Deferred Revenue), not revenue, until May.</p>
 </section>
 
-<!-- ==== Q2 ==================================================== -->
+<!-- ==== Q8 ==================================================== -->
 <section class="s">
   <p class="eyebrow">Expense recognition &middot; the matching principle</p>
   <div class="ask">
-    <span class="qlab">Q2</span>
+    <span class="qlab">Q8</span>
     <p>Lakeside Florist reports the five items below for March. <strong>Which one of them is an expense of March?</strong></p>
   </div>
   <ol class="opts">
@@ -447,11 +536,11 @@ body.norail #hint { left:14px; }
   <p class="ans" data-step="2"><b>B.</b> An expense belongs to the period in which the resource is used up, not the period it is paid for. March got the work, so March gets the expense even though the cash leaves in April. A and C are resources bought but not yet used, so they are still assets; E is February&rsquo;s expense being paid off, and D is not an expense at all.</p>
 </section>
 
-<!-- ==== Q3 ==================================================== -->
+<!-- ==== Q9 ==================================================== -->
 <section class="s">
   <p class="eyebrow">Net profit margin</p>
   <div class="ask">
-    <span class="qlab">Q3</span>
+    <span class="qlab">Q9</span>
     <p>For March, Lakeside Florist reports revenues of $25,000 and expenses of $19,000. <strong>What is its net profit margin?</strong></p>
   </div>
   <ol class="opts short">
@@ -466,10 +555,10 @@ body.norail #hint { left:14px; }
 
 <!-- ==== THE SIX TRANSACTIONS ================================== -->
 <section class="s txlist-slide" data-nav="The six transactions">
-  <p class="eyebrow">Questions 4&ndash;11 &middot; Willow Creek Catering, Inc.</p>
+  <p class="eyebrow">Questions 10&ndash;17 &middot; Willow Creek Catering, Inc.</p>
   <div class="ask">
     <span class="qlab">Set-up</span>
-    <p>Willow Creek Catering, Inc. had the six transactions below during April, and nothing else. <strong>Questions 4 to 9 record one each, and Questions 10 and 11 add them up.</strong></p>
+    <p>Willow Creek Catering, Inc. had the six transactions below during April, and nothing else. <strong>Questions 10 to 15 record one each, and Questions 16 and 17 add them up.</strong></p>
   </div>
   <ol class="txlist">
     <li><span class="lab">A</span><span>Willow Creek catered a corporate lunch for $14,000 and collected the cash the same day.</span></li>
@@ -482,8 +571,8 @@ body.norail #hint { left:14px; }
 </section>
 
 <!-- ==== ACCOUNT BANK ========================================== -->
-<section class="s" data-nav="Account choices (Q4&ndash;Q9)">
-  <p class="eyebrow">Questions 4&ndash;9 &middot; The accounts</p>
+<section class="s" data-nav="Account choices (Q10&ndash;Q15)">
+  <p class="eyebrow">Questions 10&ndash;15 &middot; The accounts</p>
   <div class="ask">
     <span class="qlab">Set-up</span>
     <p><strong>Write the number of the account that belongs on each line of the journal entry.</strong> Every entry draws on the ten accounts below, and an account may be used more than once, or not at all.</p>
@@ -508,11 +597,11 @@ body.norail #hint { left:14px; }
 
 <div class="txset">
 
-<!-- ==== Q4 ==================================================== -->
+<!-- ==== Q10 ==================================================== -->
 <section class="s">
-  <p class="eyebrow">Q4 &middot; Transaction A &mdash; Catered for cash</p>
+  <p class="eyebrow">Q10 &middot; Transaction A &mdash; Catered for cash</p>
   <div class="ask">
-    <span class="qlab">Q4</span>
+    <span class="qlab">Q10</span>
     <p><span class="txfull"><strong>Transaction A.</strong> Willow Creek catered a corporate lunch for $14,000 and collected the cash the same day. </span><strong>Record transaction A.</strong></p>
   </div>
   <div class="setgrid">
@@ -546,11 +635,11 @@ body.norail #hint { left:14px; }
   </div>
 </section>
 
-<!-- ==== Q5 ==================================================== -->
+<!-- ==== Q11 ==================================================== -->
 <section class="s">
-  <p class="eyebrow">Q5 &middot; Transaction B &mdash; Catered on account</p>
+  <p class="eyebrow">Q11 &middot; Transaction B &mdash; Catered on account</p>
   <div class="ask">
-    <span class="qlab">Q5</span>
+    <span class="qlab">Q11</span>
     <p><span class="txfull"><strong>Transaction B.</strong> Willow Creek catered a second event for $9,000 and billed the client, who will pay in May. </span><strong>Record transaction B.</strong></p>
   </div>
   <div class="setgrid">
@@ -584,11 +673,11 @@ body.norail #hint { left:14px; }
   </div>
 </section>
 
-<!-- ==== Q6 ==================================================== -->
+<!-- ==== Q12 ==================================================== -->
 <section class="s">
-  <p class="eyebrow">Q6 &middot; Transaction C &mdash; Cash before the work</p>
+  <p class="eyebrow">Q12 &middot; Transaction C &mdash; Cash before the work</p>
   <div class="ask">
-    <span class="qlab">Q6</span>
+    <span class="qlab">Q12</span>
     <p><span class="txfull"><strong>Transaction C.</strong> Willow Creek received $6,000 from a couple for a wedding it will cater in June. </span><strong>Record transaction C.</strong></p>
   </div>
   <div class="setgrid">
@@ -622,11 +711,11 @@ body.norail #hint { left:14px; }
   </div>
 </section>
 
-<!-- ==== Q7 ==================================================== -->
+<!-- ==== Q13 ==================================================== -->
 <section class="s">
-  <p class="eyebrow">Q7 &middot; Transaction D &mdash; Paying ahead</p>
+  <p class="eyebrow">Q13 &middot; Transaction D &mdash; Paying ahead</p>
   <div class="ask">
-    <span class="qlab">Q7</span>
+    <span class="qlab">Q13</span>
     <p><span class="txfull"><strong>Transaction D.</strong> Willow Creek paid $4,800 for a twelve-month insurance policy that begins on May 1. </span><strong>Record transaction D.</strong></p>
   </div>
   <div class="setgrid">
@@ -660,11 +749,11 @@ body.norail #hint { left:14px; }
   </div>
 </section>
 
-<!-- ==== Q8 ==================================================== -->
+<!-- ==== Q14 ==================================================== -->
 <section class="s">
-  <p class="eyebrow">Q8 &middot; Transaction E &mdash; The bill arrives first</p>
+  <p class="eyebrow">Q14 &middot; Transaction E &mdash; The bill arrives first</p>
   <div class="ask">
-    <span class="qlab">Q8</span>
+    <span class="qlab">Q14</span>
     <p><span class="txfull"><strong>Transaction E.</strong> Willow Creek received an $800 utility bill for April, which it will pay in May. </span><strong>Record transaction E.</strong></p>
   </div>
   <div class="setgrid">
@@ -698,11 +787,11 @@ body.norail #hint { left:14px; }
   </div>
 </section>
 
-<!-- ==== Q9 ==================================================== -->
+<!-- ==== Q15 ==================================================== -->
 <section class="s">
-  <p class="eyebrow">Q9 &middot; Transaction F &mdash; Worked now, paid later</p>
+  <p class="eyebrow">Q15 &middot; Transaction F &mdash; Worked now, paid later</p>
   <div class="ask">
-    <span class="qlab">Q9</span>
+    <span class="qlab">Q15</span>
     <p><span class="txfull"><strong>Transaction F.</strong> Willow Creek&rsquo;s employees worked in April and will be paid $5,200 on May 3. </span><strong>Record transaction F.</strong></p>
   </div>
   <div class="setgrid">
@@ -739,11 +828,11 @@ body.norail #hint { left:14px; }
 
 <div class="tset">
 
-<!-- ==== Q10 ==================================================== -->
+<!-- ==== Q16 ==================================================== -->
 <section class="s">
-  <p class="eyebrow">Q10 &middot; Revenue for April</p>
+  <p class="eyebrow">Q16 &middot; Revenue for April</p>
   <div class="ask">
-    <span class="qlab">Q10</span>
+    <span class="qlab">Q16</span>
     <p>Willow Creek had no other transactions in April. <strong>How much revenue should it report for April?</strong></p>
   </div>
   <div class="setgrid">
@@ -771,11 +860,11 @@ body.norail #hint { left:14px; }
   </div>
 </section>
 
-<!-- ==== Q11 ==================================================== -->
+<!-- ==== Q17 ==================================================== -->
 <section class="s">
-  <p class="eyebrow">Q11 &middot; Net income for April</p>
+  <p class="eyebrow">Q17 &middot; Net income for April</p>
   <div class="ask">
-    <span class="qlab">Q11</span>
+    <span class="qlab">Q17</span>
     <p><strong>What is its net income for April?</strong></p>
   </div>
   <div class="setgrid">
