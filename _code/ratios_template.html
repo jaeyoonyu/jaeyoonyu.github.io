@@ -1,0 +1,226 @@
+<style>
+.rt { --s1: #2a78d6; --s2: #eb6834; --grid: rgba(128,128,128,.22); --muted: rgba(128,128,128,.95); font-size: 14px; }
+@media (prefers-color-scheme: dark) { .rt { --s1: #3987e5; --s2: #d95926; } }
+.rt-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.rt-bar select { font-size: 15px; padding: 3px 6px; }
+.rt-bar button { font-size: 13px; padding: 2px 9px; cursor: pointer; }
+.rt-name { font-weight: 700; }
+.rt-sub { color: var(--muted); font-size: 12px; }
+.rt-tabs { display: flex; gap: 4px; flex-wrap: wrap; margin: 8px 0 4px; }
+.rt-tabs button { font-size: 13px; padding: 3px 12px; border-radius: 999px; border: 1px solid var(--grid);
+  background: transparent; color: inherit; cursor: pointer; }
+.rt-tabs button.on { background: var(--s1); border-color: var(--s1); color: #fff; }
+.rt-legend { display: flex; gap: 14px; font-size: 12px; min-height: 18px; }
+.rt-legend i { display: inline-block; width: 14px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 5px; }
+.rt-chart { position: relative; }
+.rt-chart svg { width: 100%; height: auto; display: block; }
+.rt-chart text { fill: currentColor; font-size: 11px; }
+.rt-empty { padding: 40px 0; text-align: center; color: var(--muted); }
+.rt-tip { position: absolute; pointer-events: none; display: none; background: rgba(20,24,22,.92); color: #fff;
+  font-size: 12px; line-height: 1.45; padding: 6px 9px; border-radius: 6px; white-space: nowrap; }
+.rt-wrap { overflow-x: auto; }
+table.rt-t { border-collapse: collapse; font-size: 12px; margin-top: 10px; white-space: nowrap; }
+table.rt-t th, table.rt-t td { padding: 2px 9px 2px 0; border-bottom: 1px solid var(--grid); text-align: left;
+  font-variant-numeric: tabular-nums; }
+table.rt-t th { font-weight: 600; }
+table.rt-t td.neg { color: #c0392b; }
+table.rt-t .hl { font-weight: 700; }
+.rt-notes { font-size: 13px; margin-top: .8em; padding-left: 1.2em; }
+.rt-notes li { margin: 1px 0; }
+</style>
+
+<div class="rt">
+<div class="rt-bar">
+  <button id="rt-prev" title="Ctrl+←">◀</button>
+  <select id="rt-sel"></select>
+  <button id="rt-next" title="Ctrl+→">▶</button>
+  <span class="rt-name" id="rt-name"></span>
+  <span class="rt-sub" id="rt-sub"></span>
+</div>
+<div class="rt-tabs" id="rt-tabs"></div>
+<div class="rt-legend" id="rt-legend"></div>
+<div class="rt-chart"><svg id="rt-svg" viewBox="0 0 760 290"></svg><div class="rt-tip" id="rt-tip"></div></div>
+<div class="rt-wrap"><table class="rt-t" id="rt-t"></table></div>
+<ul class="rt-notes">
+<li><b>Gross profit margin</b> = gross profit ÷ revenue</li>
+<li><b>Net profit margin</b> = net income ÷ revenue</li>
+<li><b>Current ratio</b> = current assets ÷ current liabilities, at quarter end</li>
+<li><b>OCF</b> = net cash from operating activities</li>
+<li><b>Free cash flow (FCF)</b> = OCF − capital expenditures</li>
+<li>Columns = calendar quarters; period ends are rounded to the nearest month end</li>
+<li><b>*</b> on a quarter = revenue and net income derived as annual (10-K) minus nine-month year-to-date</li>
+<li>Cash flows are filed year-to-date, so every quarter's OCF and capex = YTD minus the prior YTD</li>
+<li>— = not filed; airlines, cable, and some others report no gross-profit line</li>
+<li>Switch view: tabs or Ctrl+↑ / Ctrl+↓</li>
+<li>Switch company: dropdown, ◀ ▶, or Ctrl+← / Ctrl+→</li>
+<li>Scroll the table sideways: ← / →</li>
+<li>Source: SEC EDGAR XBRL company facts (data.sec.gov); updated __STAMP__</li>
+</ul>
+</div>
+
+<script>
+(function () {
+  const DATA = __DATA__;
+  const $ = id => document.getElementById(id);
+  const sel = $("rt-sel"), svg = $("rt-svg"), tip = $("rt-tip");
+  const ratio = (a, b) => (a == null || b == null || b === 0) ? null : a / b;
+  const fcf = q => (q.ocf == null || q.capex == null) ? null : q.ocf - q.capex;
+  const pct = v => v == null ? "—" : (v * 100).toFixed(1) + "%";
+  const x2 = v => v == null ? "—" : v.toFixed(2);
+  const usd = v => v == null ? "—" : (v < 0 ? "−$" : "$") + Math.abs(v / 1e6).toLocaleString(undefined, { maximumFractionDigits: 0 }) + "M";
+  const VIEWS = [
+    { id: "margin", label: "Profit margins", kind: "line", fmt: pct, series: [
+      { name: "Gross profit margin", color: "var(--s1)", f: q => ratio(q.gp, q.rev) },
+      { name: "Net profit margin", color: "var(--s2)", f: q => ratio(q.ni, q.rev) }] },
+    { id: "cr", label: "Current ratio", kind: "line", fmt: x2, ref: 1, series: [
+      { name: "Current ratio", color: "var(--s1)", f: q => ratio(q.ca, q.cl) }] },
+    { id: "ocf", label: "Net income vs OCF", kind: "line", fmt: usd, series: [
+      { name: "Net income", color: "var(--s2)", f: q => q.ni },
+      { name: "Operating cash flow", color: "var(--s1)", f: q => q.ocf }] },
+    { id: "fcf", label: "Free cash flow", kind: "bar", fmt: usd, series: [
+      { name: "Free cash flow", color: "var(--s1)", f: fcf }] },
+  ];
+  const COLS = [
+    ["Revenue", q => usd(q.rev)], ["Gross profit", q => usd(q.gp)],
+    ["GPM", q => pct(ratio(q.gp, q.rev)), "margin"], ["Net income", q => usd(q.ni), "ocf"],
+    ["NPM", q => pct(ratio(q.ni, q.rev)), "margin"], ["OCF", q => usd(q.ocf), "ocf fcf"],
+    ["Capex", q => usd(q.capex), "fcf"], ["FCF", q => usd(fcf(q)), "fcf"],
+    ["Current assets", q => usd(q.ca), "cr"], ["Current liab.", q => usd(q.cl), "cr"],
+    ["Current ratio", q => x2(ratio(q.ca, q.cl)), "cr"],
+  ];
+  let ci = 0, vi = 0;
+
+  let group = null, og = null;
+  DATA.forEach((c, i) => {
+    if (c.group !== group) { group = c.group; og = document.createElement("optgroup"); og.label = group; sel.appendChild(og); }
+    const o = document.createElement("option"); o.value = i; o.textContent = c.ticker; og.appendChild(o);
+  });
+  VIEWS.forEach((v, i) => { const b = document.createElement("button"); b.textContent = v.label;
+    b.addEventListener("click", () => { vi = i; render(); }); $("rt-tabs").appendChild(b); });
+
+  const NS = "http://www.w3.org/2000/svg";
+  const el = (tag, a, text) => { const e = document.createElementNS(NS, tag);
+    for (const k in a) e.setAttribute(k, a[k]); if (text != null) e.textContent = text; svg.appendChild(e); return e; };
+  function niceStep(span) {
+    const raw = span / 5, p = Math.pow(10, Math.floor(Math.log10(raw)));
+    return [1, 2, 2.5, 5, 10].map(m => m * p).find(s => s >= raw);
+  }
+  function axisFmt(view, v, step) {
+    if (view.fmt === pct) return (v * 100).toFixed(step < .01 ? 1 : 0) + "%";
+    if (view.fmt === x2) return v.toFixed(step < .1 ? 2 : 1);
+    const a = Math.abs(v), s = v < 0 ? "−$" : "$";
+    return a >= 1e9 ? s + (a / 1e9).toFixed(step < 1e9 ? 1 : 0) + "B" : s + (a / 1e6).toFixed(0) + "M";
+  }
+
+  function chart(c, view) {
+    svg.innerHTML = ""; tip.style.display = "none";
+    const qs = c.quarters, S = view.series.map(s => ({ ...s, v: qs.map(s.f) }))
+      // A gross margin that stops before the latest quarter is a tagging gap, not a trend: drop it.
+      .filter(s => view.id === "margin" ? s.v[s.v.length - 1] != null : s.v.some(v => v != null));
+    $("rt-legend").innerHTML = view.series.length < 2 ? "" : view.series.map(s => S.some(t => t.name === s.name)
+      ? `<span><i style="background:${s.color}"></i>${s.name}</span>`
+      : `<span style="opacity:.55"><i style="background:${s.color};opacity:.4"></i>${s.name}: not filed</span>`).join("");
+    const all = S.flatMap(s => s.v).filter(v => v != null);
+    const W = 760, H = 290, L = 58, R = 16, T = 18, B = 30;
+    if (!all.length) { el("text", { x: W / 2, y: H / 2, "text-anchor": "middle", opacity: .6 }, "Not filed for this company"); return; }
+    let lo = Math.min(view.ref != null ? view.ref : 0, 0, ...all), hi = Math.max(view.ref || 0, 0, ...all);
+    if (view.id === "cr") lo = 0;
+    if (hi - lo === 0) hi = lo + 1;
+    const step = niceStep(hi - lo);
+    lo = Math.floor(lo / step) * step; hi = Math.ceil(hi / step) * step;
+    const n = qs.length, slot = (W - L - R) / n;
+    const x = k => L + slot * (k + .5), y = v => T + (hi - v) / (hi - lo) * (H - T - B);
+    for (let v = lo; v <= hi + step / 1e6; v += step) {
+      const zero = Math.abs(v) < step / 1e6;
+      el("line", { x1: L, x2: W - R, y1: y(v), y2: y(v), stroke: zero ? "currentColor" : "rgba(128,128,128,.22)", opacity: zero ? .55 : 1 });
+      el("text", { x: L - 6, y: y(v) + 4, "text-anchor": "end", opacity: .7 }, axisFmt(view, v, step));
+    }
+    if (view.ref != null) {
+      el("line", { x1: L, x2: W - R, y1: y(view.ref), y2: y(view.ref), stroke: "currentColor", opacity: .5, "stroke-dasharray": "4 4" });
+      el("text", { x: W - R, y: y(view.ref) - 4, "text-anchor": "end", opacity: .6 }, "1.0");
+    }
+    qs.forEach((q, k) => { if (n <= 12 || k % 2 === (n - 1) % 2)
+      el("text", { x: x(k), y: H - 10, "text-anchor": "middle", opacity: .7 }, q.q + (q.derived ? "*" : "")); });
+    const marks = [];
+    S.forEach(s => {
+      if (view.kind === "bar") {
+        const bw = Math.min(26, slot * .6);
+        marks.push(s.v.map((v, k) => v == null ? null : el("rect", { x: x(k) - bw / 2, y: Math.min(y(v), y(0)), width: bw,
+          height: Math.max(1, Math.abs(y(v) - y(0))), rx: 3, fill: s.color, opacity: v < 0 ? .55 : 1 })));
+        return;
+      }
+      let d = "", pen = false;
+      s.v.forEach((v, k) => { if (v == null) { pen = false; return; } d += (pen ? "L" : "M") + x(k) + " " + y(v); pen = true; });
+      el("path", { d, fill: "none", stroke: s.color, "stroke-width": 2, "stroke-linejoin": "round" });
+      marks.push(s.v.map((v, k) => v == null ? null : el("circle", { cx: x(k), cy: y(v), r: 4, fill: s.color,
+        stroke: "var(--background, #fff)", "stroke-width": 2 })));
+    });
+    // Direct labels on the latest point, nudged apart when two lines end close together.
+    const labels = S.map(s => ({ v: s.v[n - 1] })).filter(l => l.v != null)
+      .map(l => ({ ...l, ly: view.kind === "bar" && l.v < 0 ? y(l.v) + 14 : y(l.v) - 9 }))
+      .sort((a, b) => a.ly - b.ly);
+    labels.forEach((l, j) => { if (j && l.ly - labels[j - 1].ly < 13) l.ly = labels[j - 1].ly + 13; });
+    labels.forEach(l => el("text", { x: x(n - 1) + (view.kind === "bar" ? 0 : -8), y: l.ly,
+      "text-anchor": view.kind === "bar" ? "middle" : "end", "font-weight": 700 }, view.fmt(l.v)));
+    const cross = el("line", { y1: T, y2: H - B, stroke: "currentColor", opacity: 0, "stroke-dasharray": "3 3" });
+    const hit = el("rect", { x: L, y: 0, width: W - L - R, height: H, fill: "transparent" });
+    hit.addEventListener("mousemove", ev => {
+      const r = svg.getBoundingClientRect(), sx = (ev.clientX - r.left) * W / r.width;
+      const k = Math.max(0, Math.min(n - 1, Math.floor((sx - L) / slot))), q = qs[k];
+      cross.setAttribute("x1", x(k)); cross.setAttribute("x2", x(k)); cross.setAttribute("opacity", view.kind === "bar" ? 0 : .4);
+      marks.forEach(ms => ms.forEach((m, j) => { if (!m) return;
+        if (m.tagName === "circle") m.setAttribute("r", j === k ? 6 : 4); else m.setAttribute("stroke", j === k ? "currentColor" : "none"); }));
+      tip.innerHTML = `<b>${q.q}${q.derived ? "*" : ""}</b> · period end ${q.end}<br>` +
+        S.map(s => `${s.name} <b>${view.fmt(s.v[k])}</b>`).join("<br>") +
+        (view.id === "fcf" ? `<br>OCF ${usd(q.ocf)} − capex ${usd(q.capex)}` : "");
+      tip.style.display = "block";
+      const ys = S.map(s => s.v[k]).filter(v => v != null), px = x(k) * r.width / W,
+            py = (ys.length ? y(Math.max(...ys)) : T) * r.height / H;
+      tip.style.left = Math.max(0, Math.min(px + 12, r.width - tip.offsetWidth - 4)) + "px";
+      tip.style.top = Math.max(0, py - tip.offsetHeight - 10) + "px";
+    });
+    hit.addEventListener("mouseleave", () => { tip.style.display = "none"; cross.setAttribute("opacity", 0);
+      marks.forEach(ms => ms.forEach(m => { if (!m) return; if (m.tagName === "circle") m.setAttribute("r", 4); else m.setAttribute("stroke", "none"); })); });
+  }
+
+  function table(c, view) {
+    const qs = c.quarters.slice().reverse();
+    $("rt-t").innerHTML = "<thead><tr><th>Quarter</th><th>Period end</th>" +
+      COLS.map(([h, , v]) => `<th${(v || "").split(" ").includes(view.id) ? ' class="hl"' : ""}>${h}</th>`).join("") + "</tr></thead><tbody>" +
+      qs.map(q => `<tr><td>${q.q}${q.derived ? "*" : ""}</td><td>${q.end}</td>` + COLS.map(([, f, v]) => {
+        const t = f(q), cls = [t.startsWith("−") || t.startsWith("-") ? "neg" : "", (v || "").split(" ").includes(view.id) ? "hl" : ""].join(" ").trim();
+        return `<td${cls ? ` class="${cls}"` : ""}>${t}</td>`; }).join("") + "</tr>").join("") + "</tbody>";
+  }
+
+  function render() {
+    const c = DATA[ci], view = VIEWS[vi];
+    sel.value = ci;
+    $("rt-name").textContent = c.name;
+    $("rt-sub").textContent = c.group + " · FYE " + c.fye;
+    [...$("rt-tabs").children].forEach((b, i) => b.classList.toggle("on", i === vi));
+    try { history.replaceState(null, "", "#" + c.ticker + "/" + view.id); } catch (e) {}
+    chart(c, view); table(c, view);
+  }
+
+  sel.addEventListener("change", () => { ci = +sel.value; render(); });
+  $("rt-prev").addEventListener("click", () => { ci = (ci - 1 + DATA.length) % DATA.length; render(); });
+  $("rt-next").addEventListener("click", () => { ci = (ci + 1) % DATA.length; render(); });
+  document.addEventListener("keydown", e => {
+    const wrap = document.querySelector(".rt-wrap");
+    if (!(e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) && (e.key === "ArrowLeft" || e.key === "ArrowRight")
+        && !/^(INPUT|SELECT|TEXTAREA)$/.test(document.activeElement.tagName)
+        && wrap.scrollWidth > wrap.clientWidth) {
+      e.preventDefault(); wrap.scrollBy({ left: e.key === "ArrowLeft" ? -160 : 160, behavior: "smooth" }); return;
+    }
+    if (!(e.ctrlKey || e.metaKey)) return;
+    const d = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[e.key];
+    if (!d) return;
+    e.preventDefault();
+    ci = (ci + d[0] + DATA.length) % DATA.length; vi = (vi + d[1] + VIEWS.length) % VIEWS.length; render();
+  });
+  const [ht, hv] = decodeURIComponent(location.hash.slice(1)).split("/");
+  ci = Math.max(0, DATA.findIndex(c => c.ticker === (ht || "").toUpperCase()));
+  vi = Math.max(0, VIEWS.findIndex(v => v.id === hv));
+  render();
+})();
+</script>

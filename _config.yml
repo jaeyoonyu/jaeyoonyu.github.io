@@ -32,6 +32,7 @@ navigation:                # accepts {file, title, url, icon, sidebaricon}
   - {file: "michigan-housing.md", title: Michigan-Housing}
   - {file: "visuals.md", title: Visuals}
   - {file: "fundamentals.md", title: Fundamentals}
+  - {file: "ratios.md", title: Ratios}
 
 
 external:                  # shows a footer with social links - for available icons see fontawesome.com/icons
