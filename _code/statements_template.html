@@ -32,10 +32,10 @@ table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
 .st-notes { font-size: 13px; margin-top: 1em; padding-left: 1.2em; }
 .st-notes li { margin: 1px 0; }
 
-/* Left ticker panel: only on wide screens, where the theme leaves wide side margins. */
+/* Left ticker panel: only at 900px and wider, where the theme leaves wide side margins. */
 .tkp { display: none; }
-@media (min-width: 1100px) {
-  body > article { padding-left: 2em !important; padding-right: 2em !important; }
+@media (min-width: 900px) {
+  body > article { padding-left: 1.5em !important; padding-right: 1.5em !important; }
   .tk-grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 28px; max-width: 1320px; margin: 0 auto; }
   .tkp { display: block; position: sticky; top: 12px; align-self: start; max-height: calc(100vh - 24px);
     overflow-y: auto; font-size: 13px; border-right: 1px solid rgba(128,128,128,.22); padding-right: 10px; }
