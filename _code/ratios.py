@@ -11,13 +11,14 @@ so for those companies they are read from each filing's own XBRL instance.
 import json
 import re
 import time
+import urllib.error
 import urllib.request
 from datetime import datetime
 from pathlib import Path
 
 from fundamentals import GROUPS, UA, fye_mmdd, get_json, month_end
 
-FIRST_COL, LAST_COL = (2022, 1), (2026, 2)  # calendar quarters shown, (year, q)
+FIRST_COL, LAST_COL = (2019, 1), (2026, 2)  # calendar quarters shown, (year, q)
 TAGS = {
     "rev": ["Revenues", "RevenueFromContractWithCustomerExcludingAssessedTax",
             "SalesRevenueNet", "RevenueFromContractWithCustomerIncludingAssessedTax",
@@ -85,12 +86,20 @@ def best(gaap, key):
 
 def instance_shares(cik, acc, doc):
     """Cover-page shares summed over share classes, from the filing's XBRL instance."""
-    url = (f"https://www.sec.gov/Archives/edgar/data/{cik}/{acc.replace('-', '')}/"
-           + re.sub(r"\.htm$", "_htm.xml", doc))
-    with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=120) as r:
-        x = r.read().decode("utf-8", "replace")
+    base = f"https://www.sec.gov/Archives/edgar/data/{cik}/{acc.replace('-', '')}/"
+    try:  # inline XBRL filings (mid-2019 on) ship an extracted <doc>_htm.xml
+        x = fetch_text(base + re.sub(r"\.htm$", "_htm.xml", doc))
+    except urllib.error.HTTPError:  # older filings: the one .xml that is not a linkbase
+        names = [i["name"] for i in get_json(base + "index.json")["directory"]["item"]]
+        inst = [n for n in names if n.endswith(".xml") and not re.search(r"_(cal|def|lab|pre)\.xml$|FilingSummary", n)]
+        x = fetch_text(base + inst[0])
     vals = re.findall(r"<dei:EntityCommonStockSharesOutstanding\b[^>]*>\s*([\d.]+)\s*<", x)
     return sum(float(v) for v in vals) if vals else None
+
+
+def fetch_text(url):
+    with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=120) as r:
+        return r.read().decode("utf-8", "replace")
 
 
 def shares_by_period(cik, dei, filings):
@@ -115,7 +124,7 @@ def shares_by_period(cik, dei, filings):
     return out
 
 
-def company(cik, sub):
+def company(cik, sub, ticker):
     facts = get_json(f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik:010d}.json")
     gaap = facts["facts"].get("us-gaap", {})
     dei = facts["facts"].get("dei", {})
@@ -127,6 +136,9 @@ def company(cik, sub):
     filings = {r["accessionNumber"]: r for b in blocks for r in (dict(zip(b, v)) for v in zip(*b.values()))
                if r["form"] in ("10-K", "10-Q") and r["reportDate"] >= f"{FIRST_COL[0] - 1}-12-01"}
     shares = shares_by_period(cik, dei, filings)
+    doc_url = {f["reportDate"]: f"https://www.sec.gov/Archives/edgar/data/{cik}/"
+                                f"{acc.replace('-', '')}/{f['primaryDocument']}"
+               for acc, f in sorted(filings.items(), key=lambda kv: kv[1]["filingDate"], reverse=True)}
     floats = {}
     for f in sorted(dei.get("EntityPublicFloat", {}).get("units", {}).get("USD", []), key=lambda f: f["filed"]):
         floats[f["end"]] = f["val"]
@@ -146,7 +158,7 @@ def company(cik, sub):
                          capex=capex, ca=val("ca"), cl=val("cl"),
                          shares=shares.get(e, (None,))[0],
                          shares_asof=shares.get(e, (None, None))[1],
-                         float=None, float_asof=None))
+                         float=None, float_asof=None, url=doc_url.get(e)))
     # Same column rule as the Fundamentals page: a long first quarter that lands
     # in the next filing's quarter moves back one column.
     for newer, r in zip(rows, rows[1:]):
@@ -166,16 +178,23 @@ def company(cik, sub):
     for r in rows:
         r["q"] = f"{(r['col'] // 4) % 100:02d}Q{r['col'] % 4 + 1}"
         del r["col"]
-    return facts["entityName"], rows, split_adjust(rows)
+    return facts["entityName"], rows, split_adjust(rows, ticker)
 
 
-def split_adjust(rows):
+# Splits the ratio test gets wrong, as (quarter first seen, ratio). FuelCell's
+# 1-for-12 (May 2019) came with heavy issuance, so it looks like 1-for-5.
+SPLIT_OVERRIDE = {"FCEL": {"19Q2": 1 / 12}}
+
+
+def split_adjust(rows, ticker):
     """Restate earlier share counts for stock splits. A forward split is a jump
     between consecutive cover counts within 3% of a standard ratio. A reverse split
     gets 12%, because the companies doing them often issue shares the same quarter
     (FuelCell's 1-for-30 shows up as 1-for-27)."""
     standard = [2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 25, 30, 35, 40, 50, 100]
     splits = []
+    for r in rows:
+        r["shares_raw"] = r["shares"]  # as filed; the page can toggle back to it
     have = [r for r in rows if r["shares"]]
     for old, new in zip(have, have[1:]):
         ratio = new["shares"] / old["shares"]
@@ -185,6 +204,9 @@ def split_adjust(rows):
         elif ratio <= 0.55:  # issuance only shrinks the apparent ratio, so snap upward
             up = [s for s in standard if s >= 1 / ratio * 0.97]
             k, tol = (1 / up[0], 0.12) if up else (None, 0)
+        k = SPLIT_OVERRIDE.get(ticker, {}).get(new["q"], k)
+        if new["q"] in SPLIT_OVERRIDE.get(ticker, {}):
+            tol = float("inf")  # known split: take it as given
         if k and abs(ratio / k - 1) < tol:
             splits.append((new["q"], k))
             for r in rows[:rows.index(new)]:
@@ -202,7 +224,7 @@ def main():
     for group, tickers in GROUPS:
         for t in tickers:
             sub = get_json(f"https://data.sec.gov/submissions/CIK{tickmap[t]:010d}.json")
-            name, rows, splits = company(tickmap[t], sub)
+            name, rows, splits = company(tickmap[t], sub, t)
             fye = fye_mmdd(sub.get("fiscalYearEnd") or "1231")
             exch = {"Nasdaq": "NASDAQ", "NYSE": "NYSE"}.get((sub.get("exchanges") or [""])[0], "")
             data.append(dict(ticker=t, name=name, group=group, fye=fye, exchange=exch,

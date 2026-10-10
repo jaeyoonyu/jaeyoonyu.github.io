@@ -25,6 +25,7 @@ table.rt-t th, table.rt-t td { padding: 2px 9px 2px 0; border-bottom: 1px solid 
 table.rt-t th { font-weight: 600; }
 table.rt-t td.neg { color: #c0392b; }
 table.rt-t .hl { font-weight: 700; }
+.rt-split { display: none; font-size: 12px; margin: 2px 0 0; cursor: pointer; }
 .rt-notes { font-size: 13px; margin-top: .8em; padding-left: 1.2em; }
 .rt-notes li { margin: 1px 0; }
 </style>
@@ -39,6 +40,7 @@ table.rt-t .hl { font-weight: 700; }
 </div>
 <div class="rt-tabs" id="rt-tabs"></div>
 <div class="rt-legend" id="rt-legend"></div>
+<label class="rt-split" id="rt-split"><input type="checkbox" id="rt-split-box" checked> Adjust for stock splits</label>
 <div class="rt-chart" id="rt-chart"><div class="rt-tip" id="rt-tip"></div></div>
 <div class="rt-wrap"><table class="rt-t" id="rt-t"></table></div>
 <ul class="rt-notes">
@@ -48,12 +50,14 @@ table.rt-t .hl { font-weight: 700; }
 <li><b>OCF</b> = net cash from operating activities</li>
 <li><b>Free cash flow (FCF)</b> = OCF − capital expenditures; top panel: OCF and capex bars, bottom panel: FCF line, same quarters</li>
 <li><b>Shares outstanding</b> = all share classes on the 10-Q/10-K cover page, as of a date shortly after quarter end</li>
-<li>Share counts before a stock split are restated to the post-split basis (e.g., NVDA 10-for-1, first seen in 24Q3); splits are listed next to the company name</li>
+<li>Share counts before a stock split are restated to the post-split basis (e.g., NVDA 10-for-1, first seen in 24Q3); untick "Adjust for stock splits" to see them as filed</li>
+<li>Splits are found where the cover count jumps by a standard ratio (×2, ×10, ÷20, …) between quarters, and are listed next to the company name</li>
 <li><b>Public float</b> = market value of shares held by non-affiliates, reported once a year in the 10-K as of the end of the second fiscal quarter</li>
 <li>Columns = calendar quarters; period ends are rounded to the nearest month end</li>
 <li><b>*</b> on a quarter = revenue and net income derived as annual (10-K) minus nine-month year-to-date</li>
 <li>Cash flows are filed year-to-date, so every quarter's OCF and capex = YTD minus the prior YTD</li>
 <li>— = not filed; airlines, cable, and some others report no gross-profit line</li>
+<li>Click a quarter (in the chart or the table) to open that 10-Q/10-K on sec.gov</li>
 <li>Switch view: tabs or Ctrl+↑ / Ctrl+↓</li>
 <li>Switch company: dropdown, ◀ ▶, or Ctrl+← / Ctrl+→</li>
 <li>Scroll the table sideways: ← / →</li>
@@ -89,7 +93,7 @@ table.rt-t .hl { font-weight: 700; }
       { title: "Free cash flow = OCF − capex", kind: "line", h: 200, series: [
         { name: "Free cash flow", color: "var(--s3)", f: fcf }] }] },
     { id: "sh", label: "Shares outstanding", kind: "line", fmt: shr, series: [
-      { name: "Shares outstanding", color: "var(--s1)", f: q => q.shares }] },
+      { name: "Shares outstanding", color: "var(--s1)", f: q => splitAdj ? q.shares : q.shares_raw }] },
     { id: "pf", label: "Public float", kind: "bar", fmt: usd, series: [
       { name: "Public float", color: "var(--s1)", f: q => q.float }] },
     { id: "px", label: "Stock price", widget: true },
@@ -101,9 +105,9 @@ table.rt-t .hl { font-weight: 700; }
     ["Capex", q => usd(q.capex), "fcf"], ["FCF", q => usd(fcf(q)), "fcf"],
     ["Current assets", q => usd(q.ca), "cr"], ["Current liab.", q => usd(q.cl), "cr"],
     ["Current ratio", q => x2(ratio(q.ca, q.cl)), "cr"],
-    ["Shares out.", q => shr(q.shares), "sh"], ["Public float", q => usd(q.float), "pf"],
+    ["Shares out.", q => shr(splitAdj ? q.shares : q.shares_raw), "sh"], ["Public float", q => usd(q.float), "pf"],
   ];
-  let ci = 0, vi = 0;
+  let ci = 0, vi = 0, splitAdj = true;
 
   let group = null, og = null;
   DATA.forEach((c, i) => {
@@ -151,7 +155,8 @@ table.rt-t .hl { font-weight: 700; }
       el("line", { x1: L, x2: W - R, y1: y(view.ref), y2: y(view.ref), stroke: "currentColor", opacity: .5, "stroke-dasharray": "4 4" });
       el("text", { x: W - R, y: y(view.ref) - 4, "text-anchor": "end", opacity: .6 }, "1.0");
     }
-    qs.forEach((q, k) => { if (n <= 12 || k % 2 === (n - 1) % 2)
+    const every = Math.ceil(n / 12);  // about 12 x labels, always including the latest quarter
+    qs.forEach((q, k) => { if ((n - 1 - k) % every === 0)
       el("text", { x: x(k), y: H - 10, "text-anchor": "middle", opacity: .7 }, q.q + (q.derived ? "*" : "")); });
     const marks = [], kindOf = s => s.kind || p.kind || view.kind;
     const bars = S.filter(s => kindOf(s) === "bar"), lines = S.filter(s => kindOf(s) !== "bar");
@@ -190,6 +195,12 @@ table.rt-t .hl { font-weight: 700; }
       all.hover(Math.max(0, Math.min(n - 1, Math.floor((sx - L) / slot))), svg);
     });
     hit.addEventListener("mouseleave", () => all.hover(null));
+    hit.style.cursor = "pointer";
+    hit.addEventListener("click", ev => {  // click a quarter to open its 10-Q/10-K
+      const r = svg.getBoundingClientRect(), sx = (ev.clientX - r.left) * W / r.width;
+      const q = qs[Math.max(0, Math.min(n - 1, Math.floor((sx - L) / slot)))];
+      if (q.url) window.open(q.url, "_blank", "noopener");
+    });
     return { hover, svg, x, y, S, H };
   }
 
@@ -231,8 +242,9 @@ table.rt-t .hl { font-weight: 700; }
       const q = qs[k], d = drawn.find(d => d.svg === svg);
       tip.innerHTML = `<b>${q.q}${q.derived ? "*" : ""}</b> · period end ${q.end}<br>` +
         shown.map(s => `${s.name} <b>${view.fmt(s.v[k])}</b>`).join("<br>") +
-        (view.id === "sh" && q.shares_asof ? `<br>as of ${q.shares_asof} (cover page)${q.shares_adj ? ", split-adjusted" : ""}` : "") +
-        (view.id === "pf" && q.float_asof ? `<br>as of ${q.float_asof}` : "");
+        (view.id === "sh" && q.shares_asof ? `<br>as of ${q.shares_asof} (cover page)${q.shares_adj && splitAdj ? `, split-adjusted (as filed: ${shr(q.shares_raw)})` : ""}` : "") +
+        (view.id === "pf" && q.float_asof ? `<br>as of ${q.float_asof}` : "") +
+        (q.url ? `<br><span style="opacity:.7">Click to open the filing</span>` : "");
       tip.style.display = "block";
       const b = box.getBoundingClientRect(), r = svg.getBoundingClientRect();
       const ys = d.S.map(s => s.v[k]).filter(v => v != null);
@@ -247,7 +259,7 @@ table.rt-t .hl { font-weight: 700; }
     const qs = c.quarters.slice().reverse();
     $("rt-t").innerHTML = "<thead><tr><th>Quarter</th><th>Period end</th>" +
       COLS.map(([h, , v]) => `<th${(v || "").split(" ").includes(view.id) ? ' class="hl"' : ""}>${h}</th>`).join("") + "</tr></thead><tbody>" +
-      qs.map(q => `<tr><td>${q.q}${q.derived ? "*" : ""}</td><td>${q.end}</td>` + COLS.map(([, f, v]) => {
+      qs.map(q => `<tr><td>${q.url ? `<a href="${q.url}" target="_blank" title="Open the filing on sec.gov">${q.q}</a>` : q.q}${q.derived ? "*" : ""}</td><td>${q.end}</td>` + COLS.map(([, f, v]) => {
         const t = f(q), cls = [t.startsWith("−") || t.startsWith("-") ? "neg" : "", (v || "").split(" ").includes(view.id) ? "hl" : ""].join(" ").trim();
         return `<td${cls ? ` class="${cls}"` : ""}>${t}</td>`; }).join("") + "</tr>").join("") + "</tbody>";
   }
@@ -259,10 +271,12 @@ table.rt-t .hl { font-weight: 700; }
     $("rt-sub").textContent = c.group + " · FYE " + c.fye + (c.splits.length ? " · splits " + c.splits.join(", ") : "");
     [...$("rt-tabs").children].forEach((b, i) => b.classList.toggle("on", i === vi));
     try { history.replaceState(null, "", "#" + c.ticker + "/" + view.id); } catch (e) {}
+    $("rt-split").style.display = view.id === "sh" && c.splits.length ? "inline-block" : "none";
     chart(c, view); table(c, view);
   }
 
   sel.addEventListener("change", () => { ci = +sel.value; render(); });
+  $("rt-split-box").addEventListener("change", e => { splitAdj = e.target.checked; render(); });
   $("rt-prev").addEventListener("click", () => { ci = (ci - 1 + DATA.length) % DATA.length; render(); });
   $("rt-next").addEventListener("click", () => { ci = (ci + 1) % DATA.length; render(); });
   document.addEventListener("keydown", e => {
