@@ -32,14 +32,6 @@ title: "Resources"
 * [TidyFinance](https://www.tidy-finance.org/)
 * [OpenDataReader](https://github.com/FinanceData/OpenDartReader)
 
-#### CMU
-* [SharePoint](centralmichigan-my.sharepoint.com)
-* [Blackboard](https://blackboard.cmich.edu/ultra/course); [Question-format-to-import](https://help.anthology.com/blackboard/instructor/en/assessments/questions/reuse-questions/upload-or-import-questions.html)
-* [Connect](https://connect.edu.mheducation.com/instructor/courses)
-* [Course Registration](https://courseregistration.apps.cmich.edu/Home/SignedIn)
-* [Class List](apps.cmich.edu/tools/academic/ClassList/)
-* [Milage Reimbursement](https://www.cmich.edu/offices-departments/finance-administrative-services/financial-services-reporting/travel-business-expenses/mileage-reimbursement#Official-CMU-mileage-chart)
-
 #### Others
 * PDF to DOCX: [CloudConvert](https://cloudconvert.com/pdf-to-docx); [IlovePDF](https://www.ilovepdf.com/pdf_to_word); [FreeConvert](https://www.freeconvert.com/pdf-to-docx)
 * Bank Statement to CSV: [BankStatementWizard](https://bankstatementwizard.com/)
