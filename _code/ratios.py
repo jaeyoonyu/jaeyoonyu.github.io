@@ -26,6 +26,7 @@ TAGS = {
     "gp": ["GrossProfit"],
     "cost": ["CostOfRevenue", "CostOfGoodsAndServicesSold", "CostOfGoodsSold"],
     "ni": ["NetIncomeLoss", "ProfitLoss"],
+    "oi": ["OperatingIncomeLoss"],
     "ocf": ["NetCashProvidedByUsedInOperatingActivities",
             "NetCashProvidedByUsedInOperatingActivitiesContinuingOperations"],
     "capex": ["PaymentsToAcquirePropertyPlantAndEquipment", "PaymentsToAcquireProductiveAssets",
@@ -164,7 +165,7 @@ def company(cik, sub, ticker):
         me = month_end(datetime.strptime(e, "%Y-%m-%d").date())
         rows.append(dict(end=e, col=me.year * 4 + (me.month - 1) // 3,
                          derived=m["rev"][e][1] or m["ni"][e][1],
-                         rev=val("rev"), gp=gp, ni=val("ni"), ocf=val("ocf"),
+                         rev=val("rev"), gp=gp, oi=val("oi"), ni=val("ni"), ocf=val("ocf"),
                          capex=capex, ca=val("ca"), cl=val("cl"),
                          shares=shares.get(e, (None,))[0],
                          shares_asof=shares.get(e, (None, None))[1],

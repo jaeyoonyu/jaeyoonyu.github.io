@@ -40,6 +40,14 @@ table.rt-t .hl { font-weight: 700; }
 .tkp .g { font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; color: rgba(128,128,128,.95);
   margin: 10px 0 2px; font-weight: 700; }
 .tkp .g:first-child { margin-top: 0; }
+.tkp .g { cursor: pointer; border-radius: 4px; padding: 1px 6px; }
+.tkp .g:hover { background: rgba(128,128,128,.12); }
+.tkp .g.on { background: #2a78d6; color: #fff; }
+.rt { --c1: #2a78d6; --c2: #eb6834; --c3: #1baf7a; --c4: #eda100; --c5: #e87ba4; --c6: #008300; --c7: #4a3aa7; --c8: #e34948; }
+@media (prefers-color-scheme: dark) { .rt { --c1: #3987e5; --c2: #d95926; --c3: #199e70; --c4: #c98500; --c5: #d55181; --c6: #008300; --c7: #9085e9; --c8: #e66767; } }
+.rt-cmp { font-size: 12px; padding: 2px 9px; cursor: pointer; }
+table.rt-t tr.pick { cursor: pointer; }
+table.rt-t tr.pick:hover td { background: rgba(128,128,128,.10); }
 .tkp a { display: flex; gap: 6px; padding: 1px 6px; border-radius: 4px; color: inherit; text-decoration: none; cursor: pointer; }
 .tkp a:hover { background: rgba(128,128,128,.12); text-decoration: none; }
 .tkp a b { flex: 0 0 46px; }
@@ -55,15 +63,20 @@ table.rt-t .hl { font-weight: 700; }
   <button id="rt-next" title="Ctrl+→">▶</button>
   <span class="rt-name" id="rt-name"></span>
   <span class="rt-sub" id="rt-sub"></span>
+  <button class="rt-cmp" id="rt-cmp"></button>
 </div>
 <div class="rt-tabs" id="rt-tabs"></div>
+<div class="rt-tabs" id="rt-mtabs" style="display:none"></div>
 <div class="rt-legend" id="rt-legend"></div>
 <label class="rt-split" id="rt-split"><input type="checkbox" id="rt-split-box" checked> Adjust for stock splits</label>
 <div class="rt-chart" id="rt-chart"><div class="rt-tip" id="rt-tip"></div></div>
 <div class="rt-wrap"><table class="rt-t" id="rt-t"></table></div>
 <ul class="rt-notes">
 <li><b>Gross profit margin</b> = gross profit ÷ revenue</li>
+<li><b>Operating profit margin</b> = operating income ÷ revenue</li>
 <li><b>Net profit margin</b> = net income ÷ revenue</li>
+<li><b>Sector comparison</b>: click a sector name in the left list (or Compare sector) to see one ratio for all its companies; Ctrl+↑ / Ctrl+↓ switch the ratio, Ctrl+← / Ctrl+→ the sector; click a row to open that company</li>
+<li>In the sector chart, margins beyond ±100% are drawn at the edge; the table and tooltip show the actual values</li>
 <li><b>Current ratio</b> = current assets ÷ current liabilities, at quarter end</li>
 <li><b>OCF</b> = net cash from operating activities</li>
 <li><b>Free cash flow (FCF)</b> = OCF − capital expenditures; top panel: OCF and capex bars, bottom panel: FCF line, same quarters</li>
@@ -104,6 +117,7 @@ table.rt-t .hl { font-weight: 700; }
   const VIEWS = [
     { id: "margin", label: "Profit margins", kind: "line", fmt: pct, series: [
       { name: "Gross profit margin", color: "var(--s1)", f: q => ratio(q.gp, q.rev) },
+      { name: "Operating profit margin", color: "var(--s3)", f: q => ratio(q.oi, q.rev) },
       { name: "Net profit margin", color: "var(--s2)", f: q => ratio(q.ni, q.rev) }] },
     { id: "cr", label: "Current ratio", kind: "line", fmt: x2, ref: 1, series: [
       { name: "Current ratio", color: "var(--s1)", f: q => ratio(q.ca, q.cl) }] },
@@ -129,7 +143,8 @@ table.rt-t .hl { font-weight: 700; }
   ];
   const COLS = [
     ["Revenue", q => usd(q.rev)], ["Gross profit", q => usd(q.gp)],
-    ["GPM", q => pct(ratio(q.gp, q.rev)), "margin"], ["Net income", q => usd(q.ni), "ocf"],
+    ["GPM", q => pct(ratio(q.gp, q.rev)), "margin"], ["Operating income", q => usd(q.oi)],
+    ["OPM", q => pct(ratio(q.oi, q.rev)), "margin"], ["Net income", q => usd(q.ni), "ocf"],
     ["NPM", q => pct(ratio(q.ni, q.rev)), "margin"], ["OCF", q => usd(q.ocf), "ocf fcf"],
     ["Capex", q => usd(q.capex), "fcf"], ["FCF", q => usd(fcf(q)), "fcf"],
     ["Current assets", q => usd(q.ca), "cr"], ["Current liab.", q => usd(q.cl), "cr"],
@@ -138,7 +153,17 @@ table.rt-t .hl { font-weight: 700; }
     ["Price", q => q.px == null ? "—" : "$" + q.px.toFixed(2), "pe"], ["Market cap", q => bil(q.mcap), "pe"],
     ["TTM net income", q => usd(q.ttm_ni), "pe"], ["P/E", q => mult(q.pe), "pe"], ["Public float", q => usd(q.float), "pf"],
   ];
-  let ci = 0, vi = 0, splitAdj = true;
+  let ci = 0, vi = 0, splitAdj = true, sec = null, mi = 0;
+  // Sector comparison: one ratio, one line per company.
+  const METRICS = [
+    { id: "gpm", label: "Gross margin", fmt: pct, f: q => ratio(q.gp, q.rev) },
+    { id: "opm", label: "Operating margin", fmt: pct, f: q => ratio(q.oi, q.rev) },
+    { id: "npm", label: "Net margin", fmt: pct, f: q => ratio(q.ni, q.rev) },
+    { id: "cr", label: "Current ratio", fmt: x2, ref: 1, f: q => ratio(q.ca, q.cl) },
+    { id: "fcfm", label: "FCF margin", fmt: pct, f: q => ratio(fcf(q), q.rev) },
+    { id: "pe", label: "P/E", fmt: mult, f: q => q.pe },
+  ];
+  const GROUPS = [...new Set(DATA.map(c => c.group))];
 
 
   // Left ticker panel (wide screens): same grouping and order as the dropdown.
@@ -146,17 +171,27 @@ table.rt-t .hl { font-weight: 700; }
   (function () {
     let g = null, html = "";
     DATA.forEach((c, i) => {
-      if (c.group !== g) { g = c.group; html += `<div class="g">${g}</div>`; }
+      if (c.group !== g) { g = c.group; html += `<div class="g" data-g="${g}" title="Compare the ${g} companies">${g}</div>`; }
       const nm = c.name.replace(/[,.]?\s+(INC|CORP|CORPORATION|CO|COM|COMPANY|LTD|PLC|HOLDINGS|GROUP)\b\.?/gi, "").trim();
       html += `<a data-i="${i}" title="${c.name}"><b>${c.ticker}</b><span>${nm}</span></a>`;
     });
     tkp.innerHTML = html;
   })();
-  const markPanel = i => tkp.querySelectorAll("a").forEach(a => {
-    const on = +a.dataset.i === i; a.classList.toggle("on", on);
-    if (on) a.scrollIntoView({ block: "nearest" });
+  const markPanel = i => {
+    tkp.querySelectorAll("a").forEach(a => {
+      const on = sec == null && +a.dataset.i === i; a.classList.toggle("on", on);
+      if (on) a.scrollIntoView({ block: "nearest" });
+    });
+    tkp.querySelectorAll(".g").forEach(g => g.classList.toggle("on", g.dataset.g === sec));
+  };
+  tkp.addEventListener("click", e => {
+    const a = e.target.closest("a"), g = e.target.closest(".g");
+    if (a) { sec = null; ci = +a.dataset.i; render(); }
+    else if (g) { sec = g.dataset.g; render(); }
   });
-  tkp.addEventListener("click", e => { const a = e.target.closest("a"); if (a) { ci = +a.dataset.i; render(); } });
+  METRICS.forEach((m, i) => { const b = document.createElement("button"); b.textContent = m.label;
+    b.addEventListener("click", () => { mi = i; render(); }); $("rt-mtabs").appendChild(b); });
+  $("rt-cmp").addEventListener("click", () => { sec = DATA[ci].group; render(); });
   let group = null, og = null;
   DATA.forEach((c, i) => {
     if (c.group !== group) { group = c.group; og = document.createElement("optgroup"); og.label = group; sel.appendChild(og); }
@@ -232,7 +267,7 @@ table.rt-t .hl { font-weight: 700; }
       .map(l => ({ ...l, ly: l.bar && l.v < 0 ? y(l.v) + 14 : y(l.v) - 9 }))
       .sort((a, b) => a.k - b.k || a.ly - b.ly);
     labels.forEach((l, j) => { const q = labels[j - 1]; if (q && q.k === l.k && l.ly - q.ly < 13) l.ly = q.ly + 13; });
-    labels.forEach(l => el("text", { x: x(l.k) + l.off, y: l.ly, "text-anchor": l.bar ? "middle" : "end", "font-weight": 700 }, fmt(l.v)));
+    if (!p.noLabels) labels.forEach(l => el("text", { x: x(l.k) + l.off, y: l.ly, "text-anchor": l.bar ? "middle" : "end", "font-weight": 700 }, fmt(l.v)));
     const cross = el("line", { y1: T, y2: H - B, stroke: "currentColor", opacity: 0, "stroke-dasharray": "3 3" });
     const hit = el("rect", { x: L, y: 0, width: W - L - R, height: H, fill: "transparent" });
     const hover = k => {
@@ -315,7 +350,60 @@ table.rt-t .hl { font-weight: 700; }
         return `<td${cls ? ` class="${cls}"` : ""}>${t}</td>`; }).join("") + "</tr>").join("") + "</tbody>";
   }
 
+  function renderSector() {
+    const m = METRICS[mi], idx = DATA.map((c, i) => i).filter(i => DATA[i].group === sec);
+    markPanel(-1);
+    $("rt-name").textContent = sec + " — sector comparison";
+    $("rt-sub").textContent = idx.length + " companies · click a row or ticker to open one company";
+    $("rt-cmp").style.display = "none";
+    $("rt-tabs").style.display = "none"; $("rt-mtabs").style.display = "";
+    [...$("rt-mtabs").children].forEach((b, i) => b.classList.toggle("on", i === mi));
+    $("rt-split").style.display = "none";
+    try { history.replaceState(null, "", "#sector:" + encodeURIComponent(sec) + "/" + m.id); } catch (e) {}
+    // Common calendar-quarter axis across the companies.
+    const labels = [...new Set(idx.flatMap(i => DATA[i].quarters.map(q => q.q)))].sort();
+    const qs = labels.map(q => ({ q, end: "" }));
+    const clip = m.fmt === pct ? v => v == null ? null : Math.max(-1, Math.min(1, v)) : v => v;
+    const S = idx.map((i, j) => {
+      const by = Object.fromEntries(DATA[i].quarters.map(q => [q.q, q]));
+      const raw = labels.map(l => by[l] ? m.f(by[l]) : null);
+      return { name: DATA[i].ticker, color: `var(--c${j % 8 + 1})`, fmt: m.fmt, raw, v: raw.map(clip) };
+    }).filter(s => s.raw.some(v => v != null));
+    box.querySelectorAll("svg, .rt-tv").forEach(x => x.remove()); tip.style.display = "none";
+    $("rt-legend").innerHTML = S.map(s => `<span><i style="background:${s.color}"></i>${s.name}</span>`).join("");
+    let drawn = [];
+    const all = { hover: (k, svg) => {
+      drawn.forEach(d => d.hover(k));
+      if (k == null) { tip.style.display = "none"; return; }
+      tip.innerHTML = `<b>${labels[k]}</b> · ${m.label}<br>` + S.filter(s => s.raw[k] != null)
+        .sort((a, b) => b.raw[k] - a.raw[k])
+        .map(s => `<i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${s.color};margin-right:5px"></i>${s.name} <b>${m.fmt(s.raw[k])}</b>`).join("<br>");
+      tip.style.display = "block";
+      const b = box.getBoundingClientRect(), r = svg.getBoundingClientRect(), d = drawn[0];
+      tip.style.left = Math.max(0, Math.min(d.x(k) * r.width / W + 12, b.width - tip.offsetWidth - 4)) + "px";
+      tip.style.top = "4px";
+    } };
+    drawn = [panel(qs, { id: m.id === "cr" ? "cr" : "sector", fmt: m.fmt, kind: "line", ref: m.ref },
+                   { h: 320, S, noLabels: true }, all)].filter(Boolean);  // many lines: values are in the tooltip and table
+    // Table: each company's latest quarter, all ratios side by side.
+    const cols = [["Latest", q => q.q + (q.derived ? "*" : "")], ["Revenue", q => usd(q.rev)],
+      ...METRICS.map(x => [x.label, q => x.fmt(x.f(q)), x.id]), ["Market cap", q => bil(q.mcap)]];
+    $("rt-t").innerHTML = "<thead><tr><th>Ticker</th>" +
+      cols.map(([h, , id]) => `<th${id === m.id ? ' class="hl"' : ""}>${h}</th>`).join("") + "</tr></thead><tbody>" +
+      idx.map((i, j) => { const c = DATA[i], q = c.quarters[c.quarters.length - 1];
+        return `<tr class="pick" data-i="${i}"><td><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:var(--c${j % 8 + 1});margin-right:5px"></i><b>${c.ticker}</b></td>` +
+          cols.map(([, f, id]) => { const t = f(q);
+            return `<td class="${[t.startsWith("−") || t.startsWith("-") ? "neg" : "", id === m.id ? "hl" : ""].join(" ").trim()}">${t}</td>`; }).join("") + "</tr>"; }).join("") +
+      "</tbody>";
+  }
+
+  $("rt-t").addEventListener("click", e => { const tr = e.target.closest("tr.pick");
+    if (tr && !e.target.closest("a")) { sec = null; ci = +tr.dataset.i; render(); } });
+
   function render() {
+    if (sec != null) { renderSector(); return; }
+    $("rt-tabs").style.display = ""; $("rt-mtabs").style.display = "none";
+    $("rt-cmp").style.display = ""; $("rt-cmp").textContent = "Compare " + DATA[ci].group;
     const c = DATA[ci], view = VIEWS[vi];
     sel.value = ci;
     markPanel(ci);
@@ -329,10 +417,10 @@ table.rt-t .hl { font-weight: 700; }
     chart(c, view); table(c, view);
   }
 
-  sel.addEventListener("change", () => { ci = +sel.value; render(); });
+  sel.addEventListener("change", () => { sec = null; ci = +sel.value; render(); });
   $("rt-split-box").addEventListener("change", e => { splitAdj = e.target.checked; render(); });
-  $("rt-prev").addEventListener("click", () => { ci = (ci - 1 + DATA.length) % DATA.length; render(); });
-  $("rt-next").addEventListener("click", () => { ci = (ci + 1) % DATA.length; render(); });
+  $("rt-prev").addEventListener("click", () => { sec = null; ci = (ci - 1 + DATA.length) % DATA.length; render(); });
+  $("rt-next").addEventListener("click", () => { sec = null; ci = (ci + 1) % DATA.length; render(); });
   document.addEventListener("keydown", e => {
     const wrap = document.querySelector(".rt-wrap");
     if (!(e.ctrlKey || e.metaKey || e.altKey || e.shiftKey) && (e.key === "ArrowLeft" || e.key === "ArrowRight")
@@ -344,9 +432,16 @@ table.rt-t .hl { font-weight: 700; }
     const d = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[e.key];
     if (!d) return;
     e.preventDefault();
+    if (sec != null) {
+      sec = GROUPS[(GROUPS.indexOf(sec) + d[0] + GROUPS.length) % GROUPS.length];
+      mi = (mi + d[1] + METRICS.length) % METRICS.length; render(); return;
+    }
     ci = (ci + d[0] + DATA.length) % DATA.length; vi = (vi + d[1] + VIEWS.length) % VIEWS.length; render();
   });
   const [ht, hv] = decodeURIComponent(location.hash.slice(1)).split("/");
+  if (ht && ht.startsWith("sector:") && GROUPS.includes(ht.slice(7))) {
+    sec = ht.slice(7); mi = Math.max(0, METRICS.findIndex(x => x.id === hv));
+  }
   ci = Math.max(0, DATA.findIndex(c => c.ticker === (ht || "").toUpperCase()));
   vi = Math.max(0, VIEWS.findIndex(v => v.id === hv));
   render();
