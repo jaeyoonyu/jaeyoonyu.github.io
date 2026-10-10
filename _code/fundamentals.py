@@ -13,16 +13,20 @@ from pathlib import Path
 UA = {"User-Agent": "Jaeyoon Yu yu10j@cmich.edu"}
 FIRST_COL, LAST_COL = (2024, 1), (2026, 2)  # calendar quarters shown, (year, q)
 
-# (group, [tickers]); CAVA and CMCSA are the biggest competitors of SG and CHTR.
+# (group, [tickers]). Competitors added: CAVA (SG), CMCSA (CHTR), EVGO and BLNK
+# (CHPT), BE and FCEL (PLUG), SEDG (ENPH).
 GROUPS = [
     ("Tech", ["MU", "NVDA", "GOOGL", "AMZN", "AVGO", "ORCL", "NFLX"]),
     ("Retail", ["WMT", "COST", "KR", "TGT", "TJX"]),
-    ("Footwear / apparel", ["NKE", "CROX", "DECK"]),
-    ("Restaurants", ["SG", "CAVA"]),
+    ("Footwear / apparel", ["NKE", "CROX", "DECK", "LULU"]),
+    ("Restaurants", ["SG", "CAVA", "DPZ", "PZZA", "YUM", "DRI"]),
     ("Autos / used cars", ["KMX", "CVNA", "GM", "F"]),
     ("Airlines", ["UAL", "DAL", "AAL", "LUV"]),
     ("Cruise lines", ["RCL", "CCL", "NCLH"]),
     ("Cable / broadband", ["CHTR", "CMCSA"]),
+    ("EV charging", ["CHPT", "EVGO", "BLNK"]),
+    ("Hydrogen / fuel cells", ["PLUG", "BE", "FCEL"]),
+    ("Solar inverters", ["ENPH", "SEDG"]),
 ]
 
 

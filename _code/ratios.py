@@ -1,16 +1,21 @@
-"""Build ratios.md: quarterly margins, current ratio, NI vs. OCF, and FCF per ticker.
+"""Build ratios.md: quarterly margins, current ratio, NI vs. OCF, FCF, shares
+outstanding, and public float per ticker.
 
 Run from the repo root:  python _code/ratios.py
 Data: SEC EDGAR companyfacts API (the XBRL numbers each company tags in its
 10-Qs and 10-Ks). Flows reported only as year-to-date or annual totals are
 turned into quarters by differencing: Q = YTD - prior YTD of the same year.
+Cover-page share counts filed per share class are missing from companyfacts,
+so for those companies they are read from each filing's own XBRL instance.
 """
 import json
+import re
 import time
+import urllib.request
 from datetime import datetime
 from pathlib import Path
 
-from fundamentals import GROUPS, fye_mmdd, get_json, month_end
+from fundamentals import GROUPS, UA, fye_mmdd, get_json, month_end
 
 FIRST_COL, LAST_COL = (2022, 1), (2026, 2)  # calendar quarters shown, (year, q)
 TAGS = {
@@ -78,10 +83,53 @@ def best(gaap, key):
     return merged
 
 
-def company(cik):
+def instance_shares(cik, acc, doc):
+    """Cover-page shares summed over share classes, from the filing's XBRL instance."""
+    url = (f"https://www.sec.gov/Archives/edgar/data/{cik}/{acc.replace('-', '')}/"
+           + re.sub(r"\.htm$", "_htm.xml", doc))
+    with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=120) as r:
+        x = r.read().decode("utf-8", "replace")
+    vals = re.findall(r"<dei:EntityCommonStockSharesOutstanding\b[^>]*>\s*([\d.]+)\s*<", x)
+    return sum(float(v) for v in vals) if vals else None
+
+
+def shares_by_period(cik, dei, filings):
+    """period end -> (shares, cover date) from each 10-K/10-Q cover page."""
+    out = {}
+    for f in dei.get("EntityCommonStockSharesOutstanding", {}).get("units", {}).get("shares", []):
+        if f["accn"] in filings:
+            period = filings[f["accn"]]["reportDate"]
+            v, _ = out.get(period, (0, None))
+            out[period] = (v + f["val"], f["end"])  # several classes -> several facts
+    # Classes filed only with a dimension never reach companyfacts: read those filings.
+    for acc, f in filings.items():
+        if f["reportDate"] not in out:
+                try:
+                    v = instance_shares(cik, acc, f["primaryDocument"])
+                except Exception as e:
+                    print("  no instance", acc, e)
+                    continue
+                if v:
+                    out[f["reportDate"]] = (v, f["filingDate"])
+                time.sleep(0.15)
+    return out
+
+
+def company(cik, sub):
     facts = get_json(f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik:010d}.json")
     gaap = facts["facts"].get("us-gaap", {})
+    dei = facts["facts"].get("dei", {})
     m = {k: best(gaap, k) for k in TAGS}
+    # "recent" holds only the last 1,000 filings; heavy filers' older 10-Qs are in extra files.
+    blocks = [sub["filings"]["recent"]] + [
+        get_json(f"https://data.sec.gov/submissions/{f['name']}")
+        for f in sub["filings"].get("files", []) if f["filingTo"] >= f"{FIRST_COL[0]}-01-01"]
+    filings = {r["accessionNumber"]: r for b in blocks for r in (dict(zip(b, v)) for v in zip(*b.values()))
+               if r["form"] in ("10-K", "10-Q") and r["reportDate"] >= f"{FIRST_COL[0] - 1}-12-01"}
+    shares = shares_by_period(cik, dei, filings)
+    floats = {}
+    for f in sorted(dei.get("EntityPublicFloat", {}).get("units", {}).get("USD", []), key=lambda f: f["filed"]):
+        floats[f["end"]] = f["val"]
     rows = []
     for e in sorted(set(m["rev"]) & set(m["ni"]), reverse=True):
         val = lambda k: m[k][e][0] if e in m[k] else None
@@ -95,19 +143,55 @@ def company(cik):
         rows.append(dict(end=e, col=me.year * 4 + (me.month - 1) // 3,
                          derived=m["rev"][e][1] or m["ni"][e][1],
                          rev=val("rev"), gp=gp, ni=val("ni"), ocf=val("ocf"),
-                         capex=capex, ca=val("ca"), cl=val("cl")))
+                         capex=capex, ca=val("ca"), cl=val("cl"),
+                         shares=shares.get(e, (None,))[0],
+                         shares_asof=shares.get(e, (None, None))[1],
+                         float=None, float_asof=None))
     # Same column rule as the Fundamentals page: a long first quarter that lands
     # in the next filing's quarter moves back one column.
     for newer, r in zip(rows, rows[1:]):
         if r["col"] >= newer["col"]:
             r["col"] = newer["col"] - 1
+    # Public float is measured once a year (end of the second fiscal quarter);
+    # it goes in the column of that measurement date.
+    by_col = {r["col"]: r for r in rows}
+    for asof, v in floats.items():
+        me = month_end(datetime.strptime(asof, "%Y-%m-%d").date())
+        r = by_col.get(me.year * 4 + (me.month - 1) // 3)
+        if r:
+            r["float"], r["float_asof"] = v, asof
     lo = FIRST_COL[0] * 4 + FIRST_COL[1] - 1
     hi = LAST_COL[0] * 4 + LAST_COL[1] - 1
     rows = [r for r in reversed(rows) if lo <= r["col"] <= hi]
     for r in rows:
         r["q"] = f"{(r['col'] // 4) % 100:02d}Q{r['col'] % 4 + 1}"
         del r["col"]
-    return facts["entityName"], rows
+    return facts["entityName"], rows, split_adjust(rows)
+
+
+def split_adjust(rows):
+    """Restate earlier share counts for stock splits. A forward split is a jump
+    between consecutive cover counts within 3% of a standard ratio. A reverse split
+    gets 12%, because the companies doing them often issue shares the same quarter
+    (FuelCell's 1-for-30 shows up as 1-for-27)."""
+    standard = [2, 3, 4, 5, 6, 8, 10, 12, 15, 20, 25, 30, 35, 40, 50, 100]
+    splits = []
+    have = [r for r in rows if r["shares"]]
+    for old, new in zip(have, have[1:]):
+        ratio = new["shares"] / old["shares"]
+        k, tol = None, 0
+        if ratio >= 1.8:
+            k, tol = min(standard, key=lambda s: abs(ratio / s - 1)), 0.03
+        elif ratio <= 0.55:  # issuance only shrinks the apparent ratio, so snap upward
+            up = [s for s in standard if s >= 1 / ratio * 0.97]
+            k, tol = (1 / up[0], 0.12) if up else (None, 0)
+        if k and abs(ratio / k - 1) < tol:
+            splits.append((new["q"], k))
+            for r in rows[:rows.index(new)]:
+                if r["shares"]:
+                    r["shares"] *= k
+                    r["shares_adj"] = True
+    return [f"{q}: {k:g}-for-1" if k > 1 else f"{q}: 1-for-{1 / k:g}" for q, k in splits]
 
 
 def main():
@@ -118,16 +202,21 @@ def main():
     for group, tickers in GROUPS:
         for t in tickers:
             sub = get_json(f"https://data.sec.gov/submissions/CIK{tickmap[t]:010d}.json")
-            name, rows = company(tickmap[t])
+            name, rows, splits = company(tickmap[t], sub)
             fye = fye_mmdd(sub.get("fiscalYearEnd") or "1231")
-            data.append(dict(ticker=t, name=name, group=group, fye=fye, quarters=rows))
+            exch = {"Nasdaq": "NASDAQ", "NYSE": "NYSE"}.get((sub.get("exchanges") or [""])[0], "")
+            data.append(dict(ticker=t, name=name, group=group, fye=fye, exchange=exch,
+                             splits=splits, quarters=rows))
+            if splits:
+                print("  split-adjusted", t, splits)
             r = rows[-1]
-            miss = [k for k in ("gp", "ocf", "capex", "ca", "cl")
+            miss = [k for k in ("gp", "ocf", "capex", "ca", "cl", "shares")
                     if sum(q[k] is None for q in rows) > 0]
             gpm = f"{r['gp'] / r['rev']:.1%}" if r["gp"] is not None else "-"
             cr = f"{r['ca'] / r['cl']:.2f}" if r["ca"] and r["cl"] else "-"
             print(f"{t:6} n={len(rows)} {r['q']} GPM {gpm} NPM {r['ni'] / r['rev']:.1%} CR {cr}"
-                  f" OCF {r['ocf']} capex {r['capex']}  missing:{miss}")
+                  f" shares {r['shares']} floats {sum(q['float'] is not None for q in rows)}"
+                  f"  missing:{miss}")
             time.sleep(0.25)
     order = [g for g, _ in GROUPS]
     data.sort(key=lambda c: (order.index(c["group"]), c["fye"], c["ticker"]))
