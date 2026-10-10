@@ -33,6 +33,7 @@ navigation:                # accepts {file, title, url, icon, sidebaricon}
   - {file: "visuals.md", title: Visuals}
   - {file: "fundamentals.md", title: Fundamentals}
   - {file: "ratios.md", title: Ratios}
+  - {file: "statements.md", title: Statements}
 
 
 external:                  # shows a footer with social links - for available icons see fontawesome.com/icons

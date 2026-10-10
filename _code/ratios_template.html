@@ -62,6 +62,10 @@ table.rt-t .hl { font-weight: 700; }
 <li>Switch company: dropdown, ◀ ▶, or Ctrl+← / Ctrl+→</li>
 <li>Scroll the table sideways: ← / →</li>
 <li>Source: SEC EDGAR XBRL company facts (data.sec.gov); updated __STAMP__</li>
+<li><b>P/E</b> = market cap ÷ net income of the last four quarters; n/m (not meaningful) when that income is zero or negative, or the P/E would top 200×</li>
+<li><b>Market cap</b> = closing price on the last trading day of the quarter × split-adjusted shares outstanding</li>
+<li>The P/E next to the company name uses the latest close and the latest shares and earnings</li>
+<li>Prices: Yahoo Finance via FinanceDataReader, fetched when the page is rebuilt; only quarter-end closes are kept</li>
 <li>Stock price: live chart embedded from TradingView (weekly, last 5 years); no price data is stored on this site</li>
 </ul>
 </div>
@@ -76,6 +80,8 @@ table.rt-t .hl { font-weight: 700; }
   const pct = v => v == null ? "—" : (v * 100).toFixed(1) + "%";
   const x2 = v => v == null ? "—" : v.toFixed(2);
   const usd = v => v == null ? "—" : (v < 0 ? "−$" : "$") + Math.abs(v / 1e6).toLocaleString(undefined, { maximumFractionDigits: 0 }) + "M";
+  const mult = v => v == null ? "—" : v.toFixed(1) + "×";
+  const bil = v => v == null ? "—" : "$" + (v / 1e9).toLocaleString(undefined, { maximumFractionDigits: 1 }) + "B";
   const shr = v => v == null ? "—" : v >= 1e9 ? (v / 1e9).toFixed(2) + "B" : (v / 1e6).toFixed(1) + "M";
   const VIEWS = [
     { id: "margin", label: "Profit margins", kind: "line", fmt: pct, series: [
@@ -96,6 +102,11 @@ table.rt-t .hl { font-weight: 700; }
       { name: "Shares outstanding", color: "var(--s1)", f: q => splitAdj ? q.shares : q.shares_raw }] },
     { id: "pf", label: "Public float", kind: "bar", fmt: usd, series: [
       { name: "Public float", color: "var(--s1)", f: q => q.float }] },
+    { id: "pe", label: "P/E ratio", fmt: mult, panels: [
+      { title: "P/E = market cap ÷ net income of the last four quarters", kind: "line", h: 230, series: [
+        { name: "P/E at quarter end", color: "var(--s1)", f: q => q.pe }] },
+      { title: "Market cap at quarter end", kind: "bar", h: 190, fmt: bil, series: [
+        { name: "Market cap", color: "var(--s3)", f: q => q.mcap }] }] },
     { id: "px", label: "Stock price", widget: true },
   ];
   const COLS = [
@@ -105,7 +116,9 @@ table.rt-t .hl { font-weight: 700; }
     ["Capex", q => usd(q.capex), "fcf"], ["FCF", q => usd(fcf(q)), "fcf"],
     ["Current assets", q => usd(q.ca), "cr"], ["Current liab.", q => usd(q.cl), "cr"],
     ["Current ratio", q => x2(ratio(q.ca, q.cl)), "cr"],
-    ["Shares out.", q => shr(splitAdj ? q.shares : q.shares_raw), "sh"], ["Public float", q => usd(q.float), "pf"],
+    ["Shares out.", q => shr(splitAdj ? q.shares : q.shares_raw), "sh"],
+    ["Price", q => q.px == null ? "—" : "$" + q.px.toFixed(2), "pe"], ["Market cap", q => bil(q.mcap), "pe"],
+    ["TTM net income", q => usd(q.ttm_ni), "pe"], ["P/E", q => mult(q.pe), "pe"], ["Public float", q => usd(q.float), "pf"],
   ];
   let ci = 0, vi = 0, splitAdj = true;
 
@@ -127,6 +140,7 @@ table.rt-t .hl { font-weight: 700; }
   function axisFmt(fmt, v, step) {
     if (fmt === pct) return (v * 100).toFixed(step < .01 ? 1 : 0) + "%";
     if (fmt === x2) return v.toFixed(step < .1 ? 2 : 1);
+    if (fmt === mult) return v.toFixed(step < 1 ? 1 : 0) + "×";
     if (fmt === shr) return v >= 1e9 || step >= 1e9 ? (v / 1e9).toFixed(step < 1e9 ? 1 : 0) + "B" : (v / 1e6).toFixed(step < 1e6 ? 1 : 0) + "M";
     const a = Math.abs(v), s = v < 0 ? "−$" : "$";
     return a >= 1e9 ? s + (a / 1e9).toFixed(step < 1e9 ? 1 : 0) + "B" : s + (a / 1e6).toFixed(0) + "M";
@@ -136,6 +150,7 @@ table.rt-t .hl { font-weight: 700; }
   // One panel = one SVG with its own y-axis; the panels of a view share the x-axis.
   function panel(qs, view, p, all) {
     const H = p.h || 290, svg = mk(box, "svg", { viewBox: `0 0 ${W} ${H}` }), el = (...a) => mk(svg, ...a);
+    const fmt = p.fmt || view.fmt;
     const S = p.S, vals = S.flatMap(s => s.v).filter(v => v != null), n = qs.length, slot = (W - L - R) / n;
     const x = k => L + slot * (k + .5);
     if (p.title) el("text", { x: L, y: 11, "font-weight": 700, opacity: .8 }, p.title);
@@ -149,7 +164,7 @@ table.rt-t .hl { font-weight: 700; }
     for (let v = lo; v <= hi + step / 1e6; v += step) {
       const zero = Math.abs(v) < step / 1e6;
       el("line", { x1: L, x2: W - R, y1: y(v), y2: y(v), stroke: zero ? "currentColor" : "rgba(128,128,128,.22)", opacity: zero ? .55 : 1 });
-      el("text", { x: L - 6, y: y(v) + 4, "text-anchor": "end", opacity: .7 }, axisFmt(view.fmt, v, step));
+      el("text", { x: L - 6, y: y(v) + 4, "text-anchor": "end", opacity: .7 }, axisFmt(fmt, v, step));
     }
     if (view.ref != null) {
       el("line", { x1: L, x2: W - R, y1: y(view.ref), y2: y(view.ref), stroke: "currentColor", opacity: .5, "stroke-dasharray": "4 4" });
@@ -182,7 +197,7 @@ table.rt-t .hl { font-weight: 700; }
       .map(l => ({ ...l, ly: l.bar && l.v < 0 ? y(l.v) + 14 : y(l.v) - 9 }))
       .sort((a, b) => a.k - b.k || a.ly - b.ly);
     labels.forEach((l, j) => { const q = labels[j - 1]; if (q && q.k === l.k && l.ly - q.ly < 13) l.ly = q.ly + 13; });
-    labels.forEach(l => el("text", { x: x(l.k) + l.off, y: l.ly, "text-anchor": l.bar ? "middle" : "end", "font-weight": 700 }, view.fmt(l.v)));
+    labels.forEach(l => el("text", { x: x(l.k) + l.off, y: l.ly, "text-anchor": l.bar ? "middle" : "end", "font-weight": 700 }, fmt(l.v)));
     const cross = el("line", { y1: T, y2: H - B, stroke: "currentColor", opacity: 0, "stroke-dasharray": "3 3" });
     const hit = el("rect", { x: L, y: 0, width: W - L - R, height: H, fill: "transparent" });
     const hover = k => {
@@ -210,15 +225,15 @@ table.rt-t .hl { font-weight: 700; }
     const dark = matchMedia("(prefers-color-scheme: dark)").matches;
     const wrap = document.createElement("div");
     wrap.className = "rt-tv tradingview-widget-container";
-    wrap.style.height = "420px";
+    wrap.style.height = "min(640px, 75vh)";
     wrap.innerHTML = '<div class="tradingview-widget-container__widget" style="height:100%"></div>';
     const s = document.createElement("script");
     s.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
     s.async = true;
     s.textContent = JSON.stringify({
-      autosize: true, symbol: (c.exchange ? c.exchange + ":" : "") + c.ticker, interval: "W", range: "60M",
+      autosize: true, symbol: (c.exchange ? c.exchange + ":" : "") + c.ticker, interval: "W", range: "60M", scale_mode: "Normal",
       timezone: "America/New_York", theme: dark ? "dark" : "light", style: "1", locale: "en",
-      allow_symbol_change: false, hide_side_toolbar: true, save_image: false,
+      allow_symbol_change: false, hide_side_toolbar: true, hide_volume: true, save_image: false,
       support_host: "https://www.tradingview.com" });
     wrap.appendChild(s);
     box.appendChild(wrap);
@@ -228,7 +243,7 @@ table.rt-t .hl { font-weight: 700; }
     box.querySelectorAll("svg, .rt-tv").forEach(s => s.remove()); tip.style.display = "none";
     if (view.widget) { $("rt-legend").innerHTML = ""; priceWidget(c); return; }
     const qs = c.quarters, panels = (view.panels || [view]).map(p => ({ ...p,
-      S: p.series.map(s => ({ ...s, v: qs.map(s.f) }))
+      S: p.series.map(s => ({ ...s, fmt: p.fmt || view.fmt, v: qs.map(s.f) }))
         // A gross margin that stops before the latest quarter is a tagging gap, not a trend: drop it.
         .filter(s => view.id === "margin" ? s.v[s.v.length - 1] != null : s.v.some(v => v != null)) }));
     const every = (view.panels || [view]).flatMap(p => p.series), shown = panels.flatMap(p => p.S);
@@ -241,7 +256,8 @@ table.rt-t .hl { font-weight: 700; }
       if (k == null) { tip.style.display = "none"; return; }
       const q = qs[k], d = drawn.find(d => d.svg === svg);
       tip.innerHTML = `<b>${q.q}${q.derived ? "*" : ""}</b> · period end ${q.end}<br>` +
-        shown.map(s => `${s.name} <b>${view.fmt(s.v[k])}</b>`).join("<br>") +
+        shown.map(s => `${s.name} <b>${s.fmt(s.v[k])}</b>`).join("<br>") +
+        (view.id === "pe" && q.px ? `<br>Price $${q.px.toFixed(2)} · TTM net income ${usd(q.ttm_ni)}` : "") +
         (view.id === "sh" && q.shares_asof ? `<br>as of ${q.shares_asof} (cover page)${q.shares_adj && splitAdj ? `, split-adjusted (as filed: ${shr(q.shares_raw)})` : ""}` : "") +
         (view.id === "pf" && q.float_asof ? `<br>as of ${q.float_asof}` : "") +
         (q.url ? `<br><span style="opacity:.7">Click to open the filing</span>` : "");
@@ -268,7 +284,9 @@ table.rt-t .hl { font-weight: 700; }
     const c = DATA[ci], view = VIEWS[vi];
     sel.value = ci;
     $("rt-name").textContent = c.name;
-    $("rt-sub").textContent = c.group + " · FYE " + c.fye + (c.splits.length ? " · splits " + c.splits.join(", ") : "");
+    $("rt-sub").textContent = c.group + " · FYE " + c.fye +
+      (c.now ? ` · P/E ${c.now.pe == null ? "n/m" : mult(c.now.pe)} at $${c.now.px.toFixed(2)} (${c.now.date})` : "") +
+      (c.splits.length ? " · splits " + c.splits.join(", ") : "");
     [...$("rt-tabs").children].forEach((b, i) => b.classList.toggle("on", i === vi));
     try { history.replaceState(null, "", "#" + c.ticker + "/" + view.id); } catch (e) {}
     $("rt-split").style.display = view.id === "sh" && c.splits.length ? "inline-block" : "none";

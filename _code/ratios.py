@@ -124,21 +124,31 @@ def shares_by_period(cik, dei, filings):
     return out
 
 
+def filing_index(sub):
+    """accession -> filing row, for every 10-K/10-Q in the window."""
+    # "recent" holds only the last 1,000 filings; heavy filers' older 10-Qs are in extra files.
+    blocks = [sub["filings"]["recent"]] + [
+        get_json(f"https://data.sec.gov/submissions/{f['name']}")
+        for f in sub["filings"].get("files", []) if f["filingTo"] >= f"{FIRST_COL[0]}-01-01"]
+    return {r["accessionNumber"]: r for b in blocks for r in (dict(zip(b, v)) for v in zip(*b.values()))
+            if r["form"] in ("10-K", "10-Q") and r["reportDate"] >= f"{FIRST_COL[0] - 1}-12-01"}
+
+
+def filing_urls(cik, filings):
+    """period end -> URL of the filing's main document (the original if amended)."""
+    return {f["reportDate"]: f"https://www.sec.gov/Archives/edgar/data/{cik}/"
+                             f"{acc.replace('-', '')}/{f['primaryDocument']}"
+            for acc, f in sorted(filings.items(), key=lambda kv: kv[1]["filingDate"], reverse=True)}
+
+
 def company(cik, sub, ticker):
     facts = get_json(f"https://data.sec.gov/api/xbrl/companyfacts/CIK{cik:010d}.json")
     gaap = facts["facts"].get("us-gaap", {})
     dei = facts["facts"].get("dei", {})
     m = {k: best(gaap, k) for k in TAGS}
-    # "recent" holds only the last 1,000 filings; heavy filers' older 10-Qs are in extra files.
-    blocks = [sub["filings"]["recent"]] + [
-        get_json(f"https://data.sec.gov/submissions/{f['name']}")
-        for f in sub["filings"].get("files", []) if f["filingTo"] >= f"{FIRST_COL[0]}-01-01"]
-    filings = {r["accessionNumber"]: r for b in blocks for r in (dict(zip(b, v)) for v in zip(*b.values()))
-               if r["form"] in ("10-K", "10-Q") and r["reportDate"] >= f"{FIRST_COL[0] - 1}-12-01"}
+    filings = filing_index(sub)
     shares = shares_by_period(cik, dei, filings)
-    doc_url = {f["reportDate"]: f"https://www.sec.gov/Archives/edgar/data/{cik}/"
-                                f"{acc.replace('-', '')}/{f['primaryDocument']}"
-               for acc, f in sorted(filings.items(), key=lambda kv: kv[1]["filingDate"], reverse=True)}
+    doc_url = filing_urls(cik, filings)
     floats = {}
     for f in sorted(dei.get("EntityPublicFloat", {}).get("units", {}).get("USD", []), key=lambda f: f["filed"]):
         floats[f["end"]] = f["val"]
@@ -216,6 +226,46 @@ def split_adjust(rows, ticker):
     return [f"{q}: {k:g}-for-1" if k > 1 else f"{q}: 1-for-{1 / k:g}" for q, k in splits]
 
 
+def pe(mcap, ttm_ni, cap=200):
+    if not mcap or not ttm_ni or ttm_ni <= 0 or mcap / ttm_ni > cap:
+        return None
+    return round(mcap / ttm_ni, 1)
+
+
+def add_valuation(c):
+    """Quarter-end close, market cap, and P/E, plus the same as of the latest close.
+
+    Prices come from FinanceDataReader (Yahoo Finance) at build time; only these
+    derived numbers are published, never the daily series. Yahoo's Close is
+    split-adjusted, so market cap = Close x split-adjusted cover shares stays on
+    one basis across splits, and P/E = market cap / trailing-four-quarter net
+    income avoids mixing pre- and post-split EPS. P/E is left blank when trailing
+    earnings are zero or negative, or so small that P/E tops 200 (not meaningful).
+    """
+    import FinanceDataReader as fdr
+    rows = c["quarters"]
+    try:
+        px = fdr.DataReader(c["ticker"], f"{FIRST_COL[0] - 1}-12-01")["Close"].dropna()
+    except Exception as e:
+        print("  no prices", c["ticker"], e)
+        px = None
+    for i, r in enumerate(rows):
+        last4 = rows[max(0, i - 3):i + 1]
+        r["ttm_ni"] = sum(q["ni"] for q in last4) if len(last4) == 4 else None
+        before = px[px.index <= r["end"]] if px is not None else []
+        r["px"] = round(float(before.iloc[-1]), 2) if len(before) else None
+        r["mcap"] = r["px"] * r["shares"] if r["px"] and r["shares"] else None
+        r["pe"] = pe(r["mcap"], r["ttm_ni"])
+    last = rows[-1]
+    if px is not None and len(px):
+        now = dict(px=round(float(px.iloc[-1]), 2), date=px.index[-1].strftime("%Y-%m-%d"))
+        now["mcap"] = now["px"] * last["shares"] if last["shares"] else None
+        now["pe"] = pe(now["mcap"], last["ttm_ni"])
+        c["now"] = now
+    else:
+        c["now"] = None
+
+
 def main():
     root = Path(__file__).resolve().parent.parent
     tickmap = {v["ticker"]: v["cik_str"]
@@ -229,6 +279,7 @@ def main():
             exch = {"Nasdaq": "NASDAQ", "NYSE": "NYSE"}.get((sub.get("exchanges") or [""])[0], "")
             data.append(dict(ticker=t, name=name, group=group, fye=fye, exchange=exch,
                              splits=splits, quarters=rows))
+            add_valuation(data[-1])
             if splits:
                 print("  split-adjusted", t, splits)
             r = rows[-1]
@@ -238,7 +289,7 @@ def main():
             cr = f"{r['ca'] / r['cl']:.2f}" if r["ca"] and r["cl"] else "-"
             print(f"{t:6} n={len(rows)} {r['q']} GPM {gpm} NPM {r['ni'] / r['rev']:.1%} CR {cr}"
                   f" shares {r['shares']} floats {sum(q['float'] is not None for q in rows)}"
-                  f"  missing:{miss}")
+                  f"  P/E now {(data[-1]['now'] or {}).get('pe')}  missing:{miss}")
             time.sleep(0.25)
     order = [g for g, _ in GROUPS]
     data.sort(key=lambda c: (order.index(c["group"]), c["fye"], c["ticker"]))
