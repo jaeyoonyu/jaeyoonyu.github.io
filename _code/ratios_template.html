@@ -28,9 +28,27 @@ table.rt-t .hl { font-weight: 700; }
 .rt-split { display: none; font-size: 12px; margin: 2px 0 0; cursor: pointer; }
 .rt-notes { font-size: 13px; margin-top: .8em; padding-left: 1.2em; }
 .rt-notes li { margin: 1px 0; }
+
+/* Left ticker panel: only on wide screens, where the theme leaves wide side margins. */
+.tkp { display: none; }
+@media (min-width: 1100px) {
+  body > article { padding-left: 2em !important; padding-right: 2em !important; }
+  .tk-grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 28px; max-width: 1320px; margin: 0 auto; }
+  .tkp { display: block; position: sticky; top: 12px; align-self: start; max-height: calc(100vh - 24px);
+    overflow-y: auto; font-size: 13px; border-right: 1px solid rgba(128,128,128,.22); padding-right: 10px; }
+}
+.tkp .g { font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; color: rgba(128,128,128,.95);
+  margin: 10px 0 2px; font-weight: 700; }
+.tkp .g:first-child { margin-top: 0; }
+.tkp a { display: flex; gap: 6px; padding: 1px 6px; border-radius: 4px; color: inherit; text-decoration: none; cursor: pointer; }
+.tkp a:hover { background: rgba(128,128,128,.12); text-decoration: none; }
+.tkp a b { flex: 0 0 46px; }
+.tkp a span { color: rgba(128,128,128,.95); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+.tkp a.on { background: #2a78d6; color: #fff; }
+.tkp a.on span { color: rgba(255,255,255,.8); }
 </style>
 
-<div class="rt">
+<div class="rt"><div class="tk-grid"><nav class="tkp" id="tkp"></nav><div>
 <div class="rt-bar">
   <button id="rt-prev" title="Ctrl+←">◀</button>
   <select id="rt-sel"></select>
@@ -68,7 +86,7 @@ table.rt-t .hl { font-weight: 700; }
 <li>Prices: Yahoo Finance via FinanceDataReader, fetched when the page is rebuilt; only quarter-end closes are kept</li>
 <li>Stock price: live chart embedded from TradingView (weekly, last 5 years); no price data is stored on this site</li>
 </ul>
-</div>
+</div></div></div>
 
 <script>
 (function () {
@@ -122,6 +140,23 @@ table.rt-t .hl { font-weight: 700; }
   ];
   let ci = 0, vi = 0, splitAdj = true;
 
+
+  // Left ticker panel (wide screens): same grouping and order as the dropdown.
+  const tkp = document.getElementById("tkp");
+  (function () {
+    let g = null, html = "";
+    DATA.forEach((c, i) => {
+      if (c.group !== g) { g = c.group; html += `<div class="g">${g}</div>`; }
+      const nm = c.name.replace(/[,.]?\s+(INC|CORP|CORPORATION|CO|COM|COMPANY|LTD|PLC|HOLDINGS|GROUP)\b\.?/gi, "").trim();
+      html += `<a data-i="${i}" title="${c.name}"><b>${c.ticker}</b><span>${nm}</span></a>`;
+    });
+    tkp.innerHTML = html;
+  })();
+  const markPanel = i => tkp.querySelectorAll("a").forEach(a => {
+    const on = +a.dataset.i === i; a.classList.toggle("on", on);
+    if (on) a.scrollIntoView({ block: "nearest" });
+  });
+  tkp.addEventListener("click", e => { const a = e.target.closest("a"); if (a) { ci = +a.dataset.i; render(); } });
   let group = null, og = null;
   DATA.forEach((c, i) => {
     if (c.group !== group) { group = c.group; og = document.createElement("optgroup"); og.label = group; sel.appendChild(og); }
@@ -283,6 +318,7 @@ table.rt-t .hl { font-weight: 700; }
   function render() {
     const c = DATA[ci], view = VIEWS[vi];
     sel.value = ci;
+    markPanel(ci);
     $("rt-name").textContent = c.name;
     $("rt-sub").textContent = c.group + " · FYE " + c.fye +
       (c.now ? ` · P/E ${c.now.pe == null ? "n/m" : mult(c.now.pe)} at $${c.now.px.toFixed(2)} (${c.now.date})` : "") +

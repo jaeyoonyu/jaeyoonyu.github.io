@@ -5,29 +5,53 @@
 .st-bar button { font-size: 13px; padding: 2px 9px; cursor: pointer; }
 .st-name { font-weight: 700; }
 .st-sub { color: var(--muted); font-size: 12px; }
-.st h3 { margin: 18px 0 2px; font-size: 16px; }
+.st h3 { margin: 10px 0 0; font-size: 15px; }
 .st-unit { color: var(--muted); font-size: 12px; margin-bottom: 4px; }
 .st-wrap { overflow-x: auto; }
-table.st-t { border-collapse: collapse; font-size: 13px; width: 100%; }
-table.st-t th, table.st-t td { padding: 3px 8px; border-bottom: 1px solid var(--grid); font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.st-t { border-collapse: collapse; font-size: 12.5px; width: auto; line-height: 1.35; }
+table.st-t td.def { color: var(--muted); font-size: 11.5px; white-space: normal; text-align: left; min-width: 280px; max-width: 420px; }
+.st.defs .st-cols { grid-template-columns: minmax(0, 1fr) !important; }
+.st-defbtn { font-size: 12px; padding: 2px 10px; cursor: pointer; margin-left: auto; }
+table.st-t th, table.st-t td { padding: 1px 6px; border-bottom: 1px solid var(--grid); font-variant-numeric: tabular-nums; white-space: nowrap; }
 table.st-t th { text-align: right; font-weight: 600; vertical-align: bottom; }
 table.st-t th:first-child, table.st-t td:first-child { text-align: left; white-space: normal; }
 table.st-t td { text-align: right; }
 table.st-t th small { display: block; font-weight: 400; color: var(--muted); }
 table.st-t td:first-child span[title] { border-bottom: 1px dotted var(--muted); cursor: help; }
-table.st-t tr.sub td:first-child, table.st-t tr.oth td:first-child { padding-left: 22px; }
+table.st-t tr.sub td:first-child, table.st-t tr.oth td:first-child { padding-left: 14px; }
 table.st-t tr.oth td { font-style: italic; color: var(--muted); }
 table.st-t tr.tot td { font-weight: 700; border-top: 1.5px solid currentColor; }
-table.st-t tr.sec td { font-weight: 700; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .05em; padding-top: 10px; }
+table.st-t tr.sec td { font-weight: 700; color: var(--muted); font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; padding-top: 6px; }
+table.st-t tr:hover td, table.st-t tr:nth-child(odd) td { background: none; }
+.st-cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0 28px; }
+@media (min-width: 1100px) { .st-cols { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
 table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
 .st-check { font-size: 13px; margin-top: 6px; line-height: 1.6; }
 .st-check .ok { color: #0ca30c; font-weight: 700; }
 .st-check .no { color: #d03b3b; font-weight: 700; }
 .st-notes { font-size: 13px; margin-top: 1em; padding-left: 1.2em; }
 .st-notes li { margin: 1px 0; }
+
+/* Left ticker panel: only on wide screens, where the theme leaves wide side margins. */
+.tkp { display: none; }
+@media (min-width: 1100px) {
+  body > article { padding-left: 2em !important; padding-right: 2em !important; }
+  .tk-grid { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 28px; max-width: 1320px; margin: 0 auto; }
+  .tkp { display: block; position: sticky; top: 12px; align-self: start; max-height: calc(100vh - 24px);
+    overflow-y: auto; font-size: 13px; border-right: 1px solid rgba(128,128,128,.22); padding-right: 10px; }
+}
+.tkp .g { font-size: 10.5px; text-transform: uppercase; letter-spacing: .05em; color: rgba(128,128,128,.95);
+  margin: 10px 0 2px; font-weight: 700; }
+.tkp .g:first-child { margin-top: 0; }
+.tkp a { display: flex; gap: 6px; padding: 1px 6px; border-radius: 4px; color: inherit; text-decoration: none; cursor: pointer; }
+.tkp a:hover { background: rgba(128,128,128,.12); text-decoration: none; }
+.tkp a b { flex: 0 0 46px; }
+.tkp a span { color: rgba(128,128,128,.95); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 12px; }
+.tkp a.on { background: #2a78d6; color: #fff; }
+.tkp a.on span { color: rgba(255,255,255,.8); }
 </style>
 
-<div class="st">
+<div class="st"><div class="tk-grid"><nav class="tkp" id="tkp"></nav><div>
 <div class="st-bar">
   <button id="st-prev" title="Ctrl+←">◀</button>
   <select id="st-sel"></select>
@@ -41,20 +65,24 @@ table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
   <select id="st-q"></select>
   <button id="st-newer" title="Ctrl+↑">▶</button>
   <span class="st-sub">compared with the same quarter a year earlier</span>
+  <button class="st-defbtn" id="st-defbtn" aria-pressed="false">Show definitions</button>
 </div>
 
+<div class="st-cols"><div>
 <h3>Balance sheet</h3>
 <div class="st-unit" id="st-bs-unit"></div>
 <div class="st-wrap"><table class="st-t" id="st-bs"></table></div>
 <div class="st-check" id="st-check"></div>
 
+</div><div>
 <h3>Income statement</h3>
 <div class="st-unit" id="st-is-unit"></div>
 <div class="st-wrap"><table class="st-t" id="st-is"></table></div>
+</div></div>
 
 <ul class="st-notes">
 <li><b>Standardized</b>: each company's XBRL tags are mapped onto one template, so the lines are not the company's own presentation</li>
-<li><i>Other …</i> lines (in italics) = the section's subtotal minus the lines shown, so every section adds up and assets = liabilities + equity</li>
+<li><i>Others</i> (in italics) = the section's subtotal minus the lines shown, so every section adds up and assets = liabilities + equity</li>
 <li>% = share of total assets (balance sheet) or of revenue (income statement), for the selected quarter</li>
 <li>Amounts in $ millions, except EPS; negative amounts in parentheses</li>
 <li>Balance sheet = at the end of the quarter; income statement = for the three months of the quarter</li>
@@ -62,11 +90,11 @@ table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
 <li><b>*</b> = Q4 derived as annual (10-K) minus nine-month year-to-date; EPS is not derived this way, so it shows — for Q4</li>
 <li><b>†</b> = no total-liabilities line in the filing; shown as total liabilities and equity minus total equity</li>
 <li>— = not reported by the company (e.g., airlines have no inventory or COGS)</li>
-<li>Click a quarter heading to open that 10-Q/10-K on sec.gov; hover a line item for a short definition</li>
+<li>Click a quarter heading to open that 10-Q/10-K on sec.gov; hover a line item, or press Show definitions, for what each line means</li>
 <li>Switch company: dropdown, ◀ ▶, or Ctrl+← / Ctrl+→; switch quarter: Ctrl+↑ / Ctrl+↓</li>
 <li>Source: SEC EDGAR XBRL company facts (data.sec.gov); updated __STAMP__</li>
 </ul>
-</div>
+</div></div></div>
 
 <script>
 (function () {
@@ -76,7 +104,18 @@ table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
     LAYOUT.keys.forEach((k, i) => { q[k] = q.v[i]; }); delete q.v;
     q.url = q.u ? "https://www.sec.gov/Archives/edgar/data/" + q.u : null; }));
   const $ = id => document.getElementById(id);
-  const OTHER = "Computed: the subtotal minus the lines shown above it";
+  // "Others" lines: what they typically hold; all are the subtotal minus the lines shown.
+  const OTHERS = {
+    oca: "Current assets not listed above, e.g., prepaid expenses and assets held for sale",
+    onca: "Noncurrent assets not listed above, e.g., long-term investments and deferred tax assets",
+    ocl: "Current liabilities not listed above, e.g., deferred revenue and income taxes payable",
+    oncl: "Noncurrent liabilities not listed above, e.g., deferred tax liabilities and pensions",
+    oeq: "Equity items not listed above",
+    oopex: "Operating expenses not listed above, e.g., depreciation, impairments, and restructuring",
+    onon: "Nonoperating items, e.g., interest income and gains or losses on investments",
+    oni: "Items below income tax, e.g., noncontrolling interests, discontinued operations, and equity-method income",
+  };
+  const otherDef = k => (OTHERS[k] || "Items not listed above") + " (computed: the subtotal minus the lines shown)";
   const DEF = {
     cash: "Currency, bank deposits, and investments so short-term they are as good as cash",
     sti: "Investments the company expects to sell or that mature within a year",
@@ -117,8 +156,25 @@ table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
     eps: "Net income per share, counting shares that options and convertible securities could add",
   };
   const sel = $("st-sel"), qsel = $("st-q");
-  let ci = 0, qi = -1;
+  let ci = 0, qi = -1, defs = false;
 
+
+  // Left ticker panel (wide screens): same grouping and order as the dropdown.
+  const tkp = document.getElementById("tkp");
+  (function () {
+    let g = null, html = "";
+    DATA.forEach((c, i) => {
+      if (c.group !== g) { g = c.group; html += `<div class="g">${g}</div>`; }
+      const nm = c.name.replace(/[,.]?\s+(INC|CORP|CORPORATION|CO|COM|COMPANY|LTD|PLC|HOLDINGS|GROUP)\b\.?/gi, "").trim();
+      html += `<a data-i="${i}" title="${c.name}"><b>${c.ticker}</b><span>${nm}</span></a>`;
+    });
+    tkp.innerHTML = html;
+  })();
+  const markPanel = i => tkp.querySelectorAll("a").forEach(a => {
+    const on = +a.dataset.i === i; a.classList.toggle("on", on);
+    if (on) a.scrollIntoView({ block: "nearest" });
+  });
+  tkp.addEventListener("click", e => { const a = e.target.closest("a"); if (a) { setCompany(+a.dataset.i); } });
   let group = null, og = null;
   DATA.forEach((c, i) => {
     if (c.group !== group) { group = c.group; og = document.createElement("optgroup"); og.label = group; sel.appendChild(og); }
@@ -136,16 +192,17 @@ table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
     `<small>${q.end}</small></th>`;
 
   function table(id, layout, cur, pri, base) {
-    $(id).innerHTML = `<thead><tr><th></th>${head(cur)}<th>%</th>${head(pri)}<th>Change</th></tr></thead><tbody>` +
+    $(id).innerHTML = `<thead><tr><th></th>${head(cur)}<th>%</th>${head(pri)}<th>Chg</th>${defs ? '<th style="text-align:left">Definition</th>' : ""}</tr></thead><tbody>` +
       layout.map(({ key, label, style }) => {
-        if (style === "#") return `<tr class="sec"><td colspan="5">${label}</td></tr>`;
+        if (style === "#") return `<tr class="sec"><td colspan="${defs ? 6 : 5}">${label}</td></tr>`;
         const a = cur && cur[key], b = pri && pri[key];
         // Hide optional lines that are empty in both quarters (e.g., no mezzanine equity).
         if (a == null && b == null && ["mezz", "nci", "treas", "rou", "intang", "oni"].includes(key)) return "";
         const f = key === "eps" ? eps : money;
         const lab = label + (key === "tl" && cur && cur.tl_derived ? " †" : "");
-        return `<tr class="${style}"><td><span title="${style === "oth" ? OTHER : DEF[key] || ""}">${lab}</span></td>` +
-          `<td>${f(a)}</td><td class="pct">${key === "eps" ? "" : pct(a, base)}</td><td>${f(b)}</td><td class="chg">${chg(a, b)}</td></tr>`;
+        return `<tr class="${style}"><td><span title="${style === "oth" && !DEF[key] ? otherDef(key) : DEF[key] || ""}">${lab}</span></td>` +
+          `<td>${f(a)}</td><td class="pct">${key === "eps" ? "" : pct(a, base)}</td><td>${f(b)}</td><td class="chg">${chg(a, b)}</td>` +
+          (defs ? `<td class="def">${style === "oth" && !DEF[key] ? otherDef(key) : DEF[key] || ""}</td>` : "") + "</tr>";
       }).join("") + "</tbody>";
   }
 
@@ -160,6 +217,7 @@ table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
   function render() {
     const c = DATA[ci], qs = c.quarters;
     sel.value = ci;
+    markPanel(ci);
     if (qsel.dataset.c !== String(ci)) {
       qsel.innerHTML = qs.map((q, i) => `<option value="${i}">${q.q}${q.derived ? "*" : ""} (${q.form})</option>`).reverse().join("");
       qsel.dataset.c = ci;
@@ -169,8 +227,8 @@ table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
     const cur = qs[qi], pri = priorOf(c, cur);
     $("st-name").textContent = c.name;
     $("st-sub").textContent = c.group + " · FYE " + c.fye;
-    $("st-bs-unit").textContent = `As of ${cur.end} and a year earlier · $ millions`;
-    $("st-is-unit").textContent = `Three months ended ${cur.end} and a year earlier · $ millions, except EPS`;
+    $("st-bs-unit").textContent = `As of quarter end · $ millions`;
+    $("st-is-unit").textContent = `Three months · $ millions, except EPS`;
     table("st-bs", LAYOUT.bs, cur, pri, cur.ta); table("st-is", LAYOUT.is_, cur, pri, cur.rev); check(cur);
     try { history.replaceState(null, "", "#" + c.ticker + "/" + cur.q); } catch (e) {}
   }
@@ -184,6 +242,13 @@ table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
   }
   const setQuarter = i => { qi = Math.max(0, Math.min(DATA[ci].quarters.length - 1, i)); render(); };
   sel.addEventListener("change", () => setCompany(+sel.value));
+  $("st-defbtn").addEventListener("click", () => {
+    defs = !defs;
+    document.querySelector(".st").classList.toggle("defs", defs);
+    $("st-defbtn").textContent = defs ? "Hide definitions" : "Show definitions";
+    $("st-defbtn").setAttribute("aria-pressed", defs);
+    render();
+  });
   qsel.addEventListener("change", () => setQuarter(+qsel.value));
   $("st-prev").addEventListener("click", () => setCompany(ci - 1));
   $("st-next").addEventListener("click", () => setCompany(ci + 1));
