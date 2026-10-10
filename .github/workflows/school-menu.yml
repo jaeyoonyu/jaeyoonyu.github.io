@@ -1,0 +1,30 @@
+name: Refresh school menu
+
+on:
+  schedule:
+    - cron: "15 10 * * *"   # daily, ~6 am Michigan time
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python _code/school_menu.py
+      - name: Commit if the menu changed
+        run: |
+          # The page's "Updated" stamp changes every run; only commit when the menu itself did.
+          if git diff --quiet -I 'Updated [0-9-]* [0-9:]*\.$' -- school-menu.md; then
+            echo "No menu changes"; exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add school-menu.md
+          git commit -m "Refresh school menu"
+          git push
