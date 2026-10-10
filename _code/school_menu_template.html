@@ -48,6 +48,7 @@
 .sm-dish .sm-ph { background: var(--line); }
 .sm-dn { font-weight: 600; font-size: 13px; overflow-wrap: anywhere; }
 .sm-w { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+.sm [hidden] { display: none !important; }
 .sm-sides { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); font-size: 12px; }
 .sm-sides > div { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 2px; }
 .sm-s { cursor: pointer; }
@@ -78,25 +79,41 @@
 
 .sm-foot { color: var(--muted); font-size: 11.5px; margin-top: 14px; line-height: 1.7; }
 
-/* detail */
-.sm-dlg { border: 0; border-radius: 14px; padding: 0; max-width: min(420px, 92vw); width: 100%; color: #1c2321; background: #fff;
-  box-shadow: 0 10px 40px rgba(0,0,0,.3); }
-.sm-dlg::backdrop { background: rgba(0,0,0,.45); }
-.sm-dlg img { width: 100%; max-height: 260px; object-fit: contain; display: block; margin: 0; background: #fff; }
-.sm-dlg .in { padding: 14px 16px 16px; }
-.sm-dlg h3 { margin: 0 0 6px; font-size: 18px; }
-.sm-dlg p { margin: 6px 0; font-size: 14px; }
-.sm-dlg .tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 9px; border-radius: 999px; text-transform: uppercase; letter-spacing: .05em; }
-.sm-dlg .tag.healthy { background: rgba(26,122,94,.14); color: #1a7a5e; }
-.sm-dlg .tag.junk { background: rgba(192,57,43,.13); color: #c0392b; }
-.sm-dlg .nums { display: flex; gap: 16px; font-size: 13px; color: #5c6863; }
-.sm-dlg .nums b { color: #1c2321; font-size: 16px; display: block; }
-.sm-dlg button { float: right; border: 0; background: transparent; font-size: 22px; line-height: 1; cursor: pointer; color: #5c6863; }
-@media (prefers-color-scheme: dark) {
-  .sm-dlg { background: #1c2422; color: #e4e9e6; }
-  .sm-dlg .nums, .sm-dlg button { color: #96a29b; }
-  .sm-dlg .nums b { color: #e4e9e6; }
-}
+.sm-day > * { cursor: pointer; }
+.sm-day:not(.focus) .sm-dh:hover { background: var(--line); }
+
+/* day view: one row per food, one column per nutrient */
+.sm-dbar { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.sm-dbar button { border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 999px;
+  padding: 4px 13px; font-size: 13px; cursor: pointer; }
+.sm-dbar button.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.sm-dbar button.past { opacity: .6; }
+.sm-dbar .sm-back { font-weight: 700; margin-right: 6px; }
+.sm-dtitle { font-size: 18px; font-weight: 700; margin: 4px 0 8px; display: flex; gap: 8px; align-items: center; }
+.sm-tw { overflow: auto; max-height: 78vh; border: 1px solid var(--line); border-radius: 10px; }
+table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; font-variant-numeric: tabular-nums; width: max-content; min-width: 100%; }
+.sm-t th, .sm-t td { padding: 4px 9px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; vertical-align: top; }
+.sm-t thead th { position: sticky; top: 0; z-index: 2; background: var(--th-bg); font-size: 11px; line-height: 1.25; font-weight: 700; }
+.sm-t thead th small { display: block; font-weight: 400; color: var(--muted); }
+.sm-t th:first-child, .sm-t td:first-child { position: sticky; left: 0; z-index: 1; background: var(--th-bg); text-align: left;
+  border-right: 1px solid var(--line); min-width: 230px; max-width: 280px; white-space: normal; }
+.sm-t thead th:first-child { z-index: 3; }
+.sm-t td.txt, .sm-t th.txt { text-align: left; white-space: normal; min-width: 120px; }
+.sm-t td.desc { min-width: 300px; max-width: 420px; color: var(--muted); }
+.sm-t tr.sec td { background: var(--accent-bg); font-weight: 700; text-transform: uppercase; letter-spacing: .08em; font-size: 11px; color: var(--muted); }
+.sm-t tr.sec td:first-child { background: var(--th-bg); }
+.sm-t tr.sub td { font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding-top: 8px; }
+.sm-t .fn { display: flex; gap: 8px; align-items: center; font-weight: 600; }
+.sm-t .fn img, .sm-t .fn .sm-ph { width: 30px; height: 30px; border-radius: 5px; object-fit: cover; flex: none; margin: 0; background: #fff; }
+.sm-t .fn .sm-ph { background: var(--line); }
+.sm-t tr.with .fn { padding-left: 14px; font-weight: 400; }
+.sm-t .fn.healthy { color: var(--ok); }
+.sm-t .fn.junk { color: var(--bad); }
+.sm-t td.key { font-weight: 700; }
+.sm-t td.hi { color: var(--bad); font-weight: 700; }
+.sm-t td.na { color: var(--muted); }
+.sm { --th-bg: #fff; }
+@media (prefers-color-scheme: dark) { .sm { --th-bg: #1d1f23; } }
 </style>
 
 <div class="sm" id="sm">
@@ -105,18 +122,19 @@
     <div class="sm-key">
       <span><span class="sm-dot" style="background:var(--ok)"></span>Healthy</span>
       <span><span class="sm-dot" style="background:var(--bad)"></span>Junk</span>
-      <span>Tap any food for details</span>
+      <span>Click a day for its full nutrition table</span>
     </div>
   </div>
   <div class="sm-grid" id="sm-grid"></div>
+  <div id="sm-dayview" hidden></div>
   <div class="sm-foot">
     Woodcrest Elementary, Midland Public Schools. Source: <a href="https://midlandps.nutrislice.com/menu/woodcrest" target="_blank" rel="noopener">Nutrislice</a>.<br>
     Every meal also comes with white or chocolate milk, which aren't listed here.<br>
     Green and red come from a keyword rule (added sugar of 12 g or more also counts as junk), not from a dietitian.<br>
     The highlighted day is today, or the next school day after 2 pm.<br>
-    Ctrl+← / Ctrl+→ switch weeks. Updated __STAMP__.
+    Ctrl+← / Ctrl+→ switch weeks (or days, in a day's table); Ctrl+↑ goes back to the week; ← / → scroll the table.<br>
+    Updated __STAMP__.
   </div>
-  <dialog class="sm-dlg" id="sm-dlg"></dialog>
 </div>
 
 <script>
@@ -139,40 +157,36 @@
   const pastBefore = iso(start);
   const badge = focus === todayIso ? "Today" : focus === tomorrowIso ? "Tomorrow" : "Next up";
 
-  // Every item gets an index so a click can open its details.
-  const ITEMS = [];
-  const reg = it => (ITEMS.push(it), ITEMS.length - 1);
-
+  const DAYS = WEEKS.flatMap(w => w.days.filter(d => d.breakfast || d.lunch));
   let wi = WEEKS.findIndex(w => w.days.some(d => d.date === (focus || todayIso)));
   if (wi < 0) wi = Math.max(0, WEEKS.length - 1);
   const homeWi = wi;
+  let day = null;  // date shown in the day table; null = week grid
 
   function weekLabel(i) {
     const d = i - homeWi;
     return d === 0 ? "This week" : d === -1 ? "Last week" : d === 1 ? "Next week" : d > 0 ? `In ${d} weeks` : `${-d} weeks ago`;
   }
+  const badgeFor = date => date === focus ? `<span class="sm-badge">${badge}</span>` : "";
 
+  // ---- week grid: names and photos only ----
   function cell(name, label, m) {
     let body;
     if (!m) body = `<div class="sm-none">No ${name}</div>`;
     else {
       const dishes = m.main.map(it => {
-        const w = it.w.length ? `<div class="sm-w">with ${it.w.map(x =>
-          `<span class="sm-s ${x.k}" data-i="${reg(x)}">${esc(x.n)}</span>`).join(", ")}</div>` : "";
+        const w = it.w.length ? `<div class="sm-w">with ${it.w.map(x => `<span class="sm-s ${x.k}">${esc(x.n)}</span>`).join(", ")}</div>` : "";
         const pic = it.img ? `<img loading="lazy" src="${esc(it.img)}" alt="">` : `<span class="sm-ph"></span>`;
-        return `<div class="sm-dish ${it.k}" data-i="${reg(it)}">${pic}<div><div class="sm-dn">${esc(it.n)}</div>${w}</div></div>`;
+        return `<div class="sm-dish ${it.k}">${pic}<div><div class="sm-dn">${esc(it.n)}</div>${w}</div></div>`;
       }).join("");
       const sides = m.sides.length ? `<div class="sm-sides"><div>Fruit &amp; veg</div>${m.sides.map(x =>
-        `<span class="sm-s ${x.k}" data-i="${reg(x)}"><span class="sm-dot"></span>${esc(x.n)}</span>`).join("<br>")}</div>` : "";
-      body = (m.note ? `<div class="sm-note">${esc(m.note)}</div>` : "") + (dishes || "") + sides;
+        `<span class="sm-s ${x.k}"><span class="sm-dot"></span>${esc(x.n)}</span>`).join("<br>")}</div>` : "";
+      body = (m.note ? `<div class="sm-note">${esc(m.note)}</div>` : "") + dishes + sides;
     }
     return `<div class="sm-ml">${label}</div>${body}`;
   }
 
-  function render() {
-    ITEMS.length = 0;
-    $("sm-weeks").innerHTML = WEEKS.map((w, i) =>
-      `<button data-w="${i}" class="${i === wi ? "on" : ""}"><small>${weekLabel(i)}</small>${fmt(w.days[0].date, { month: "short", day: "numeric" })}</button>`).join("");
+  function renderWeek() {
     const w = WEEKS[wi];
     if (!w) { $("sm-grid").innerHTML = `<p class="sm-none">No menus published yet.</p>`; return; }
     let html = `<div></div>` +
@@ -181,7 +195,7 @@
     w.days.forEach((d, i) => {
       const cls = d.date === focus ? "focus" : d.date < pastBefore ? "past" : "";
       const col = `grid-column:${i + 2}`;
-      html += `<div class="sm-day ${cls}" data-date="${d.date}">
+      html += `<div class="sm-day ${cls}" data-date="${d.date}" title="Full nutrition for ${fmt(d.date, { weekday: "long" })}">
         <div class="sm-dh" style="${col};grid-row:1"><b>${fmt(d.date, { weekday: "short" })}</b> <span>${fmt(d.date, { month: "short", day: "numeric" })}</span>
           ${d.date === focus ? `<div class="sm-badge">${badge}</div>` : ""}</div>
         <div class="sm-c" style="${col};grid-row:2">${cell("breakfast", "Breakfast", d.breakfast)}</div>
@@ -190,31 +204,102 @@
     $("sm-grid").innerHTML = html;
   }
 
-  function show(it) {
-    const tag = it.k === "healthy" ? `<span class="tag healthy">Healthy</span>` : it.k === "junk" ? `<span class="tag junk">Junk</span>` : "";
-    const num = (v, u, l) => v == null ? "" : `<span><b>${Math.round(v)}${u}</b>${l}</span>`;
-    $("sm-dlg").innerHTML = (it.img ? `<img src="${esc(it.img)}" alt="">` : "") +
-      `<div class="in"><button aria-label="Close" onclick="this.closest('dialog').close()">×</button>
-       <h3>${esc(it.n)}</h3>${tag}${it.d ? `<p>${esc(it.d)}</p>` : ""}
-       <div class="nums">${num(it.cal, "", "calories")}${num(it.sug, " g", "added sugar")}</div></div>`;
-    $("sm-dlg").showModal();
+  // ---- day table: every food a row, every nutrient a column ----
+  const COLS = [["calories", "Calories", ""], ["g_added_sugar", "Added sugar", "g"], ["g_sugar", "Total sugar", "g"],
+    ["g_protein", "Protein", "g"], ["mg_sodium", "Sodium", "mg"], ["g_fat", "Total fat", "g"],
+    ["g_saturated_fat", "Sat. fat", "g"], ["g_trans_fat", "Trans fat", "g"], ["mg_cholesterol", "Cholesterol", "mg"],
+    ["g_carbs", "Carbs", "g"], ["g_fiber", "Fiber", "g"], ["mg_calcium", "Calcium", "mg"], ["mg_iron", "Iron", "mg"],
+    ["mg_potassium", "Potassium", "mg"], ["mcg_vitamin_d", "Vitamin D", "mcg"],
+    ["mg_vitamin_c", "Vitamin C", "mg"], ["mcg_vitamin_a", "Vitamin A", "mcg"], ["iu_vitamin_a", "Vitamin A", "IU"]];
+  // Left out: mg_vitamin_d is Vitamin D in IU (20 for 0.5 mcg) and re_vitamin_a repeats Vitamin A in another unit.
+
+  function renderDay() {
+    const d = DAYS.find(x => x.date === day);
+    const wk = WEEKS.find(w => w.days.some(x => x.date === day));
+    const rows = [];  // [kind, item, label]
+    for (const [key, label] of [["breakfast", "Breakfast"], ["lunch", "Lunch"]]) {
+      const m = d[key];
+      rows.push(["sec", null, label + (m && m.note ? ` — ${m.note}` : "")]);
+      if (!m) continue;
+      m.main.forEach(it => { rows.push(["main", it]); it.w.forEach(x => rows.push(["with", x])); });
+      if (m.sides.length) { rows.push(["sub", null, "Fruit & veg"]); m.sides.forEach(x => rows.push(["side", x])); }
+    }
+    const items = rows.filter(r => r[1]).map(r => r[1]);
+    const cols = COLS.filter(([k]) => items.some(it => it.nu && it.nu[k] != null));  // drop columns empty all day
+    const ncol = cols.length + 4;
+    const head = `<tr><th>Food</th>${cols.map(([, l, u]) => `<th>${l}${u ? `<small>${u}</small>` : ""}</th>`).join("")}
+      <th class="txt">Serving</th><th class="txt">Contains</th><th class="txt">Description</th></tr>`;
+    const body = rows.map(([kind, it, label]) => {
+      if (!it) return `<tr class="${kind}"><td>${esc(label)}</td><td colspan="${ncol - 1}"></td></tr>`;
+      const nu = it.nu || {};
+      const pic = kind === "with" ? "" : it.img ? `<img loading="lazy" src="${esc(it.img)}" alt="">` : `<span class="sm-ph"></span>`;
+      const nums = cols.map(([k]) => {
+        if (nu[k] == null || +nu[k] === 0) return `<td class="na">–</td>`;
+        const cls = k === "g_added_sugar" && nu[k] >= 12 ? "hi" : k === "calories" ? "key" : "";
+        return `<td class="${cls}">${+(+nu[k]).toFixed(1)}</td>`;
+      }).join("");
+      return `<tr class="${kind}"><td><div class="fn ${it.k}">${pic}<span>${kind === "with" ? "↳ " : ""}${esc(it.n)}</span></div></td>${nums}
+        <td class="txt">${esc(it.sv || "")}</td><td class="txt">${esc((it.al || []).join(", "))}</td><td class="txt desc">${esc(it.d || "")}</td></tr>`;
+    }).join("");
+    const pills = wk.days.filter(x => x.breakfast || x.lunch).map(x =>
+      `<button data-day="${x.date}" class="${x.date === day ? "on" : x.date < pastBefore ? "past" : ""}">${fmt(x.date, { weekday: "short" })} ${fmt(x.date, { day: "numeric" })}</button>`).join("");
+    $("sm-dayview").innerHTML = `<div class="sm-dbar"><button class="sm-back" data-back="1">‹ Week</button>${pills}</div>
+      <div class="sm-dtitle">${fmt(day, { weekday: "long", month: "long", day: "numeric" })} ${badgeFor(day)}</div>
+      <div class="sm-tw" id="sm-tw"><table class="sm-t"><thead>${head}</thead><tbody>${body}</tbody></table></div>`;
   }
 
-  const go = i => { wi = Math.max(0, Math.min(WEEKS.length - 1, i)); render(); };
-  $("sm-weeks").onclick = e => { const b = e.target.closest("button"); if (b) go(+b.dataset.w); };
-  $("sm-grid").onclick = e => {
-    const el = e.target.closest("[data-i]");
-    if (el) { e.stopPropagation(); show(ITEMS[+el.dataset.i]); }
+  function render() {
+    $("sm-weeks").innerHTML = WEEKS.map((w, i) =>
+      `<button data-w="${i}" class="${i === wi ? "on" : ""}"><small>${weekLabel(i)}</small>${fmt(w.days[0].date, { month: "short", day: "numeric" })}</button>`).join("");
+    $("sm-grid").hidden = !!day;
+    $("sm-dayview").hidden = !day;
+    day ? renderDay() : renderWeek();
+  }
+
+  // The URL hash holds the open day (#2026-10-12), so the browser's Back button returns to the week.
+  function fromHash() {
+    const h = decodeURIComponent(location.hash.slice(1));
+    day = DAYS.some(d => d.date === h) ? h : null;
+    if (day) wi = WEEKS.findIndex(w => w.days.some(d => d.date === day));
+    render();
+  }
+  const openDay = date => { location.hash = date; };
+  const closeDay = () => { history.pushState(null, "", location.pathname + location.search); fromHash(); };
+  const goWeek = i => { wi = Math.max(0, Math.min(WEEKS.length - 1, i)); render(); };
+  const stepDay = n => { const i = DAYS.findIndex(d => d.date === day) + n; if (i >= 0 && i < DAYS.length) openDay(DAYS[i].date); };
+
+  $("sm-weeks").onclick = e => {
+    const b = e.target.closest("button"); if (!b) return;
+    wi = +b.dataset.w;
+    day ? closeDay() : render();
   };
-  $("sm-dlg").onclick = e => { if (e.target === e.currentTarget) e.currentTarget.close(); };
+  $("sm-grid").onclick = e => { const el = e.target.closest(".sm-day"); if (el) openDay(el.dataset.date); };
+  $("sm-dayview").onclick = e => {
+    const b = e.target.closest("button"); if (!b) return;
+    b.dataset.back ? closeDay() : openDay(b.dataset.day);
+  };
+  window.addEventListener("hashchange", fromHash);
   document.addEventListener("keydown", e => {
-    if (!(e.ctrlKey || e.metaKey) || /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
-    if (e.key === "ArrowLeft") { e.preventDefault(); go(wi - 1); }
-    if (e.key === "ArrowRight") { e.preventDefault(); go(wi + 1); }
+    if (/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+    if (e.key === "Escape" && day) { closeDay(); return; }
+    // Plain ←/→ scroll the day table sideways when it overflows.
+    const tw = day && $("sm-tw");
+    if (!(e.ctrlKey || e.metaKey) && (e.key === "ArrowLeft" || e.key === "ArrowRight") && tw && tw.scrollWidth > tw.clientWidth) {
+      e.preventDefault(); tw.scrollBy({ left: e.key === "ArrowLeft" ? -160 : 160, behavior: "smooth" }); return;
+    }
+    if (!(e.ctrlKey || e.metaKey)) return;
+    const k = e.key;
+    if (k === "ArrowLeft" || k === "ArrowRight") { e.preventDefault(); const n = k === "ArrowLeft" ? -1 : 1; day ? stepDay(n) : goWeek(wi + n); }
+    if (k === "ArrowUp" && day) { e.preventDefault(); closeDay(); }
+    if (k === "ArrowDown" && !day) {
+      e.preventDefault();
+      const w = WEEKS[wi], d = w.days.find(x => x.date === focus) || w.days.find(x => x.breakfast || x.lunch);
+      if (d) openDay(d.date);
+    }
   });
-  render();
+  fromHash();
   // On a phone the week is a long scroll, so start at the highlighted day.
-  if (matchMedia("(max-width: 760px)").matches && focus) {
+  if (!day && matchMedia("(max-width: 760px)").matches && focus) {
     const el = document.querySelector(`.sm-day[data-date="${focus}"]`);
     if (el && el.previousElementSibling && el.previousElementSibling.classList.contains("sm-day")) el.scrollIntoView({ block: "start" });
   }

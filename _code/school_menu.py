@@ -71,9 +71,14 @@ def item(f):
     nut = f.get("rounded_nutrition_info") or {}
     cat = f.get("food_category") or ""
     desc = re.sub(r"\s+", " ", f.get("description") or "").strip()
+    size = f.get("serving_size_info") or {}
+    icons = (f.get("icons") or {}).get("food_icons") or []
     return dict(n=re.sub(r"\s+", " ", f["name"]).strip(), k=classify(f["name"], cat, nut),
-                cal=nut.get("calories"), sug=nut.get("g_added_sugar"),
-                img=f.get("image_url") or "", d=desc if desc.lower() != f["name"].strip().lower() else "")
+                img=f.get("image_url") or "", d=desc if desc.lower() != f["name"].strip().lower() else "",
+                nu={k: v for k, v in nut.items() if v is not None},
+                sv=" ".join(str(size.get(k) or "") for k in ("serving_size_amount", "serving_size_unit")).strip(),
+                al=[i.get("synced_name") or (i.get("sprite") or {}).get("name") for i in icons if i.get("enabled", True)],
+                ing=(f.get("ingredients") or "").strip())
 
 
 def week_items(meal, monday):
@@ -144,7 +149,8 @@ def main():
             .replace("__DATA__", json.dumps(weeks, separators=(",", ":")))
             .replace("__STAMP__", stamp))
     (root / "school-menu.md").write_text(
-        '---\nlayout: page\ntitle: "School Menu"\n---\n\n{% raw %}\n' + page + "\n{% endraw %}\n",
+        # Hidden page: not in the nav or sitemap, reachable only at /meals/.
+        '---\nlayout: page\ntitle: "School Menu"\npermalink: /meals/\nsitemap: false\n---\n\n{% raw %}\n' + page + "\n{% endraw %}\n",
         encoding="utf-8")
 
 

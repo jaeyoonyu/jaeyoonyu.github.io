@@ -34,7 +34,6 @@ navigation:                # accepts {file, title, url, icon, sidebaricon}
   - {file: "fundamentals.md", title: Fundamentals}
   - {file: "ratios.md", title: Ratios}
   - {file: "statements.md", title: Statements}
-  - {file: "school-menu.md", title: School-Menu}
   - {file: "cmu.md", title: CMU}
 
 
