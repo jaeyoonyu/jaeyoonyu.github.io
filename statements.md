@@ -122,7 +122,7 @@ table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
 <li><b>*</b> = Q4 derived as annual (10-K) minus nine-month year-to-date; EPS is not derived this way, so it shows — for Q4</li>
 <li><b>†</b> = no total-liabilities line in the filing; shown as total liabilities and equity minus total equity</li>
 <li>— = not reported by the company (e.g., airlines have no inventory or COGS)</li>
-<li>Buttons under the quarter: the company's EDGAR page, the filing index (all documents in the filing), and the 10-Q/10-K itself</li>
+<li>Buttons under the quarter: the company's EDGAR page, the filing index (all documents in the filing), the 10-Q/10-K itself, and SEC's financial data viewer (every statement, note, and detail table)</li>
 <li>Click a quarter heading to open that 10-Q/10-K on sec.gov; hover a line item, or press Show definitions, for what each line means</li>
 <li>Switch company: dropdown, ◀ ▶, or Ctrl+← / Ctrl+→; switch quarter: Ctrl+↑ / Ctrl+↓</li>
 <li>Source: SEC EDGAR XBRL company facts (data.sec.gov); updated 2026-10-10 10:11</li>
@@ -277,6 +277,11 @@ table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
                `title="Every document in this filing: the report, exhibits, and XBRL files">${cur.q} ${cur.form} filing index ↗</a>`);
     }
     if (cur.url) out.push(`<a href="${cur.url}" target="_blank" title="The report itself">Open ${cur.q} ${cur.form} ↗</a>`);
+    if (acc) {
+      const dashed = acc.slice(0, 10) + "-" + acc.slice(10, 12) + "-" + acc.slice(12);
+      out.push(`<a href="https://www.sec.gov/cgi-bin/viewer?action=view&cik=${cik}&accession_number=${dashed}&xbrl_type=v" ` +
+               `target="_blank" title="SEC's interactive view of this filing: every statement, note, and detail table">SEC financial data viewer ↗</a>`);
+    }
     $("st-links").innerHTML = out.join("");
   }
 
