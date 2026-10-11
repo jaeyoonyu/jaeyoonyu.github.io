@@ -47,6 +47,7 @@ title: "CMU"
   <div class="row"><span class="lbl">Faculty</span>
     <a href="https://www.cmich.edu/offices-departments/faculty-personnel-services/collective-bargaining-agreements-union-information" title="Faculty contracts and union information" target="_blank" rel="noopener">Bargaining Agreements</a>
     <a href="https://www.cmich.edu/offices-departments/academic-senate" title="Senate meetings and committees" target="_blank" rel="noopener">Academic Senate</a>
+    <a href="https://www.cmich.edu/offices-departments/general-counsel/administrative-policies-procedures-and-guidelines" title="Administrative policies, procedures, and guidelines (General Counsel)" target="_blank" rel="noopener">Policies</a>
     <a href="https://www.cmich.edu/offices-departments/general-counsel/administrative-policies-procedures-and-guidelines/chapter-4/4-14-cmu-s-responsibility-for-immigration-expenses" title="Policy 4-14: CMU's responsibility for immigration expenses" target="_blank" rel="noopener">Immigration Expenses</a>
   </div>
 
