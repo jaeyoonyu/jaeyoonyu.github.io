@@ -10,7 +10,8 @@ title: "CMU"
   .cmu { --accent: #53c79e; --muted: #96a29b; --card: rgba(255,255,255,.03); }
 }
 .cmu section { margin-top: 22px; }
-.cmu section:first-child { margin-top: 6px; }
+.cmu .lead { margin: 0 0 4px; font-size: 15px; color: var(--muted); }
+.cmu .lead + section { margin-top: 10px; }
 .cmu h4 { font-family: Charter, "Bitstream Charter", Cambria, Georgia, serif; margin: 0 0 10px;
   padding-bottom: 4px; border-bottom: 1px solid var(--line); }
 .cmu .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 10px; }
@@ -29,6 +30,8 @@ title: "CMU"
 </style>
 
 <div class="cmu">
+  <p class="lead">Resources for CMU faculty</p>
+
   <section>
     <h4>Everyday</h4>
     <div class="grid">
