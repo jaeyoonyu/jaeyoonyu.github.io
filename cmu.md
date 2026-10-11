@@ -34,6 +34,8 @@ title: "CMU"
     <div class="grid">
     <a class="card" href="https://www.cmich.edu/centrallink" target="_blank" rel="noopener">
       <div class="name">CentralLink</div><div class="desc">Single sign-on portal for CMU apps and services</div></a>
+    <a class="card" href="https://mail.cmich.edu/" target="_blank" rel="noopener">
+      <div class="name">CMU Mail</div><div class="desc">University email</div></a>
     <a class="card" href="https://www.cmich.edu/offices-departments/registrars-office/calendars/academic-calendar" target="_blank" rel="noopener">
       <div class="name">Academic Calendar</div><div class="desc">Term dates, breaks, and deadlines</div></a>
     <a class="card" href="https://centralmichigan-my.sharepoint.com" target="_blank" rel="noopener">
@@ -58,10 +60,22 @@ title: "CMU"
   </section>
 
   <section>
-    <h4>Pay &amp; Expenses</h4>
+    <h4>Pay &amp; Benefits</h4>
     <div class="grid">
     <a class="card" href="https://www.cmich.edu/offices-departments/finance-administrative-services/financial-services-reporting/payroll" target="_blank" rel="noopener">
       <div class="name">Payroll</div><div class="desc">Pay dates, direct deposit, and tax forms</div></a>
+    <a class="card" href="https://hr.apps.cmich.edu/w2" target="_blank" rel="noopener">
+      <div class="name">W-2</div><div class="desc">Download annual W-2 forms</div></a>
+    <a class="card" href="https://benefits.apps.cmich.edu/SecurityPin.aspx" target="_blank" rel="noopener">
+      <div class="name">Benefits Enrollment</div><div class="desc">Benefits portal (security PIN sign-in)</div></a>
+    <a class="card" href="https://www.cmich.edu/offices-departments/faculty-personnel-services/faculty-benefits" target="_blank" rel="noopener">
+      <div class="name">Faculty Benefits</div><div class="desc">Health, retirement, and other faculty benefits</div></a>
+    </div>
+  </section>
+
+  <section>
+    <h4>Expenses</h4>
+    <div class="grid">
     <a class="card" href="https://www.cmich.edu/offices-departments/finance-administrative-services/financial-services-reporting/travel-business-expenses" target="_blank" rel="noopener">
       <div class="name">Travel &amp; Business Expenses</div><div class="desc">Travel policy, reimbursement, and expense forms</div></a>
     <a class="card" href="https://www.cmich.edu/offices-departments/finance-administrative-services/financial-services-reporting/travel-business-expenses/mileage-reimbursement#Official-CMU-mileage-chart" target="_blank" rel="noopener">
@@ -74,6 +88,8 @@ title: "CMU"
     <div class="grid">
     <a class="card" href="https://www.cmich.edu/offices-departments/faculty-personnel-services/collective-bargaining-agreements-union-information" target="_blank" rel="noopener">
       <div class="name">Collective Bargaining Agreements</div><div class="desc">Faculty contracts and union information</div></a>
+    <a class="card" href="https://www.cmich.edu/offices-departments/academic-senate" target="_blank" rel="noopener">
+      <div class="name">Academic Senate</div><div class="desc">Senate meetings, committees, and minutes</div></a>
     </div>
   </section>
 
