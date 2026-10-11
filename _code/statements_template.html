@@ -12,6 +12,25 @@ table.st-t { border-collapse: collapse; font-size: 12.5px; width: auto; line-hei
 table.st-t td.def { color: var(--muted); font-size: 11.5px; white-space: normal; text-align: left; min-width: 280px; max-width: 420px; }
 .st.defs .st-cols { grid-template-columns: minmax(0, 1fr) !important; }
 .st-defbtn { font-size: 12px; padding: 2px 10px; cursor: pointer; margin-left: auto; }
+.st-mode { display: inline-flex; border: 1px solid rgba(128,128,128,.4); border-radius: 999px; overflow: hidden; }
+.st-mode button { font-size: 12px; padding: 2px 12px; border: 0; background: transparent; color: inherit; cursor: pointer; }
+.st-mode button.on { background: #2a78d6; color: #fff; }
+.st.full .st-simple, .st:not(.full) .st-full { display: none; }
+.st.full .st-defbtn { display: none; }
+table.st-f { border-collapse: collapse; font-size: 12.5px; width: auto; line-height: 1.35; margin-bottom: 6px; }
+table.st-f th, table.st-f td { padding: 1px 8px; border-bottom: 1px solid var(--grid); font-variant-numeric: tabular-nums; white-space: nowrap; }
+table.st-f th { text-align: right; font-weight: 600; vertical-align: bottom; font-size: 12px; }
+table.st-f th small { display: block; font-weight: 400; color: var(--muted); }
+table.st-f td { text-align: right; }
+table.st-f td:first-child { text-align: left; white-space: normal; min-width: 260px; max-width: 420px; }
+table.st-f tr.h td:first-child { font-weight: 700; padding-top: 6px; }
+table.st-f tr.t td { font-weight: 700; border-top: 1.5px solid currentColor; }
+table.st-f tr:hover td, table.st-f tr:nth-child(odd) td { background: none; }
+.st-full .st-empty { color: var(--muted); font-size: 13px; padding: 8px 0; }
+.st-links { display: flex; gap: 6px; flex-wrap: wrap; margin: 2px 0 4px; }
+.st-links a { font-size: 12px; padding: 2px 10px; border: 1px solid rgba(128,128,128,.4); border-radius: 999px;
+  color: inherit; text-decoration: none; white-space: nowrap; }
+.st-links a:hover { background: rgba(128,128,128,.12); text-decoration: none; }
 table.st-t th, table.st-t td { padding: 1px 6px; border-bottom: 1px solid var(--grid); font-variant-numeric: tabular-nums; white-space: nowrap; }
 table.st-t th { text-align: right; font-weight: 600; vertical-align: bottom; }
 table.st-t th:first-child, table.st-t td:first-child { text-align: left; white-space: normal; }
@@ -64,11 +83,17 @@ table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
   <button id="st-older" title="Ctrl+↓">◀</button>
   <select id="st-q"></select>
   <button id="st-newer" title="Ctrl+↑">▶</button>
-  <span class="st-sub">compared with the same quarter a year earlier</span>
+  <span class="st-sub st-simple">compared with the same quarter a year earlier</span>
+  <span class="st-mode" role="group" aria-label="Statement version">
+    <button id="st-fullbtn" class="on" title="The complete statements exactly as the company filed them with the SEC">As filed (SEC)</button>
+    <button id="st-simple" title="Our condensed version: the same lines for every company">Standardized</button>
+  </span>
   <button class="st-defbtn" id="st-defbtn" aria-pressed="false">Show definitions</button>
 </div>
+<div class="st-links" id="st-links"></div>
 
-<div class="st-cols"><div>
+<div class="st-full" id="st-full"></div>
+<div class="st-cols st-simple"><div>
 <h3>Balance sheet</h3>
 <div class="st-unit" id="st-bs-unit"></div>
 <div class="st-wrap"><table class="st-t" id="st-bs"></table></div>
@@ -82,6 +107,7 @@ table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
 
 <ul class="st-notes">
 <li><b>Standardized</b>: each company's XBRL tags are mapped onto one template, so the lines are not the company's own presentation</li>
+<li><b>As filed (SEC)</b>, the default: the complete balance sheet and income statement exactly as the company filed them in that 10-Q/10-K (its own lines, labels, and comparison columns), from the SEC's rendering of the filing</li>
 <li><i>Others</i> (in italics) = the section's subtotal minus the lines shown, so every section adds up and assets = liabilities + equity</li>
 <li>% = share of total assets (balance sheet) or of revenue (income statement), for the selected quarter</li>
 <li>Amounts in $ millions, except EPS; negative amounts in parentheses</li>
@@ -90,6 +116,7 @@ table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
 <li><b>*</b> = Q4 derived as annual (10-K) minus nine-month year-to-date; EPS is not derived this way, so it shows — for Q4</li>
 <li><b>†</b> = no total-liabilities line in the filing; shown as total liabilities and equity minus total equity</li>
 <li>— = not reported by the company (e.g., airlines have no inventory or COGS)</li>
+<li>Buttons under the quarter: the company's EDGAR page, the filing index (all documents in the filing), and the 10-Q/10-K itself</li>
 <li>Click a quarter heading to open that 10-Q/10-K on sec.gov; hover a line item, or press Show definitions, for what each line means</li>
 <li>Switch company: dropdown, ◀ ▶, or Ctrl+← / Ctrl+→; switch quarter: Ctrl+↑ / Ctrl+↓</li>
 <li>Source: SEC EDGAR XBRL company facts (data.sec.gov); updated __STAMP__</li>
@@ -156,7 +183,34 @@ table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
     eps: "Net income per share, counting shares that options and convertible securities could add",
   };
   const sel = $("st-sel"), qsel = $("st-q");
-  let ci = 0, qi = -1, defs = false;
+  let ci = 0, qi = -1, defs = false, full = true;  // as filed is the default
+  // Full version: one file per company, loaded on first use.
+  const fullData = {};
+  async function loadFull(t) {
+    if (!(t in fullData)) {
+      try { fullData[t] = await (await fetch(`/assets/statements/${t}.json`)).json(); }
+      catch (e) { fullData[t] = null; }
+    }
+    return fullData[t];
+  }
+  const esc = x => String(x).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+  function fullTable(st) {
+    const groups = st.heads.some(h => h[0]);
+    return `<h3>${esc(st.title)}</h3><div class="st-unit">${esc(st.unit)}</div><div class="st-wrap"><table class="st-f">` +
+      `<thead><tr><th></th>${st.heads.map(h => `<th>${groups ? `<small>${esc(h[0])}</small>` : ""}${esc(h[1])}</th>`).join("")}</tr></thead><tbody>` +
+      st.rows.map(([label, kind, ...vals]) =>
+        `<tr class="${kind === 1 ? "h" : kind === 2 ? "t" : ""}"><td>${esc(label)}</td>${vals.map(v => `<td>${esc(v)}</td>`).join("")}</tr>`).join("") +
+      "</tbody></table></div>";
+  }
+  async function renderFull(c, cur) {
+    const box = $("st-full");
+    box.innerHTML = '<div class="st-empty">Loading…</div>';
+    const d = await loadFull(c.ticker);
+    if (DATA[ci] !== c || c.quarters[qi] !== cur) return;  // the selection changed while loading
+    const f = d && d[cur.q];
+    box.innerHTML = !f ? '<div class="st-empty">The full statements are not available for this filing.</div>' :
+      ["is", "bs"].map(k => f[k] ? fullTable(f[k]) : "").join("");
+  }
 
 
   // Left ticker panel (wide screens): same grouping and order as the dropdown.
@@ -206,6 +260,20 @@ table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
       }).join("") + "</tbody>";
   }
 
+  // Buttons: the company's EDGAR page, the selected filing's index page, the filing itself.
+  // q.u is "<cik>/<accession without dashes>/<document>".
+  function links(cur) {
+    const [cik, acc] = (cur.u || "").split("/"), out = [];
+    if (cik) out.push(`<a href="https://www.sec.gov/edgar/browse/?CIK=${cik}" target="_blank" title="All of the company's SEC filings">EDGAR filings ↗</a>`);
+    if (acc) {
+      const dashed = acc.slice(0, 10) + "-" + acc.slice(10, 12) + "-" + acc.slice(12);
+      out.push(`<a href="https://www.sec.gov/Archives/edgar/data/${cik}/${acc}/${dashed}-index.htm" target="_blank" ` +
+               `title="Every document in this filing: the report, exhibits, and XBRL files">${cur.q} ${cur.form} filing index ↗</a>`);
+    }
+    if (cur.url) out.push(`<a href="${cur.url}" target="_blank" title="The report itself">Open ${cur.q} ${cur.form} ↗</a>`);
+    $("st-links").innerHTML = out.join("");
+  }
+
   function check(cur) {
     if (!cur || cur.ta == null || cur.tl == null || cur.te == null) { $("st-check").innerHTML = ""; return; }
     const rhs = cur.tl + (cur.mezz || 0) + cur.te, ok = Math.abs(cur.ta - rhs) <= Math.max(1e6, Math.abs(cur.ta) * 1e-4);
@@ -229,8 +297,12 @@ table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
     $("st-sub").textContent = c.group + " · FYE " + c.fye;
     $("st-bs-unit").textContent = `As of quarter end · $ millions`;
     $("st-is-unit").textContent = `Three months · $ millions, except EPS`;
+    links(cur);
+    document.querySelector(".st").classList.toggle("full", full);
+    $("st-simple").classList.toggle("on", !full); $("st-fullbtn").classList.toggle("on", full);
+    if (full) renderFull(c, cur);
     table("st-bs", LAYOUT.bs, cur, pri, cur.ta); table("st-is", LAYOUT.is_, cur, pri, cur.rev); check(cur);
-    try { history.replaceState(null, "", "#" + c.ticker + "/" + cur.q); } catch (e) {}
+    try { history.replaceState(null, "", "#" + c.ticker + "/" + cur.q + (full ? "" : "/std")); } catch (e) {}
   }
 
   // Changing company keeps the same calendar quarter when the new company has it.
@@ -250,6 +322,8 @@ table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
     render();
   });
   qsel.addEventListener("change", () => setQuarter(+qsel.value));
+  $("st-simple").addEventListener("click", () => { full = false; render(); });
+  $("st-fullbtn").addEventListener("click", () => { full = true; render(); });
   $("st-prev").addEventListener("click", () => setCompany(ci - 1));
   $("st-next").addEventListener("click", () => setCompany(ci + 1));
   $("st-older").addEventListener("click", () => setQuarter(qi - 1));
@@ -260,7 +334,8 @@ table.st-t td.pct, table.st-t td.chg { color: var(--muted); font-size: 12px; }
     if (k === "ArrowLeft" || k === "ArrowRight") { e.preventDefault(); setCompany(ci + (k === "ArrowLeft" ? -1 : 1)); }
     if (k === "ArrowUp" || k === "ArrowDown") { e.preventDefault(); setQuarter(qi + (k === "ArrowUp" ? 1 : -1)); }
   });
-  const [ht, hq] = decodeURIComponent(location.hash.slice(1)).split("/");
+  const [ht, hq, hm] = decodeURIComponent(location.hash.slice(1)).split("/");
+  full = hm !== "std";
   ci = Math.max(0, DATA.findIndex(c => c.ticker === (ht || "").toUpperCase()));
   qi = DATA[ci].quarters.findIndex(q => q.q === (hq || "").toUpperCase());
   render();
