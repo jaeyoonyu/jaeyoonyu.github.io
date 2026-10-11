@@ -53,6 +53,9 @@ title: "CMU"
   <a class="card" href="https://www.cmich.edu/offices-departments/finance-administrative-services/financial-services-reporting/travel-business-expenses/mileage-reimbursement#Official-CMU-mileage-chart" target="_blank" rel="noopener">
     <div class="tag">Finance</div><div class="name">Mileage Reimbursement</div>
     <div class="desc">Official CMU mileage chart and rates</div></a>
+  <a class="card" href="https://www.cmich.edu/offices-departments/finance-administrative-services/financial-services-reporting/payroll" target="_blank" rel="noopener">
+    <div class="tag">Finance</div><div class="name">Payroll</div>
+    <div class="desc">Pay dates, direct deposit, and tax forms</div></a>
   <a class="card" href="https://centralmichigan-my.sharepoint.com" target="_blank" rel="noopener">
     <div class="tag">Files</div><div class="name">SharePoint</div>
     <div class="desc">OneDrive / SharePoint files</div></a>
