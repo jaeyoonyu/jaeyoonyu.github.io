@@ -49,10 +49,10 @@
 .sm-dish .sm-ph { background: var(--line); }
 .sm-dn { font-weight: 600; font-size: 13px; overflow-wrap: anywhere; }
 .sm-w { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
-.sm-nums { clear: both; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0 4px; font-size: 11px;
+.sm-nums { clear: both; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0 3px; font-size: 11px;
   font-weight: 400; line-height: 1.3; font-variant-numeric: tabular-nums; margin: 1px 0 3px; color: inherit; }
 .sm-nums span { white-space: nowrap; }
-.sm-nums i { font-style: normal; font-size: 9.5px; color: var(--muted); margin-right: 3px; }
+.sm-nums i { font-style: normal; font-size: 9px; color: var(--muted); margin-right: 2px; }
 .sm-nums .hi { color: var(--bad); font-weight: 700; }
 .sm-nums .hi i { color: var(--bad); }
 /* Same inset as a dish card, so fruit & veg numbers sit in the same columns. */
@@ -131,7 +131,7 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
     <div class="sm-key">
       <span><span class="sm-dot" style="background:var(--ok)"></span>Healthy</span>
       <span><span class="sm-dot" style="background:var(--bad)"></span>Junk</span>
-      <span><b>Sg</b> sugar · <b>ASg</b> added sugar · <b>Pt</b> protein (g) · <b>Sd</b> sodium (mg)</span>
+      <span><b>Cal</b> calories · <b>Sg</b> sugar · <b>ASg</b> added sugar · <b>Pt</b> protein (g) · <b>Sd</b> sodium (mg)</span>
       <span>Click a day for its full nutrition table</span>
     </div>
   </div>
@@ -180,14 +180,14 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
   const badgeFor = date => date === focus ? `<span class="sm-badge">${badge}</span>` : "";
 
   // ---- week grid ----
-  // Four fixed columns under each food, the same for every item so they line up down the day:
-  // Sg sugar (g) · ASg added sugar (g) · Pt protein (g) · Sd sodium (mg). ASg of 12 or more is red.
-  const NUM4 = [["Sg", "g_sugar"], ["ASg", "g_added_sugar"], ["Pt", "g_protein"], ["Sd", "mg_sodium"]];
+  // Five fixed columns under each food, the same for every item so they line up down the day:
+  // Cal calories · Sg sugar (g) · ASg added sugar (g) · Pt protein (g) · Sd sodium (mg). ASg of 12 or more is red.
+  const NUM4 = [["Cal", "calories"], ["Sg", "g_sugar"], ["ASg", "g_added_sugar"], ["Pt", "g_protein"], ["Sd", "mg_sodium"]];
   function nums(it) {
     const nu = it.nu || {};
     if (!NUM4.some(([, k]) => nu[k] != null)) return "";
     return `<div class="sm-nums">${NUM4.map(([l, k]) => {
-      const v = nu[k] == null ? "–" : k === "mg_sodium" ? Math.round(nu[k]) : +(+nu[k]).toFixed(1);
+      const v = nu[k] == null ? "–" : k === "mg_sodium" || k === "calories" ? Math.round(nu[k]) : +(+nu[k]).toFixed(1);
       return `<span class="${k === "g_added_sugar" && nu[k] >= 12 ? "hi" : ""}"><i>${l}</i>${v}</span>`;
     }).join("")}</div>`;
   }
