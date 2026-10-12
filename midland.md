@@ -40,28 +40,25 @@ sitemap: false
 .md-dn { padding: 7px 0 7px 6px; font-weight: 700; font-size: 14px; line-height: 1.2; }
 .md-dn small { display: block; font-weight: 400; font-size: 11px; color: var(--muted); }
 .md-day.today .md-dn { color: var(--accent); }
-.md-lanes { padding: 4px 0; }
-.md-lane { display: grid; grid-template-columns: var(--ln, 0px) minmax(0, 1fr) 290px; gap: 10px; align-items: center; min-height: 24px; }
+.md-lanes { padding: 2px 0 6px; }
+.md-lane { display: grid; grid-template-columns: var(--ln, 0px) minmax(0, 1fr); gap: 10px; align-items: center; min-height: 26px; }
 .md-ln { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; }
-.md-track { position: relative; height: 18px; background: rgba(128,128,128,.07); border-radius: 4px; }
+.md-track { position: relative; height: 22px; background: rgba(128,128,128,.07); border-radius: 4px;
+  background-image: repeating-linear-gradient(90deg, rgba(128,128,128,.16) 0 1px, transparent 1px calc(100% / var(--hours))); }
 .md-closed { position: absolute; top: 0; bottom: 0; background: repeating-linear-gradient(135deg, rgba(128,128,128,.13) 0 3px, transparent 3px 7px); }
-.md-bar { position: absolute; top: 2px; bottom: 2px; border-radius: 4px; }
+.md-bar { position: absolute; top: 2px; bottom: 2px; border-radius: 4px; color: #fff; font-size: 11px; font-weight: 600;
+  display: flex; align-items: center; padding: 0 5px; overflow: hidden; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .md-bar.past { opacity: .35; }
-.md-bar.off { background: transparent !important; border: 1.5px dashed var(--muted); }
+.md-bar.off { background: transparent !important; border: 1.5px dashed var(--muted); color: var(--muted); }
 .md-nowline { position: absolute; top: -3px; bottom: -3px; width: 2px; background: #e74c3c; z-index: 2; }
-.md-times { font-size: 12.5px; font-variant-numeric: tabular-nums; line-height: 1.35; }
-.md-times .none { color: var(--muted); }
-.md-times small { color: var(--muted); }
-.md-times s { color: var(--muted); }
-.md-axis { display: grid; grid-template-columns: 74px var(--ln, 0px) minmax(0, 1fr) 290px; gap: 0 10px; font-size: 10.5px; color: var(--muted); }
-.md-axis > div:nth-child(3) { position: relative; height: 16px; }
-.md-axis span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+.md-ticks { position: relative; height: 16px; font-size: 10.5px; color: var(--muted); }
+.md-ticks span { position: absolute; transform: translateX(-50%); white-space: nowrap; top: 1px; }
+.md-ticks span:first-child { transform: none; }
+.md-ticks span:last-child { transform: translateX(-100%); }
+.md-scroll { overflow-x: auto; }
+.md-week { min-width: 720px; }
 @media (max-width: 700px) {
   .md-day { grid-template-columns: 52px 1fr; }
-  .md-lane { grid-template-columns: var(--ln, 0px) minmax(0, 1fr); }
-  .md-times { grid-column: 1 / -1; padding: 0 0 4px; }
-  .md-axis { grid-template-columns: 52px var(--ln, 0px) minmax(0, 1fr); }
-  .md-axis > div:nth-child(4) { display: none; }
 }
 
 /* all activities, for reference */
@@ -145,6 +142,12 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
     return a.slice(-2) === b.slice(-2) ? `${a.slice(0, -3)} – ${b}` : `${a} – ${b}`;
   };
   const pct = h => ((h - T0) / (T1 - T0)) * 100;
+  const short = h => { const s = t(h); return s.replace(":00", "").replace(" AM", "a").replace(" PM", "p"); };
+  function label(s) {
+    const a = short(s.r[0]), b = short(s.r[1]);
+    const txt = a.slice(-1) === b.slice(-1) ? `${a.slice(0, -1)}–${b}` : `${a}–${b}`;
+    return s.note && s.note !== "*" ? `${txt} · ${s.note}` : s.note === "*" ? `${txt} *` : txt;
+  }
 
   // This week's dates (Mon–Sun), so date-specific cancellations land on the right day.
   const now = new Date();
@@ -184,11 +187,15 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
   function renderActivity() {
     const a = ACTS[cur], multi = a.lanes.length > 1;
     $("md").style.setProperty("--ln", multi ? "92px" : "0px");
+    $("md").style.setProperty("--hours", T1 - T0);
     $("md-head").innerHTML = `<h3>${esc(a.n)}</h3>${a.sub ? `<span>${esc(a.sub)}</span>` : ""}`;
     $("md-status").innerHTML = status(a).html;
     $("md-legend").innerHTML = multi ? a.lanes.map(l =>
       `<span><span class="md-sw" style="background:${l.c}"></span>${esc(l.n)}${l.sub ? ` — ${esc(l.sub)}` : ""}</span>`).join("") : "";
     let html = "";
+    // Hour labels repeat on every day so each timeline reads on its own.
+    const ticks = [];
+    for (let h = T0; h <= T1; h++) ticks.push(`<span style="left:${pct(h)}%">${short(h)}</span>`);
     DAYN.forEach((dn, d) => {
       const b = BUILDING[d], isToday = d === dow;
       const lanes = a.lanes.map(l => {
@@ -196,24 +203,17 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
         const bars = ss.map(s => {
           const cls = s.off ? "off" : isToday && nowH >= s.r[1] ? "past" : "";
           return `<div class="md-bar ${cls}" style="left:${pct(s.r[0])}%;width:${pct(s.r[1]) - pct(s.r[0])}%;background:${l.c}"
-            title="${esc(`${l.n}: ${range(s.r)}${s.note ? " · " + s.note : ""}${s.off ? " — " + s.off : ""}`)}"></div>`;
+            title="${esc(`${l.n}: ${range(s.r)}${s.note ? " · " + s.note : ""}${s.off ? " — " + s.off : ""}`)}">${esc(s.off || label(s))}</div>`;
         }).join("");
         const nowline = isToday && nowH > T0 && nowH < T1 ? `<div class="md-nowline" style="left:${pct(nowH)}%"></div>` : "";
         const closed = `<div class="md-closed" style="left:0;width:${pct(b[0])}%"></div><div class="md-closed" style="left:${pct(b[1])}%;right:0"></div>`;
-        const times = ss.length ? ss.map(s => {
-          const txt = `${range(s.r)}${s.note ? ` <small>${esc(s.note)}</small>` : ""}`;
-          return s.off ? `<s>${range(s.r)}</s> <small>${esc(s.off)}</small>` : txt;
-        }).join(" · ") : `<span class="none">—</span>`;
         return `<div class="md-lane"><div class="md-ln">${multi ? esc(l.n) : ""}</div>
-          <div class="md-track">${closed}${bars}${nowline}</div><div class="md-times">${times}</div></div>`;
+          <div class="md-track">${closed}${bars}${nowline}</div></div>`;
       }).join("");
       html += `<div class="md-day ${isToday ? "today" : ""}"><div class="md-dn">${dn}<small>${isToday ? "Today" : `${dates[d].getMonth() + 1}/${dates[d].getDate()}`}</small></div>
-        <div class="md-lanes">${lanes}</div></div>`;
+        <div class="md-lanes"><div class="md-lane"><div></div><div class="md-ticks">${ticks.join("")}</div></div>${lanes}</div></div>`;
     });
-    const ticks = [];
-    for (let h = T0; h <= T1; h += 2) ticks.push(`<span style="left:${pct(h)}%">${t(h).replace(":00", "").replace(" ", "").toLowerCase()}</span>`);
-    html += `<div class="md-axis"><div></div><div></div><div>${ticks.join("")}</div><div></div></div>`;
-    $("md-week").innerHTML = `<div class="md-week">${html}</div>`;
+    $("md-week").innerHTML = `<div class="md-scroll" id="md-scroll"><div class="md-week">${html}</div></div>`;
   }
 
   function renderTable() {
@@ -236,8 +236,8 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
     if (/INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || (e.key !== "ArrowLeft" && e.key !== "ArrowRight")) return;
     const step = e.key === "ArrowLeft" ? -1 : 1;
     if (e.ctrlKey || e.metaKey) { e.preventDefault(); go(cur + step); return; }
-    const tw = $("md-tw");
-    if (tw.offsetParent && tw.scrollWidth > tw.clientWidth) { e.preventDefault(); tw.scrollBy({ left: step * 160, behavior: "smooth" }); }
+    const tw = $("md-tw").offsetParent && $("md-tw").scrollWidth > $("md-tw").clientWidth ? $("md-tw") : $("md-scroll");
+    if (tw && tw.scrollWidth > tw.clientWidth) { e.preventDefault(); tw.scrollBy({ left: step * 160, behavior: "smooth" }); }
   });
   renderButtons(); renderActivity(); renderTable();
 })();
