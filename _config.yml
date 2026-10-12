@@ -31,7 +31,7 @@ navigation:                # accepts {file, title, url, icon, sidebaricon}
   # - {file: "python-applications.md", title: Python-Applied}
   - {file: "michigan-housing.md", title: Michigan-Housing}
   - {file: "visuals.md", title: Visuals}
-  - {title: FS, url: "/fs/"}           # financial statements site: github.com/jaeyoonyu/fs
+  - {title: Financials, url: "/fs/"}   # financial statements site: github.com/jaeyoonyu/fs
   - {file: "cmu.md", title: CMU}
 
 
