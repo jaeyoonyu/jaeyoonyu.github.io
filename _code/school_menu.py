@@ -1,4 +1,5 @@
-"""Build school-menu.md: Woodcrest breakfast + lunch, one week per view, items
+"""Build _includes/school-menu.html, the School Meals section of /family/:
+Woodcrest breakfast + lunch, one week per view, items
 tagged healthy (green) or junk (red).
 
 Run from the repo root:  python _code/school_menu.py
@@ -148,10 +149,9 @@ def main():
     page = (Path(__file__).with_name("school_menu_template.html").read_text(encoding="utf-8")
             .replace("__DATA__", json.dumps(weeks, separators=(",", ":")))
             .replace("__STAMP__", stamp))
-    (root / "school-menu.md").write_text(
-        # Hidden page: not in the nav or sitemap, reachable only at /meals/.
-        '---\nlayout: page\ntitle: "School Menu"\npermalink: /meals/\nsitemap: false\n---\n\n{% raw %}\n' + page + "\n{% endraw %}\n",
-        encoding="utf-8")
+    # family.md includes this file; raw keeps Liquid away from the page's JS.
+    (root / "_includes" / "school-menu.html").write_text(
+        "{% raw %}\n" + page + "\n{% endraw %}\n", encoding="utf-8")
 
 
 if __name__ == "__main__":

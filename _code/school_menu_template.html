@@ -256,15 +256,16 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
     day ? renderDay() : renderWeek();
   }
 
-  // The URL hash holds the open day (#2026-10-12), so the browser's Back button returns to the week.
+  // On /family/ the URL hash holds the open day (#meals/2026-10-12), so the browser's Back button
+  // returns to the week. Other sections' hashes (#center/…) leave this one on its week.
   function fromHash() {
-    const h = decodeURIComponent(location.hash.slice(1));
+    const h = decodeURIComponent(location.hash.slice(1)).replace(/^meals\/?/, "");
     day = DAYS.some(d => d.date === h) ? h : null;
     if (day) wi = WEEKS.findIndex(w => w.days.some(d => d.date === day));
     render();
   }
-  const openDay = date => { location.hash = date; };
-  const closeDay = () => { history.pushState(null, "", location.pathname + location.search); fromHash(); };
+  const openDay = date => { location.hash = "meals/" + date; };
+  const closeDay = () => { history.pushState(null, "", location.pathname + location.search + "#meals"); fromHash(); };
   const goWeek = i => { wi = Math.max(0, Math.min(WEEKS.length - 1, i)); render(); };
   const stepDay = n => { const i = DAYS.findIndex(d => d.date === day) + n; if (i >= 0 && i < DAYS.length) openDay(DAYS[i].date); };
 
@@ -280,7 +281,8 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
   };
   window.addEventListener("hashchange", fromHash);
   document.addEventListener("keydown", e => {
-    if (/INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
+    // Keys belong to whichever /family/ section is open.
+    if (/INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || !$("sm").offsetParent) return;
     if (e.key === "Escape" && day) { closeDay(); return; }
     // Plain ←/→ scroll the day table sideways when it overflows.
     const tw = day && $("sm-tw");
@@ -299,7 +301,7 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
   });
   fromHash();
   // On a phone the week is a long scroll, so start at the highlighted day.
-  if (!day && matchMedia("(max-width: 760px)").matches && focus) {
+  if (!day && $("sm").offsetParent && matchMedia("(max-width: 760px)").matches && focus) {
     const el = document.querySelector(`.sm-day[data-date="${focus}"]`);
     if (el && el.previousElementSibling && el.previousElementSibling.classList.contains("sm-day")) el.scrollIntoView({ block: "start" });
   }

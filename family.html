@@ -1,0 +1,63 @@
+---
+layout: page
+title: "Family"
+permalink: /family/
+sitemap: false
+---
+{% raw %}
+<style>
+.fam { --line: rgba(128,128,128,.25); --muted: rgba(120,128,124,1);
+  width: min(1240px, calc(100vw - 32px)); position: relative; left: 50%; transform: translateX(-50%);
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+@media (prefers-color-scheme: dark) { .fam { --muted: #96a29b; } }
+@media (max-width: 600px) { .fam { grid-template-columns: 1fr; } }
+.fam button { text-align: left; border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; cursor: pointer;
+  background: transparent; color: inherit; font: inherit; border-left: 5px solid var(--c); }
+.fam button:hover { border-color: var(--c); }
+.fam button b { display: block; font-size: 19px; }
+.fam button span { display: block; font-size: 13px; color: var(--muted); margin-top: 2px; }
+.fam button.on { background: var(--c); border-color: var(--c); color: #fff; }
+.fam button.on span { color: rgba(255,255,255,.85); }
+.fam-panel[hidden] { display: none; }
+</style>
+<div class="fam" id="fam">
+  <button data-sec="meals" style="--c:#1a7a5e"><b>School Meals</b><span>Woodcrest breakfast &amp; lunch, by week</span></button>
+  <button data-sec="center" style="--c:#2a78d6"><b>Community Center</b><span>Swim, pickleball, basketball, kids' programs</span></button>
+</div>
+{% endraw %}
+<div class="fam-panel" id="fam-meals" hidden>
+{% include school-menu.html %}
+</div>
+<div class="fam-panel" id="fam-center" hidden>
+{% include community-center.html %}
+</div>
+{% raw %}
+<script>
+(() => {
+  // Each section keeps its own state in the hash: #meals/2026-10-12, #center/swim.
+  const SECS = ["meals", "center"];
+  const btns = [...document.querySelectorAll("#fam button")];
+  function show(sec) {
+    SECS.forEach(s => { document.getElementById("fam-" + s).hidden = s !== sec; });
+    btns.forEach(b => b.classList.toggle("on", b.dataset.sec === sec));
+    try { sec ? localStorage.setItem("fam-sec", sec) : localStorage.removeItem("fam-sec"); } catch (e) {}
+  }
+  const fromHash = () => SECS.find(s => location.hash.slice(1).split("/")[0] === s);
+  document.getElementById("fam").onclick = e => {
+    const b = e.target.closest("button"); if (!b) return;
+    if (b.classList.contains("on")) {  // a second click closes the section
+      history.replaceState(null, "", location.pathname + location.search);
+      show(null);
+    } else {
+      history.replaceState(null, "", "#" + b.dataset.sec);
+      window.dispatchEvent(new HashChangeEvent("hashchange"));
+      show(b.dataset.sec);
+    }
+  };
+  window.addEventListener("hashchange", () => { const s = fromHash(); if (s) show(s); });
+  let last = null;
+  try { last = localStorage.getItem("fam-sec"); } catch (e) {}
+  show(fromHash() || (SECS.includes(last) ? last : null));
+})();
+</script>
+{% endraw %}
