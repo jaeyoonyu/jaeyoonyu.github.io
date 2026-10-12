@@ -89,6 +89,14 @@
 }
 
 .sm-foot { color: var(--muted); font-size: 11.5px; margin-top: 14px; line-height: 1.7; }
+.sm-ref { margin-top: 18px; border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; max-width: 720px; }
+.sm-ref h4 { margin: 0 0 8px; font-size: 15px; }
+.sm-ref table { border-collapse: collapse; width: 100%; font-size: 13px; }
+.sm-ref th { text-align: left; font-size: 11px; color: var(--muted); font-weight: 600; padding: 2px 8px 4px 0; }
+.sm-ref td { padding: 5px 8px 5px 0; border-top: 1px solid var(--line); vertical-align: top; }
+.sm-ref td:first-child { white-space: nowrap; }
+.sm-ref td small { display: block; color: var(--muted); font-size: 11.5px; margin-top: 1px; }
+.sm-ref-note { color: var(--muted); font-size: 11.5px; margin-top: 8px; line-height: 1.6; }
 
 .sm-day > * { cursor: pointer; }
 .sm-day:not(.focus) .sm-dh:hover { background: var(--line); }
@@ -147,13 +155,29 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
   </div>
   <div class="sm-grid" id="sm-grid"></div>
   <div id="sm-dayview" hidden></div>
+  <div class="sm-ref">
+    <h4>How much a 6-year-old needs in a day</h4>
+    <table>
+      <tr><td><b>Cal</b> calories</td><td>1,200–1,600 (girls) · 1,400–1,800 (boys)<small>Low end if inactive, high end if very active.</small></td></tr>
+      <tr><td><b>Sg</b> sugar</td><td>No set limit<small>Sugar from fruit and plain milk is fine; the limit is on added sugar.</small></td></tr>
+      <tr><td><b>ASg</b> added sugar</td><td><b>Under 25 g</b><small>About 6 teaspoons.</small></td></tr>
+      <tr><td><b>Pt</b> protein</td><td>About 19 g<small>A minimum to reach, not a limit.</small></td></tr>
+      <tr><td><b>Sd</b> sodium</td><td><b>Under 1,500 mg</b><small>A limit.</small></td></tr>
+    </table>
+    <div class="sm-ref-note">
+      For scale, USDA sets school meals for grades K–5 at 350–500 calories for breakfast and 550–650 for lunch.<br>
+      Sources:
+      <a href="https://www.dietaryguidelines.gov/" target="_blank" rel="noopener">Dietary Guidelines for Americans 2020–2025</a> (calories; protein and sodium for ages 4–8),
+      <a href="https://professional.heart.org/en/science-news/added-sugars-and-cardiovascular-disease-risk-in-children" target="_blank" rel="noopener">American Heart Association</a> (added sugar, ages 2–18).
+    </div>
+  </div>
   <div class="sm-foot">
     Woodcrest Elementary, Midland Public Schools. Source: <a href="https://midlandps.nutrislice.com/menu/woodcrest" target="_blank" rel="noopener">Nutrislice</a>.<br>
     Every meal also comes with white or chocolate milk, which aren't listed here.<br>
     Green and red come from a keyword rule (added sugar of 12 g or more also counts as junk), not from a dietitian.<br>
     The highlighted day is today, or the next school day after 2 pm.<br>
     Ctrl+← / Ctrl+→ switch weeks (or days, in a day's table); Ctrl+↑ goes back to the week; ← / → scroll the table.<br>
-    Updated 2026-10-12 19:22.
+    Updated 2026-10-12 19:56.
   </div>
 </div>
 
