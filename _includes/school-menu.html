@@ -49,9 +49,12 @@
 .sm-dish .sm-ph { background: var(--line); }
 .sm-dn { font-weight: 600; font-size: 13px; overflow-wrap: anywhere; }
 .sm-w { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+.sm-nums { font-size: 10.5px; color: var(--muted); font-weight: 400; line-height: 1.3; font-variant-numeric: tabular-nums; margin-bottom: 2px; }
+.sm-nums .hi { color: var(--bad); font-weight: 700; }
+.sm-sides .sm-nums { margin-left: 9px; }
 .sm [hidden] { display: none !important; }
 .sm-sides { margin-top: 6px; padding-top: 6px; border-top: 1px dashed var(--line); font-size: 12px; }
-.sm-sides > div { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 2px; }
+.sm-sides > .sm-sl { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 2px; }
 .sm-s { cursor: pointer; }
 .sm-s:hover { text-decoration: underline; }
 .healthy > .sm-dot, .sm-s.healthy .sm-dot { background: var(--ok); }
@@ -134,7 +137,7 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
     Green and red come from a keyword rule (added sugar of 12 g or more also counts as junk), not from a dietitian.<br>
     The highlighted day is today, or the next school day after 2 pm.<br>
     Ctrl+← / Ctrl+→ switch weeks (or days, in a day's table); Ctrl+↑ goes back to the week; ← / → scroll the table.<br>
-    Updated 2026-10-12 18:11.
+    Updated 2026-10-12 18:40.
   </div>
 </div>
 
@@ -171,17 +174,30 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
   const badgeFor = date => date === focus ? `<span class="sm-badge">${badge}</span>` : "";
 
   // ---- week grid: names and photos only ----
+  // "11g sugar (9g added) · 320mg sodium · 3g protein" under each food;
+  // added sugar of 12 g or more (the junk line) shows in red.
+  function nums(it) {
+    const nu = it.nu || {}, p = [], g = v => `${+(+v).toFixed(1)}`;
+    if (nu.g_sugar != null || nu.g_added_sugar != null) {
+      const added = nu.g_added_sugar != null ? ` (<span class="${nu.g_added_sugar >= 12 ? "hi" : ""}">${g(nu.g_added_sugar)}g added</span>)` : "";
+      p.push(`${nu.g_sugar != null ? g(nu.g_sugar) + "g " : ""}sugar${added}`);
+    }
+    if (nu.mg_sodium != null) p.push(`${Math.round(nu.mg_sodium)}mg sodium`);
+    if (nu.g_protein != null) p.push(`${g(nu.g_protein)}g protein`);
+    return p.length ? `<div class="sm-nums">${p.join(" · ")}</div>` : "";
+  }
+
   function cell(name, label, m) {
     let body;
     if (!m) body = `<div class="sm-none">No ${name}</div>`;
     else {
       const dishes = m.main.map(it => {
-        const w = it.w.length ? `<div class="sm-w">with ${it.w.map(x => `<span class="sm-s ${x.k}">${esc(x.n)}</span>`).join(", ")}</div>` : "";
+        const w = it.w.length ? `<div class="sm-w">with${it.w.map(x => `<div><span class="sm-s ${x.k}">${esc(x.n)}</span>${nums(x)}</div>`).join("")}</div>` : "";
         const pic = it.img ? `<img loading="lazy" src="${esc(it.img)}" alt="">` : `<span class="sm-ph"></span>`;
-        return `<div class="sm-dish ${it.k}">${pic}<div><div class="sm-dn">${esc(it.n)}</div>${w}</div></div>`;
+        return `<div class="sm-dish ${it.k}">${pic}<div><div class="sm-dn">${esc(it.n)}</div>${nums(it)}${w}</div></div>`;
       }).join("");
-      const sides = m.sides.length ? `<div class="sm-sides"><div>Fruit &amp; veg</div>${m.sides.map(x =>
-        `<span class="sm-s ${x.k}"><span class="sm-dot"></span>${esc(x.n)}</span>`).join("<br>")}</div>` : "";
+      const sides = m.sides.length ? `<div class="sm-sides"><div class="sm-sl">Fruit &amp; veg</div>${m.sides.map(x =>
+        `<div><span class="sm-s ${x.k}"><span class="sm-dot"></span>${esc(x.n)}</span>${nums(x)}</div>`).join("")}</div>` : "";
       body = (m.note ? `<div class="sm-note">${esc(m.note)}</div>` : "") + dishes + sides;
     }
     return `<div class="sm-ml">${label}</div>${body}`;
