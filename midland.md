@@ -35,30 +35,32 @@ sitemap: false
 
 /* week view: one block per day, one lane per sub-type */
 .md-week { border-top: 1px solid var(--line); }
-.md-day { display: grid; grid-template-columns: 74px 1fr; border-bottom: 1px solid var(--line); }
+.md-day { display: grid; grid-template-columns: 96px 1fr; border-bottom: 1px solid var(--line); }
 .md-day.today { background: var(--today); }
-.md-dn { padding: 7px 0 7px 6px; font-weight: 700; font-size: 14px; line-height: 1.2; }
-.md-dn small { display: block; font-weight: 400; font-size: 11px; color: var(--muted); }
+.md-dn { padding: 3px 0 3px 6px; font-weight: 700; font-size: 13px; line-height: 1.2; align-self: center; }
+.md-dn small { font-weight: 400; font-size: 11px; color: var(--muted); margin-left: 4px; }
 .md-day.today .md-dn { color: var(--accent); }
-.md-lanes { padding: 2px 0 6px; }
-.md-lane { display: grid; grid-template-columns: var(--ln, 0px) minmax(0, 1fr); gap: 10px; align-items: center; min-height: 26px; }
+.md-lanes { padding: 3px 0; }
+.md-lane { display: grid; grid-template-columns: var(--ln, 0px) minmax(0, 1fr); gap: 10px; align-items: center; min-height: 22px; }
 .md-ln { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; }
-.md-track { position: relative; height: 22px; background: rgba(128,128,128,.07); border-radius: 4px;
+.md-track { position: relative; height: 19px; background: rgba(128,128,128,.07); border-radius: 4px;
   background-image: repeating-linear-gradient(90deg, rgba(128,128,128,.16) 0 1px, transparent 1px calc(100% / var(--hours))); }
 .md-closed { position: absolute; top: 0; bottom: 0; background: repeating-linear-gradient(135deg, rgba(128,128,128,.13) 0 3px, transparent 3px 7px); }
-.md-bar { position: absolute; top: 2px; bottom: 2px; border-radius: 4px; color: #fff; font-size: 11px; font-weight: 600;
+.md-bar { position: absolute; top: 2px; bottom: 2px; border-radius: 4px; color: #fff; font-size: 10.5px; font-weight: 600;
   display: flex; align-items: center; padding: 0 5px; overflow: hidden; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .md-bar.past { opacity: .35; }
 .md-bar.off { background: transparent !important; border: 1.5px dashed var(--muted); color: var(--muted); }
 .md-nowline { position: absolute; top: -3px; bottom: -3px; width: 2px; background: #e74c3c; z-index: 2; }
 .md-ticks { position: relative; height: 16px; font-size: 10.5px; color: var(--muted); }
+.md-axisrow { position: sticky; top: 0; z-index: 3; background: var(--th-bg); border-bottom: 1px solid var(--line); }
 .md-ticks span { position: absolute; transform: translateX(-50%); white-space: nowrap; top: 1px; }
 .md-ticks span:first-child { transform: none; }
 .md-ticks span:last-child { transform: translateX(-100%); }
 .md-scroll { overflow-x: auto; }
 .md-week { min-width: 720px; }
+.md-scroll { overflow-y: visible; }
 @media (max-width: 700px) {
-  .md-day { grid-template-columns: 52px 1fr; }
+  .md-day { grid-template-columns: 78px 1fr; }
 }
 
 /* all activities, for reference */
@@ -109,9 +111,9 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
       { n: "Lap swim", c: "#2a78d6", s: [
         [[0, 2], [5, 8]], [[0, 2], [9, 15.5]], [[0, 1, 2], [19.5, 20.5]], [[1, 3], [5, 15.5]],
         [[4], [5, 8]], [[4], [9, 15.5]], [[5], [8, 13]], [[6], [11, 14]]] },
-      { n: "Rec swim", sub: "no slide or spray", c: "#17a2b8", s: [
+      { n: "Rec swim", row: "Rec / Open", sub: "no slide or spray", c: "#17a2b8", s: [
         [[0, 2, 4], [5, 9]], [[0, 2, 4], [11, 15.5]], [[1, 3], [5, 8]], [[1, 3], [12, 15.5]], [[1], [19.5, 20.5]], [[6], [11, 14]]] },
-      { n: "Open swim", sub: "slide every 30 min", c: "#8e5bd6", s: [
+      { n: "Open swim", row: "Rec / Open", sub: "slide every 30 min", c: "#8e5bd6", s: [
         [[3], [18, 20.5], "$6 community swim night"], [[4], [18, 20.5]], [[5], [13, 19]], [[6], [14, 17]]] }] },
     { id: "pickleball", n: "Pickleball", c: "#d9682b", lanes: [
       { n: "Pickleball", c: "#d9682b", s: [
@@ -193,25 +195,26 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
     $("md-legend").innerHTML = multi ? a.lanes.map(l =>
       `<span><span class="md-sw" style="background:${l.c}"></span>${esc(l.n)}${l.sub ? ` — ${esc(l.sub)}` : ""}</span>`).join("") : "";
     let html = "";
-    // Hour labels repeat on every day so each timeline reads on its own.
     const ticks = [];
     for (let h = T0; h <= T1; h++) ticks.push(`<span style="left:${pct(h)}%">${short(h)}</span>`);
+    html += `<div class="md-day md-axisrow"><div></div><div class="md-lanes"><div class="md-lane"><div></div><div class="md-ticks">${ticks.join("")}</div></div></div></div>`;
     DAYN.forEach((dn, d) => {
       const b = BUILDING[d], isToday = d === dow;
-      const lanes = a.lanes.map(l => {
-        const ss = slots(l, d);
-        const bars = ss.map(s => {
+      const rows = [];
+      a.lanes.forEach(l => { const k = l.row || l.n, r = rows.find(x => x.k === k); r ? r.ls.push(l) : rows.push({ k, ls: [l] }); });
+      const lanes = rows.map(row => {
+        const bars = row.ls.flatMap(l => slots(l, d).map(s => [l, s])).map(([l, s]) => {
           const cls = s.off ? "off" : isToday && nowH >= s.r[1] ? "past" : "";
           return `<div class="md-bar ${cls}" style="left:${pct(s.r[0])}%;width:${pct(s.r[1]) - pct(s.r[0])}%;background:${l.c}"
             title="${esc(`${l.n}: ${range(s.r)}${s.note ? " · " + s.note : ""}${s.off ? " — " + s.off : ""}`)}">${esc(s.off || label(s))}</div>`;
         }).join("");
         const nowline = isToday && nowH > T0 && nowH < T1 ? `<div class="md-nowline" style="left:${pct(nowH)}%"></div>` : "";
         const closed = `<div class="md-closed" style="left:0;width:${pct(b[0])}%"></div><div class="md-closed" style="left:${pct(b[1])}%;right:0"></div>`;
-        return `<div class="md-lane"><div class="md-ln">${multi ? esc(l.n) : ""}</div>
+        return `<div class="md-lane"><div class="md-ln">${multi ? esc(row.k) : ""}</div>
           <div class="md-track">${closed}${bars}${nowline}</div></div>`;
       }).join("");
-      html += `<div class="md-day ${isToday ? "today" : ""}"><div class="md-dn">${dn}<small>${isToday ? "Today" : `${dates[d].getMonth() + 1}/${dates[d].getDate()}`}</small></div>
-        <div class="md-lanes"><div class="md-lane"><div></div><div class="md-ticks">${ticks.join("")}</div></div>${lanes}</div></div>`;
+      html += `<div class="md-day ${isToday ? "today" : ""}"><div class="md-dn">${dn}<small>${isToday ? "today" : `${dates[d].getMonth() + 1}/${dates[d].getDate()}`}</small></div>
+        <div class="md-lanes">${lanes}</div></div>`;
     });
     $("md-week").innerHTML = `<div class="md-scroll" id="md-scroll"><div class="md-week">${html}</div></div>`;
   }
