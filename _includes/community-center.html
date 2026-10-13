@@ -115,7 +115,7 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
     { id: "basketball", n: "Basketball", c: "#b5541c", lanes: [
       { n: "Adult", c: "#b5541c", s: [[MF, [5.5, 8]], [MF, [11.25, 13]]] },
       { n: "Youth", c: "#e8a33d", s: [[MF, [15, 17]], [[5], [12, 16], "*"]] },
-      { n: "Adult & youth", c: "#d9682b", s: [[MF, [17, 21], "*"], [[5], [16, 20]], [[6], [13, 17.5], "*"]] }] },
+      { n: "Adult & youth", rows: ["Adult", "Youth"], c: "#7a4fd0", s: [[MF, [17, 21], "*"], [[5], [16, 20]], [[6], [13, 17.5], "*"]] }] },
     { id: "childwatch", n: "Child Watch", sub: "ages 3 months – 9 years", c: "#1a7a5e", lanes: [
       { n: "Child Watch", c: "#1a7a5e", s: [[MF, [8, 12]], [[0, 1, 2], [16.5, 19.5]], [[3], [17.5, 19.5]], [[5], [8, 12]]] }] },
     { id: "zone", n: "The Zone", sub: "ages 6–12 · Activity Room 1", c: "#2e9e74", lanes: [
@@ -194,7 +194,8 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
     DAYN.forEach((dn, d) => {
       const b = BUILDING[d], isToday = d === dow;
       const rows = [];
-      a.lanes.forEach(l => { const k = l.row || l.n, r = rows.find(x => x.k === k); r ? r.ls.push(l) : rows.push({ k, ls: [l] }); });
+      // A series sits on its `row`, or on every row in `rows` (basketball "adult & youth" shows on both).
+      a.lanes.forEach(l => (l.rows || [l.row || l.n]).forEach(k => { const r = rows.find(x => x.k === k); r ? r.ls.push(l) : rows.push({ k, ls: [l] }); }));
       const lanes = rows.map(row => {
         const bars = row.ls.flatMap(l => slots(l, d).map(s => [l, s])).map(([l, s]) => {
           const cls = s.off ? "off" : isToday && nowH >= s.r[1] ? "past" : "";
