@@ -130,7 +130,15 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
 .sm-t tr.sec td:first-child { background: var(--th-bg); }
 .sm-t tr.sub td { font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding-top: 8px; }
 .sm-t .fn { font-weight: 600; overflow-wrap: anywhere; }
-.sm-t .fn img, .sm-t .fn .sm-ph { display: none; }
+.sm-t .fn img { display: block; width: 40px; height: 40px; border-radius: 5px; object-fit: cover; margin: 0 0 3px; background: #fff; cursor: zoom-in; }
+.sm-t .fn .sm-ph { display: none; }
+@media (max-width: 700px) { .sm-t .fn img { width: 34px; height: 34px; } }
+/* Tapped photo, full size */
+.sm-lb { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,.82); display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 10px; padding: 16px; cursor: zoom-out; }
+.sm-lb[hidden] { display: none; }
+.sm-lb img { max-width: min(92vw, 640px); max-height: 75vh; object-fit: contain; border-radius: 10px; background: #fff; }
+.sm-lb div { color: #fff; font-size: 15px; font-weight: 600; text-align: center; }
 .sm-t .fn .sm-ph { background: var(--line); }
 .sm-t tr.with .fn { padding-left: 14px; font-weight: 400; }
 .sm-t .fn.healthy { color: var(--ok); }
@@ -154,6 +162,7 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
   </div>
   <div class="sm-grid" id="sm-grid"></div>
   <div id="sm-dayview" hidden></div>
+  <div class="sm-lb" id="sm-lb" hidden><img alt=""><div></div></div>
   <div class="sm-ref">
     <h4>How much a 6-year-old needs in a day</h4>
     <table>
@@ -287,7 +296,7 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
     const body = rows.map(([kind, it, label]) => {
       if (!it) return `<tr class="${kind}"><td>${esc(label)}</td><td colspan="${ncol - 1}"></td></tr>`;
       const nu = it.nu || {};
-      const pic = kind === "with" ? "" : it.img ? `<img loading="lazy" src="${esc(it.img)}" alt="">` : `<span class="sm-ph"></span>`;
+      const pic = it.img ? `<img class="sm-zoom" loading="lazy" src="${esc(it.img)}" alt="${esc(it.n)}">` : "";
       const nums = cols.map(([k]) => {
         if (nu[k] == null || +nu[k] === 0) return `<td class="na">–</td>`;
         const cls = k === "g_added_sugar" && nu[k] >= 12 ? "hi" : k === "calories" ? "key" : "";
@@ -330,7 +339,12 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
     day ? closeDay() : render();
   };
   $("sm-grid").onclick = e => { const el = e.target.closest(".sm-day"); if (el) openDay(el.dataset.date); };
+  // .sm is transformed (for its full-width layout), which would trap a fixed overlay inside it.
+  document.body.appendChild($("sm-lb"));
+  const zoom = img => { const lb = $("sm-lb"); lb.querySelector("img").src = img.src; lb.querySelector("div").textContent = img.alt; lb.hidden = false; };
+  $("sm-lb").onclick = () => { $("sm-lb").hidden = true; };
   $("sm-dayview").onclick = e => {
+    if (e.target.classList.contains("sm-zoom")) { zoom(e.target); return; }
     const b = e.target.closest("button"); if (!b) return;
     b.dataset.back ? closeDay() : openDay(b.dataset.day);
   };
@@ -338,6 +352,7 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
   document.addEventListener("keydown", e => {
     // Keys belong to whichever /family/ section is open.
     if (/INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || !$("sm").offsetParent) return;
+    if (e.key === "Escape" && !$("sm-lb").hidden) { $("sm-lb").hidden = true; return; }
     if (e.key === "Escape" && day) { closeDay(); return; }
     // Plain ←/→ scroll the day table sideways when it overflows.
     const tw = day && $("sm-tw");
