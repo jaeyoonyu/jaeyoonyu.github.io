@@ -43,12 +43,18 @@
   display: flex; align-items: center; padding: 0 5px; overflow: hidden; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .md-bar.past { opacity: .35; }
 .md-bar.off { background: transparent !important; border: 1.5px dashed var(--muted); color: var(--muted); }
-.md-nowline { position: absolute; top: -3px; bottom: -3px; width: 2px; background: #e74c3c; z-index: 2; }
+/* Now: a bold red line on today, a faint one on the other days (same time of day), and a time pill on the axis. */
+.md-nowline { position: absolute; top: -4px; bottom: -4px; width: 3px; margin-left: -1.5px; background: #ff3b30; z-index: 2;
+  border-radius: 2px; box-shadow: 0 0 0 2px rgba(255,59,48,.22), 0 0 10px rgba(255,59,48,.75); }
+.md-nowline.ghost { width: 0; margin-left: 0; background: none; box-shadow: none; border-left: 1.5px dashed rgba(255,59,48,.55); }
+.md-nowpill { position: absolute; top: -1px; transform: translateX(-50%); background: #ff3b30; color: #fff; font-size: 10.5px;
+  font-weight: 700; padding: 0 6px; border-radius: 999px; z-index: 4; white-space: nowrap; line-height: 16px; }
 .md-ticks { position: relative; height: 16px; font-size: 10.5px; color: var(--muted); }
 .md-axisrow { position: sticky; top: 0; z-index: 3; background: var(--th-bg); border-bottom: 1px solid var(--line); }
 .md-ticks span { position: absolute; transform: translateX(-50%); white-space: nowrap; top: 1px; }
 .md-ticks span:first-child { transform: none; }
 .md-ticks span:last-child { transform: translateX(-100%); }
+.md-ticks span.md-nowpill { transform: translateX(-50%); top: -1px; }
 .md-scroll { overflow-x: auto; }
 .md-week { min-width: 720px; }
 .md-scroll { overflow-y: visible; }
@@ -145,10 +151,10 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
   }
 
   // This week's dates (Mon–Sun), so date-specific cancellations land on the right day.
-  const now = new Date();
+  let now = new Date();
   const dow = (now.getDay() + 6) % 7;
   const dates = DAYN.map((_, i) => new Date(now.getFullYear(), now.getMonth(), now.getDate() - dow + i));
-  const nowH = now.getHours() + now.getMinutes() / 60;
+  let nowH = now.getHours() + now.getMinutes() / 60;
 
   const slots = (lane, d) => lane.s.filter(([days]) => days.includes(d))
     .map(([, r, note]) => ({ r, note, off: lane.off && lane.off[iso(dates[d])] })).sort((x, y) => x.r[0] - y.r[0]);
@@ -190,7 +196,8 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
     let html = "";
     const ticks = [];
     for (let h = T0; h <= T1; h++) ticks.push(`<span style="left:${pct(h)}%">${short(h)}</span>`);
-    html += `<div class="md-day md-axisrow"><div></div><div class="md-lanes"><div class="md-lane"><div></div><div class="md-ticks">${ticks.join("")}</div></div></div></div>`;
+    const pill = nowH > T0 && nowH < T1 ? `<span class="md-nowpill" style="left:${pct(nowH)}%">Now ${t(nowH).replace(" AM", "a").replace(" PM", "p")}</span>` : "";
+    html += `<div class="md-day md-axisrow"><div></div><div class="md-lanes"><div class="md-lane"><div></div><div class="md-ticks">${pill}${ticks.join("")}</div></div></div></div>`;
     DAYN.forEach((dn, d) => {
       const b = BUILDING[d], isToday = d === dow;
       const rows = [];
@@ -202,7 +209,7 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
           return `<div class="md-bar ${cls}" style="left:${pct(s.r[0])}%;width:${pct(s.r[1]) - pct(s.r[0])}%;background:${l.c}"
             title="${esc(`${l.n}: ${range(s.r)}${s.note ? " · " + s.note : ""}${s.off ? " — " + s.off : ""}`)}">${esc(s.off || label(s))}</div>`;
         }).join("");
-        const nowline = isToday && nowH > T0 && nowH < T1 ? `<div class="md-nowline" style="left:${pct(nowH)}%"></div>` : "";
+        const nowline = nowH > T0 && nowH < T1 ? `<div class="md-nowline${isToday ? "" : " ghost"}" style="left:${pct(nowH)}%"></div>` : "";
         const closed = `<div class="md-closed" style="left:0;width:${pct(b[0])}%"></div><div class="md-closed" style="left:${pct(b[1])}%;right:0"></div>`;
         return `<div class="md-lane"><div class="md-ln">${multi ? esc(row.k) : ""}</div>
           <div class="md-track">${closed}${bars}${nowline}</div></div>`;
@@ -238,6 +245,12 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
     if (tw && tw.scrollWidth > tw.clientWidth) { e.preventDefault(); tw.scrollBy({ left: step * 160, behavior: "smooth" }); }
   });
   renderButtons(); renderActivity(); renderTable();
+  // Move the now line (and open/closed status) along every minute while the page is open.
+  setInterval(() => {
+    now = new Date(); nowH = now.getHours() + now.getMinutes() / 60;
+    if ((now.getDay() + 6) % 7 !== dow) return location.reload();  // past midnight: new day, new week dates
+    renderButtons(); renderActivity();
+  }, 60 * 1000);
 })();
 </script>
 {% endraw %}

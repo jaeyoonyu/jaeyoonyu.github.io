@@ -13,6 +13,16 @@
 /* week pills */
 .sm-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
 .sm-weeks { display: flex; gap: 6px; flex-wrap: wrap; }
+/* Upcoming: the day that matters next (today, or the next school day after 2 pm) */
+.sm-up { border: 2px solid var(--accent); background: var(--accent-bg); color: inherit; border-radius: 12px; padding: 5px 14px;
+  cursor: pointer; text-align: left; line-height: 1.25; font: inherit; }
+.sm-up b { display: block; font-size: 15px; }
+.sm-up b span { background: var(--accent); color: #fff; border-radius: 999px; font-size: 10.5px; padding: 1px 8px; margin-right: 6px;
+  text-transform: uppercase; letter-spacing: .05em; vertical-align: 1px; }
+.sm-up small { color: var(--muted); font-size: 11px; }
+.sm-up.on { background: var(--accent); color: #fff; }
+.sm-up.on small { color: rgba(255,255,255,.85); }
+.sm-up.on b span { background: #fff; color: var(--accent); }
 .sm-weeks button { border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 999px;
   padding: 4px 13px; font-size: 13px; cursor: pointer; line-height: 1.2; }
 .sm-weeks button small { display: block; font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
@@ -153,6 +163,7 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
 
 <div class="sm" id="sm">
   <div class="sm-top">
+    <button class="sm-up" id="sm-up" hidden></button>
     <div class="sm-weeks" id="sm-weeks"></div>
     <div class="sm-key">
       <span><span class="sm-dot" style="background:var(--ok)"></span>Healthy</span>
@@ -186,7 +197,7 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
     Green and red come from a keyword rule (added sugar of 12 g or more also counts as junk), not from a dietitian.<br>
     The highlighted day is today, or the next school day after 2 pm.<br>
     Ctrl+← / Ctrl+→ switch weeks (or days, in a day's table); Ctrl+↑ goes back to the week; ← / → scroll the table.<br>
-    Updated 2026-10-13 08:16.
+    Updated 2026-10-13 08:50.
   </div>
 </div>
 
@@ -209,6 +220,13 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
   const focus = hasMenu.has(iso(f)) ? iso(f) : null;
   const pastBefore = iso(start);
   const badge = focus === todayIso ? "Today" : focus === tomorrowIso ? "Tomorrow" : "Next up";
+  if (focus) {
+    const why = focus === todayIso ? "Until 2 pm today" : now.getHours() >= 14 && focus === tomorrowIso ? "After 2 pm, shows tomorrow"
+      : "Next school day with a menu";
+    $("sm-up").innerHTML = `<b><span>${badge}</span>${fmt(focus, { weekday: "short", month: "short", day: "numeric" })}</b><small>Upcoming · ${why}</small>`;
+    $("sm-up").hidden = false;
+    $("sm-up").onclick = () => { location.hash = "meals/" + focus; };
+  }
 
   const DAYS = WEEKS.flatMap(w => w.days.filter(d => d.breakfast || d.lunch));
   let wi = WEEKS.findIndex(w => w.days.some(d => d.date === (focus || todayIso)));
@@ -316,6 +334,7 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
   function render() {
     $("sm-weeks").innerHTML = WEEKS.map((w, i) =>
       `<button data-w="${i}" class="${i === wi ? "on" : ""}"><small>${weekLabel(i)}</small>${fmt(w.days[0].date, { month: "short", day: "numeric" })}</button>`).join("");
+    $("sm-up").classList.toggle("on", !!day && day === focus);
     $("sm-grid").hidden = !!day;
     $("sm-dayview").hidden = !day;
     day ? renderDay() : renderWeek();
