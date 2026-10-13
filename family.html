@@ -5,6 +5,11 @@ permalink: /family/
 sitemap: false
 ---
 {% raw %}
+<script>
+  // Phones get the desktop layout here (all five days side by side; pinch to zoom),
+  // the same thing "Request desktop site" does, but without having to ask for it.
+  (m => m && m.setAttribute("content", "width=1024"))(document.querySelector('meta[name="viewport"]'));
+</script>
 <style>
 .fam { --line: rgba(128,128,128,.25); --muted: rgba(120,128,124,1);
   width: min(1240px, calc(100vw - 32px)); position: relative; left: 50%; transform: translateX(-50%);
