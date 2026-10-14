@@ -24,6 +24,7 @@ title: "CMU"
   <div class="row"><span class="lbl">Everyday</span>
     <a href="https://www.cmich.edu/centrallink" title="Single sign-on portal" target="_blank" rel="noopener">CentralLink</a>
     <a href="https://mail.cmich.edu/" title="University email" target="_blank" rel="noopener">Mail</a>
+    <a href="mailto:spambusters@cmich.edu" title="Forward spam or phishing to spambusters@cmich.edu">Report Spam</a>
     <a href="https://www.cmich.edu/offices-departments/registrars-office/calendars/academic-calendar" title="Term dates, breaks, and deadlines" target="_blank" rel="noopener">Academic Calendar</a>
     <a href="https://centralmichigan-my.sharepoint.com" title="OneDrive / SharePoint files" target="_blank" rel="noopener">SharePoint</a>
   </div>
