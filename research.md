@@ -58,3 +58,8 @@ Auditing, corporate governance, data analytics, and financial reporting.
   <li><span class="t"><a href="https://tiij.org/issues/issues/spring2026/X__TIIJ%20spring%202026%20v26%20n2.pdf#page=7" target="_blank">Benford's Law and Python code: A proposed exercise for engineering and other analytical disciplines</a></span>
     <span class="m"><span class="yr">2026</span> <em>Technology Interface International Journal</em> · with Harrast</span></li>
 </ul>
+
+<h3 class="sec">Resources</h3>
+<ul class="pubs">
+  <li><span class="t">Free datasets for social science research (Todd R. Jones)</span> – <a href="https://github.com/toddrjones/datasets" target="_blank">github.com/toddrjones/datasets</a></li>
+</ul>
