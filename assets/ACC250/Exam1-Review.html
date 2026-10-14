@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ACC 250 Exam 1 Class Review</title>
+<style>
+
+
+:root { --bg:#f1f1ef; --ink:#16263a; --muted:#5c6863; --accent:#1a7a5e;
+        --red:#b3200f; --card:#fff; --border:#dfe3e0; }
+* { box-sizing:border-box; }
+html, body { margin:0; height:100%; background:#0d1310; }
+body { font:16px/1.5 "Segoe UI",system-ui,sans-serif; color:var(--ink);
+  display:flex; align-items:center; justify-content:center; overflow:hidden; }
+#stage { position:relative; width:1600px; height:900px; transform-origin:center center;
+  background:var(--bg); box-shadow:0 18px 60px rgba(0,0,0,.5); overflow:hidden; }
+.s { position:absolute; inset:0; padding:64px 90px 80px; display:none;
+  flex-direction:column; justify-content:center; }
+.s.on { display:flex; animation:in .32s ease both; }
+@keyframes in { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+
+h1 { font-family:Charter,"Bitstream Charter",Cambria,Georgia,serif;
+  font-size:70px; line-height:1.12; margin:0 0 22px; font-weight:700; }
+.title { justify-content:center; }
+.title .tstack { max-width:1300px; }
+.title-date { position:absolute; left:90px; right:90px; bottom:48px; margin:0;
+  color:var(--muted); font-size:20px; }
+h2 { font-family:Charter,"Bitstream Charter",Cambria,Georgia,serif; font-size:46px; margin:0 0 26px;
+  font-weight:700; color:var(--ink); }
+h2::after { content:""; display:block; width:110px; height:6px; background:var(--accent);
+  border-radius:3px; margin-top:14px; }
+h3 { font-family:Charter,Cambria,Georgia,serif; font-size:28px; margin:0 0 12px; font-weight:700; }
+p { margin:.35em 0; }
+.eyebrow { font-size:19px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--accent); font-weight:700; margin:0 0 14px; }
+.lede { font-size:29px; line-height:1.45; color:var(--muted); margin:.2em 0; }
+.fine { font-size:20px; color:var(--muted); line-height:1.5; }
+.hl  { color:var(--accent); font-weight:700; }
+.hlr { color:var(--red); font-weight:700; }
+
+/* ---- definition / question / answer blocks ---- */
+.def { background:var(--card); border:1px solid var(--border); border-left:8px solid var(--accent);
+  border-radius:12px; padding:24px 30px; box-shadow:0 4px 16px rgba(0,0,0,.07); }
+.def .term { font:700 32px Charter,Cambria,Georgia,serif; color:var(--accent); margin:0 0 8px; }
+.def p { font-size:28px; line-height:1.42; margin:0; }
+
+.ask { background:#fdf6e3; border:1px solid #e8dcb8; border-left:8px solid #b8901f;
+  border-radius:12px; padding:22px 28px; }
+.ask .qlab { font:700 17px "Segoe UI",sans-serif; letter-spacing:.15em; text-transform:uppercase;
+  color:#8a6d1f; display:block; margin-bottom:8px; }
+.ask p { font-size:27px; line-height:1.4; margin:0; }
+
+.tests { display:grid; gap:14px; margin-top:22px; }
+.test { display:grid; grid-template-columns:52px 1fr; align-items:start; gap:18px;
+  background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 22px;
+  font-size:25px; line-height:1.35; box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.test .n { width:52px; height:52px; border-radius:50%; background:var(--accent); color:#fff;
+  display:grid; place-items:center; font:700 25px "Segoe UI",sans-serif; }
+
+.items { list-style:none; margin:18px 0 0; padding:0; display:grid; gap:13px; }
+.items li { display:grid; grid-template-columns:1fr 190px; align-items:center; gap:22px;
+  background:var(--card); border:1px solid var(--border); border-radius:11px;
+  padding:15px 22px; font-size:25px; line-height:1.3; box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.items li .why { grid-column:1/-1; font-size:20px; color:var(--muted); margin-top:-2px; }
+.chip { justify-self:end; padding:7px 16px; border-radius:999px; font:700 19px "Segoe UI",sans-serif;
+  letter-spacing:.04em; text-align:center; white-space:nowrap; }
+.chip.yes { background:#dff2e8; color:#12664c; border:1px solid #a9d6b8; }
+.chip.no  { background:#fbe6e2; color:var(--red); border:1px solid #eab8ae; }
+
+.answer { margin-top:22px; background:var(--accent); color:#fff; border-radius:12px;
+  padding:16px 28px; font:700 32px Charter,Cambria,Georgia,serif; display:inline-block; }
+.answer.neg { background:var(--red); }
+.key { margin-top:22px; background:#dff2e8; border:2px solid var(--accent); border-radius:14px;
+  padding:20px 32px; text-align:center; color:#12664c;
+  font:700 31px/1.34 Charter,"Bitstream Charter",Cambria,Georgia,serif;
+  box-shadow:0 5px 20px rgba(26,122,94,.16); }
+.key .klab { display:block; margin-bottom:8px; color:var(--accent);
+  font:700 16px/1 "Segoe UI",sans-serif; letter-spacing:.18em; text-transform:uppercase; }
+.key .hl { color:var(--accent); }
+.note { margin-top:14px; background:var(--card); border:1px solid var(--border);
+  border-left:8px solid var(--accent); border-radius:12px; padding:16px 22px;
+  font-size:25px; line-height:1.35; color:var(--ink); box-shadow:0 3px 12px rgba(0,0,0,.05); }
+
+.two { display:grid; grid-template-columns:1fr 1fr; gap:34px; align-items:start; }
+
+/* ---- statements ---- */
+.stmt { background:var(--card); border:1px solid var(--border); border-radius:12px;
+  padding:18px 26px 14px; box-shadow:0 4px 16px rgba(0,0,0,.07); }
+.stmt h3 { font-size:25px; margin:0 0 10px; }
+.stmt table { width:100%; border-collapse:collapse; font-size:24px; }
+.stmt th { color:var(--muted); font-size:17px; letter-spacing:.06em; text-transform:uppercase;
+  text-align:right; border-bottom:2px solid var(--ink); padding:5px 8px; }
+.stmt th:first-child, .stmt td:first-child { text-align:left; }
+.stmt td { padding:7px 8px; text-align:right; border-bottom:1px solid #e7ebe8; }
+.stmt tr.total td { font-weight:700; border-top:2px solid var(--ink); border-bottom:2px solid var(--ink); }
+.scen { font-size:23px; line-height:1.42; }
+.scen h3 { font-size:25px; margin:0 0 8px; }
+.scen ul { margin:0 0 16px; padding-left:1.15em; }
+.scen li { margin:.28em 0; }
+
+.notes { margin-top:16px; background:var(--card); border:1px solid var(--border);
+  border-left:8px solid #b8901f; border-radius:12px; padding:14px 24px; }
+.notes p { margin:6px 0; font-size:20px; line-height:1.4; }
+.notes b { color:#8a6d1f; }
+.eq { margin-top:8px; text-align:center; font:700 38px Charter,Cambria,Georgia,serif; }
+
+[data-step] { opacity:0; visibility:hidden; transition:opacity .2s ease; }
+[data-step].on { opacity:1; visibility:visible; }
+
+#bar { position:absolute; left:0; bottom:0; height:5px; background:var(--accent); z-index:5; }
+#num { position:absolute; right:26px; bottom:16px; font-size:17px; color:var(--muted); z-index:5; }
+#hint { position:fixed; left:14px; bottom:10px; font-size:13px; color:#5d6b64; z-index:9; }
+
+/* ---- MCQ ---- */
+.opts { list-style:none; margin:20px 0 0; padding:0; display:grid; gap:11px; }
+.opts li { display:grid; grid-template-columns:48px 1fr 44px; align-items:center; gap:16px;
+  background:var(--card); border:1px solid var(--border); border-radius:11px;
+  padding:13px 20px; font-size:25px; line-height:1.3; box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.opts .lab { width:48px; height:48px; border-radius:50%; background:#eef1ef; color:var(--ink);
+  display:grid; place-items:center; font:700 22px "Segoe UI",sans-serif; }
+.opts .mk { text-align:center; font-size:30px; font-weight:700; }
+.opts .mk.ok { color:var(--accent); }
+.opts .mk.no { color:#c6cdc8; }
+.ans { margin-top:20px; background:#dff2e8; border:2px solid var(--accent); border-radius:14px;
+  padding:16px 28px; color:#12664c; font-size:24px; line-height:1.42; }
+.ans b { font:700 27px Charter,"Bitstream Charter",Cambria,Georgia,serif; }
+.given { background:var(--card); border:1px solid var(--border); border-left:8px solid var(--accent);
+  border-radius:12px; padding:16px 22px; font-size:20px; line-height:1.45;
+  box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.given h3 { font-size:22px; margin:0 0 4px; }
+.given h3.y2 { margin-top:14px; }
+.given ul { margin:0; padding-left:1.1em; }
+.given li { margin:.18em 0; }
+.two .opts li { font-size:23px; padding:11px 18px; }
+.two .ans { font-size:21px; padding:14px 22px; }
+
+/* ---- fill-in-the-blank statements ---- */
+.bl { display:inline-block; min-width:104px; padding:2px 10px; border:2px dashed #c3ccc6;
+  border-radius:8px; color:var(--accent); font-weight:700; }
+.stmt.q table { font-size:22px; }
+.stmt.q td { padding:8px 8px; }
+.stmt.q .given-amt { color:var(--muted); }
+
+/* ================= one-page handout (Ctrl+P) =================
+   Screen stays a slide deck; print flattens it onto one sheet.
+   Answers are hidden by default. Press K for the answer key. */
+.printhead, .printfoot { display:none; }
+@media print {
+  @page { size:letter portrait; margin:5mm 10mm; }
+  html, body { height:auto; background:#fff; display:block; overflow:visible; color:#000; }
+  body { font:8.5pt/1.26 "Segoe UI",system-ui,sans-serif; }
+  #stage { position:static; width:auto; height:auto; transform:none !important;
+           background:#fff; box-shadow:none; overflow:visible; }
+  .s { position:static; display:block !important; padding:0; margin:0 0 3.1mm;
+       animation:none; break-inside:avoid; }
+  .s.title, #bar, #num, #hint, .notes, .ans { display:none !important; }
+
+  .printhead { display:block; margin:0 0 1.6mm; padding-bottom:1mm;
+    border-bottom:1.4pt solid #000; font:700 11.5pt Charter,Cambria,Georgia,serif; }
+  .printhead span { float:right; font:400 8.5pt "Segoe UI",sans-serif; }
+  .printfoot { display:block; margin-top:1.2mm; font-size:6.5pt; line-height:1.3; color:#444; }
+
+  .eyebrow { margin:0 0 .5mm; font-size:6.6pt; letter-spacing:.08em; color:#000; }
+  .ask { background:none; border:0; border-left:2.4pt solid #000; border-radius:0;
+         padding:0 0 0 3mm; }
+  .ask .qlab { display:inline; margin:0 2mm 0 0; font-size:7.2pt; color:#000; }
+  .ask p { display:inline; font-size:9pt; }
+
+  .opts { margin:.6mm 0 0; gap:0; }
+  .opts li { display:grid; grid-template-columns:6mm 1fr; gap:2mm; align-items:start;
+             background:none; border:0; border-radius:0; box-shadow:none;
+             padding:.2mm 0; font-size:8.5pt; }
+  .opts .lab { width:auto; height:auto; background:none; border-radius:0; place-items:start;
+               font:700 8.5pt/1.26 "Segoe UI",sans-serif; }
+  .opts .mk { display:none; }
+
+  .two { display:grid; grid-template-columns:0.9fr 1.1fr; gap:3.4mm; align-items:start; }
+  .given { box-shadow:none; border:.6pt solid #999; border-left:2.4pt solid #000;
+           border-radius:0; padding:1.6mm 2.4mm; font-size:7.6pt; line-height:1.28; }
+  .given h3 { font-size:8.2pt; margin:0 0 .5mm; }
+  .given h3.y2 { margin-top:2mm; }
+
+  .stmt { box-shadow:none; border:.6pt solid #999; border-radius:0; padding:1.6mm 2.4mm; }
+  .stmt + .stmt, .stmt[style] { margin-top:2.4mm !important; }
+  .stmt h3 { font-size:8.6pt; margin:0 0 .8mm; }
+  .stmt.q table { font-size:8.2pt; }
+  .stmt th { font-size:6.8pt; padding:.5mm 2mm; }
+  .stmt.q td { padding:.85mm 2mm; }
+  .bl { min-width:19mm; padding:.4mm 1.6mm; border:.8pt dashed #666; color:#000; }
+  .bl > span { visibility:hidden !important; }
+
+  /* K = answer key */
+  html.showkey .bl > span,
+  html.showkey [data-step] { visibility:visible !important; opacity:1 !important; }
+  html.showkey .opts .mk { display:block; }
+  html.showkey .ans { display:block; background:none; border:0; border-left:2.4pt solid #000;
+                      border-radius:0; padding:0 0 0 3mm; margin-top:1.4mm;
+                      color:#000; font-size:8.5pt; }
+  html.showkey .notes { display:block; background:none; border:0; border-left:2.4pt solid #000;
+                        border-radius:0; padding:0 0 0 3mm; margin-top:2mm; }
+  html.showkey .notes p { font-size:8.5pt; margin:.6mm 0; }
+}
+
+
+/* ---- Ch2: five options per MCQ, an account bank, and journal-entry blanks ---- */
+.opts li { font-size:23px; padding:11px 18px; }
+
+.setgrid { display:grid; grid-template-columns:0.58fr 1fr; gap:30px; align-items:start;
+  margin-top:18px; }
+.banktitle { font:700 18px "Segoe UI",sans-serif; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--accent); margin:0 0 10px; }
+.bank { list-style:none; margin:0; padding:0; display:grid; gap:5px; }
+.bank li { display:grid; grid-template-columns:38px 1fr; align-items:center; gap:12px;
+  background:var(--card); border:1px solid var(--border); border-radius:10px;
+  padding:6px 14px; font-size:20px; line-height:1.25; box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.bank .lab { width:38px; height:38px; border-radius:50%; background:#eef1ef; color:var(--ink);
+  display:grid; place-items:center; font:700 18px "Segoe UI",sans-serif; }
+.bank.wide { grid-template-columns:1fr 1fr; grid-template-rows:repeat(5,auto);
+  grid-auto-flow:column; gap:10px 28px; margin-top:18px; }
+.bank.wide li { font-size:24px; padding:11px 18px; grid-template-columns:46px 1fr; }
+.bank.wide .lab { width:46px; height:46px; font-size:21px; }
+
+.je { background:var(--card); border:1px solid var(--border); border-radius:12px;
+  padding:16px 24px 12px; box-shadow:0 4px 16px rgba(0,0,0,.07); }
+.je table { width:100%; border-collapse:collapse; font-size:24px; }
+.je th { color:var(--muted); font-size:17px; letter-spacing:.06em; text-transform:uppercase;
+  text-align:right; border-bottom:2px solid var(--ink); padding:5px 8px; }
+.je th:first-child { text-align:left; }
+.je th.amt { width:140px; }
+.je td { padding:11px 8px; text-align:right; border-bottom:1px solid #e7ebe8; }
+.je td:first-child { text-align:left; }
+.je td.cr { padding-left:54px; }
+.je tbody tr:last-child td { border-bottom:0; }
+.je .bl { min-width:330px; text-align:left; font-size:23px; }
+.setgrid .ans { margin-top:18px; font-size:22px; padding:14px 24px; line-height:1.4; }
+/* the six transaction slides: no box of their own on screen, two columns in print */
+.txset, .tset { display:contents; }
+
+/* ---- the month's six transactions, listed up front (screen only) ----
+   Questions 4-11 all work from one run of transactions, so the class sees the
+   whole month at once before recording any of it. On the printed sheet every
+   transaction is restated in its own question a few centimetres below, so the
+   list there would only be a second copy. */
+.txlist { list-style:none; margin:20px 0 0; padding:0; display:grid; gap:11px; }
+.txlist li { display:grid; grid-template-columns:50px 1fr; align-items:center; gap:18px;
+  background:var(--card); border:1px solid var(--border); border-radius:11px;
+  padding:13px 22px; font-size:23px; line-height:1.3; box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.txlist .lab { width:50px; height:50px; border-radius:50%; background:#eef1ef; color:var(--ink);
+  display:grid; place-items:center; font:700 23px "Segoe UI",sans-serif; }
+
+/* ---- ending balances (Q10, Q11) ----
+   The question names the T-account but does not draw one: what is being asked
+   for is the balance it ends at and the side that balance sits on, and an
+   empty T-account grid on the slide only invites students to fill the grid. */
+.balq { background:var(--card); border:1px solid var(--border); border-radius:12px;
+  padding:22px 30px; box-shadow:0 4px 16px rgba(0,0,0,.07); }
+.balq .blab { margin:0 0 16px; color:var(--accent);
+  font:700 19px "Segoe UI",sans-serif; letter-spacing:.14em; text-transform:uppercase; }
+.balq p.line { font-size:26px; line-height:2.0; margin:0 0 12px; }
+.balq p.line:last-child { margin:0; }
+.balq .bl { min-width:150px; font-size:25px; text-align:center; }
+/* the ",000" is printed, so the blank only ever takes a number a self-made
+   scantron can carry (0-99) */
+.balq .scale { font-size:26px; }
+/* the six stems recapped beside the question; the printed sheet has them already */
+.recap .given { font-size:20px; }
+.recap .given li { margin:.3em 0; }
+.recap .given b { color:var(--accent); }
+
+@media print {
+  /* The handout is a TWO-page sheet, not a one-page squeeze: the transactions
+     are listed once at the top, each question only refers to its letter, and
+     the type is set to be read rather than to fit. (User, 2026-09-22.) */
+  @page { margin:7mm 13mm; }
+  body { font:10.5pt/1.4 "Times New Roman",Times,serif; }
+  /* The handout is set in Times New Roman throughout. The screen deck keeps the
+     house Charter/Segoe pairing; this rule only ever applies to paper, and it
+     re-declares the family everywhere the deck names one, leaving every size
+     and weight alone. (User, 2026-09-22.) */
+  body, .printhead, .printfoot, .eyebrow, .banktitle, .ask .qlab, .ask p,
+  .opts li, .opts .lab, .txlist li, .txlist .lab, .bank li, .bank .lab,
+  .je table, .je th, .balq p.line, .balq .blab, .balq .scale, .bl,
+  html.showkey .ans, html.showkey .ans b {
+    font-family:"Times New Roman",Times,serif;
+  }
+
+  /* The set question is one block and prints as one, starting at its own
+     set-up paragraph: the transactions, the account list and Q4-Q11 all sit on
+     page 2, so nothing a student needs while writing is on the other side of
+     the sheet. Page 1 is Q1-Q3. .s carries break-inside:avoid, so no single
+     question splits either. Fitting all of it on one page is what sets the
+     spacing below -- it is about 160pt tighter than the block would be on its
+     own, and every millimetre of that came out of padding, never type size. */
+  .txlist-slide { break-before:page; page-break-before:always; }
+  .s { margin:0 0 1.6mm; }
+  /* no per-question headings on paper: the "Q4" label and the stem name the
+     question, and the eyebrows were a presenter's rail label, not a reader's.
+     (User, 2026-09-22.) */
+  .eyebrow { display:none; }
+  .ask { border-left-width:2.8pt; padding-left:3.4mm; }
+  .ask .qlab { font-size:8.4pt; margin-right:2.6mm; }
+  .ask p { font-size:10pt; }
+  .key { display:none !important; }
+
+  /* the six transactions, printed once, above every question that uses them */
+  .txlist-slide { display:block !important; }
+  .txlist { margin:1.2mm 0 0; gap:0; }
+  .txlist li { display:grid; grid-template-columns:7mm 1fr; gap:2.4mm; align-items:start;
+    background:none; border:0; border-radius:0; box-shadow:none;
+    padding:.5mm 0; font-size:10.5pt; line-height:1.4; }
+  .txlist .lab { width:auto; height:auto; background:none; border-radius:0;
+    place-items:start; font:700 10.5pt/1.4 "Times New Roman",Times,serif; }
+  /* a question restates its transaction on screen and only names it in print */
+  .txfull { display:none; }
+
+  .opts { margin:1.6mm 0 0; gap:0; }
+  .opts li { display:grid; grid-template-columns:7mm 1fr; gap:2.4mm; align-items:start;
+    background:none; border:0; border-radius:0; box-shadow:none;
+    padding:1.5mm 0; font-size:10.5pt; line-height:1.4; }
+  .opts .lab { width:auto; height:auto; background:none; border-radius:0;
+    place-items:start; font:700 10.5pt/1.4 "Times New Roman",Times,serif; }
+  .opts .mk { display:none; }
+
+  .setgrid { display:block; margin-top:1.4mm; }
+  .bankwrap.repeat, .recap { display:none; }
+  .banktitle { font-size:8.4pt; letter-spacing:.08em; color:#000; margin:1.4mm 0 .8mm; }
+  .bank { gap:0; }
+  .bank.wide { display:grid; grid-template-columns:1fr 1fr; grid-template-rows:repeat(5,auto);
+    grid-auto-flow:column; gap:0 8mm; margin-top:1.2mm; }
+  .bank li, .bank.wide li { display:grid; grid-template-columns:7mm 1fr; gap:2.4mm;
+    align-items:start; background:none; border:0; border-radius:0; box-shadow:none;
+    padding:.3mm 0; font-size:10.5pt; line-height:1.4; }
+  .bank .lab, .bank.wide .lab { width:auto; height:auto; background:none; border-radius:0;
+    place-items:start; font:700 10.5pt/1.4 "Times New Roman",Times,serif; }
+
+  /* an entry is narrow, so two still sit across the sheet without crowding */
+  .txset, .tset { display:grid; grid-template-columns:1fr 1fr; gap:0 9mm; }
+  .txset .s, .tset .s { margin-bottom:1.4mm; }
+
+  .je { box-shadow:none; border:.8pt solid #999; border-radius:0;
+    padding:1.4mm 3mm; margin-top:1.2mm; }
+  .je table { font-size:10.5pt; }
+  .je th { font-size:8pt; padding:.6mm 2.4mm; }
+  .je th.amt { width:19mm; }
+  .je td { padding:1.7mm 2.4mm; }
+  .je td.cr { padding-left:9mm; }
+  .je .bl { min-width:50mm; font-size:10.5pt; }
+  /* Every account blank is the same one-line box. The hidden answer still takes
+     up space, and a long one ("7. Service Revenue (+R, +SHE)") wrapped to two
+     lines, so Q10-Q11 printed taller and wider than the other entries. */
+  .je .bl { width:50mm; min-width:0; white-space:nowrap; overflow:hidden;
+    vertical-align:middle; }
+  html.showkey .je .bl { width:auto; min-width:50mm; overflow:visible; }
+
+  .balq { box-shadow:none; border:.8pt solid #999; border-radius:0;
+    padding:1.4mm 3mm; margin-top:1.2mm; }
+  .balq .blab { font-size:8pt; letter-spacing:.1em; color:#000; margin:0 0 1.2mm; }
+  .balq p.line { font-size:10.5pt; line-height:2.4; margin:0; }
+  .balq .bl { min-width:30mm; font-size:10.5pt; }
+  .balq .scale { font-size:10.5pt; }
+
+  .bl { padding:1mm 2.4mm; border-width:1pt; }
+  .printhead { margin:0 0 2.6mm; padding-bottom:1.6mm;
+    font:700 15pt "Times New Roman",Times,serif; }
+  .printhead span { font:400 10.5pt "Times New Roman",Times,serif; }
+  .printfoot { margin-top:2mm; font-size:8pt; line-height:1.4; }
+
+  /* K = answer key. The shared shell leaves two things broken here:
+     the generic rule hides .ans with !important, so no explanation ever
+     printed, and .opts li is a two-column grid, so the revealed tick
+     wrapped onto a line of its own at its 30px screen size. */
+  html.showkey .ans { display:block !important; margin-top:2mm; font-size:10.5pt;
+    line-height:1.45; }
+  html.showkey .ans b { font:700 11.5pt/1.4 "Times New Roman",Times,serif; }
+  html.showkey .opts li { grid-template-columns:7mm 1fr 6mm; }
+  html.showkey .opts .mk { display:block; font-size:10pt; line-height:1.4;
+    text-align:center; }
+}
+
+/* ---- Q3-Q6: four definitions against one list of four accounts ----
+   The accounts are listed once, across the slide; each definition is its own
+   numbered question with its letter revealed in turn. */
+.opts.four { grid-template-columns:repeat(4,1fr); gap:12px; }
+.opts.four li { grid-template-columns:48px 1fr; }
+.dq { list-style:none; margin:18px 0 0; padding:0; display:grid; gap:10px; }
+.dq li { display:grid; grid-template-columns:64px 1fr 96px; align-items:center; gap:16px;
+  background:var(--card); border:1px solid var(--border); border-radius:11px;
+  padding:11px 20px; font-size:23px; line-height:1.3; box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.dq .qn { font:700 19px "Segoe UI",sans-serif; letter-spacing:.1em; color:#8a6d1f; }
+.dq .bl { min-width:0; text-align:center; font-size:24px; }
+@media print {
+  /* Page 1 now carries nine questions (Q1-Q9), so the option rows run tighter
+     than Ch2's airy 1.5 mm; the type size is unchanged. */
+  .opts li { padding:.85mm 0; }
+  .opts { margin-top:1mm; }
+  .opts.four { display:grid; grid-template-columns:repeat(4,auto); justify-content:start;
+    gap:0 9mm; margin-top:1.2mm; }
+  .opts.four li { grid-template-columns:5mm 1fr; }
+  html.showkey .opts.four li { grid-template-columns:5mm 1fr; }
+  .dq { margin:1mm 0 0; gap:0; }
+  .dq li { grid-template-columns:9mm 1fr 14mm; gap:2.4mm; align-items:center;
+    background:none; border:0; border-radius:0; box-shadow:none;
+    padding:1mm 0; font:10.5pt/1.4 "Times New Roman",Times,serif; }
+  .dq .qn { font:700 8.4pt "Times New Roman",Times,serif; letter-spacing:.08em; color:#000; }
+  .dq .bl { min-width:0; padding:.3mm 1mm; font-size:10.5pt; }
+}
+/* ---- left navigation rail (outside the stage; N toggles) ---- */
+:root { --railw: 236px; }
+body { padding-left:var(--railw); }
+body.norail { padding-left:0; }
+#rail { position:fixed; left:0; top:0; bottom:0; width:var(--railw); z-index:8;
+  background:#121a16; border-right:1px solid #24302a; overflow-y:auto;
+  padding:14px 0 18px; font:13px/1.35 "Segoe UI",system-ui,sans-serif; }
+body.norail #rail { display:none; }
+#rail .rhead { padding:0 16px 10px; color:#7d8c84; font-size:11px;
+  letter-spacing:.14em; text-transform:uppercase; font-weight:700; }
+#rail ol { list-style:none; margin:0; padding:0; }
+#rail li { display:grid; grid-template-columns:22px 1fr; gap:9px; align-items:start;
+  padding:8px 15px; cursor:pointer; color:#b6c3bb;
+  border-left:3px solid transparent; }
+#rail li:hover { background:#1a2520; color:#e4ece7; }
+#rail li.cur { background:#1d2f28; color:#fff; border-left-color:var(--accent); }
+#rail .rn { color:#6f7f76; font-weight:700; text-align:right; }
+#rail li.cur .rn { color:var(--accent); }
+#rail .rt { overflow-wrap:anywhere; }
+#hint { left:calc(var(--railw) + 14px); }
+body.norail #hint { left:14px; }
+@media print {
+  #rail { display:none !important; }
+  body { padding-left:0 !important; }
+}
+
+/* ---- class-review additions ---- */
+/* no animation (instructor, 2026-10-14): slides change without the fade, and nothing is revealed step by step */
+.s.on { animation:none !important; }
+[data-step] { opacity:1 !important; visibility:visible !important; transition:none !important; }
+.chart svg { display:block; width:100%; height:auto; }
+.chart text { font-family:"Segoe UI",system-ui,sans-serif; }
+.big { font:700 30px Charter,"Bitstream Charter",Cambria,Georgia,serif; color:var(--ink); margin:0 0 6px; }
+.hbars { display:grid; gap:16px; margin-top:8px; }
+.hbars.tight { gap:9px; }
+.hbar { display:grid; grid-template-columns:270px 1fr 90px; align-items:center; gap:18px; font-size:25px; }
+.hbar .track { position:relative; height:34px; background:#e3e7e4; border-radius:8px; overflow:hidden; }
+.hbar .fill { position:absolute; left:0; top:0; bottom:0; border-radius:8px; }
+.hbar .v { font-weight:700; text-align:right; }
+.hbar.sm { grid-template-columns:420px 1fr 80px; font-size:21px; gap:14px; }
+.hbar.sm .track { height:24px; }
+.hbar.low { color:var(--red); }
+.hq { display:grid; grid-template-columns:1fr 1fr; gap:34px; align-items:start; }
+.hq .ans { font-size:19.5px; padding:12px 20px; margin-top:14px; }
+.hq .ans b { font-size:23px; }
+.opts.pc { margin-top:0; gap:9px; }
+.opts.pc li { grid-template-columns:42px 1fr 200px 36px; padding:6px 14px; font-size:21px; gap:12px; }
+.opts.pc .lab { width:42px; height:42px; font-size:19px; }
+.opts.pc .mk { font-size:26px; }
+.opts.pc .pbar { display:grid; grid-template-columns:1fr 60px; align-items:center; gap:10px; }
+.opts.pc .ptrack { height:20px; background:#e3e7e4; border-radius:6px; position:relative; overflow:hidden; }
+.opts.pc .pfill { position:absolute; left:0; top:0; bottom:0; background:#9aa6a0; border-radius:6px; }
+.opts.pc .pv { font-weight:700; font-size:21px; text-align:right; }
+.opts.pc li.right .pfill { background:var(--accent); }
+.ask.sm p { font-size:24px; }
+.steps { list-style:none; padding:0; margin:10px 0 0; display:grid; gap:16px; }
+.steps li { background:var(--card); border:1px solid var(--border); border-left:8px solid var(--accent); border-radius:12px;
+  padding:18px 26px; font-size:27px; line-height:1.4; }
+.steps li b { color:var(--accent); }
+.hbar.seen { grid-template-columns:820px 1fr 90px; }
+.lead2 { font-size:19px; line-height:1.35; color:var(--muted); margin:0 0 8px; }
+.txl, .bankl { margin:4px 0 0; padding-left:0; list-style:none; display:grid; gap:6px; font-size:18.5px; line-height:1.3; }
+.txl li, .bankl li { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:6px 14px; }
+.bankl { grid-template-columns:1fr; gap:5px; font-size:18.5px; }
+.bankl li { padding:4px 14px; }
+.jet { width:100%; margin-top:26px; border-collapse:separate; border-spacing:0 10px; font-size:25px; }
+.jet th { text-align:left; font-size:16px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); padding:0 14px; }
+.jet td { background:var(--card); padding:14px 16px; border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.jet td:first-child { border-left:1px solid var(--border); border-radius:10px 0 0 10px; font-weight:700; color:var(--muted); width:50px; }
+.jet td:last-child { border-right:1px solid var(--border); border-radius:0 10px 10px 0; }
+.jet .amt { text-align:right; width:110px; }
+.jet .pc { width:240px; font-size:21px; }
+.jet .wr { color:var(--muted); font-size:20px; }
+.blank { display:inline-block; min-width:320px; border-bottom:3px dashed #9aa6a0; padding:0 6px; color:var(--accent); font-weight:700; }
+.fsgrid { display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:start; }
+.fs { background:var(--card); border:1.5px solid #16263a; border-radius:6px; padding:8px 18px 6px; margin-bottom:12px; }
+.fsh { text-align:center; font-size:15.5px; line-height:1.25; margin-bottom:4px; }
+.fs table { width:100%; border-collapse:collapse; font-size:19px; }
+.fs td { padding:1px 4px; }
+.fs .amt { text-align:right; white-space:nowrap; }
+.fs tr.tot td { border-top:1.5px solid #16263a; font-weight:700; }
+.fs .blank { min-width:80px; text-align:right; }
+.fs .tag { margin-right:10px; font-size:15px; font-weight:700; color:#8a6d1f; background:#fdf6e3; border:1px solid #e8dcb8; border-radius:6px; padding:1px 7px; }
+.howt { width:100%; border-collapse:collapse; font-size:18px; margin-top:0; }
+.howt th { text-align:left; font-size:15px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); padding:6px 10px; border-bottom:2px solid var(--border); }
+.howt td { padding:6px 10px; border-bottom:1px solid var(--border); vertical-align:top; background:var(--card); }
+.howt .amt { font-weight:700; color:var(--accent); white-space:nowrap; }
+.howt .how { font-size:16px; line-height:1.3; }
+.stack { display:flex; height:120px; border-radius:12px; overflow:hidden; margin:26px 0 22px; box-shadow:0 1px 0 var(--border); }
+.stack .seg { display:flex; flex-direction:column; justify-content:center; align-items:center; color:#fff; min-width:0; }
+.stack .seg b { font:700 40px Charter,Cambria,Georgia,serif; line-height:1; }
+.stack .seg span { font-size:18px; margin-top:6px; opacity:.95; }
+.stack .seg:last-child { color:#16263a; }
+.stackleg { list-style:none; padding:0; margin:0; display:grid; gap:10px; font-size:25px; }
+.stackleg i { display:inline-block; width:22px; height:22px; border-radius:5px; margin-right:12px; vertical-align:-3px; }
+.stackleg .n { color:var(--muted); font-size:21px; }
+.under { display:flex; margin-top:-8px; }
+.under div { text-align:center; font-size:24px; line-height:1.3; padding:0 8px; }
+.under div:last-child { text-align:right; white-space:nowrap; direction:rtl; padding-right:0; }   /* a narrow last part: its words run leftward */
+.srclist { margin:6px 0 0; padding-left:34px; font-size:28px; line-height:1.6; }
+.legend { display:flex; gap:26px; font-size:19px; color:var(--muted); margin:2px 0 6px; flex-wrap:wrap; }
+.legend i { display:inline-block; width:15px; height:15px; border-radius:3px; margin-right:7px; vertical-align:-2px; }
+</style>
+</head>
+<body>
+<h1 class="printhead">ACC 250 &middot; Exam 1 &mdash; How the Class Did</h1>
+<nav id="rail" aria-label="Slides"><div class="rhead">Slides</div><ol></ol></nav>
+<div id="stage">
+<section class="s title" data-nav="Cover">
+<div class="tstack"><p class="eyebrow">ACC 250 &middot; Introduction to Financial Accounting</p><h1>Exam 1 &mdash; How the Class Did</h1><p class="lede">94 students. The score distribution, how each part and chapter went,<br>every question&rsquo;s % correct, and how many questions you had seen before.</p></div><p class="title-date">Fall 2026</p>
+</section>
+<section class="s" data-nav="Score distribution">
+<p class="eyebrow">The whole class</p><h2>Score distribution &nbsp;&middot;&nbsp; N = 94</h2><p class="big">A dot = a student</p><div class="chart"><svg viewBox="0 0 1400 350" role="img" aria-label="one dot per student"><circle cx="947.1" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="947.1" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="947.1" cy="186.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="947.1" cy="156.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="947.1" cy="126.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="263.9" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="263.9" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="263.9" cy="186.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1304.9" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1304.9" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="654.3" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="654.3" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="654.3" cy="186.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="556.7" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="556.7" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="556.7" cy="186.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="556.7" cy="156.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="556.7" cy="126.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1272.4" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1272.4" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1272.4" cy="186.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1239.9" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1239.9" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1239.9" cy="186.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1239.9" cy="156.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="589.2" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="589.2" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="589.2" cy="186.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="784.4" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="784.4" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="784.4" cy="186.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="784.4" cy="156.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1142.3" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1142.3" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1142.3" cy="186.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1142.3" cy="156.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1142.3" cy="126.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1370.0" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1370.0" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1012.1" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1012.1" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1337.5" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1337.5" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="751.9" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="751.9" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="751.9" cy="186.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1077.2" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1077.2" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1174.8" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1174.8" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1174.8" cy="186.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1109.7" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1109.7" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="524.1" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="524.1" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="524.1" cy="186.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="849.5" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="849.5" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="166.3" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="166.3" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="166.3" cy="186.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="166.3" cy="156.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="166.3" cy="126.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="166.3" cy="96.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="979.6" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="979.6" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="979.6" cy="186.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="979.6" cy="156.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="621.7" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="621.7" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="621.7" cy="186.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="394.0" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="394.0" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="394.0" cy="186.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="816.9" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="816.9" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="491.6" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="491.6" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="491.6" cy="186.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1207.3" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1207.3" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1207.3" cy="186.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="719.3" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="198.8" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="198.8" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="686.8" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="686.8" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1044.7" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="1044.7" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="914.5" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="914.5" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="426.5" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="426.5" cy="216.0" r="14.0" fill="#1a7a5e" opacity=".9"/><circle cx="361.5" cy="246.0" r="14.0" fill="#1a7a5e" opacity=".9"/><line x1="150" x2="1370" y1="264" y2="264" stroke="#16263a" stroke-width="2.5"/><line x1="150" x2="1370" y1="310" y2="310" stroke="#16263a" stroke-width="2.5"/><line x1="166.3" x2="166.3" y1="264" y2="274" stroke="#16263a" stroke-width="2.5"/><text x="166.3" y="300" text-anchor="middle" font-size="26" font-weight="700" fill="#16263a">&lt;24</text><line x1="166.3" x2="166.3" y1="310" y2="320" stroke="#16263a" stroke-width="2.5"/><text x="166.3" y="346" text-anchor="middle" font-size="26" font-weight="700" fill="#16263a">&lt;40%</text><line x1="198.8" x2="198.8" y1="264" y2="274" stroke="#16263a" stroke-width="2.5"/><text x="198.8" y="300" text-anchor="middle" font-size="26" font-weight="700" fill="#16263a"></text><line x1="198.8" x2="198.8" y1="310" y2="320" stroke="#16263a" stroke-width="2.5"/><text x="198.8" y="346" text-anchor="middle" font-size="26" font-weight="700" fill="#16263a"></text><line x1="394.0" x2="394.0" y1="264" y2="274" stroke="#16263a" stroke-width="2.5"/><text x="394.0" y="300" text-anchor="middle" font-size="26" font-weight="700" fill="#16263a">30</text><line x1="394.0" x2="394.0" y1="310" y2="320" stroke="#16263a" stroke-width="2.5"/><text x="394.0" y="346" text-anchor="middle" font-size="26" font-weight="700" fill="#16263a">50%</text><line x1="589.2" x2="589.2" y1="264" y2="274" stroke="#16263a" stroke-width="2.5"/><text x="589.2" y="300" text-anchor="middle" font-size="26" font-weight="700" fill="#16263a">36</text><line x1="589.2" x2="589.2" y1="310" y2="320" stroke="#16263a" stroke-width="2.5"/><text x="589.2" y="346" text-anchor="middle" font-size="26" font-weight="700" fill="#16263a">60%</text><line x1="784.4" x2="784.4" y1="264" y2="274" stroke="#16263a" stroke-width="2.5"/><text x="784.4" y="300" text-anchor="middle" font-size="26" font-weight="700" fill="#16263a">42</text><line x1="784.4" x2="784.4" y1="310" y2="320" stroke="#16263a" stroke-width="2.5"/><text x="784.4" y="346" text-anchor="middle" font-size="26" font-weight="700" fill="#16263a">70%</text><line x1="979.6" x2="979.6" y1="264" y2="274" stroke="#16263a" stroke-width="2.5"/><text x="979.6" y="300" text-anchor="middle" font-size="26" font-weight="700" fill="#16263a">48</text><line x1="979.6" x2="979.6" y1="310" y2="320" stroke="#16263a" stroke-width="2.5"/><text x="979.6" y="346" text-anchor="middle" font-size="26" font-weight="700" fill="#16263a">80%</text><line x1="1174.8" x2="1174.8" y1="264" y2="274" stroke="#16263a" stroke-width="2.5"/><text x="1174.8" y="300" text-anchor="middle" font-size="26" font-weight="700" fill="#16263a">54</text><line x1="1174.8" x2="1174.8" y1="310" y2="320" stroke="#16263a" stroke-width="2.5"/><text x="1174.8" y="346" text-anchor="middle" font-size="26" font-weight="700" fill="#16263a">90%</text><line x1="1370.0" x2="1370.0" y1="264" y2="274" stroke="#16263a" stroke-width="2.5"/><text x="1370.0" y="300" text-anchor="middle" font-size="26" font-weight="700" fill="#16263a">60</text><line x1="1370.0" x2="1370.0" y1="310" y2="320" stroke="#16263a" stroke-width="2.5"/><text x="1370.0" y="346" text-anchor="middle" font-size="26" font-weight="700" fill="#16263a">100%</text><text x="104" y="300" text-anchor="end" font-size="22" font-weight="700" fill="#16263a">points</text><text x="104" y="346" text-anchor="end" font-size="22" font-weight="700" fill="#16263a">percent</text><line x1="795.5" x2="795.5" y1="8" y2="264" stroke="#16263a" stroke-width="2" stroke-dasharray="8 6" opacity=".75"/><text x="805.5" y="30" font-size="26" font-weight="600" fill="#16263a">mean 42.3 (out of 60) = 70.6%</text><line x1="800.7" x2="800.7" y1="42" y2="264" stroke="#16263a" stroke-width="2" stroke-dasharray="2 6" opacity=".75"/><text x="810.7" y="64" font-size="26" font-weight="600" fill="#16263a">median 42.5 (out of 60) = 70.8%</text></svg></div>
+</section>
+<section class="s" data-nav="By part and chapter">
+<p class="eyebrow">Where the points went</p><h2>By part and by chapter</h2><div class="two"><div><p class="big">By part (% correct)</p><div class="hbars"><div class="hbar "><span>Multiple choice</span><div class="track"><div class="fill" style="width:76.5%;background:#1a7a5e"></div></div><span class="v">76%</span></div><div class="hbar "><span>Journal entries</span><div class="track"><div class="fill" style="width:64.8%;background:#3b6fb6"></div></div><span class="v">65%</span></div><div class="hbar "><span>Numeric</span><div class="track"><div class="fill" style="width:64.5%;background:#c27a1a"></div></div><span class="v">64%</span></div></div></div><div><p class="big">By chapter (% correct)</p><div class="hbars"><div class="hbar "><span>Ch1</span><div class="track"><div class="fill" style="width:72.2%;background:#16263a"></div></div><span class="v">72%</span></div><div class="hbar "><span>Ch2</span><div class="track"><div class="fill" style="width:85.4%;background:#16263a"></div></div><span class="v">85%</span></div><div class="hbar "><span>Ch3</span><div class="track"><div class="fill" style="width:64.1%;background:#16263a"></div></div><span class="v">64%</span></div></div></div></div>
+</section>
+<section class="s" data-nav="Every question">
+<p class="eyebrow">Item analysis</p><h2>% of the class correct on every question</h2><div class="legend"><span><i style="background:#1a7a5e"></i>Multiple choice</span><span><i style="background:#3b6fb6"></i>Journal entries</span><span><i style="background:#c27a1a"></i>Numeric</span><span>&nbsp;&nbsp;Rows below the bars: where each question came from.</span></div><div class="chart"><svg viewBox="0 0 1440 460" role="img" aria-label="percent correct on every question"><line x1="170" x2="1430" y1="330.0" y2="330.0" stroke="#c9d0cc" stroke-width="1.5"/><text x="160" y="337.0" text-anchor="end" font-size="20" fill="#5c6863">0%</text><line x1="170" x2="1430" y1="175.0" y2="175.0" stroke="#c9d0cc" stroke-width="1.5"/><text x="160" y="182.0" text-anchor="end" font-size="20" fill="#5c6863">50%</text><line x1="170" x2="1430" y1="20.0" y2="20.0" stroke="#c9d0cc" stroke-width="1.5"/><text x="160" y="27.0" text-anchor="end" font-size="20" fill="#5c6863">100%</text><rect x="170.0" y="26.6" width="18.1" height="303.4" fill="#1a7a5e" rx="2"/><text x="179.0" y="356" text-anchor="middle" font-size="19" font-weight="700" fill="#16263a">M1</text><rect x="191.1" y="125.5" width="18.1" height="204.5" fill="#1a7a5e" rx="2"/><rect x="212.1" y="26.6" width="18.1" height="303.4" fill="#1a7a5e" rx="2"/><rect x="233.2" y="53.0" width="18.1" height="277.0" fill="#1a7a5e" rx="2"/><rect x="254.2" y="89.3" width="18.1" height="240.7" fill="#1a7a5e" rx="2"/><text x="263.2" y="356" text-anchor="middle" font-size="19" font-weight="700" fill="#16263a">M5</text><rect x="275.2" y="56.3" width="18.1" height="273.7" fill="#1a7a5e" rx="2"/><rect x="296.3" y="188.2" width="18.1" height="141.8" fill="#1a7a5e" rx="2"/><rect x="317.4" y="109.0" width="18.1" height="221.0" fill="#1a7a5e" rx="2"/><rect x="338.4" y="125.5" width="18.1" height="204.5" fill="#1a7a5e" rx="2"/><rect x="359.5" y="53.0" width="18.1" height="277.0" fill="#1a7a5e" rx="2"/><text x="368.5" y="356" text-anchor="middle" font-size="19" font-weight="700" fill="#16263a">M10</text><rect x="380.5" y="69.5" width="18.1" height="260.5" fill="#1a7a5e" rx="2"/><rect x="401.6" y="69.5" width="18.1" height="260.5" fill="#1a7a5e" rx="2"/><rect x="422.6" y="92.6" width="18.1" height="237.4" fill="#1a7a5e" rx="2"/><rect x="443.7" y="208.0" width="18.1" height="122.0" fill="#1a7a5e" rx="2"/><rect x="464.7" y="184.9" width="18.1" height="145.1" fill="#1a7a5e" rx="2"/><text x="473.7" y="356" text-anchor="middle" font-size="19" font-weight="700" fill="#16263a">M15</text><rect x="485.8" y="56.3" width="18.1" height="273.7" fill="#1a7a5e" rx="2"/><rect x="506.8" y="62.9" width="18.1" height="267.1" fill="#1a7a5e" rx="2"/><rect x="527.9" y="188.2" width="18.1" height="141.8" fill="#1a7a5e" rx="2"/><rect x="548.9" y="211.3" width="18.1" height="118.7" fill="#1a7a5e" rx="2"/><rect x="570.0" y="151.9" width="18.1" height="178.1" fill="#1a7a5e" rx="2"/><text x="579.0" y="356" text-anchor="middle" font-size="19" font-weight="700" fill="#16263a">M20</text><rect x="591.0" y="86.0" width="18.1" height="244.0" fill="#1a7a5e" rx="2"/><rect x="612.0" y="102.4" width="18.1" height="227.6" fill="#1a7a5e" rx="2"/><rect x="633.1" y="43.1" width="18.1" height="286.9" fill="#1a7a5e" rx="2"/><rect x="654.2" y="95.9" width="18.1" height="234.1" fill="#1a7a5e" rx="2"/><rect x="675.2" y="89.3" width="18.1" height="240.7" fill="#1a7a5e" rx="2"/><text x="684.2" y="356" text-anchor="middle" font-size="19" font-weight="700" fill="#16263a">M25</text><rect x="696.2" y="66.2" width="18.1" height="263.8" fill="#1a7a5e" rx="2"/><rect x="717.3" y="49.7" width="18.1" height="280.3" fill="#1a7a5e" rx="2"/><rect x="738.4" y="29.9" width="18.1" height="300.1" fill="#1a7a5e" rx="2"/><rect x="759.4" y="33.2" width="18.1" height="296.8" fill="#1a7a5e" rx="2"/><rect x="780.5" y="46.4" width="18.1" height="283.6" fill="#1a7a5e" rx="2"/><rect x="801.5" y="118.9" width="18.1" height="211.1" fill="#3b6fb6" rx="2"/><text x="810.5" y="356" text-anchor="middle" font-size="19" font-weight="700" fill="#16263a">J1</text><rect x="822.6" y="122.2" width="18.1" height="207.8" fill="#3b6fb6" rx="2"/><rect x="843.6" y="161.8" width="18.1" height="168.2" fill="#3b6fb6" rx="2"/><rect x="864.6" y="175.0" width="18.1" height="155.0" fill="#3b6fb6" rx="2"/><rect x="885.7" y="204.7" width="18.1" height="125.3" fill="#3b6fb6" rx="2"/><text x="894.7" y="356" text-anchor="middle" font-size="19" font-weight="700" fill="#16263a">J5</text><rect x="906.8" y="118.9" width="18.1" height="211.1" fill="#3b6fb6" rx="2"/><rect x="927.8" y="95.9" width="18.1" height="234.1" fill="#3b6fb6" rx="2"/><rect x="948.9" y="161.8" width="18.1" height="168.2" fill="#3b6fb6" rx="2"/><rect x="969.9" y="188.2" width="18.1" height="141.8" fill="#3b6fb6" rx="2"/><rect x="991.0" y="151.9" width="18.1" height="178.1" fill="#3b6fb6" rx="2"/><text x="1000.0" y="356" text-anchor="middle" font-size="19" font-weight="700" fill="#16263a">J10</text><rect x="1012.0" y="79.4" width="18.1" height="250.6" fill="#3b6fb6" rx="2"/><rect x="1033.1" y="72.8" width="18.1" height="257.2" fill="#3b6fb6" rx="2"/><rect x="1054.1" y="125.5" width="18.1" height="204.5" fill="#3b6fb6" rx="2"/><rect x="1075.2" y="138.7" width="18.1" height="191.3" fill="#3b6fb6" rx="2"/><rect x="1096.2" y="135.4" width="18.1" height="194.6" fill="#3b6fb6" rx="2"/><text x="1105.2" y="356" text-anchor="middle" font-size="19" font-weight="700" fill="#16263a">J15</text><rect x="1117.2" y="132.1" width="18.1" height="197.9" fill="#3b6fb6" rx="2"/><rect x="1138.3" y="76.1" width="18.1" height="253.9" fill="#3b6fb6" rx="2"/><rect x="1159.3" y="86.0" width="18.1" height="244.0" fill="#3b6fb6" rx="2"/><rect x="1180.4" y="102.4" width="18.1" height="227.6" fill="#3b6fb6" rx="2"/><rect x="1201.5" y="135.4" width="18.1" height="194.6" fill="#3b6fb6" rx="2"/><rect x="1222.5" y="92.6" width="18.1" height="237.4" fill="#c27a1a" rx="2"/><text x="1231.5" y="356" text-anchor="middle" font-size="19" font-weight="700" fill="#16263a">N1</text><rect x="1243.5" y="135.4" width="18.1" height="194.6" fill="#c27a1a" rx="2"/><rect x="1264.6" y="62.9" width="18.1" height="267.1" fill="#c27a1a" rx="2"/><rect x="1285.7" y="115.6" width="18.1" height="214.4" fill="#c27a1a" rx="2"/><rect x="1306.7" y="132.1" width="18.1" height="197.9" fill="#c27a1a" rx="2"/><text x="1315.7" y="356" text-anchor="middle" font-size="19" font-weight="700" fill="#16263a">N5</text><rect x="1327.8" y="168.4" width="18.1" height="161.6" fill="#c27a1a" rx="2"/><rect x="1348.8" y="151.9" width="18.1" height="178.1" fill="#c27a1a" rx="2"/><rect x="1369.9" y="178.3" width="18.1" height="151.7" fill="#c27a1a" rx="2"/><rect x="1390.9" y="102.4" width="18.1" height="227.6" fill="#c27a1a" rx="2"/><rect x="1412.0" y="161.8" width="18.1" height="168.2" fill="#c27a1a" rx="2"/><text x="1421.0" y="356" text-anchor="middle" font-size="19" font-weight="700" fill="#16263a">N10</text><text x="160" y="389" text-anchor="end" font-size="19" fill="#16263a">Example exam</text><rect x="170.0" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><rect x="212.1" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><rect x="233.2" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><rect x="254.2" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><rect x="275.2" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><rect x="380.5" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><rect x="401.6" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><rect x="591.0" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><rect x="612.0" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><rect x="633.1" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><rect x="696.2" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><rect x="717.3" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><rect x="738.4" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><rect x="1222.5" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><rect x="1285.7" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><rect x="1327.8" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><rect x="1348.8" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><rect x="1369.9" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><rect x="1390.9" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><rect x="1412.0" y="374" width="18.1" height="18" fill="#f4d03f" rx="2"/><text x="160" y="415" text-anchor="end" font-size="19" fill="#16263a">Review packet</text><rect x="170.0" y="400" width="18.1" height="18" fill="#9fd3f5" rx="2"/><rect x="191.1" y="400" width="18.1" height="18" fill="#9fd3f5" rx="2"/><rect x="212.1" y="400" width="18.1" height="18" fill="#9fd3f5" rx="2"/><rect x="233.2" y="400" width="18.1" height="18" fill="#9fd3f5" rx="2"/><rect x="275.2" y="400" width="18.1" height="18" fill="#9fd3f5" rx="2"/><rect x="296.3" y="400" width="18.1" height="18" fill="#9fd3f5" rx="2"/><rect x="380.5" y="400" width="18.1" height="18" fill="#9fd3f5" rx="2"/><rect x="401.6" y="400" width="18.1" height="18" fill="#9fd3f5" rx="2"/><rect x="506.8" y="400" width="18.1" height="18" fill="#9fd3f5" rx="2"/><rect x="1222.5" y="400" width="18.1" height="18" fill="#9fd3f5" rx="2"/><rect x="1243.5" y="400" width="18.1" height="18" fill="#9fd3f5" rx="2"/><rect x="1264.6" y="400" width="18.1" height="18" fill="#9fd3f5" rx="2"/><rect x="1285.7" y="400" width="18.1" height="18" fill="#9fd3f5" rx="2"/><rect x="1327.8" y="400" width="18.1" height="18" fill="#9fd3f5" rx="2"/><rect x="1348.8" y="400" width="18.1" height="18" fill="#9fd3f5" rx="2"/><rect x="1369.9" y="400" width="18.1" height="18" fill="#9fd3f5" rx="2"/><rect x="1390.9" y="400" width="18.1" height="18" fill="#9fd3f5" rx="2"/><rect x="1412.0" y="400" width="18.1" height="18" fill="#9fd3f5" rx="2"/><text x="160" y="441" text-anchor="end" font-size="19" fill="#16263a">Homework</text><rect x="443.7" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="464.7" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="485.8" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="696.2" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="717.3" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="738.4" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="759.4" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="780.5" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="801.5" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="822.6" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="843.6" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="864.6" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="885.7" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="906.8" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="927.8" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="948.9" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="969.9" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="991.0" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="1012.0" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="1033.1" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="1054.1" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="1075.2" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="1096.2" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="1117.2" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="1138.3" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="1159.3" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="1180.4" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="1201.5" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="1285.7" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/><rect x="1306.7" y="426" width="18.1" height="18" fill="#a9aeb2" rx="2"/></svg></div>
+</section>
+<section class="s" data-nav="Seen before">
+<p class="eyebrow">Does the review pay off?</p><h2>Questions you had seen before</h2><div class="stack"><div class="seg" style="width:41.667%;background:#1a7a5e"><b>42%</b><span>25 questions</span></div><div class="seg" style="width:46.667%;background:#5fae8f"><b>46%</b><span>28 questions</span></div><div class="seg" style="width:11.667%;background:#b9c9c1"><b>12%</b><span>7 questions</span></div></div><div class="under"><div style="width:41.667%">Almost the same</div><div style="width:46.667%">Very similar<br>(e.g. different numbers)</div><div style="width:11.667%">Based on the sources<br>and lecture notes</div></div><p class="big" style="margin-top:46px">The three main sources</p><ol class="srclist"><li>The Example exam</li><li>The review questions</li><li>The homework</li></ol>
+</section>
+<section class="s" data-nav="By type">
+<p class="eyebrow">Item analysis</p><h2>By type of question (% correct)</h2><div class="hbars tight"><div class="hbar sm"><span>The concept questions (M1-M20)</span><div class="track"><div class="fill" style="width:71.8%;background:#1a7a5e"></div></div><span class="v">72%</span></div><div class="hbar sm"><span>Classifying business activities (M21-M25)</span><div class="track"><div class="fill" style="width:79.6%;background:#1a7a5e"></div></div><span class="v">80%</span></div><div class="hbar sm"><span>Classifying accounts (M26-M30)</span><div class="track"><div class="fill" style="width:91.9%;background:#1a7a5e"></div></div><span class="v">92%</span></div><div class="hbar sm low"><span>The OTT journal entries (J1-J10)</span><div class="track"><div class="fill" style="width:58.1%;background:#b3200f"></div></div><span class="v">58%</span></div><div class="hbar sm"><span>The Bill&#x27;s journal entries (J11-J20)</span><div class="track"><div class="fill" style="width:71.5%;background:#1a7a5e"></div></div><span class="v">71%</span></div><div class="hbar sm"><span>The two ratios (N1-N2)</span><div class="track"><div class="fill" style="width:69.7%;background:#1a7a5e"></div></div><span class="v">70%</span></div><div class="hbar sm"><span>Retained earnings (N3-N4)</span><div class="track"><div class="fill" style="width:77.7%;background:#1a7a5e"></div></div><span class="v">78%</span></div><div class="hbar sm"><span>The cost principle (N5)</span><div class="track"><div class="fill" style="width:63.8%;background:#1a7a5e"></div></div><span class="v">64%</span></div><div class="hbar sm low"><span>The linked financial statements (N6-N10)</span><div class="track"><div class="fill" style="width:57.2%;background:#b3200f"></div></div><span class="v">57%</span></div></div><div class="note">Hardest types: the linked financial statements and the OTT journal entries.</div>
+</section>
+<section class="s" data-nav="What to do now">
+<p class="eyebrow">Before the next exam</p><h2>What to do now</h2><ol class="steps"><li><b>Read your feedback sheet</b> (in your e-mail). Page 2 shows every question you missed and your results by type.</li><li><b>Redo the Example exam and the review packets.</b> Questions you had seen before were the best-answered on this exam, and the next one draws on them the same way.</li><li><b>Master Exam 1.</b> It will help you a lot on Exam 2, which covers Chapter 3 again.</li></ol>
+</section>
+</div>
+<script>
+
+
+const stage = document.getElementById('stage');
+const S = [...document.querySelectorAll('.s')];
+const bar = document.getElementById('bar'), num = document.getElementById('num');
+let i = 0, step = 0;
+
+const maxStep = s => [...s.querySelectorAll('[data-step]')]
+  .reduce((m, el) => Math.max(m, +el.dataset.step || 0), 0);
+
+function paint() {
+  S.forEach((s, k) => s.classList.toggle('on', k === i));
+  S[i].querySelectorAll('[data-step]').forEach(el => el.classList.toggle('on', +el.dataset.step <= step));
+  bar.style.width = ((i + 1) / S.length * 100) + '%';
+  num.textContent = (i + 1) + ' / ' + S.length;
+  location.hash = i + 1;
+}
+function go(n, atEnd) {
+  if (n < 0 || n > S.length - 1) return;          // past either end: leave the slide alone
+  i = n;
+  step = atEnd ? maxStep(S[i]) : 0;
+  paint();
+}
+function next() { if (step < maxStep(S[i])) { step++; paint(); } else go(i + 1, false); }
+function prev() { if (step > 0) { step--; paint(); } else go(i - 1, true); }
+
+function railPad() {
+  if (document.body.classList.contains('norail')) return 0;
+  return parseFloat(getComputedStyle(document.documentElement)
+    .getPropertyValue('--railw')) || 0;
+}
+function fit() {
+  const k = Math.min((innerWidth - railPad()) / 1600, innerHeight / 900);
+  stage.style.transform = `scale(${k})`;
+}
+addEventListener('resize', fit);
+addEventListener('keydown', e => {
+  const k = e.key;
+  if (e.ctrlKey || e.metaKey) {                       // whole-slide jumps
+    if (k === 'ArrowRight' || k === 'ArrowDown') { go(i + 1, false); e.preventDefault(); }
+    else if (k === 'ArrowLeft' || k === 'ArrowUp') { go(i - 1, false); e.preventDefault(); }
+    else if (k === 'Home') { go(0, false); e.preventDefault(); }
+    else if (k === 'End') { go(S.length - 1, false); e.preventDefault(); }
+    return;
+  }
+  if (k === 'ArrowRight' || k === 'ArrowDown' || k === ' ' || k === 'PageDown' || k === 'Enter') { next(); e.preventDefault(); }
+  else if (k === 'ArrowLeft' || k === 'ArrowUp' || k === 'PageUp' || k === 'Backspace') { prev(); e.preventDefault(); }
+  else if (k === 'f' || k === 'F') { document.documentElement.requestFullscreen?.(); }
+  else if (k === 'n' || k === 'N') { document.body.classList.toggle('norail'); fit(); }
+  else if (k === 'k' || k === 'K') { document.documentElement.classList.toggle('showkey'); }
+});
+stage.addEventListener('click', e => { e.clientX < innerWidth * .28 ? prev() : next(); });
+
+/* ---- left navigation rail ---- */
+const railList = document.querySelector('#rail ol');
+S.forEach((s, k) => {
+  const label = s.dataset.nav
+    || s.querySelector('h2')?.textContent
+    || s.querySelector('.eyebrow')?.textContent
+    || s.querySelector('h1')?.textContent
+    || ('Slide ' + (k + 1));
+  const li = document.createElement('li');
+  li.innerHTML = '<span class="rn"></span><span class="rt"></span>';
+  li.querySelector('.rn').textContent = k + 1;
+  li.querySelector('.rt').textContent = label.replace(/\s+/g, ' ').trim();
+  li.addEventListener('click', e => { e.stopPropagation(); go(k, false); });
+  railList.appendChild(li);
+});
+const railItems = [...railList.children];
+const basePaint = paint;
+paint = function () {
+  basePaint();
+  railItems.forEach((li, k) => li.classList.toggle('cur', k === i));
+  const cur = railItems[i];
+  if (cur) cur.scrollIntoView({ block: 'nearest' });
+};
+if (innerWidth < 1150) document.body.classList.add('norail');
+
+fit();
+go(Math.max(0, (parseInt(location.hash.slice(1)) || 1) - 1), false);
+</script>
+</body>
+</html>
