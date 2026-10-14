@@ -62,4 +62,5 @@ Auditing, corporate governance, data analytics, and financial reporting.
 <h3 class="sec">Resources</h3>
 <ul class="pubs">
   <li><span class="t">Free datasets for social science research (Todd R. Jones)</span> – <a href="https://github.com/toddrjones/datasets" target="_blank">github.com/toddrjones/datasets</a></li>
+  <li><span class="t">ADHD-friendly output skill for coding agents (Ayoub Ghriss)</span> – <a href="https://github.com/ayghri/i-have-adhd" target="_blank">github.com/ayghri/i-have-adhd</a></li>
 </ul>
