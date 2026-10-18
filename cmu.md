@@ -47,6 +47,7 @@ title: "CMU"
     <a href="https://www.cmich.edu/docs/default-source/finance-and-administrative-services-division/human-resources/benefits/health-plans/messa-abc-plan-2-summary.pdf" title="MESSA ABC Plan 2 summary (PDF)" target="_blank" rel="noopener">ABC Plan 2</a>
     <a href="https://www.cmich.edu/docs/default-source/finance-and-administrative-services-division/human-resources/benefits/health-plans/messa-choices-300-600-plan-summary.pdf" title="MESSA Choices $300/$600 plan summary (PDF)" target="_blank" rel="noopener">Choices 300/600</a>
     <a href="https://www.cmich.edu/about/human-resources/benefits-and-wellness/health-and-insurance-benefits/dental-plans" title="CMU dental plans" target="_blank" rel="noopener">Dental Plans</a>
+    <a href="https://www.cmich.edu/docs/default-source/finance-and-administrative-services-division/human-resources/benefits/health-plans/dental-plan-comparison.pdf" title="Dental plan comparison (PDF)" target="_blank" rel="noopener">Dental Comparison</a>
   </div>
   <div class="row"><span class="lbl">Expenses</span>
     <a href="https://www.cmich.edu/offices-departments/finance-administrative-services/financial-services-reporting/travel-business-expenses" title="Travel policy and reimbursement" target="_blank" rel="noopener">Travel &amp; Expenses</a>
