@@ -41,6 +41,12 @@ title: "CMU"
     <a href="https://benefits.apps.cmich.edu/SecurityPin.aspx" title="Benefits portal (security PIN)" target="_blank" rel="noopener">Benefits Enrollment</a>
     <a href="https://www.cmich.edu/offices-departments/faculty-personnel-services/faculty-benefits" title="Faculty benefits overview" target="_blank" rel="noopener">Faculty Benefits</a>
   </div>
+  <div class="row"><span class="lbl">Health Insurance</span>
+    <a href="https://www.cmich.edu/docs/default-source/finance-and-administrative-services-division/human-resources/benefits/open-enrollment/2026-messa-plan-comparison-grid.pdf" title="2026 MESSA plan comparison grid (PDF)" target="_blank" rel="noopener">2026 Plan Comparison</a>
+    <a href="https://www.cmich.edu/docs/default-source/finance-and-administrative-services-division/human-resources/benefits/health-plans/messa-abc-plan-1-summary.pdf" title="MESSA ABC Plan 1 summary (PDF)" target="_blank" rel="noopener">ABC Plan 1</a>
+    <a href="https://www.cmich.edu/docs/default-source/finance-and-administrative-services-division/human-resources/benefits/health-plans/messa-abc-plan-2-summary.pdf" title="MESSA ABC Plan 2 summary (PDF)" target="_blank" rel="noopener">ABC Plan 2</a>
+    <a href="https://www.cmich.edu/docs/default-source/finance-and-administrative-services-division/human-resources/benefits/health-plans/messa-choices-300-600-plan-summary.pdf" title="MESSA Choices $300/$600 plan summary (PDF)" target="_blank" rel="noopener">Choices 300/600</a>
+  </div>
   <div class="row"><span class="lbl">Expenses</span>
     <a href="https://www.cmich.edu/offices-departments/finance-administrative-services/financial-services-reporting/travel-business-expenses" title="Travel policy and reimbursement" target="_blank" rel="noopener">Travel &amp; Expenses</a>
     <a href="https://www.cmich.edu/offices-departments/finance-administrative-services/financial-services-reporting/travel-business-expenses/mileage-reimbursement#Official-CMU-mileage-chart" title="Official CMU mileage chart" target="_blank" rel="noopener">Mileage</a>
