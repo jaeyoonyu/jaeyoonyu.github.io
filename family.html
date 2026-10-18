@@ -13,20 +13,21 @@ sitemap: false
   })(location.hash);
 </script>
 <style>
-.fc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-.fc a { display: block; text-decoration: none; border: 1px solid var(--line); border-top: 5px solid var(--c); border-radius: 12px;
-  padding: 16px 18px 18px; }
+/* One card per row, so the page reads top to bottom on a phone. */
+.fc { display: grid; grid-template-columns: 1fr; gap: 12px; }
+.fc a { display: grid; grid-template-columns: 300px 1fr; gap: 6px 20px; align-items: center; text-decoration: none;
+  border: 1px solid var(--line); border-left: 6px solid var(--c); border-radius: 12px; padding: 16px 20px; }
 .fc a:hover { border-color: var(--c); }
-.fc b { display: block; font-size: 20px; color: var(--c); }
-.fc span { display: block; color: var(--muted); font-size: 14px; margin: 4px 0 10px; }
-.fc ul { margin: 0; padding-left: 18px; font-size: 13.5px; line-height: 1.6; }
+.fc b { display: block; font-size: 22px; color: var(--c); }
+.fc span { display: block; color: var(--muted); font-size: 14.5px; margin-top: 2px; }
+.fc ul { margin: 0; padding-left: 18px; font-size: 14.5px; line-height: 1.65; }
 </style>
 <div class="fc">
-  <a href="meals/" style="--c:#1a7a5e"><b>School Meals →</b><span>Woodcrest breakfast &amp; lunch</span>
+  <a href="meals/" style="--c:#1a7a5e"><div><b>School Meals →</b><span>Woodcrest breakfast &amp; lunch</span></div>
     <ul><li>Week at a glance, healthy in green, junk in red</li><li>Calories, sugar, protein, sodium per food</li><li>Upcoming button: today, or tomorrow after 2 pm</li></ul></a>
-  <a href="center/" style="--c:#2a78d6"><b>Community Center →</b><span>Greater Midland drop-in hours</span>
+  <a href="center/" style="--c:#2a78d6"><div><b>Community Center →</b><span>Greater Midland drop-in hours</span></div>
     <ul><li>Swim, pickleball, basketball</li><li>Child Watch, The Zone, Jungle Gym</li><li>Live red line for the current time</li></ul></a>
-  <a href="kids/" style="--c:#8e5bd6"><b>Children's Museums →</b><span>Open hours near Midland, week by week</span>
-    <ul><li>Saginaw, Mt. Pleasant, Flint (2), Lansing</li><li>Open now / next to open</li><li>Prices, address, phone</li></ul></a>
+  <a href="kids/" style="--c:#8e5bd6"><div><b>Children's Museums →</b><span>Open hours near Midland, week by week</span></div>
+    <ul><li>Saginaw, Mt. Pleasant, Flint, Lansing, Ann Arbor, Grand Rapids, Holland</li><li>Open now / next to open</li><li>Pick one museum to see just its week</li></ul></a>
 </div>
 {% endraw %}

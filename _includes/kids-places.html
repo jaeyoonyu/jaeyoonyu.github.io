@@ -1,51 +1,76 @@
 {% raw %}
 <style>
-.kp { --line: rgba(128,128,128,.22); --muted: rgba(120,128,124,1); --accent: #1a7a5e; --today: rgba(26,122,94,.08);
-  --th-bg: #fff; font-size: 13px; line-height: 1.35; }
+.kp { --line: rgba(128,128,128,.22); --muted: rgba(120,128,124,1); --accent: #1a7a5e; --today: rgba(26,122,94,.07);
+  --th-bg: #fff; --hours: 10; font-size: 14px; line-height: 1.4; }
 @media (prefers-color-scheme: dark) {
-  .kp { --muted: #96a29b; --accent: #53c79e; --today: rgba(83,199,158,.1); --th-bg: #1d1f23; }
+  .kp { --muted: #96a29b; --accent: #53c79e; --today: rgba(83,199,158,.09); --th-bg: #1d1f23; }
 }
 .kp * { box-sizing: border-box; }
+
+/* pick one museum, or All */
+.kp-pick { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.kp-pick button { border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 999px; padding: 5px 13px;
+  font-size: 13.5px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+.kp-pick button i { width: 10px; height: 10px; border-radius: 3px; background: var(--c); }
+.kp-pick button small { font-weight: 400; color: var(--muted); font-size: 11.5px; }
+.kp-pick button.on { background: var(--c); border-color: var(--c); color: #fff; }
+.kp-pick button.on i { background: #fff; }
+.kp-pick button.on small { color: rgba(255,255,255,.85); }
 .kp-status { font-size: 14px; margin-bottom: 8px; line-height: 1.6; }
 .kp-status b { color: var(--accent); }
 
-/* one row per place, one column per day; each cell = a 9 AM-7 PM mini timeline */
-.kp-scroll { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; }
-table.kp-t { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 900px; table-layout: fixed; }
-.kp-t th, .kp-t td { border-bottom: 1px solid var(--line); padding: 5px 6px; vertical-align: middle; }
-.kp-t tr:last-child td { border-bottom: 0; }
-.kp-t thead th { font-size: 12px; font-weight: 700; text-align: left; background: var(--th-bg); }
-.kp-t thead th small { font-weight: 400; color: var(--muted); margin-left: 3px; }
-.kp-t th:first-child, .kp-t td:first-child { width: 230px; position: sticky; left: 0; background: var(--th-bg); z-index: 1;
-  border-right: 1px solid var(--line); }
-.kp-t .today { background: var(--today); }
-.kp-t thead th.today { color: var(--accent); }
-.kp-name { border-left: 4px solid var(--c); padding-left: 7px; }
-.kp-name a { font-weight: 700; font-size: 13px; text-decoration: none; }
-.kp-name a:hover { text-decoration: underline; }
-.kp-name small { display: block; color: var(--muted); font-size: 11px; }
-.kp-hrs { font-size: 11.5px; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.kp-hrs.closed { color: var(--muted); font-weight: 400; }
-.kp-bar { position: relative; height: 7px; margin-top: 3px; border-radius: 4px; background: rgba(128,128,128,.12); }
-.kp-bar i { position: absolute; top: 0; bottom: 0; border-radius: 4px; background: var(--c); }
-.kp-bar i.past { opacity: .35; }
-.kp-bar i.extra { top: -2px; bottom: -2px; background: repeating-linear-gradient(135deg, var(--c) 0 3px, transparent 3px 6px); }
-.kp-bar b { position: absolute; top: -5px; bottom: -5px; width: 3px; margin-left: -1.5px; background: #ff3b30; border-radius: 2px;
-  box-shadow: 0 0 0 2px rgba(255,59,48,.22), 0 0 8px rgba(255,59,48,.75); }
-.kp-x { font-size: 10.5px; color: var(--muted); margin-top: 2px; }
-.kp-open { display: inline-block; font-size: 10px; font-weight: 700; color: #fff; background: #2e9e74; border-radius: 999px;
-  padding: 0 6px; margin-left: 4px; vertical-align: 1px; }
-.kp-foot { color: var(--muted); font-size: 11.5px; margin-top: 10px; line-height: 1.7; }
+/* week: one block per day, one row per museum */
+.kp-day { display: grid; grid-template-columns: 96px 1fr; border-bottom: 1px solid var(--line); }
+.kp-day.today { background: var(--today); }
+.kp-dn { padding: 3px 0 3px 6px; font-weight: 700; font-size: 13px; align-self: center; }
+.kp-dn small { font-weight: 400; font-size: 11px; color: var(--muted); margin-left: 4px; }
+.kp-day.today .kp-dn { color: var(--accent); }
+.kp-rows { padding: 3px 0; }
+.kp-row { display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 10px; align-items: center; min-height: 21px; }
+.kp-ln { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; }
+.kp-track { position: relative; height: 18px; background: rgba(128,128,128,.07); border-radius: 4px;
+  background-image: repeating-linear-gradient(90deg, rgba(128,128,128,.16) 0 1px, transparent 1px calc(100% / var(--hours))); }
+.kp-bar { position: absolute; top: 2px; bottom: 2px; border-radius: 4px; color: #fff; font-size: 10.5px; font-weight: 600;
+  display: flex; align-items: center; padding: 0 5px; overflow: hidden; white-space: nowrap; }
+.kp-bar.past { opacity: .35; }
+.kp-bar.extra { top: 4px; bottom: 4px; opacity: .85; background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.28) 0 3px, transparent 3px 7px); }
+.kp-closed { position: absolute; left: 6px; top: 1px; font-size: 10.5px; color: var(--muted); }
+.kp-axis { position: sticky; top: 0; z-index: 3; background: var(--th-bg); border-bottom: 1px solid var(--line); }
+.kp-ticks { position: relative; height: 16px; font-size: 10.5px; color: var(--muted); }
+.kp-ticks span { position: absolute; transform: translateX(-50%); white-space: nowrap; top: 1px; }
+.kp-ticks span:first-child { transform: none; }
+.kp-ticks span:last-child { transform: translateX(-100%); }
+.kp-ticks span.kp-nowpill { transform: translateX(-50%); top: -1px; background: #ff3b30; color: #fff; font-weight: 700;
+  padding: 0 6px; border-radius: 999px; z-index: 4; line-height: 16px; }
+.kp-nowline { position: absolute; top: -4px; bottom: -4px; width: 3px; margin-left: -1.5px; background: #ff3b30; z-index: 2;
+  border-radius: 2px; box-shadow: 0 0 0 2px rgba(255,59,48,.22), 0 0 10px rgba(255,59,48,.75); }
+.kp-nowline.ghost { width: 0; margin-left: 0; background: none; box-shadow: none; border-left: 1.5px dashed rgba(255,59,48,.55); }
+.kp-scroll { overflow-x: auto; }
+.kp-week { min-width: 720px; border-top: 1px solid var(--line); }
+/* a single museum gets taller rows */
+.kp.one .kp-row { min-height: 28px; }
+.kp.one .kp-track { height: 24px; }
+.kp.one .kp-bar { font-size: 12px; }
+
+/* details: one card per museum shown */
+.kp-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; margin-top: 14px; }
+.kp-card { border: 1px solid var(--line); border-left: 4px solid var(--c); border-radius: 10px; padding: 8px 11px; font-size: 12.5px; line-height: 1.5; }
+.kp-card h4 { margin: 0; font-size: 14px; }
+.kp-card h4 a { color: inherit; }
+.kp-card div { color: var(--muted); }
+.kp-foot { color: var(--muted); font-size: 11.5px; margin-top: 12px; line-height: 1.7; }
 </style>
 
 <div class="kp" id="kp">
+  <div class="kp-pick" id="kp-pick"></div>
   <div class="kp-status" id="kp-status"></div>
-  <div class="kp-scroll" id="kp-scroll"></div>
+  <div class="kp-scroll" id="kp-scroll"><div class="kp-week" id="kp-week"></div></div>
+  <div class="kp-cards" id="kp-cards"></div>
   <div class="kp-foot">
-    Sorted by driving time from Midland (approximate).<br>
-    Each bar runs 9 AM–7 PM; the red line is now. Striped bars are special sessions.<br>
+    Sorted by driving time from Midland (approximate). Striped bars are special sessions.<br>
     Hours and prices from each museum's own site, checked Oct 18, 2026 (Impression 5 prices from Lansing's visitor site).<br>
     Holiday hours vary; check the museum's site before a long drive.<br>
+    Pick a museum above to see only that one; Ctrl+← / Ctrl+→ step through them.<br>
     Coming later: Alden B. Dow Hall of Ideas, Midland (not open yet). Seasonal: Saginaw Children's Zoo (Zoo Boo weekends to Oct 25).
   </div>
 </div>
@@ -54,29 +79,40 @@ table.kp-t { border-collapse: separate; border-spacing: 0; width: 100%; min-widt
 (() => {
   // Add a place by adding one entry. hours: Mon..Sun, [open, close] in hours (13.5 = 1:30 PM) or null = closed.
   // extra: special sessions; when(date) decides whether one runs on a given date.
-  const secondSunday = d => d.getDay() === 0 && d.getDate() >= 8 && d.getDate() <= 14;
-  const TS = [null, [10, 16], [10, 16], [10, 16], [10, 16]];  // closed Mon, 10-4 Tue-Fri
+  // nth(weekday, n): true on the nth such weekday of the month (weekday as Date.getDay(): 0 = Sun).
+  const nth = (wd, n) => d => d.getDay() === wd && Math.ceil(d.getDate() / 7) === n;
+  const secondSunday = nth(0, 2);
+  const TF = [null, [10, 16], [10, 16], [10, 16], [10, 16]];  // closed Mon, 10-4 Tue-Fri
   const PLACES = [
-    { name: "Mid-Michigan Children's Museum", city: "Saginaw", drive: "25 min", c: "#d9682b",
-      url: "https://michildrensmuseum.org/", price: "$9 · under 2 free",
-      hours: [...TS, [10, 17], [12, 16]], tip: "315 W. Genesee Ave. · (989) 399-6626 · Sundays open until June 1" },
-    { name: "Mt. Pleasant Discovery Museum", city: "Mt. Pleasant", drive: "35 min", c: "#2a78d6",
-      url: "https://mpdiscoverymuseum.org/visit", price: "$10 · under 12 mo free",
-      hours: Array(7).fill([10, 18]), tip: "5093 E. Remus Rd. · (989) 317-3221" },
-    { name: "Flint Children's Museum", city: "Flint", drive: "55 min", c: "#8e5bd6",
-      url: "https://flintchildrensmuseum.org/admission/", price: "$8 · ages 0–8",
-      hours: [...TS, [10, 16], [12, 16]], tip: "1602 W. University Ave. · (810) 767-5437",
-      extra: [{ day: 6, r: [10, 12], label: "Sensory Sunday 10a–12p", when: secondSunday }] },
-    { name: "Sloan Museum of Discovery", city: "Flint", drive: "55 min", c: "#c0392b",
-      url: "https://sloanlongway.org/hours-tickets/", price: "$15 · kids 2–11 $10",
-      hours: [null, [10, 17], [10, 17], [10, 17], [10, 17], [10, 17], [12, 17]],
-      tip: "1221 E. Kearsley St. · science + Longway Planetarium · Genesee County residents free" },
-    { name: "Impression 5 Science Center", city: "Lansing", drive: "1 h 25 min", c: "#1a7a5e",
-      url: "https://impression5.org/visit/", price: "$12 (ages 2+)",
-      hours: [null, [9.5, 16], [9.5, 16], [9.5, 16], [9.5, 16], [9.5, 17], [11.5, 17]],
-      tip: "200 Museum Dr., downtown Lansing · free parking" },
+    { id: "saginaw", short: "Saginaw Children's", name: "Mid-Michigan Children's Museum", city: "Saginaw", drive: "25 min", c: "#d9682b",
+      url: "https://michildrensmuseum.org/", hours: [...TF, [10, 17], [12, 16]],
+      info: "315 W. Genesee Ave. · (989) 399-6626 · $9, seniors $8, under 2 free · Sundays open until June 1" },
+    { id: "mtp", short: "Mt. Pleasant Discovery", name: "Mt. Pleasant Discovery Museum", city: "Mt. Pleasant", drive: "35 min", c: "#2a78d6",
+      url: "https://mpdiscoverymuseum.org/visit", hours: Array(7).fill([10, 18]),
+      info: "5093 E. Remus Rd. · (989) 317-3221 · $10 (12 months+), seniors $8.50" },
+    { id: "flint", short: "Flint Children's", name: "Flint Children's Museum", city: "Flint", drive: "55 min", c: "#8e5bd6",
+      url: "https://flintchildrensmuseum.org/admission/", hours: [...TF, [10, 16], [12, 16]],
+      extra: [{ day: 6, r: [10, 12], label: "Sensory Sunday", when: secondSunday }],
+      info: "1602 W. University Ave. (Kettering) · (810) 767-5437 · $8 · ages 0–8 · Sensory Sunday 10a–12p, 2nd Sunday" },
+    { id: "sloan", short: "Sloan (Flint)", name: "Sloan Museum of Discovery", city: "Flint", drive: "55 min", c: "#c0392b",
+      url: "https://sloanlongway.org/hours-tickets/", hours: [null, [10, 17], [10, 17], [10, 17], [10, 17], [10, 17], [12, 17]],
+      info: "1221 E. Kearsley St. · $15, kids 2–11 $10, Genesee County residents free · science + Longway Planetarium" },
+    { id: "impression5", short: "Impression 5 (Lansing)", name: "Impression 5 Science Center", city: "Lansing", drive: "1 h 25 min", c: "#1a7a5e",
+      url: "https://impression5.org/visit/", hours: [null, [9.5, 16], [9.5, 16], [9.5, 16], [9.5, 16], [9.5, 17], [11.5, 17]],
+      info: "200 Museum Dr., downtown Lansing · $12 (ages 2+) · free parking" },
+    { id: "annarbor", short: "Ann Arbor Hands-On", name: "Ann Arbor Hands-On Museum", city: "Ann Arbor", drive: "1 h 45 min", c: "#b8860b",
+      url: "https://aahom.org/aahom", hours: [null, [10, 17], [10, 17], [10, 17], [10, 17], [10, 17], [10, 17]],
+      info: "220 E. Ann St. · (734) 995-5439 · $16 adults and children, under 2 free" },
+    { id: "grandrapids", short: "Grand Rapids Children's", name: "Grand Rapids Children's Museum", city: "Grand Rapids", drive: "2 h", c: "#0e8a9c",
+      url: "https://www.grcm.org/visit", hours: [null, [9, 16], [9, 16], [9, 16], [9, 16], [9, 16], [12, 16]],
+      extra: [{ day: 3, r: [16, 20], label: "3rd Thu to 8p · $3", when: nth(4, 3) }],
+      info: "11 Sheldon Ave. NE · (616) 235-4726 · $12 (ages 1–64), under 1 free · 3rd Thursday open to 8 PM, $3 from 4 PM" },
+    { id: "holland", short: "Holland Museum", name: "Holland Museum (Spark!Lab)", city: "Holland", drive: "2 h 25 min", c: "#7b5a3c",
+      url: "https://hollandmuseum.org/visit/", hours: [null, null, null, [11, 16], [11, 16], [10, 16], [12, 16]],
+      extra: [{ day: 0, r: [16, 19], label: "Free 2nd Mon", when: nth(1, 2) }],
+      info: "31 W. 10th St. · (616) 796-3329 · $10, ages 6–18 $5, 5 & under free · history museum with the Spark!Lab hands-on space" },
   ];
-  const T0 = 9, T1 = 19;
+  const T0 = 9, T1 = 19;  // axis 9 AM – 7 PM
   const DAYN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
@@ -85,52 +121,85 @@ table.kp-t { border-collapse: separate; border-spacing: 0; width: 100%; min-widt
     return mm ? `${h12}:${String(mm).padStart(2, "0")} ${ap}` : `${h12} ${ap}`;
   }
   const short = h => t(h).replace(":00", "").replace(" AM", "a").replace(" PM", "p");
-  const range = r => { const a = short(r[0]), b = short(r[1]); return a.slice(-1) === b.slice(-1) ? `${a.slice(0, -1)}–${b}` : `${a}–${b}`; };
-  const pct = h => Math.max(0, Math.min(100, ((h - T0) / (T1 - T0)) * 100));
+  const label = r => { const a = short(r[0]), b = short(r[1]); return a.slice(-1) === b.slice(-1) ? `${a.slice(0, -1)}–${b}` : `${a}–${b}`; };
+  const pct = h => ((h - T0) / (T1 - T0)) * 100;
 
   let now, nowH, dow, dates;
   function clock() {
     now = new Date(); nowH = now.getHours() + now.getMinutes() / 60; dow = (now.getDay() + 6) % 7;
     dates = DAYN.map((_, i) => new Date(now.getFullYear(), now.getMonth(), now.getDate() - dow + i));
   }
+  // Which museum is picked lives in the hash (#sloan), so a link can open straight to one.
+  let pick = PLACES.some(p => p.id === location.hash.slice(1)) ? location.hash.slice(1) : null;
+  const shown = () => PLACES.filter(p => !pick || p.id === pick);
   const isOpen = p => p.hours[dow] && nowH >= p.hours[dow][0] && nowH < p.hours[dow][1];
 
-  function render() {
-    const open = PLACES.filter(isOpen);
-    let st = "";
-    if (open.length) st = "<b>Open now</b> · " + open.map(p => `${esc(p.name.replace(/ (Museum|Science Center).*$/, ""))} until ${t(p.hours[dow][1])}`).join(" · ");
-    else for (let k = 0; k < 8 && !st; k++) {
-      const d = (dow + k) % 7;
-      const c = PLACES.filter(p => p.hours[d] && (k > 0 || p.hours[d][0] > nowH)).sort((a, b) => a.hours[d][0] - b.hours[d][0])[0];
-      if (c) st = `All closed now · next: <b>${k === 0 ? "today" : k === 1 ? "tomorrow" : DAYN[d]} ${t(c.hours[d][0])}</b> (${esc(c.name)})`;
-    }
-    $("kp-status").innerHTML = st;
-
-    const head = `<tr><th>Museum</th>${DAYN.map((n, d) => `<th class="${d === dow ? "today" : ""}">${n}<small>${d === dow ? "today" : `${dates[d].getMonth() + 1}/${dates[d].getDate()}`}</small></th>`).join("")}</tr>`;
-    const body = PLACES.map(p => {
-      const cells = DAYN.map((_, d) => {
-        const h = p.hours[d], today = d === dow;
-        const ex = (p.extra || []).filter(x => x.day === d && x.when(dates[d]));
-        const bar = `<div class="kp-bar">${h ? `<i class="${today && nowH >= h[1] ? "past" : ""}" style="left:${pct(h[0])}%;width:${pct(h[1]) - pct(h[0])}%"></i>` : ""}${
-          ex.map(x => `<i class="extra" style="left:${pct(x.r[0])}%;width:${pct(x.r[1]) - pct(x.r[0])}%"></i>`).join("")}${
-          today && nowH > T0 && nowH < T1 ? `<b style="left:${pct(nowH)}%"></b>` : ""}</div>`;
-        return `<td class="${today ? "today" : ""}"><div class="kp-hrs${h ? "" : " closed"}">${h ? range(h) : "Closed"}</div>${bar}${
-          ex.map(x => `<div class="kp-x">${esc(x.label)}</div>`).join("")}</td>`;
-      }).join("");
-      return `<tr style="--c:${p.c}"><td><div class="kp-name" title="${esc(p.tip)}"><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.name)} ↗</a>${isOpen(p) ? `<span class="kp-open">OPEN</span>` : ""}
-        <small>${esc(p.city)} · ${esc(p.drive)} · ${esc(p.price)}</small></div></td>${cells}</tr>`;
-    }).join("");
-    $("kp-scroll").innerHTML = `<table class="kp-t"><thead>${head}</thead><tbody>${body}</tbody></table>`;
+  function renderPick() {
+    $("kp-pick").innerHTML = `<button data-id="" class="${pick ? "" : "on"}" style="--c:#555">All</button>` + PLACES.map(p =>
+      `<button data-id="${p.id}" class="${pick === p.id ? "on" : ""}" style="--c:${p.c}"><i></i>${esc(p.short)}<small>${esc(p.drive)}</small></button>`).join("");
   }
 
-  clock(); render();
-  setInterval(() => { const d0 = dow; clock(); if (dow !== d0) return location.reload(); render(); }, 60 * 1000);
-  document.addEventListener("keydown", e => {
-    if (/INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || !$("kp").offsetParent || e.ctrlKey || e.metaKey) return;
-    const s = $("kp-scroll");
-    if ((e.key === "ArrowLeft" || e.key === "ArrowRight") && s.scrollWidth > s.clientWidth) {
-      e.preventDefault(); s.scrollBy({ left: e.key === "ArrowLeft" ? -160 : 160, behavior: "smooth" });
+  function renderStatus() {
+    const list = shown(), open = list.filter(isOpen);
+    let st = "";
+    if (open.length) st = "<b>Open now</b> · " + open.map(p => `${esc(p.short)} until ${t(p.hours[dow][1])}`).join(" · ");
+    else for (let k = 0; k < 8 && !st; k++) {
+      const d = (dow + k) % 7;
+      const c = list.filter(p => p.hours[d] && (k > 0 || p.hours[d][0] > nowH)).sort((a, b) => a.hours[d][0] - b.hours[d][0])[0];
+      if (c) st = `${pick ? "Closed now" : "All closed now"} · next: <b>${k === 0 ? "today" : k === 1 ? "tomorrow" : DAYN[d]} ${t(c.hours[d][0])}</b>${pick ? "" : ` (${esc(c.short)})`}`;
     }
+    $("kp-status").innerHTML = st;
+  }
+
+  function renderWeek() {
+    const list = shown();
+    $("kp").classList.toggle("one", !!pick);
+    const ticks = [];
+    for (let h = T0; h <= T1; h++) ticks.push(`<span style="left:${pct(h)}%">${short(h)}</span>`);
+    const inRange = nowH > T0 && nowH < T1;
+    const pill = inRange ? `<span class="kp-nowpill" style="left:${pct(nowH)}%">Now ${short(nowH)}</span>` : "";
+    let html = `<div class="kp-day kp-axis"><div></div><div class="kp-rows"><div class="kp-row"><div></div><div class="kp-ticks">${pill}${ticks.join("")}</div></div></div></div>`;
+    DAYN.forEach((dn, d) => {
+      const isToday = d === dow;
+      const rows = list.map(p => {
+        const h = p.hours[d], bars = [];
+        if (h) bars.push(`<div class="kp-bar${isToday && nowH >= h[1] ? " past" : ""}" style="left:${pct(h[0])}%;width:${pct(h[1]) - pct(h[0])}%;background:${p.c}"
+          title="${esc(`${p.name}: ${t(h[0])} – ${t(h[1])}`)}">${label(h)}</div>`);
+        (p.extra || []).filter(x => x.day === d && x.when(dates[d])).forEach(x => bars.push(
+          `<div class="kp-bar extra" style="left:${pct(x.r[0])}%;width:${pct(x.r[1]) - pct(x.r[0])}%;background:${p.c}"
+            title="${esc(`${x.label}: ${t(x.r[0])} – ${t(x.r[1])}`)}">${esc(x.label)}</div>`));
+        const nowline = inRange ? `<div class="kp-nowline${isToday ? "" : " ghost"}" style="left:${pct(nowH)}%"></div>` : "";
+        return `<div class="kp-row"><div class="kp-ln">${esc(p.short)}</div>
+          <div class="kp-track">${h ? "" : `<span class="kp-closed">Closed</span>`}${bars.join("")}${nowline}</div></div>`;
+      }).join("");
+      html += `<div class="kp-day ${isToday ? "today" : ""}"><div class="kp-dn">${dn}<small>${isToday ? "today" : `${dates[d].getMonth() + 1}/${dates[d].getDate()}`}</small></div>
+        <div class="kp-rows">${rows}</div></div>`;
+    });
+    $("kp-week").innerHTML = html;
+    $("kp-cards").innerHTML = list.map(p => `<div class="kp-card" style="--c:${p.c}"><h4><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.name)} ↗</a></h4>
+      <div>${esc(p.city)} · ${esc(p.drive)} from Midland</div><div>${esc(p.info)}</div></div>`).join("");
+  }
+
+  const render = () => { renderPick(); renderStatus(); renderWeek(); };
+  $("kp-pick").onclick = e => {
+    const b = e.target.closest("button"); if (!b) return;
+    pick = b.dataset.id || null;
+    history.replaceState(null, "", location.pathname + location.search + (pick ? "#" + pick : ""));
+    render();
+  };
+  clock(); render();
+  setInterval(() => { const d0 = dow; clock(); if (dow !== d0) return location.reload(); renderStatus(); renderWeek(); }, 60 * 1000);
+  document.addEventListener("keydown", e => {
+    if (/INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || !$("kp").offsetParent || (e.key !== "ArrowLeft" && e.key !== "ArrowRight")) return;
+    const step = e.key === "ArrowLeft" ? -1 : 1;
+    if (e.ctrlKey || e.metaKey) {  // Ctrl+←/→ steps through All → each museum
+      e.preventDefault();
+      const ids = [null, ...PLACES.map(p => p.id)], i = (ids.indexOf(pick) + step + ids.length) % ids.length;
+      pick = ids[i]; history.replaceState(null, "", location.pathname + location.search + (pick ? "#" + pick : "")); render();
+      return;
+    }
+    const s = $("kp-scroll");
+    if (s.scrollWidth > s.clientWidth) { e.preventDefault(); s.scrollBy({ left: step * 160, behavior: "smooth" }); }
   });
 })();
 </script>
