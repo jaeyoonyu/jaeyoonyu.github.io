@@ -38,7 +38,7 @@ navigation:                # accepts {file, title, url, icon, sidebaricon}
 
 
 external:                  # shows a footer with social links - for available icons see fontawesome.com/icons
-  - {title: Mail, icon: envelope, url: "mailto:yjaeyoon@gmail.com"}
+  - {title: Mail, icon: envelope, url: "mailto:yu10j@cmich.edu"}
   - {title: Github, icon: github, url: "https://github.com/jaeyoonyu"}
 
 remote_theme: niklasbuschmann/contrast@v2.11
