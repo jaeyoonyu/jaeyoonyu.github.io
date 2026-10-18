@@ -33,6 +33,7 @@ navigation:                # accepts {file, title, url, icon, sidebaricon}
   - {file: "michigan-housing.md", title: Michigan-Housing}
   - {file: "visuals.md", title: Visuals}
   - {title: Financials, url: "/fs/"}   # financial statements site: github.com/jaeyoonyu/fs
+  - {title: Family, url: "/family/"}   # own layout (_layouts/family.html): meals, community center, children's museums
   - {file: "cmu.md", title: CMU}
 
 

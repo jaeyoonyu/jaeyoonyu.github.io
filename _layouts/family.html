@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Phones get the desktop layout (five days side by side; pinch to zoom), like "Request desktop site". -->
+<meta name="viewport" content="width=1024">
+<meta name="robots" content="noindex">
+<title>{% if page.title != "Family" %}{{ page.title }} · {% endif %}Family</title>
+<style>
+:root { --bg: #ffffff; --fg: #1c2321; --muted: #5c6863; --line: rgba(128,128,128,.25); --bar: #f6f7f4; --accent: #1a7a5e; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #1d1f23; --fg: #e4e9e6; --muted: #96a29b; --line: rgba(128,128,128,.28); --bar: #17191c; --accent: #53c79e; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.5 "Segoe UI", system-ui, -apple-system, sans-serif; }
+a { color: inherit; }
+.fh { position: sticky; top: 0; z-index: 50; background: var(--bar); border-bottom: 1px solid var(--line); }
+.fh-in { max-width: 1240px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: baseline; gap: 22px; flex-wrap: wrap; }
+.fh-brand { text-decoration: none; font-weight: 800; font-size: 22px; letter-spacing: -.01em; }
+.fh-brand small { font-weight: 400; font-size: 13px; color: var(--muted); margin-left: 6px; }
+.fh nav { display: flex; gap: 4px; flex-wrap: wrap; }
+.fh nav a { text-decoration: none; padding: 4px 12px; border-radius: 999px; font-size: 14.5px; }
+.fh nav a:hover { background: var(--line); }
+.fh nav a.on { background: var(--c, var(--accent)); color: #fff; font-weight: 600; }
+.fh-home { margin-left: auto; font-size: 12.5px; color: var(--muted); text-decoration: none; }
+.fh-home:hover { text-decoration: underline; }
+main { max-width: 1240px; margin: 0 auto; padding: 14px 16px 40px; }
+main h1 { font-size: 26px; margin: 4px 0 12px; }
+/* The sections were built to break out of a narrow column; here the column is already wide. */
+main .sm, main .md, main .kp { left: 0; transform: none; width: auto; }
+</style>
+</head>
+<body>
+<header class="fh"><div class="fh-in">
+  <a class="fh-brand" href="{{ '/family/' | relative_url }}">Family<small>Midland, MI</small></a>
+  <nav>
+    <a href="{{ '/family/meals/' | relative_url }}" style="--c:#1a7a5e" {% if page.fam_sec == "meals" %}class="on"{% endif %}>School Meals</a>
+    <a href="{{ '/family/center/' | relative_url }}" style="--c:#2a78d6" {% if page.fam_sec == "center" %}class="on"{% endif %}>Community Center</a>
+    <a href="{{ '/family/kids/' | relative_url }}" style="--c:#8e5bd6" {% if page.fam_sec == "kids" %}class="on"{% endif %}>Children's Museums</a>
+  </nav>
+  <a class="fh-home" href="{{ '/' | relative_url }}">jaeyoonyu.github.io ↗</a>
+</div></header>
+<main>
+{% include family-weather.html %}
+{{ content }}
+</main>
+</body>
+</html>
