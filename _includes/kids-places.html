@@ -7,6 +7,22 @@
 }
 .kp * { box-sizing: border-box; }
 
+/* family membership table (2 adults + 2 kids) */
+.kp-fee { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; margin-bottom: 16px; }
+.kp-fee table { border-collapse: collapse; width: 100%; font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.kp-fee th, .kp-fee td { padding: 5px 9px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.kp-fee tr:last-child td { border-bottom: 0; }
+.kp-fee thead th { font-size: 11.5px; color: var(--muted); font-weight: 600; background: var(--th-bg); }
+.kp-fee td.n { text-align: right; white-space: nowrap; }
+.kp-fee td b { font-size: 13.5px; }
+.kp-fee td small { display: block; color: var(--muted); font-size: 11px; }
+.kp-fee .nm { border-left: 4px solid var(--c); font-weight: 700; white-space: nowrap; }
+.kp-fee .nm small { font-weight: 400; }
+.kp-fee .best { color: var(--accent); font-weight: 700; }
+.kp-fee caption { caption-side: top; text-align: left; font-size: 15px; font-weight: 700; padding: 8px 9px 4px; }
+.kp-fee caption small { font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 6px; }
+.kp-fee-note { color: var(--muted); font-size: 11.5px; line-height: 1.6; margin: -10px 0 16px; }
+
 /* pick one museum, or All */
 .kp-pick { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
 .kp-pick button { border: 1px solid var(--line); background: transparent; color: inherit; border-radius: 999px; padding: 5px 13px;
@@ -66,6 +82,12 @@
 </style>
 
 <div class="kp" id="kp">
+  <div class="kp-fee" id="kp-fee"></div>
+  <div class="kp-fee-note">
+    One visit = 2 adults + 2 kids aged 2–11 at the regular price; "pays off" = visits before the cheapest family membership costs less.<br>
+    ACM: 50% off at participating children's museums. ASTC Passport: free at science centers more than 90 miles from your home and from the museum that issued the card.<br>
+    Prices from each museum's membership page, checked Oct 18, 2026.
+  </div>
   <div class="kp-pick" id="kp-pick"></div>
   <div class="kp-status" id="kp-status"></div>
   <div class="kp-scroll" id="kp-scroll"><div class="kp-week" id="kp-week"></div></div>
@@ -89,30 +111,30 @@
   const secondSunday = nth(0, 2);
   const TF = [null, [10, 16], [10, 16], [10, 16], [10, 16]];  // closed Mon, 10-4 Tue-Fri
   const PLACES = [
-    { id: "saginaw", recip: { monthly: false, text: "Premium membership: ACM network, 50% off at 200+ children's museums.", link: "Memberships", url: "https://michildrensmuseum.org/?page_id=5636" }, short: "Saginaw Children's", name: "Mid-Michigan Children's Museum", city: "Saginaw", drive: "25 min", c: "#d9682b",
+    { id: "saginaw", fam: {"day": 36, "base": [110, "Basic", "none"], "plus": [160, "Premium", "+ ACM: 50% off at 200+ children's museums"], "url": "https://michildrensmuseum.org/?page_id=5636"}, recip: { monthly: false, text: "Premium membership: ACM network, 50% off at 200+ children's museums.", link: "Memberships", url: "https://michildrensmuseum.org/?page_id=5636" }, short: "Saginaw Children's", name: "Mid-Michigan Children's Museum", city: "Saginaw", drive: "25 min", c: "#d9682b",
       url: "https://michildrensmuseum.org/", hours: [...TF, [10, 17], [12, 16]],
       info: "315 W. Genesee Ave. · (989) 399-6626 · $9, seniors $8, under 2 free · Sundays open until June 1" },
-    { id: "mtp", recip: { monthly: true, text: "Monthly partner museum in Michigan, free for members. Oct: Curious Kids' Museum (St. Joseph), Air Zoo (Kalamazoo) · Nov: Bay County Historical Museum · Dec: Mid-Michigan Children's Museum (Saginaw). Traveler level adds ACM 50% off.", link: "Reciprocal calendar", url: "https://mpdiscoverymuseum.org/memberships#reciprocals" }, short: "Mt. Pleasant Discovery", name: "Mt. Pleasant Discovery Museum", city: "Mt. Pleasant", drive: "35 min", c: "#2a78d6",
+    { id: "mtp", fam: {"day": 40, "base": [100, "The Hive", "Monthly local partner museum"], "plus": [150, "The Traveler", "+ ACM: 50% off at 200+ museums"], "url": "https://mpdiscoverymuseum.org/memberships"}, recip: { monthly: true, text: "Monthly partner museum in Michigan, free for members. Oct: Curious Kids' Museum (St. Joseph), Air Zoo (Kalamazoo) · Nov: Bay County Historical Museum · Dec: Mid-Michigan Children's Museum (Saginaw). Traveler level adds ACM 50% off.", link: "Reciprocal calendar", url: "https://mpdiscoverymuseum.org/memberships#reciprocals" }, short: "Mt. Pleasant Discovery", name: "Mt. Pleasant Discovery Museum", city: "Mt. Pleasant", drive: "35 min", c: "#2a78d6",
       url: "https://mpdiscoverymuseum.org/visit", hours: Array(7).fill([10, 18]),
       info: "5093 E. Remus Rd. · (989) 317-3221 · $10 (12 months+), seniors $8.50" },
-    { id: "flint", recip: { monthly: false, text: "ASTC Passport and ACM networks.", link: "Membership", url: "https://flintchildrensmuseum.org/admission/membership/" }, short: "Flint Children's", name: "Flint Children's Museum", city: "Flint", drive: "55 min", c: "#8e5bd6",
+    { id: "flint", fam: {"day": 32, "base": [100, "Ultimate Play Pass", "ASTC + ACM included"], "plus": null, "url": "https://flintchildrensmuseum.org/admission/membership/"}, recip: { monthly: false, text: "ASTC Passport and ACM networks.", link: "Membership", url: "https://flintchildrensmuseum.org/admission/membership/" }, short: "Flint Children's", name: "Flint Children's Museum", city: "Flint", drive: "55 min", c: "#8e5bd6",
       url: "https://flintchildrensmuseum.org/admission/", hours: [...TF, [10, 16], [12, 16]],
       extra: [{ day: 6, r: [10, 12], label: "Sensory Sunday", when: secondSunday }],
       info: "1602 W. University Ave. (Kettering) · (810) 767-5437 · $8 · ages 0–8 · Sensory Sunday 10a–12p, 2nd Sunday" },
-    { id: "sloan", recip: { monthly: false, text: "ASTC network.", link: "Membership", url: "https://sloanlongway.org/membership/" }, short: "Sloan (Flint)", name: "Sloan Museum of Discovery", city: "Flint", drive: "55 min", c: "#c0392b",
+    { id: "sloan", fam: {"day": 50, "base": [105, "Family Pass", "ASTC included"], "plus": null, "url": "https://sloanlongway.org/membership/", "note": "Premium Pass $150 adds more perks"}, recip: { monthly: false, text: "ASTC network.", link: "Membership", url: "https://sloanlongway.org/membership/" }, short: "Sloan (Flint)", name: "Sloan Museum of Discovery", city: "Flint", drive: "55 min", c: "#c0392b",
       url: "https://sloanlongway.org/hours-tickets/", hours: [null, [10, 17], [10, 17], [10, 17], [10, 17], [10, 17], [12, 17]],
       info: "1221 E. Kearsley St. · $15, kids 2–11 $10, Genesee County residents free · science + Longway Planetarium" },
-    { id: "impression5", recip: { monthly: false, text: "ASTC (free/reduced 90+ miles away) and ACM networks.", link: "Membership FAQ", url: "https://impression5.org/membership-faq" }, short: "Impression 5 (Lansing)", name: "Impression 5 Science Center", city: "Lansing", drive: "1 h 25 min", c: "#1a7a5e",
+    { id: "impression5", fam: {"day": 48, "base": [125, "Household", "ASTC + ACM included"], "plus": null, "url": "https://impression5.org/membership/membership-info", "note": "Elemental $175: 3 adults + 2 guests"}, recip: { monthly: false, text: "ASTC (free/reduced 90+ miles away) and ACM networks.", link: "Membership FAQ", url: "https://impression5.org/membership-faq" }, short: "Impression 5 (Lansing)", name: "Impression 5 Science Center", city: "Lansing", drive: "1 h 25 min", c: "#1a7a5e",
       url: "https://impression5.org/visit/", hours: [null, [9.5, 16], [9.5, 16], [9.5, 16], [9.5, 16], [9.5, 17], [11.5, 17]],
       info: "200 Museum Dr., downtown Lansing · $12 (ages 2+) · free parking" },
-    { id: "annarbor", recip: { monthly: false, text: "ASTC and ACM networks, half price at 165+ museums.", link: "Membership", url: "https://aahom.org/membership" }, short: "Ann Arbor Hands-On", name: "Ann Arbor Hands-On Museum", city: "Ann Arbor", drive: "1 h 45 min", c: "#b8860b",
+    { id: "annarbor", fam: {"day": 64, "base": [100, "Family", "ASTC + ANCA included"], "plus": [160, "Family Plus Premium", "+ ACM: half price at 165+ museums"], "url": "https://aahom.org/membership"}, recip: { monthly: false, text: "ASTC and ACM networks, half price at 165+ museums.", link: "Membership", url: "https://aahom.org/membership" }, short: "Ann Arbor Hands-On", name: "Ann Arbor Hands-On Museum", city: "Ann Arbor", drive: "1 h 45 min", c: "#b8860b",
       url: "https://aahom.org/aahom", hours: [null, [10, 17], [10, 17], [10, 17], [10, 17], [10, 17], [10, 17]],
       info: "220 E. Ann St. · (734) 995-5439 · $16 adults and children, under 2 free" },
-    { id: "grandrapids", recip: { monthly: true, text: "Monthly Cultural Membership Exchange: free at a partner each designated month (e.g. Grand Rapids Art Museum, Grand Rapids Gymnastics open gym).", link: "Exchange calendar", url: "https://www.grcm.org/cultural-exchange" }, short: "Grand Rapids Children's", name: "Grand Rapids Children's Museum", city: "Grand Rapids", drive: "2 h", c: "#0e8a9c",
+    { id: "grandrapids", fam: {"day": 48, "base": [150, "Family", "Monthly exchange + ACM + ASTC included"], "plus": null, "url": "https://www.grcm.org/join"}, recip: { monthly: true, text: "Monthly Cultural Membership Exchange: free at a partner each designated month (e.g. Grand Rapids Art Museum, Grand Rapids Gymnastics open gym).", link: "Exchange calendar", url: "https://www.grcm.org/cultural-exchange" }, short: "Grand Rapids Children's", name: "Grand Rapids Children's Museum", city: "Grand Rapids", drive: "2 h", c: "#0e8a9c",
       url: "https://www.grcm.org/visit", hours: [null, [9, 16], [9, 16], [9, 16], [9, 16], [9, 16], [12, 16]],
       extra: [{ day: 3, r: [16, 20], label: "3rd Thu to 8p · $3", when: nth(4, 3) }],
       info: "11 Sheldon Ave. NE · (616) 235-4726 · $12 (ages 1–64), under 1 free · 3rd Thursday open to 8 PM, $3 from 4 PM" },
-    { id: "holland", recip: { monthly: true, text: "2026 local partners, free in the month shown: Mar Blandford Nature Center · Apr Midwest Miniatures Museum · Aug & Dec Grand Rapids Children's Museum · Sep Zeeland Historical · Nov GR Public Museum · Dec GR Art Museum. Premium adds NARM and ROAM.", link: "Membership", url: "https://hollandmuseum.org/membership/" }, short: "Holland Museum", name: "Holland Museum (Spark!Lab)", city: "Holland", drive: "2 h 25 min", c: "#7b5a3c",
+    { id: "holland", fam: {"day": 30, "base": [60, "Family", "Local partner months"], "plus": [150, "Premium", "+ NARM and ROAM networks"], "url": "https://hollandmuseum.org/membership/", "note": "Day visit counts kids 6–18 at $5; 5 & under free"}, recip: { monthly: true, text: "2026 local partners, free in the month shown: Mar Blandford Nature Center · Apr Midwest Miniatures Museum · Aug & Dec Grand Rapids Children's Museum · Sep Zeeland Historical · Nov GR Public Museum · Dec GR Art Museum. Premium adds NARM and ROAM.", link: "Membership", url: "https://hollandmuseum.org/membership/" }, short: "Holland Museum", name: "Holland Museum (Spark!Lab)", city: "Holland", drive: "2 h 25 min", c: "#7b5a3c",
       url: "https://hollandmuseum.org/visit/", hours: [null, null, null, [11, 16], [11, 16], [10, 16], [12, 16]],
       extra: [{ day: 0, r: [16, 19], label: "Free 2nd Mon", when: nth(1, 2) }],
       info: "31 W. 10th St. · (616) 796-3329 · $10, ages 6–18 $5, 5 & under free · history museum with the Spark!Lab hands-on space" },
@@ -186,6 +208,23 @@
         <b>${p.recip.monthly ? "Monthly reciprocal" : "Reciprocal"}</b> ${esc(p.recip.text)} <a href="${esc(p.recip.url)}" target="_blank" rel="noopener">${esc(p.recip.link)} ↗</a></div>` : ""}</div>`).join("");
   }
 
+  // Family membership table: one row per museum, cheapest family tier and the tier with more reciprocal.
+  function renderFees() {
+    const money = n => "$" + n;
+    const rows = PLACES.filter(p => p.fam).map(p => {
+      const f = p.fam, visits = Math.ceil(f.base[0] / f.day);
+      return `<tr style="--c:${p.c}"><td class="nm">${esc(p.short)}<small>${esc(p.city)} · ${esc(p.drive)}</small></td>
+        <td class="n"><b>${money(f.day)}</b></td>
+        <td><b>${money(f.base[0])}</b> ${esc(f.base[1])}<small>${esc(f.base[2])}</small></td>
+        <td>${f.plus ? `<b>${money(f.plus[0])}</b> ${esc(f.plus[1])}<small>${esc(f.plus[2])}</small>` : `<small>Same tier, already included</small>`}</td>
+        <td class="n ${visits <= 2 ? "best" : ""}">${visits} visits</td>
+        <td><a href="${esc(f.url)}" target="_blank" rel="noopener">Join ↗</a>${f.note ? `<small>${esc(f.note)}</small>` : ""}</td></tr>`;
+    }).join("");
+    $("kp-fee").innerHTML = `<table><caption>Family memberships<small>2 adults + 2 kids, per year</small></caption>
+      <thead><tr><th>Museum</th><th>One visit</th><th>Family membership</th><th>With reciprocal</th><th>Pays off</th><th></th></tr></thead>
+      <tbody>${rows}</tbody></table>`;
+  }
+  renderFees();
   const render = () => { renderPick(); renderStatus(); renderWeek(); };
   $("kp-pick").onclick = e => {
     const b = e.target.closest("button"); if (!b) return;
