@@ -13,7 +13,7 @@ sitemap: false
 <style>
 .fam { --line: rgba(128,128,128,.25); --muted: rgba(120,128,124,1);
   width: min(1240px, calc(100vw - 32px)); position: relative; left: 50%; transform: translateX(-50%);
-  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 18px; }
 @media (prefers-color-scheme: dark) { .fam { --muted: #96a29b; } }
 @media (max-width: 600px) { .fam { grid-template-columns: 1fr; } }
 .fam button { text-align: left; border: 1px solid var(--line); border-radius: 12px; padding: 14px 18px; cursor: pointer;
@@ -53,6 +53,7 @@ sitemap: false
 <div class="fam" id="fam">
   <button data-sec="meals" style="--c:#1a7a5e"><b>School Meals</b><span>Woodcrest breakfast &amp; lunch, by week</span></button>
   <button data-sec="center" style="--c:#2a78d6"><b>Community Center</b><span>Swim, pickleball, basketball, kids' programs</span></button>
+  <button data-sec="kids" style="--c:#8e5bd6"><b>Children's Museums</b><span>Mt. Pleasant, Saginaw, Flint: open hours</span></button>
 </div>
 {% endraw %}
 <div class="fam-panel" id="fam-meals" hidden>
@@ -61,11 +62,14 @@ sitemap: false
 <div class="fam-panel" id="fam-center" hidden>
 {% include community-center.html %}
 </div>
+<div class="fam-panel" id="fam-kids" hidden>
+{% include kids-places.html %}
+</div>
 {% raw %}
 <script>
 (() => {
   // Each section keeps its own state in the hash: #meals/2026-10-12, #center/swim.
-  const SECS = ["meals", "center"];
+  const SECS = ["meals", "center", "kids"];
   const btns = [...document.querySelectorAll("#fam button")];
   function show(sec) {
     SECS.forEach(s => { document.getElementById("fam-" + s).hidden = s !== sec; });
