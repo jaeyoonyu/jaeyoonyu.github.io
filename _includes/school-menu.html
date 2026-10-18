@@ -60,6 +60,8 @@
 .sm-dish .sm-ph { background: var(--line); }
 .sm-dn { font-weight: 600; font-size: 13px; overflow-wrap: anywhere; }
 .sm-w { font-size: 11.5px; color: var(--muted); margin-top: 2px; }
+.sm-it { display: flow-root; margin-top: 3px; }
+.sm-th { float: left; width: 28px; height: 28px; margin: 0 6px 2px 0; border-radius: 5px; object-fit: cover; background: #fff; }
 /* Label over number, so a column only has to fit "1220" and never runs into the next one. */
 .sm-nums { clear: both; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0 2px; font-size: 11px;
   font-weight: 400; line-height: 1.15; font-variant-numeric: tabular-nums; margin: 2px 0 4px; color: inherit; }
@@ -197,7 +199,7 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
     Green and red come from a keyword rule (added sugar of 12 g or more also counts as junk), not from a dietitian.<br>
     The highlighted day is today, or the next school day after 2 pm.<br>
     Ctrl+← / Ctrl+→ switch weeks (or days, in a day's table); Ctrl+↑ goes back to the week; ← / → scroll the table.<br>
-    Updated 2026-10-13 08:50.
+    Updated 2026-10-18 10:58.
   </div>
 </div>
 
@@ -253,17 +255,20 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
     }).join("")}</div>`;
   }
 
+  // Every item with a photo gets one: main dishes 44 px, "with" items and fruit & veg 28 px.
+  const thumb = x => x.img ? `<img class="sm-th" loading="lazy" src="${esc(x.img)}" alt="">` : "";
+
   function cell(name, label, m) {
     let body;
     if (!m) body = `<div class="sm-none">No ${name}</div>`;
     else {
       const dishes = m.main.map(it => {
-        const w = it.w.length ? `<div class="sm-w">with${it.w.map(x => `<div><span class="sm-s ${x.k}" title="${esc(x.n)}">${esc(x.n)}</span>${nums(x)}</div>`).join("")}</div>` : "";
+        const w = it.w.length ? `<div class="sm-w">with${it.w.map(x => `<div class="sm-it">${thumb(x)}<span class="sm-s ${x.k}" title="${esc(x.n)}">${esc(x.n)}</span>${nums(x)}</div>`).join("")}</div>` : "";
         const pic = it.img ? `<img loading="lazy" src="${esc(it.img)}" alt="">` : `<span class="sm-ph"></span>`;
         return `<div class="sm-dish ${it.k}">${pic}<div><div class="sm-dn" title="${esc(it.n)}">${esc(it.n)}</div>${nums(it)}${w}</div></div>`;
       }).join("");
       const sides = m.sides.length ? `<div class="sm-sides"><div class="sm-sl">Fruit &amp; veg</div>${m.sides.map(x =>
-        `<div><span class="sm-s ${x.k}" title="${esc(x.n)}"><span class="sm-dot"></span>${esc(x.n)}</span>${nums(x)}</div>`).join("")}</div>` : "";
+        `<div class="sm-it">${thumb(x)}<span class="sm-s ${x.k}" title="${esc(x.n)}"><span class="sm-dot"></span>${esc(x.n)}</span>${nums(x)}</div>`).join("")}</div>` : "";
       body = (m.note ? `<div class="sm-note">${esc(m.note)}</div>` : "") + dishes + sides;
     }
     return `<div class="sm-ml">${label}</div>${body}`;
