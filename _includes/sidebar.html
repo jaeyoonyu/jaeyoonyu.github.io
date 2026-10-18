@@ -1,0 +1,17 @@
+<link rel="stylesheet" href="{{ "/assets/css/sidebar.css" | relative_url }}" media="screen and (min-width: 70em)">
+<!-- Overrides the theme's sidebar (contrast v2.11): narrower, name on top, no description.
+     Sidebar width = aside width + 2 x padding = 12em; account-reference.md relies on it. -->
+<style>
+@media screen and (min-width: 70em) {
+  body { margin-left: 12em; }
+  aside { width: 9em; padding: 1.6em 1.5em; }
+  aside .sidebar-name { display: block; font-size: 1.25em; font-weight: bold; margin: 0 0 1em; text-decoration: none; }
+  aside nav { margin: 0 -1.5em; }
+  aside nav a { padding: 0.42em 1.5em; }
+}
+</style>
+<aside style="display: none">
+  <a href="{{ "/" | relative_url }}" class="sidebar-name">{{ site.title | escape }}</a>
+  {% include menu.html menu=site.navigation text=true icon=true %}
+  {% include menu.html menu=site.external text=true icon=true %}
+</aside>

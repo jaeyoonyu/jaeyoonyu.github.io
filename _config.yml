@@ -30,7 +30,7 @@ navigation:                # accepts {file, title, url, icon, sidebaricon}
   - {file: "Grade-analyzer.md", title: GradeAnalyzer}
   # - {file: "python-basics.md", title: Python-Basic}
   # - {file: "python-applications.md", title: Python-Applied}
-  - {file: "michigan-housing.md", title: HousingMI}
+  - {file: "michigan-housing.md", title: Housing}
   - {file: "visuals.md", title: Viz}
   - {title: Financials, url: "/fs/"}   # financial statements site: github.com/jaeyoonyu/fs
   - {title: Family, url: "/family/"}   # own layout (_layouts/family.html): meals, community center, children's museums

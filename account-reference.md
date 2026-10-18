@@ -27,7 +27,7 @@ This interactive accounting reference includes basic account types and journal e
 /* Sidebar layout (theme's sidebar.css, >= 70em): span the content area right of the sidebar */
 @media screen and (min-width: 70em) {
     .full-width-container {
-        width: calc(100vw - 16.5 * 1.06rem);
+        width: calc(100vw - 12 * 1.06rem);  /* sidebar width, _includes/sidebar.html */
         margin-left: calc(-5 * 1.06rem);
     }
 }
