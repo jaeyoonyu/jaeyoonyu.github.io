@@ -58,6 +58,10 @@
 .kp-card h4 { margin: 0; font-size: 14px; }
 .kp-card h4 a { color: inherit; }
 .kp-card div { color: var(--muted); }
+.kp-card .kp-rc { margin-top: 5px; padding-top: 5px; border-top: 1px dashed var(--line); }
+.kp-card .kp-rc b { color: var(--fg, inherit); font-size: 11.5px; margin-right: 4px; }
+.kp-card .kp-rc.monthly b { color: #fff; background: var(--c); border-radius: 999px; padding: 0 7px; }
+.kp-card .kp-rc a { white-space: nowrap; }
 .kp-foot { color: var(--muted); font-size: 11.5px; margin-top: 12px; line-height: 1.7; }
 </style>
 
@@ -71,6 +75,7 @@
     Hours and prices from each museum's own site, checked Oct 18, 2026 (Impression 5 prices from Lansing's visitor site).<br>
     Holiday hours vary; check the museum's site before a long drive.<br>
     Pick a museum above to see only that one; Ctrl+← / Ctrl+→ step through them.<br>
+    Reciprocal: what a membership there gets you elsewhere. "Monthly" ones rotate a partner museum each month (checked Oct 18, 2026).<br>
     Coming later: Alden B. Dow Hall of Ideas, Midland (not open yet). Seasonal: Saginaw Children's Zoo (Zoo Boo weekends to Oct 25).
   </div>
 </div>
@@ -84,30 +89,30 @@
   const secondSunday = nth(0, 2);
   const TF = [null, [10, 16], [10, 16], [10, 16], [10, 16]];  // closed Mon, 10-4 Tue-Fri
   const PLACES = [
-    { id: "saginaw", short: "Saginaw Children's", name: "Mid-Michigan Children's Museum", city: "Saginaw", drive: "25 min", c: "#d9682b",
+    { id: "saginaw", recip: { monthly: false, text: "Premium membership: ACM network, 50% off at 200+ children's museums.", link: "Memberships", url: "https://michildrensmuseum.org/?page_id=5636" }, short: "Saginaw Children's", name: "Mid-Michigan Children's Museum", city: "Saginaw", drive: "25 min", c: "#d9682b",
       url: "https://michildrensmuseum.org/", hours: [...TF, [10, 17], [12, 16]],
       info: "315 W. Genesee Ave. · (989) 399-6626 · $9, seniors $8, under 2 free · Sundays open until June 1" },
-    { id: "mtp", short: "Mt. Pleasant Discovery", name: "Mt. Pleasant Discovery Museum", city: "Mt. Pleasant", drive: "35 min", c: "#2a78d6",
+    { id: "mtp", recip: { monthly: true, text: "Monthly partner museum in Michigan, free for members. Oct: Curious Kids' Museum (St. Joseph), Air Zoo (Kalamazoo) · Nov: Bay County Historical Museum · Dec: Mid-Michigan Children's Museum (Saginaw). Traveler level adds ACM 50% off.", link: "Reciprocal calendar", url: "https://mpdiscoverymuseum.org/memberships#reciprocals" }, short: "Mt. Pleasant Discovery", name: "Mt. Pleasant Discovery Museum", city: "Mt. Pleasant", drive: "35 min", c: "#2a78d6",
       url: "https://mpdiscoverymuseum.org/visit", hours: Array(7).fill([10, 18]),
       info: "5093 E. Remus Rd. · (989) 317-3221 · $10 (12 months+), seniors $8.50" },
-    { id: "flint", short: "Flint Children's", name: "Flint Children's Museum", city: "Flint", drive: "55 min", c: "#8e5bd6",
+    { id: "flint", recip: { monthly: false, text: "ASTC Passport and ACM networks.", link: "Membership", url: "https://flintchildrensmuseum.org/admission/membership/" }, short: "Flint Children's", name: "Flint Children's Museum", city: "Flint", drive: "55 min", c: "#8e5bd6",
       url: "https://flintchildrensmuseum.org/admission/", hours: [...TF, [10, 16], [12, 16]],
       extra: [{ day: 6, r: [10, 12], label: "Sensory Sunday", when: secondSunday }],
       info: "1602 W. University Ave. (Kettering) · (810) 767-5437 · $8 · ages 0–8 · Sensory Sunday 10a–12p, 2nd Sunday" },
-    { id: "sloan", short: "Sloan (Flint)", name: "Sloan Museum of Discovery", city: "Flint", drive: "55 min", c: "#c0392b",
+    { id: "sloan", recip: { monthly: false, text: "ASTC network.", link: "Membership", url: "https://sloanlongway.org/membership/" }, short: "Sloan (Flint)", name: "Sloan Museum of Discovery", city: "Flint", drive: "55 min", c: "#c0392b",
       url: "https://sloanlongway.org/hours-tickets/", hours: [null, [10, 17], [10, 17], [10, 17], [10, 17], [10, 17], [12, 17]],
       info: "1221 E. Kearsley St. · $15, kids 2–11 $10, Genesee County residents free · science + Longway Planetarium" },
-    { id: "impression5", short: "Impression 5 (Lansing)", name: "Impression 5 Science Center", city: "Lansing", drive: "1 h 25 min", c: "#1a7a5e",
+    { id: "impression5", recip: { monthly: false, text: "ASTC (free/reduced 90+ miles away) and ACM networks.", link: "Membership FAQ", url: "https://impression5.org/membership-faq" }, short: "Impression 5 (Lansing)", name: "Impression 5 Science Center", city: "Lansing", drive: "1 h 25 min", c: "#1a7a5e",
       url: "https://impression5.org/visit/", hours: [null, [9.5, 16], [9.5, 16], [9.5, 16], [9.5, 16], [9.5, 17], [11.5, 17]],
       info: "200 Museum Dr., downtown Lansing · $12 (ages 2+) · free parking" },
-    { id: "annarbor", short: "Ann Arbor Hands-On", name: "Ann Arbor Hands-On Museum", city: "Ann Arbor", drive: "1 h 45 min", c: "#b8860b",
+    { id: "annarbor", recip: { monthly: false, text: "ASTC and ACM networks, half price at 165+ museums.", link: "Membership", url: "https://aahom.org/membership" }, short: "Ann Arbor Hands-On", name: "Ann Arbor Hands-On Museum", city: "Ann Arbor", drive: "1 h 45 min", c: "#b8860b",
       url: "https://aahom.org/aahom", hours: [null, [10, 17], [10, 17], [10, 17], [10, 17], [10, 17], [10, 17]],
       info: "220 E. Ann St. · (734) 995-5439 · $16 adults and children, under 2 free" },
-    { id: "grandrapids", short: "Grand Rapids Children's", name: "Grand Rapids Children's Museum", city: "Grand Rapids", drive: "2 h", c: "#0e8a9c",
+    { id: "grandrapids", recip: { monthly: true, text: "Monthly Cultural Membership Exchange: free at a partner each designated month (e.g. Grand Rapids Art Museum, Grand Rapids Gymnastics open gym).", link: "Exchange calendar", url: "https://www.grcm.org/cultural-exchange" }, short: "Grand Rapids Children's", name: "Grand Rapids Children's Museum", city: "Grand Rapids", drive: "2 h", c: "#0e8a9c",
       url: "https://www.grcm.org/visit", hours: [null, [9, 16], [9, 16], [9, 16], [9, 16], [9, 16], [12, 16]],
       extra: [{ day: 3, r: [16, 20], label: "3rd Thu to 8p · $3", when: nth(4, 3) }],
       info: "11 Sheldon Ave. NE · (616) 235-4726 · $12 (ages 1–64), under 1 free · 3rd Thursday open to 8 PM, $3 from 4 PM" },
-    { id: "holland", short: "Holland Museum", name: "Holland Museum (Spark!Lab)", city: "Holland", drive: "2 h 25 min", c: "#7b5a3c",
+    { id: "holland", recip: { monthly: true, text: "2026 local partners, free in the month shown: Mar Blandford Nature Center · Apr Midwest Miniatures Museum · Aug & Dec Grand Rapids Children's Museum · Sep Zeeland Historical · Nov GR Public Museum · Dec GR Art Museum. Premium adds NARM and ROAM.", link: "Membership", url: "https://hollandmuseum.org/membership/" }, short: "Holland Museum", name: "Holland Museum (Spark!Lab)", city: "Holland", drive: "2 h 25 min", c: "#7b5a3c",
       url: "https://hollandmuseum.org/visit/", hours: [null, null, null, [11, 16], [11, 16], [10, 16], [12, 16]],
       extra: [{ day: 0, r: [16, 19], label: "Free 2nd Mon", when: nth(1, 2) }],
       info: "31 W. 10th St. · (616) 796-3329 · $10, ages 6–18 $5, 5 & under free · history museum with the Spark!Lab hands-on space" },
@@ -177,7 +182,8 @@
     });
     $("kp-week").innerHTML = html;
     $("kp-cards").innerHTML = list.map(p => `<div class="kp-card" style="--c:${p.c}"><h4><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.name)} ↗</a></h4>
-      <div>${esc(p.city)} · ${esc(p.drive)} from Midland</div><div>${esc(p.info)}</div></div>`).join("");
+      <div>${esc(p.city)} · ${esc(p.drive)} from Midland</div><div>${esc(p.info)}</div>${p.recip ? `<div class="kp-rc${p.recip.monthly ? " monthly" : ""}">
+        <b>${p.recip.monthly ? "Monthly reciprocal" : "Reciprocal"}</b> ${esc(p.recip.text)} <a href="${esc(p.recip.url)}" target="_blank" rel="noopener">${esc(p.recip.link)} ↗</a></div>` : ""}</div>`).join("");
   }
 
   const render = () => { renderPick(); renderStatus(); renderWeek(); };
