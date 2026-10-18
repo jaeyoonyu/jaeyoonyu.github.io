@@ -13,5 +13,6 @@
 <aside style="display: none">
   <a href="{{ "/" | relative_url }}" class="sidebar-name">{{ site.title | escape }}</a>
   {% include menu.html menu=site.navigation text=true icon=true %}
-  {% include menu.html menu=site.external text=true icon=true %}
+  {% assign sidebar_external = site.external | where_exp: "item", "item.title != 'Github'" %}
+  {% include menu.html menu=sidebar_external text=true icon=true %}
 </aside>
