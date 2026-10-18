@@ -20,18 +20,18 @@ navigation:                # accepts {file, title, url, icon, sidebaricon}
   #  - {file:  "CV.md", title: CV}
   # - {file: "shortcut.md", title: Shortcuts}
   - {file: "ACCNEWS.md", title: AccNews}
-  - {file: "ACC250.md", title: IntroFA-ACC250}
-  - {file: "ACC531.md", title: Audit-ACC531}
-  - {file: "ACC575.md", title: Analytics-ACC575}
-  - {file: "account-reference.md", title: AccReference}
+  - {file: "ACC250.md", title: ACC250}
+  - {file: "ACC531.md", title: ACC531}
+  - {file: "ACC575.md", title: ACC575}
+  - {file: "account-reference.md", title: AccRef}
   # - {file: "Inventory-costing.md", title: InvCosting}
   # - {file: "Depreciation.md", title: DepExp-Method}
   # - {file: "Benford-analyzer.md", title: Benford-Analyzer}
-  - {file: "Grade-analyzer.md", title: Grade-Analyzer}
+  - {file: "Grade-analyzer.md", title: GradeAnalyzer}
   # - {file: "python-basics.md", title: Python-Basic}
   # - {file: "python-applications.md", title: Python-Applied}
-  - {file: "michigan-housing.md", title: Michigan-Housing}
-  - {file: "visuals.md", title: Visuals}
+  - {file: "michigan-housing.md", title: HousingMI}
+  - {file: "visuals.md", title: Viz}
   - {title: Financials, url: "/fs/"}   # financial statements site: github.com/jaeyoonyu/fs
   - {title: Family, url: "/family/"}   # own layout (_layouts/family.html): meals, community center, children's museums
   - {file: "cmu.md", title: CMU}
