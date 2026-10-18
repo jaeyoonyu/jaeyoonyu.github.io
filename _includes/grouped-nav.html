@@ -1,0 +1,40 @@
+{%- comment -%}
+  Navigation grouped by the `group:` field of site.navigation (_config.yml).
+  mode="side": sidebar list with a small heading per group.
+  mode="top":  header (phones / narrow windows): one wrapping row per group,
+               so every page is one tap away and nothing scrolls sideways.
+{%- endcomment -%}
+{%- assign nav_groups = "Research,Teaching,Others" | split: "," -%}
+{%- capture ungrouped -%}
+  {%- for item in site.navigation -%}{%- unless item.group -%}{%- include nav-link.html item=item -%}{%- endunless -%}{%- endfor -%}
+{%- endcapture -%}
+{%- if include.mode == "side" -%}
+<nav class="gnav-side">
+  {{ ungrouped }}
+  {%- for g in nav_groups -%}
+  {%- assign items = site.navigation | where: "group", g -%}
+  <div class="gnav-label">{{ g }}</div>
+  {%- for item in items -%}{%- include nav-link.html item=item -%}{%- endfor -%}
+  {%- endfor -%}
+</nav>
+{%- else -%}
+<nav class="gnav-top">
+  <div class="gnav-row">{{ ungrouped }}</div>
+  {%- for g in nav_groups -%}
+  {%- assign items = site.navigation | where: "group", g -%}
+  <div class="gnav-row"><span class="gnav-label">{{ g }}</span><span class="gnav-links">
+    {%- for item in items -%}{%- include nav-link.html item=item -%}{%- endfor -%}
+  </span></div>
+  {%- endfor -%}
+</nav>
+<style>
+.gnav-top { display: block; margin: 0.4em 0 0; width: 100%; }
+.gnav-top .gnav-row { display: flex; align-items: baseline; padding: 0.3em 0; }
+.gnav-top .gnav-links { display: flex; flex-wrap: wrap; gap: 0.15em 1.1em; flex: 1; }
+.gnav-top .gnav-row + .gnav-row { border-top: 1px solid rgba(128,128,128,.15); }
+.gnav-top a { margin: 0; }
+.gnav-top a.selected { font-weight: bold; }
+.gnav-top .gnav-label { flex: 0 0 7em; font-size: 0.68em; font-weight: bold; text-transform: uppercase;
+  letter-spacing: 0.08em; opacity: 0.55; }
+</style>
+{%- endif -%}

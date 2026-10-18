@@ -1,0 +1,4 @@
+{%- assign node = site.pages | where: "name", include.item.file | first -%}
+{%- assign url = include.item.url | default: node.url -%}
+{%- assign title = include.item.title | default: node.title -%}
+<a href="{{ url | relative_url }}" {% if url == page.url %}class="selected"{% endif %}>{{ title }}</a>

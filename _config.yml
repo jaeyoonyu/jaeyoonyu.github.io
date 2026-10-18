@@ -16,25 +16,25 @@ show_sidebar: true        # show a sidebar instead of the usual header
 # Menu
 navigation:                # accepts {file, title, url, icon, sidebaricon}
   - {file: "index.md", title: Home}
-  - {file: "research.md", title: Research}
+  - {file: "research.md", title: Research, group: Research}
   #  - {file:  "CV.md", title: CV}
   # - {file: "shortcut.md", title: Shortcuts}
-  - {file: "ACCNEWS.md", title: AccNews}
-  - {file: "ACC250.md", title: ACC250}
-  - {file: "ACC531.md", title: ACC531}
-  - {file: "ACC575.md", title: ACC575}
-  - {file: "account-reference.md", title: AccRef}
+  - {file: "ACCNEWS.md", title: AccNews, group: Teaching}
+  - {file: "ACC250.md", title: ACC250, group: Teaching}
+  - {file: "ACC531.md", title: ACC531, group: Teaching}
+  - {file: "ACC575.md", title: ACC575, group: Teaching}
+  - {file: "account-reference.md", title: AccRef, group: Teaching}
   # - {file: "Inventory-costing.md", title: InvCosting}
   # - {file: "Depreciation.md", title: DepExp-Method}
   # - {file: "Benford-analyzer.md", title: Benford-Analyzer}
-  - {file: "Grade-analyzer.md", title: GradeAnalyzer}
+  - {file: "Grade-analyzer.md", title: GradeAnalyzer, group: Teaching}
   # - {file: "python-basics.md", title: Python-Basic}
   # - {file: "python-applications.md", title: Python-Applied}
-  - {file: "michigan-housing.md", title: Housing}
-  - {file: "visuals.md", title: Viz}
-  - {title: Financials, url: "/fs/"}   # financial statements site: github.com/jaeyoonyu/fs
-  - {title: Family, url: "/family/"}   # own layout (_layouts/family.html): meals, community center, children's museums
-  - {file: "cmu.md", title: CMU}
+  - {file: "michigan-housing.md", title: Housing, group: Others}
+  - {file: "visuals.md", title: Viz, group: Research}
+  - {title: Financials, url: "/fs/", group: Research}   # financial statements site: github.com/jaeyoonyu/fs
+  - {title: Family, url: "/family/", group: Others}   # own layout (_layouts/family.html): meals, community center, children's museums
+  - {file: "cmu.md", title: CMU, group: Others}
 
 
 external:                  # shows a footer with social links - for available icons see fontawesome.com/icons

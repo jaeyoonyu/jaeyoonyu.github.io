@@ -8,11 +8,13 @@
   aside .sidebar-name { display: block; font-size: 1.25em; font-weight: bold; margin: 0 0 1em; text-decoration: none; }
   aside nav { margin: 0 -1.5em; }
   aside nav a { padding: 0.42em 1.5em; }
+  aside .gnav-label { margin: 1.1em 0 0.2em; padding: 0 1.5em; font-size: 0.68em; font-weight: bold;
+    text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.5; }
 }
 </style>
 <aside style="display: none">
   <a href="{{ "/" | relative_url }}" class="sidebar-name">{{ site.title | escape }}</a>
-  {% include menu.html menu=site.navigation text=true icon=true %}
+  {% include grouped-nav.html mode="side" %}
   {% assign sidebar_external = site.external | where_exp: "item", "item.title != 'Github'" %}
   {% include menu.html menu=sidebar_external text=true icon=true %}
 </aside>
