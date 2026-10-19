@@ -38,6 +38,7 @@ title: "CMU"
   <div class="row"><span class="lbl">Pay &amp; Benefits</span>
     <a href="https://www.cmich.edu/offices-departments/finance-administrative-services/financial-services-reporting/payroll" title="Pay dates, direct deposit, tax forms" target="_blank" rel="noopener">Payroll</a>
     <a href="https://hr.apps.cmich.edu/w2" title="Annual W-2 forms" target="_blank" rel="noopener">W-2</a>
+    <a href="https://hr.apps.cmich.edu/compensation/" title="Total compensation statement" target="_blank" rel="noopener">TotalComp</a>
     <a href="https://benefits.apps.cmich.edu/SecurityPin.aspx" title="Benefits portal (security PIN)" target="_blank" rel="noopener">Benefits Enrollment</a>
     <a href="https://www.cmich.edu/offices-departments/faculty-personnel-services/faculty-benefits" title="Faculty benefits overview" target="_blank" rel="noopener">Faculty Benefits</a>
   </div>
