@@ -34,7 +34,7 @@ This interactive accounting reference includes basic account types and journal e
 </style>
 
 <div class="full-width-container">
-    <iframe src="/assets/ACC250/Interactive-account-reference.html" 
+    <iframe src="/assets/ACC250/Interactive-account-reference.html?v=91c212c0" 
             style="width: 100%; height: 100%; border: none;">
     </iframe>
 </div>

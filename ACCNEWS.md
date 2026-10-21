@@ -20,7 +20,7 @@ The attached file includes accounting cases that I use in my courses. Examples i
 * Oracle's Remaining Performance Obligations (2025)
 * MicroStrategy's cryptocurrency accounting (2020~)
 
-[AccountingCases](/assets/Cases.pdf)
+[AccountingCases](/assets/Cases.pdf?v=aa61953c)
 
 ## Sources for Capital Market News
 

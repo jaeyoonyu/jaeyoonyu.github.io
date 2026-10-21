@@ -3,7 +3,7 @@ layout: page
 title: "Grade Analyzer"
 ---
 
-Click to open <a href="/assets/Grade-Analyzer.html" target="_blank">Grader-Analyzer</a>. This performs a quick analysis of exam scores, which is designed to help instructors including me.
+Click to open <a href="/assets/Grade-Analyzer.html?v=6725bb8c" target="_blank">Grader-Analyzer</a>. This performs a quick analysis of exam scores, which is designed to help instructors including me.
 
 ### Parameters
 - Maximum score of the exam
