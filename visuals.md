@@ -46,14 +46,7 @@ Click here for the [Code](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/
 <br>
 
 ---
-<h2> 5. Scatter plots: ROA & SALES </h2>
-{% include dynamic-scatter-plot.html %}
-
-Click here for the [Code](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/compustat-bubble-plot-animation.html).
-
----
-
-<h2> 6. Yearly distribution of bankruptcies  </h2>
+<h2> 5. Yearly distribution of bankruptcies  </h2>
 
 <img src="/assets/images/bankruptcy-dist.jpg" class="inline">
 

@@ -60,7 +60,6 @@ All code files are stored <a href="https://github.com/jaeyoonyu/jaeyoonyu.github
 * <b>Seaborn</b> allows to visualize data with multiple dimensions: [scatterplot of firm size, profitability, and auditor size.](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/sctterplot-ROA-size-Big4.ipynb)<br/>
 * <b>Plotly for animated visualization</b><br>
     * [Auditors' client distribution](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/audit-analytics-client-distribution.html).<br/>
-    * Dynamic scatter plot: [ROA & Sales over time](https://raw.githack.com/jaeyoonyu/jaeyoonyu.github.io/main/_code/compustat-bubble-plot-animation.html).<br>
 * WRDS processes some BoardEx datasets and provides <b>the processed ones</b> as well as raw ones. <b>Are they reliable?</b> See [the figure at the end of this code](https://nbviewer.org/github/jaeyoonyu/jaeyoonyu.github.io/blob/main/_code/wrds-download-boardex-bdchars.ipynb).<br>
  
 <!-- To render HTML and get a link:
