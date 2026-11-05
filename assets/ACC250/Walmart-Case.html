@@ -5,65 +5,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Walmart In-Class Case</title>
 <style>
-:root { --ink:#000; --muted:#555; --accent:#1a7a5e; --key:#b3200f; }
+:root { --accent:#1a7a5e; --key:#b3200f; }
 * { box-sizing:border-box; }
 html { background:#e9ecea; }
-body { margin:0; color:var(--ink); font:10pt/1.3 "Times New Roman",Times,serif; }
-.page { width:8.5in; min-height:11in; margin:18px auto; background:#fff; padding:.28in .5in .2in;
+body { margin:0; color:#000; font:10.5pt/1.35 "Times New Roman",Times,serif; }
+.page { width:8.5in; min-height:11in; margin:18px auto; background:#fff; padding:.5in .6in .4in;
   box-shadow:0 6px 24px rgba(0,0,0,.15); }
 .bar { position:sticky; top:0; z-index:5; display:flex; gap:10px; justify-content:center; padding:10px;
-  background:#16263a; font:13px "Segoe UI",system-ui,sans-serif; }
+  background:#16263a; }
 .bar button { font:600 13px "Segoe UI",system-ui,sans-serif; padding:7px 16px; border-radius:6px; border:0;
   background:#fff; color:#16263a; cursor:pointer; }
 .bar button.on { background:var(--accent); color:#fff; }
 
-header { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:1.5pt solid #000;
-  padding-bottom:3pt; margin-bottom:4pt; }
+header { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:1.2pt solid #000;
+  padding-bottom:3pt; margin-bottom:8pt; }
 header .course { font:700 8.5pt Arial,sans-serif; letter-spacing:.1em; text-transform:uppercase; }
-header .name span { display:inline-block; width:2.1in; border-bottom:.8pt solid #000; }
-h1 { font-size:14pt; margin:1pt 0; }
-.intro { margin:0 0 5pt; font-size:9.5pt; }
+header .name span { display:inline-block; width:2.2in; border-bottom:.8pt solid #000; }
+h1 { font-size:15pt; margin:0 0 3pt; }
+.intro { margin:0 0 12pt; }
 
-.cols { display:grid; grid-template-columns:1.1fr .9fr; gap:.2in; align-items:start; }
+.cols { display:grid; grid-template-columns:1fr 1fr; gap:.35in; align-items:start; }
 
 /* ---- 10-K style statements ---- */
-.stmt { font-size:8.4pt; line-height:1.15; }
-.stmt .co, .stmt .ttl { text-align:center; font-weight:700; font-size:9.4pt; margin:0; }
-.stmt .unit { text-align:center; font-style:italic; font-size:8.3pt; margin:0 0 3pt; }
+.stmt { font-size:9.6pt; line-height:1.2; }
+.stmt .co, .stmt .ttl { text-align:center; font-weight:700; margin:0; }
+.stmt .unit { text-align:center; font-style:italic; font-size:9pt; margin:0 0 4pt; }
 .stmt table { width:100%; border-collapse:collapse; }
-.stmt th { font-weight:700; text-align:right; padding:0 2pt; font-size:8.3pt; vertical-align:bottom; }
-.stmt th.span { text-align:center; border-bottom:.8pt solid #000; }
-.stmt th.yr { border-bottom:.8pt solid #000; }
-.stmt td { padding:.75pt 2pt; vertical-align:bottom; }
-.stmt td.n { text-align:right; white-space:nowrap; width:.86in; padding-left:9pt; }
-.stmt td.p { color:#333; }
+.stmt th { font-weight:700; text-align:right; padding:0 2pt 1pt; font-size:9pt; border-bottom:.8pt solid #000; }
+.stmt th:first-child { border:0; }
+.stmt td { padding:2.3pt 2pt; vertical-align:bottom; }
+.stmt td.n { text-align:right; white-space:nowrap; width:.95in; }
 .stmt td.n i { font-style:normal; float:left; }
-.stmt .i1 { padding-left:9pt; } .stmt .i2 { padding-left:18pt; } .stmt .i3 { padding-left:27pt; }
-.stmt .hd td { padding-top:2pt; }
+.stmt .i1 { padding-left:10pt; } .stmt .i2 { padding-left:20pt; }
+.stmt .hd td { padding-top:6pt; }
 .stmt tr.u td.n { border-bottom:.8pt solid #000; }
 .stmt tr.uu td.n { border-bottom:2.4pt double #000; }
-.stmt .note { font-size:7.6pt; font-style:italic; margin:2pt 0 0; text-align:center; }
 
-.bl { display:inline-block; min-width:.6in; border-bottom:.9pt solid #000; text-align:right; position:relative; }
-.stmt tr.u .bl, .stmt tr.uu .bl { border-bottom:0; }
-.bl.w { min-width:.95in; }
-.bl b { font:700 7pt Arial,sans-serif; position:absolute; left:-9pt; top:0; color:#fff; background:#000;
-  border-radius:2pt; padding:0 2pt; line-height:1.3; }
+.bl { display:inline-block; min-width:.75in; border-bottom:.9pt solid #000; text-align:right; position:relative; }
+.stmt .bl { border-bottom:0; min-width:.7in; }
+.bl b { font:700 7.5pt Arial,sans-serif; position:absolute; left:-12pt; top:0; color:#fff; background:#000;
+  border-radius:2pt; padding:0 2.5pt; line-height:1.35; }
 .bl::after { content:"\00a0"; }
 html.key .bl::after { content:attr(data-a); color:var(--key); font-weight:700; }
 
-h2 { font:700 8.8pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase;
-  margin:7pt 0 3pt; padding:1.5pt 6pt; background:#f1f3f2; border-left:3pt solid var(--accent); }
-ol.q { margin:0; padding-left:15pt; font-size:9.6pt; }
-ol.q > li { margin:0 0 3pt; }
-ol.q .bl { margin-left:10pt; }
-.pick i { font-style:normal; padding:0 2pt; }
-html.key .pick i.r { border:1.2pt solid var(--key); border-radius:7pt; color:var(--key); font-weight:700; }
-.why { display:none; color:var(--key); font-size:8.4pt; line-height:1.22; }
+h2 { font:700 9pt Arial,sans-serif; letter-spacing:.08em; text-transform:uppercase;
+  margin:16pt 0 6pt; padding-bottom:2pt; border-bottom:.8pt solid #000; }
+ol.q { margin:0; padding-left:16pt; }
+ol.q > li { margin:0 0 10pt; }
+ol.q .bl { margin-left:16pt; }
+.why { display:none; color:var(--key); font-size:9.5pt; }
 html.key .why { display:block; }
-.lines { border-bottom:.8pt solid #999; height:11pt; }
+.lines { border-bottom:.8pt solid #999; height:22pt; }
 html.key .lines { display:none; }
-.src { margin-top:5pt; font-size:7.4pt; color:var(--muted); border-top:.6pt solid #bbb; padding-top:2pt; }
+.src { margin-top:12pt; font-size:7.8pt; color:#555; }
 .keytag { display:none; color:var(--key); }
 html.key .keytag { display:inline; }
 
@@ -92,111 +86,72 @@ html.key .keytag { display:inline; }
 </header>
 
 <h1>Walmart: Reading the Real Financial Statements</h1>
-<p class="intro">These are Walmart&rsquo;s statements as they appear in its <b>Form 10-K</b> filed with the SEC (a few lines omitted). Walmart&rsquo;s fiscal 2025 ended <b>January 31, 2025</b>. Fill in each lettered blank in the <b>2025</b> column, using how the accounts relate. Calculators are fine.</p>
+<p class="intro">From Walmart&rsquo;s Form 10-K for the fiscal year ended <b>January 31, 2025</b> (some lines combined). Fill in the blanks <b>A&ndash;L</b>.</p>
 
 <div class="cols">
-<!-- ================= INCOME STATEMENT ================= -->
 <div class="stmt">
 <p class="co">Walmart Inc.</p>
-<p class="ttl">Consolidated Statements of Income</p>
-<p class="unit">(Amounts in millions, except per share data)</p>
+<p class="ttl">Consolidated Statement of Income</p>
+<p class="unit">(Amounts in millions)</p>
 <table>
-<tr><th></th><th class="span" colspan="2">Fiscal Years Ended January 31,</th></tr>
-<tr><th></th><th class="yr">2025</th><th class="yr">2024</th></tr>
-<tr class="hd"><td>Revenues:</td><td></td><td></td></tr>
-<tr><td class="i1">Net sales</td><td class="n"><i>$</i>674,538</td><td class="n p"><i>$</i>642,637</td></tr>
-<tr class="u"><td class="i1">Membership and other income</td><td class="n">6,447</td><td class="n p">5,488</td></tr>
-<tr><td class="i2">Total revenues</td><td class="n"><span class="bl" data-a="680,985"><b>A</b></span></td><td class="n p">648,125</td></tr>
-<tr class="hd"><td>Costs and expenses:</td><td></td><td></td></tr>
-<tr><td class="i1">Cost of sales</td><td class="n">511,753</td><td class="n p">490,142</td></tr>
-<tr class="u"><td class="i1">Operating, selling, general and administrative expenses</td><td class="n">139,884</td><td class="n p">130,971</td></tr>
-<tr><td>Operating income</td><td class="n"><span class="bl" data-a="29,348"><b>B</b></span></td><td class="n p">27,012</td></tr>
-<tr class="hd"><td>Interest:</td><td></td><td></td></tr>
-<tr><td class="i1">Debt</td><td class="n">2,249</td><td class="n p">2,259</td></tr>
-<tr><td class="i1">Finance lease</td><td class="n">479</td><td class="n p">424</td></tr>
-<tr class="u"><td class="i1">Interest income</td><td class="n">(483)</td><td class="n p">(546)</td></tr>
-<tr><td class="i2">Interest, net</td><td class="n"><span class="bl" data-a="2,245"><b>C</b></span></td><td class="n p">2,137</td></tr>
-<tr class="u"><td>Other (gains) and losses</td><td class="n">794</td><td class="n p">3,027</td></tr>
-<tr><td>Income before income taxes</td><td class="n"><span class="bl" data-a="26,309"><b>D</b></span></td><td class="n p">21,848</td></tr>
-<tr class="u"><td>Provision for income taxes</td><td class="n">6,152</td><td class="n p">5,578</td></tr>
-<tr><td>Consolidated net income</td><td class="n"><span class="bl" data-a="20,157"><b>E</b></span></td><td class="n p">16,270</td></tr>
-<tr class="u"><td class="i1">Consolidated net income attributable to noncontrolling interest</td><td class="n">(721)</td><td class="n p">(759)</td></tr>
-<tr class="uu"><td>Consolidated net income attributable to Walmart</td><td class="n"><span class="bl" data-a="$ 19,436"><b>F</b></span></td><td class="n p"><i>$</i>15,511</td></tr>
-<tr class="hd uu"><td>Diluted net income per common share attributable to Walmart</td><td class="n"><i>$</i>2.41</td><td class="n p"><i>$</i>1.91</td></tr>
+<tr><th></th><th>Fiscal 2025</th></tr>
+<tr><td>Net sales</td><td class="n"><i>$</i>674,538</td></tr>
+<tr class="u"><td>Membership and other income</td><td class="n">6,447</td></tr>
+<tr><td class="i1">Total revenues</td><td class="n"><span class="bl" data-a="680,985"><b>A</b></span></td></tr>
+<tr class="hd"><td>Cost of sales</td><td class="n">511,753</td></tr>
+<tr class="u"><td>Operating, selling, general &amp; admin. expenses</td><td class="n">139,884</td></tr>
+<tr><td class="i1">Operating income</td><td class="n"><span class="bl" data-a="29,348"><b>B</b></span></td></tr>
+<tr class="hd"><td>Interest, net</td><td class="n">2,245</td></tr>
+<tr class="u"><td>Other (gains) and losses</td><td class="n">794</td></tr>
+<tr><td class="i1">Income before income taxes</td><td class="n"><span class="bl" data-a="26,309"><b>C</b></span></td></tr>
+<tr class="u"><td>Provision for income taxes</td><td class="n">6,152</td></tr>
+<tr><td class="i1">Consolidated net income</td><td class="n"><span class="bl" data-a="20,157"><b>D</b></span></td></tr>
+<tr class="u"><td>Less: attributable to noncontrolling interest</td><td class="n">(721)</td></tr>
+<tr class="uu"><td class="i1">Net income attributable to Walmart</td><td class="n"><i>$</i>19,436</td></tr>
 </table>
-<p class="note">See accompanying notes.</p>
-
-<h2>Part 3 &middot; How the accounts connect</h2>
-<ol class="q">
-<li><b>Gross profit</b> = Net sales &minus; Cost of sales <span class="bl w" data-a="162,785"><b>G</b></span><br>
-<b>Gross margin %</b> = Gross profit &divide; Net sales <span class="bl" data-a="24.1%"><b>H</b></span></li>
-<li><b>Purchases.</b> Beginning inventory (Jan 31, 2024) was 54,892. Beginning inventory + Purchases &minus; Cost of sales = Ending inventory. Purchases =<span class="bl w" data-a="513,296"><b>I</b></span></li>
-<li><b>Inventory turnover</b> = Cost of sales &divide; Average inventory <span class="bl" data-a="9.2 times"><b>J</b></span></li>
-</ol>
 </div>
 
-<!-- ================= BALANCE SHEET ================= -->
 <div class="stmt">
 <p class="co">Walmart Inc.</p>
 <p class="ttl">Consolidated Balance Sheet</p>
 <p class="unit">(Amounts in millions)</p>
 <table>
-<tr><th></th><th class="yr">January 31, 2025</th></tr>
-<tr class="hd"><td><b>ASSETS</b></td><td></td></tr>
-<tr><td>Current assets:</td><td></td></tr>
-<tr><td class="i1">Cash and cash equivalents</td><td class="n"><i>$</i>9,037</td></tr>
-<tr><td class="i1">Receivables, net</td><td class="n">9,975</td></tr>
-<tr><td class="i1">Inventories</td><td class="n">56,435</td></tr>
-<tr class="u"><td class="i1">Prepaid expenses and other</td><td class="n">4,011</td></tr>
-<tr><td class="i2">Total current assets</td><td class="n"><span class="bl" data-a="79,458"><b>K</b></span></td></tr>
-<tr><td>Property and equipment, net</td><td class="n">119,993</td></tr>
-<tr><td>Operating lease right-of-use assets</td><td class="n">13,599</td></tr>
-<tr><td>Finance lease right-of-use assets, net</td><td class="n">6,112</td></tr>
-<tr><td>Goodwill</td><td class="n">28,792</td></tr>
-<tr class="u"><td>Other long-term assets</td><td class="n">12,869</td></tr>
-<tr class="uu"><td class="i2">Total assets</td><td class="n"><span class="bl" data-a="$ 260,823"><b>L</b></span></td></tr>
-<tr class="hd"><td><b>LIABILITIES, REDEEMABLE NONCONTROLLING INTEREST, AND EQUITY</b></td><td></td></tr>
-<tr><td>Current liabilities:</td><td></td></tr>
-<tr><td class="i1">Short-term borrowings</td><td class="n"><i>$</i>3,068</td></tr>
-<tr><td class="i1">Accounts payable</td><td class="n">58,666</td></tr>
-<tr><td class="i1">Accrued liabilities</td><td class="n">29,345</td></tr>
-<tr><td class="i1">Accrued income taxes</td><td class="n">608</td></tr>
-<tr><td class="i1">Long-term debt due within one year</td><td class="n">2,598</td></tr>
-<tr><td class="i1">Operating lease obligations due within one year</td><td class="n">1,499</td></tr>
-<tr class="u"><td class="i1">Finance lease obligations due within one year</td><td class="n">800</td></tr>
-<tr><td class="i2">Total current liabilities</td><td class="n"><span class="bl" data-a="96,584"><b>M</b></span></td></tr>
-<tr><td>Long-term debt</td><td class="n">33,401</td></tr>
-<tr><td>Long-term operating lease obligations</td><td class="n">12,825</td></tr>
-<tr><td>Long-term finance lease obligations</td><td class="n">5,923</td></tr>
-<tr><td>Deferred income taxes and other</td><td class="n">14,398</td></tr>
-<tr><td>Redeemable noncontrolling interest</td><td class="n">271</td></tr>
-<tr><td>Shareholders&rsquo; equity:</td><td></td></tr>
-<tr><td class="i1">Common stock</td><td class="n">802</td></tr>
-<tr><td class="i1">Capital in excess of par value</td><td class="n">5,503</td></tr>
-<tr><td class="i1">Retained earnings</td><td class="n">98,313</td></tr>
-<tr class="u"><td class="i1">Accumulated other comprehensive loss</td><td class="n">(13,605)</td></tr>
-<tr><td class="i2">Total Walmart shareholders&rsquo; equity</td><td class="n"><span class="bl" data-a="91,013"><b>N</b></span></td></tr>
-<tr class="u"><td class="i1">Nonredeemable noncontrolling interest</td><td class="n">6,408</td></tr>
-<tr class="u"><td class="i2">Total equity</td><td class="n"><span class="bl" data-a="97,421"><b>O</b></span></td></tr>
-<tr class="uu"><td class="i3">Total liabilities, redeemable noncontrolling interest, and equity</td><td class="n"><i>$</i>260,823</td></tr>
+<tr><th></th><th>Jan 31, 2025</th></tr>
+<tr><td>Cash and cash equivalents</td><td class="n"><i>$</i>9,037</td></tr>
+<tr><td>Receivables, net</td><td class="n">9,975</td></tr>
+<tr><td>Inventories</td><td class="n">56,435</td></tr>
+<tr class="u"><td>Prepaid expenses and other</td><td class="n">4,011</td></tr>
+<tr><td class="i1">Total current assets</td><td class="n"><span class="bl" data-a="79,458"><b>E</b></span></td></tr>
+<tr class="u"><td>Property, leases, goodwill and other</td><td class="n">181,365</td></tr>
+<tr class="uu"><td class="i1">Total assets</td><td class="n"><span class="bl" data-a="$ 260,823"><b>F</b></span></td></tr>
+<tr class="hd"><td>Accounts payable</td><td class="n"><i>$</i>58,666</td></tr>
+<tr class="u"><td>Accrued and other current liabilities</td><td class="n">37,918</td></tr>
+<tr><td class="i1">Total current liabilities</td><td class="n"><span class="bl" data-a="96,584"><b>G</b></span></td></tr>
+<tr class="u"><td>Long-term debt, leases and other</td><td class="n">66,818</td></tr>
+<tr class="hd"><td>Common stock and paid-in capital</td><td class="n">6,305</td></tr>
+<tr><td>Retained earnings</td><td class="n">98,313</td></tr>
+<tr class="u"><td>Other equity, net</td><td class="n">(7,197)</td></tr>
+<tr class="u"><td class="i1">Total equity</td><td class="n"><span class="bl" data-a="97,421"><b>H</b></span></td></tr>
+<tr class="uu"><td class="i1">Total liabilities and equity</td><td class="n"><i>$</i>260,823</td></tr>
 </table>
-<p class="note">See accompanying notes.</p>
 </div>
 </div>
 
-<ol class="q" start="4">
-<li><b>Retained earnings</b> grew from 89,814 (Jan 31, 2024) to 98,313. Increase =<span class="bl" data-a="8,499"><b>P</b></span>
-&nbsp; Net income attributable to Walmart (F) was larger than this increase. Why?
+<h2>How the accounts connect</h2>
+<ol class="q">
+<li><b>Gross profit</b> = Net sales &minus; Cost of sales <span class="bl" data-a="162,785"><b>I</b></span>
+&nbsp;&nbsp; <b>Gross margin %</b> = Gross profit &divide; Net sales <span class="bl" data-a="24.1%"><b>J</b></span></li>
+<li><b>Purchases.</b> Inventories were 54,892 a year earlier. Beginning inventory + Purchases &minus; Cost of sales = Ending inventory. <br>How much inventory did Walmart buy this year? <span class="bl" data-a="513,296"><b>K</b></span></li>
+<li><b>Retained earnings</b> were 89,814 a year earlier. By how much did they increase? <span class="bl" data-a="8,499"><b>L</b></span><br>
+Walmart earned 19,436, so why is the increase smaller?
 <div class="lines"></div>
-<div class="why">Retained earnings = beginning + net income &minus; dividends (Walmart also charges part of its share buybacks here). It earned 19,436, but most of the difference was paid out to shareholders.</div></li>
-<li><b>Accounts payable</b> (58,666) is larger than <b>inventories</b> (56,435), and current liabilities exceed current assets. What does that tell you about Walmart?
+<div class="why">Part of the profit went back to shareholders as dividends (and share buybacks), which reduce retained earnings.</div></li>
+<li><b>Accounts payable</b> (58,666) is larger than <b>inventories</b> (56,435). What does that tell you?
 <div class="lines"></div>
-<div class="why">Walmart sells the goods (about every 40 days) before it has to pay suppliers, so suppliers are financing its inventory. For Walmart this reflects bargaining power, not trouble.</div></li>
-<li><b>LIFO.</b> Walmart&rsquo;s U.S. stores use LIFO. When costs are <i>rising</i>, LIFO vs. FIFO gives cost of sales
-<span class="pick"><i class="r">higher</i>/<i>lower</i></span>, net income <span class="pick"><i>higher</i>/<i class="r">lower</i></span>, ending inventory <span class="pick"><i>higher</i>/<i class="r">lower</i></span>.</li>
+<div class="why">Walmart sells its goods before it has to pay its suppliers, so suppliers are financing its inventory.</div></li>
 </ol>
 
-<p class="src">Source: Walmart Inc. Form 10-K for the fiscal year ended January 31, 2025 (SEC EDGAR), and the fiscal 2025 Q4 earnings release. Omitted: the 2023 income statement column, basic EPS and share counts, and the prior-year balance sheet column. &ldquo;Finance lease right-of-use assets, net&rdquo; is shown as the amount that balances total assets.</p>
+<p class="src">Source: Walmart Inc. Form 10-K, fiscal year ended January 31, 2025 (SEC EDGAR). Combined lines: &ldquo;Other equity, net&rdquo; = accumulated other comprehensive loss (13,605) + noncontrolling interest 6,408; &ldquo;Long-term debt, leases and other&rdquo; includes a $271M redeemable noncontrolling interest.</p>
 </div>
 
 <script>
