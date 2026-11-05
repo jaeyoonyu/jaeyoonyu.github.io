@@ -528,6 +528,8 @@ body.norail #hint { left:14px; }
 .srcs { font-size:25px; line-height:1.55; margin:0; padding-left:1.2em; }
 .srcs a { color:var(--accent); }
 .items li .why { font-size:20px; }
+.stmt table { font-size:22px; }
+.stmt td { padding:5px 8px; }
 .hbar.wide { grid-template-columns:400px 1fr 90px; }
 </style>
 </head>
@@ -539,130 +541,144 @@ body.norail #hint { left:14px; }
 <div class="tstack">
 <p class="eyebrow">ACC 250 &middot; In-Class Case</p>
 <h1>Walmart: Reading the Real Financial Statements</h1>
-<p class="lede">Fiscal 2025 (year ended Jan 31, 2025). How the income statement and balance sheet connect, using Ch1&ndash;7.</p>
+<p class="lede">Straight from the Form 10-K. How the income statement and balance sheet connect, using Ch1&ndash;7.</p>
 </div>
-<p class="title-date">All amounts in $ millions &middot; Source: Walmart Form 10-K, fiscal 2025</p>
+<p class="title-date">Fiscal 2025 (year ended January 31, 2025) &middot; Amounts in millions</p>
 </section>
 
 <section class="s" data-nav="Your task">
 <p class="eyebrow">10 minutes</p>
 <h2>Your task</h2>
 <div class="tests">
-<div class="test"><span class="n">1</span><div>Fill in blanks <b>A&ndash;D</b> on the income statement.</div></div>
-<div class="test"><span class="n">2</span><div>Fill in blanks <b>E&ndash;H</b> on the balance sheet. Use <b>Assets = Liabilities + Equity</b>.</div></div>
-<div class="test"><span class="n">3</span><div>Connect the accounts (<b>I&ndash;M</b>): purchases, gross margin, inventory turnover.</div></div>
-<div class="test"><span class="n">4</span><div>Concepts (<b>N&ndash;P</b>): LIFO and membership fees.</div></div>
+<div class="test"><span class="n">1</span><div>Income statement, blanks <b>A&ndash;F</b>: work down from revenues to net income.</div></div>
+<div class="test"><span class="n">2</span><div>Balance sheet, blanks <b>K&ndash;O</b>: add up each section. Does it balance?</div></div>
+<div class="test"><span class="n">3</span><div>Connect the accounts, <b>G&ndash;J</b> and <b>P</b>: gross margin, purchases, turnover, retained earnings.</div></div>
+<div class="test"><span class="n">4</span><div>Explain: accounts payable vs. inventory, and LIFO.</div></div>
 </div>
 <div class="note">Why January 31? Retailers end their fiscal year <b>after the holiday season</b>, when inventory is lowest and the busy season is over.</div>
 </section>
 
-<section class="s" data-nav="Part 1 · Income statement">
-<p class="eyebrow">Part 1 &middot; Income Statement</p>
-<h2>From sales down to net income</h2>
+<section class="s" data-nav="A–F · Income statement">
+<p class="eyebrow">Consolidated Statements of Income</p>
+<h2>Working down to net income</h2>
 <div class="two">
 <div class="stmt">
-<h3>Year ended Jan 31, 2025</h3>
+<h3>Fiscal year ended Jan 31, 2025 ($M)</h3>
 <table>
-<tr><th></th><th>$M</th></tr>
+<tr><th></th><th>2025</th></tr>
 <tr><td>Net sales</td><td>674,538</td></tr>
 <tr><td>Membership and other income</td><td>6,447</td></tr>
 <tr class="total"><td><span class="hl">A</span> Total revenues</td><td class="hl">680,985</td></tr>
-<tr><td>Cost of sales</td><td>(511,753)</td></tr>
-<tr><td><span class="hl">B</span> Gross profit</td><td class="hl">162,785</td></tr>
-<tr><td>Operating, SG&amp;A expenses</td><td>(139,884)</td></tr>
-<tr class="total"><td><span class="hl">C</span> Operating income</td><td class="hl">29,348</td></tr>
-<tr><td>Interest, taxes &amp; other, net</td><td>(9,191)</td></tr>
-<tr class="total"><td><span class="hl">D</span> Net income</td><td class="hl">20,157</td></tr>
+<tr><td>Cost of sales</td><td>511,753</td></tr>
+<tr><td>Operating, SG&amp;A expenses</td><td>139,884</td></tr>
+<tr class="total"><td><span class="hl">B</span> Operating income</td><td class="hl">29,348</td></tr>
+<tr><td><span class="hl">C</span> Interest, net</td><td class="hl">2,245</td></tr>
+<tr><td>Other (gains) and losses</td><td>794</td></tr>
+<tr class="total"><td><span class="hl">D</span> Income before income taxes</td><td class="hl">26,309</td></tr>
+<tr><td>Provision for income taxes</td><td>6,152</td></tr>
+<tr class="total"><td><span class="hl">E</span> Consolidated net income</td><td class="hl">20,157</td></tr>
+<tr><td>Attributable to noncontrolling interest</td><td>(721)</td></tr>
+<tr class="total"><td><span class="hl">F</span> Attributable to Walmart</td><td class="hl">19,436</td></tr>
 </table>
 </div>
 <div>
 <div class="note"><b>A</b> = 674,538 + 6,447</div>
-<div class="note"><b>B</b> = 674,538 &minus; 511,753 <br><span class="fine">Gross profit uses <i>net sales</i> only: what is left after paying for the goods sold.</span></div>
-<div class="note"><b>C</b> = 680,985 &minus; 511,753 &minus; 139,884</div>
-<div class="note"><b>D</b> = 29,348 &minus; 9,191</div>
+<div class="note"><b>B</b> = 680,985 &minus; 511,753 &minus; 139,884</div>
+<div class="note"><b>C</b> = 2,249 + 479 &minus; 483 <span class="fine">(interest paid on debt and leases, less interest earned)</span></div>
+<div class="note"><b>D</b> = 29,348 &minus; 2,245 &minus; 794</div>
+<div class="note"><b>E</b> = 26,309 &minus; 6,152 &nbsp;&middot;&nbsp; <b>F</b> = 20,157 &minus; 721</div>
+<div class="note"><b>Parentheses</b> = subtract. Walmart&rsquo;s statement has no &ldquo;gross profit&rdquo; line; we compute it in G.</div>
 </div>
 </div>
 </section>
 
-<section class="s" data-nav="Part 2 · Balance sheet">
-<p class="eyebrow">Part 2 &middot; Balance Sheet</p>
+<section class="s" data-nav="K–O · Balance sheet">
+<p class="eyebrow">Consolidated Balance Sheet</p>
 <h2>Assets = Liabilities + Equity</h2>
 <div class="two">
 <div class="stmt">
-<h3>Assets, Jan 31, 2025</h3>
+<h3>Assets, Jan 31, 2025 ($M)</h3>
 <table>
 <tr><th></th><th>$M</th></tr>
-<tr><td>Cash</td><td>9,037</td></tr>
-<tr><td>Receivables, net</td><td>9,975</td></tr>
-<tr><td>Inventories</td><td>56,435</td></tr>
-<tr><td>Prepaid and other</td><td>4,011</td></tr>
-<tr class="total"><td><span class="hl">E</span> Total current assets</td><td class="hl">79,458</td></tr>
-<tr><td>Property, leases, goodwill &amp; other</td><td>181,365</td></tr>
-<tr class="total"><td><span class="hl">F</span> Total assets</td><td class="hl">260,823</td></tr>
+<tr><td>Cash, receivables, inventories, prepaid</td><td>79,458</td></tr>
+<tr class="total"><td><span class="hl">K</span> Total current assets</td><td class="hl">79,458</td></tr>
+<tr><td>Property and equipment, net</td><td>119,993</td></tr>
+<tr><td>Lease right-of-use assets</td><td>19,711</td></tr>
+<tr><td>Goodwill and other long-term assets</td><td>41,661</td></tr>
+<tr class="total"><td><span class="hl">L</span> Total assets</td><td class="hl">260,823</td></tr>
 </table>
 </div>
 <div class="stmt">
-<h3>Liabilities &amp; equity</h3>
+<h3>Liabilities &amp; equity ($M)</h3>
 <table>
 <tr><th></th><th>$M</th></tr>
-<tr><td>Accounts payable</td><td>58,666</td></tr>
-<tr><td>Other current liabilities</td><td>37,918</td></tr>
-<tr class="total"><td>Total current liabilities</td><td>96,584</td></tr>
-<tr><td><span class="hl">H</span> Long-term liabilities</td><td class="hl">66,818</td></tr>
-<tr class="total"><td><span class="hl">G</span> Total liabilities</td><td class="hl">163,402</td></tr>
-<tr><td>Shareholders&rsquo; equity</td><td>97,421</td></tr>
-<tr class="total"><td>Total liabilities &amp; equity</td><td>260,823</td></tr>
+<tr class="total"><td><span class="hl">M</span> Total current liabilities</td><td class="hl">96,584</td></tr>
+<tr><td>Long-term liabilities + redeemable NCI</td><td>66,818</td></tr>
+<tr><td>Common stock + capital in excess of par</td><td>6,305</td></tr>
+<tr><td>Retained earnings</td><td>98,313</td></tr>
+<tr><td>Accumulated other comprehensive loss</td><td>(13,605)</td></tr>
+<tr class="total"><td><span class="hl">N</span> Total Walmart shareholders&rsquo; equity</td><td class="hl">91,013</td></tr>
+<tr><td>Nonredeemable noncontrolling interest</td><td>6,408</td></tr>
+<tr class="total"><td><span class="hl">O</span> Total equity</td><td class="hl">97,421</td></tr>
 </table>
 </div>
 </div>
-<div class="note"><b>G</b> = 260,823 &minus; 97,421 &nbsp;&middot;&nbsp; <b>H</b> = 163,402 &minus; 96,584. Work <i>backward</i> from the equation.</div>
+<div class="key"><span class="klab">Check</span>96,584 + 66,818 + 97,421 = <span class="hl">260,823</span> = total assets.</div>
 </section>
 
-<section class="s" data-nav="I · Inventory flow">
-<p class="eyebrow">Part 3 &middot; Inventory (Ch6&ndash;7)</p>
-<h2>How much inventory did Walmart buy?</h2>
-<div class="stmt" style="max-width:1000px">
+<section class="s" data-nav="G–J · Inventory & margin">
+<p class="eyebrow">Ch6&ndash;7 &middot; Inventory</p>
+<h2>Thin margins, fast shelves</h2>
+<div class="two">
+<div class="stmt">
+<h3>Inventory flow ($M)</h3>
 <table>
 <tr><th></th><th>$M</th></tr>
 <tr><td>Beginning inventory (Jan 31, 2024)</td><td>54,892</td></tr>
 <tr><td>+ Purchases <span class="hl">I</span></td><td class="hl">513,296</td></tr>
-<tr><td>= Goods available for sale</td><td>568,188</td></tr>
-<tr><td>&minus; Cost of sales (income statement)</td><td>(511,753)</td></tr>
-<tr class="total"><td>= Ending inventory (balance sheet)</td><td>56,435</td></tr>
+<tr><td>&minus; Cost of sales</td><td>(511,753)</td></tr>
+<tr class="total"><td>= Ending inventory (Jan 31, 2025)</td><td>56,435</td></tr>
 </table>
+</div>
+<div>
+<div class="note"><b>G</b> Gross profit = 674,538 &minus; 511,753 = <b class="hl">162,785</b></div>
+<div class="note"><b>H</b> Gross margin = 162,785 &divide; 674,538 = <b class="hl">24.1%</b><br><span class="fine">About $24 of every $100 of sales is left after paying for the goods.</span></div>
+<div class="note"><b>J</b> Turnover = 511,753 &divide; [(54,892 + 56,435) &divide; 2] = <b class="hl">9.2 times</b><br><span class="fine">365 &divide; 9.2 &asymp; 40 days on the shelf.</span></div>
+</div>
 </div>
 <div class="key"><span class="klab">The link</span>Inventory leaves the <span class="hl">balance sheet</span> and becomes cost of sales on the <span class="hl">income statement</span>.</div>
 </section>
 
-<section class="s" data-nav="J–M · Ratios">
-<p class="eyebrow">Part 3 &middot; Ratios</p>
-<h2>Thin margins, fast shelves</h2>
-<div class="two">
-<div class="def"><p class="term">Gross margin % &nbsp;(J, K)</p>
-<p>162,785 &divide; 674,538 = <b class="hl">24.1%</b></p>
-<p class="fine" style="margin-top:10px">Out of every $100 of sales, about <b>$24</b> is left after paying for the goods. Everything else (wages, stores, trucks, interest, taxes) comes out of that $24.</p></div>
-<div class="def"><p class="term">Inventory turnover &nbsp;(L, M)</p>
-<p>Average inventory = (54,892 + 56,435) &divide; 2 = 55,664</p>
-<p>511,753 &divide; 55,664 = <b class="hl">9.2 times</b></p>
-<p class="fine" style="margin-top:10px">365 &divide; 9.2 &asymp; <b>40 days</b> on the shelf, on average.</p></div>
+<section class="s" data-nav="P · Retained earnings">
+<p class="eyebrow">Income statement &rarr; Balance sheet</p>
+<h2>Where did the net income go?</h2>
+<div class="stmt" style="max-width:1050px">
+<table>
+<tr><th></th><th>$M</th></tr>
+<tr><td>Retained earnings, Jan 31, 2024</td><td>89,814</td></tr>
+<tr><td>+ Net income attributable to Walmart (F)</td><td>19,436</td></tr>
+<tr><td>&minus; Dividends and share buybacks charged to retained earnings</td><td>(10,937)</td></tr>
+<tr class="total"><td>= Retained earnings, Jan 31, 2025</td><td>98,313</td></tr>
+</table>
 </div>
-<div class="key"><span class="klab">Walmart&rsquo;s model</span>Low margin per item, high volume, fast-moving inventory.</div>
+<div class="note"><b>P</b> Increase = 98,313 &minus; 89,814 = <b class="hl">8,499</b>, less than the 19,436 earned, because profits were <b>returned to shareholders</b>.</div>
+<div class="key"><span class="klab">Key idea</span>Retained earnings is the bridge: net income flows from the income statement into equity.</div>
 </section>
 
-<section class="s" data-nav="Q4 · Who pays for the shelves?">
-<p class="eyebrow">Part 3 &middot; Interpretation</p>
+<section class="s" data-nav="Q5 · Who pays for the shelves?">
+<p class="eyebrow">Interpretation</p>
 <h2>Who pays for the shelves?</h2>
 <div class="hbars">
 <div class="hbar"><span>Accounts payable</span><div class="track"><div class="fill" style="width:100%;background:#b3200f"></div></div><span class="v">58,666</span></div>
 <div class="hbar"><span>Inventories</span><div class="track"><div class="fill" style="width:96.2%;background:#1a7a5e"></div></div><span class="v">56,435</span></div>
 </div>
-<div class="note" style="margin-top:28px">Inventory sells in about <b>40 days</b>, but Walmart pays its suppliers <b>later than that</b>. So Walmart has the cash from customers before the supplier bill is due.</div>
-<div class="note">That is also why <b>current liabilities (96,584) exceed current assets (79,458)</b>. For Walmart, this is a sign of bargaining power, not trouble.</div>
+<div class="note" style="margin-top:28px">Inventory sells in about <b>40 days</b>, but Walmart pays its suppliers <b>later than that</b>. Walmart has the customers&rsquo; cash before the supplier bill is due.</div>
+<div class="note">That is also why <b>current liabilities (96,584) exceed current assets (79,458)</b>. For Walmart, a sign of bargaining power, not trouble.</div>
 <div class="key"><span class="klab">Key idea</span>Walmart&rsquo;s suppliers are financing its inventory.</div>
 </section>
 
-<section class="s" data-nav="Q5 · LIFO">
-<p class="eyebrow">Part 4 &middot; Inventory Costing (Ch7)</p>
+<section class="s" data-nav="Q6 · LIFO">
+<p class="eyebrow">Ch7 &middot; Inventory Costing</p>
 <h2>LIFO when costs are rising</h2>
 <p class="lede">Walmart&rsquo;s U.S. stores use LIFO. Compared with FIFO:</p>
 <ul class="items">
@@ -672,30 +688,13 @@ body.norail #hint { left:14px; }
 </ul>
 </section>
 
-<section class="s" data-nav="Q6 · Membership fees">
-<p class="eyebrow">Part 4 &middot; Unearned Revenue (Ch4)</p>
-<h2>A $50 Sam&rsquo;s Club membership</h2>
-<p class="lede">Paid in cash on Nov 1 for 12 months. Walmart&rsquo;s year-end books on Dec 31:</p>
-<table class="je" style="margin-top:14px">
-<tr><th>Date &middot; Account</th><th>Debit</th><th>Credit</th></tr>
-<tr><td>Nov 1 &nbsp;Cash</td><td>50.00</td><td></td></tr>
-<tr><td class="cr">Unearned revenue</td><td></td><td>50.00</td></tr>
-<tr><td>Dec 31 &nbsp;Unearned revenue</td><td>8.33</td><td></td></tr>
-<tr><td class="cr">Membership revenue</td><td></td><td>8.33</td></tr>
-</table>
-<div class="two" style="margin-top:20px">
-<div class="note"><b>N</b> Revenue earned: $50 &times; 2/12 = <b class="hl">$8.33</b></div>
-<div class="note"><b>O, P</b> Still a liability: <b class="hl">$41.67</b> of <b>unearned revenue</b></div>
-</div>
-</section>
-
 <section class="s" data-nav="Takeaways">
 <p class="eyebrow">Takeaways</p>
 <h2>What this case shows</h2>
 <ol class="steps">
-<li><b>Subtotals tell a story:</b> gross profit &rarr; operating income &rarr; net income.</li>
+<li><b>Subtotals tell a story:</b> operating income &rarr; income before taxes &rarr; net income.</li>
 <li><b>A = L + E</b> always holds, so you can solve for any missing piece.</li>
-<li><b>Inventory links the two statements:</b> beginning + purchases &minus; cost of sales = ending.</li>
+<li><b>Two bridges between the statements:</b> inventory &rarr; cost of sales, and net income &rarr; retained earnings.</li>
 <li><b>Ratios turn numbers into a business model:</b> 24% margin, 40 days on the shelf, suppliers paid later.</li>
 </ol>
 </section>
