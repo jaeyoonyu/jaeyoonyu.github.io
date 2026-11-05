@@ -23,9 +23,17 @@
 .sm-dnav button.on { background: var(--accent); border-color: var(--accent); color: #fff; }
 .sm-dnav button.past { opacity: .55; }
 .sm-dnav button:disabled { opacity: .3; cursor: default; }
+/* Simple / Full toggle inside Day */
+.sm-mode { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; margin-left: auto; }
+.sm-dnav .sm-mode button { border: 0; border-radius: 0; padding: 4px 12px; }
+.sm-dnav .sm-mode button.on { background: var(--accent); color: #fff; }
 
 /* Day (essence): main dishes left, fruit & veg right; sized for a phone */
 .sm-es { max-width: 820px; }
+@media (min-width: 1000px) {
+  .sm-es { max-width: none; }
+  .sm-meals2 { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: start; }
+}
 .sm-etitle { font-size: 19px; font-weight: 700; margin: 6px 0 4px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .sm-em { margin: 10px 0 14px; }
 .sm-em h3 { font-size: 12px; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin: 0 0 6px;
@@ -201,7 +209,7 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
 
 <div class="sm" id="sm">
   <div class="sm-views" id="sm-views">
-    <button data-v="day">Day</button><button data-v="full">Day · full</button><button data-v="week">Week</button>
+    <button data-v="day">Day</button><button data-v="week">Week</button>
   </div>
   <div class="sm-top">
     <button class="sm-up" id="sm-up" hidden></button>
@@ -238,9 +246,9 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
     Every meal also comes with white or chocolate milk, which aren't listed here.<br>
     Green and red come from a keyword rule (added sugar of 12 g or more also counts as junk), not from a dietitian.<br>
     The highlighted day is today, or the next school day after 2 pm.<br>
-    Views: Day (main dishes left, fruit &amp; veg right), Day · full (every nutrient), Week (five days side by side).<br>
+    Day: Simple (main dishes left, fruit &amp; veg right) or Full (every nutrient). Week: five days side by side.<br>
     Ctrl+↑ / Ctrl+↓ switch views; Ctrl+← / Ctrl+→ switch days (weeks, in the Week view); ← / → scroll the full table.<br>
-    Updated 2026-11-05 08:34.
+    Updated 2026-11-05 08:36.
   </div>
 </div>
 
@@ -277,6 +285,7 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
   const homeWi = wi;
   const VIEWS = ["day", "full", "week"];
   let view = "day", day = focus || (DAYS[0] && DAYS[0].date) || null;
+  let dayMode = "day";  // the Day tab reopens Simple or Full, whichever was used last
 
   function weekLabel(i) {
     const d = i - homeWi;
@@ -350,7 +359,7 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
         <div class="sm-eside"><div class="sm-eh">Fruit &amp; veg</div>${sides || `<div class="sm-none">—</div>`}</div></div></section>`;
     };
     $("sm-essence").innerHTML = `<div class="sm-es"><div class="sm-etitle">${fmt(day, { weekday: "long", month: "short", day: "numeric" })} ${badgeFor(day)}</div>
-      ${meal("breakfast", "Breakfast")}${meal("lunch", "Lunch")}</div>`;
+      <div class="sm-meals2">${meal("breakfast", "Breakfast")}${meal("lunch", "Lunch")}</div></div>`;
   }
 
   // Day navigation for both day views: ‹ prev, the week's school days, next ›.
@@ -359,7 +368,8 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
     const wk = WEEKS.find(w => w.days.some(x => x.date === day));
     const pills = wk ? wk.days.filter(x => x.breakfast || x.lunch).map(x =>
       `<button data-day="${x.date}" class="${x.date === day ? "on" : x.date < pastBefore ? "past" : ""}">${fmt(x.date, { weekday: "short" })} ${fmt(x.date, { day: "numeric" })}</button>`).join("") : "";
-    $("sm-dnav").innerHTML = `<button data-step="-1" ${i <= 0 ? "disabled" : ""} aria-label="Previous day">‹</button>${pills}<button data-step="1" ${i >= DAYS.length - 1 ? "disabled" : ""} aria-label="Next day">›</button>`;
+    $("sm-dnav").innerHTML = `<button data-step="-1" ${i <= 0 ? "disabled" : ""} aria-label="Previous day">‹</button>${pills}<button data-step="1" ${i >= DAYS.length - 1 ? "disabled" : ""} aria-label="Next day">›</button>
+      <span class="sm-mode"><button data-mode="day" class="${view === "day" ? "on" : ""}">Simple</button><button data-mode="full" class="${view === "full" ? "on" : ""}">Full</button></span>`;
   }
 
   // ---- day table: every food a row, every nutrient a column ----
@@ -406,7 +416,8 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
   const vp = document.querySelector('meta[name="viewport"]');
   function render() {
     if (vp && $("sm").offsetParent) vp.setAttribute("content", view === "day" ? "width=device-width, initial-scale=1" : "width=1024");
-    $("sm-views").querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.v === view));
+    if (view !== "week") dayMode = view;
+    $("sm-views").querySelectorAll("button").forEach(b => b.classList.toggle("on", b.dataset.v === (view === "week" ? "week" : "day")));
     $("sm-weeks").hidden = view !== "week";
     $("sm-dnav").hidden = view === "week";
     $("sm-weeks").innerHTML = WEEKS.map((w, i) =>
@@ -434,11 +445,12 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
   const stepDay = n => { const i = DAYS.findIndex(d => d.date === day) + n; if (i >= 0 && i < DAYS.length) go(view, DAYS[i].date); };
   const goWeek = i => { wi = Math.max(0, Math.min(WEEKS.length - 1, i)); render(); };
 
-  $("sm-views").onclick = e => { const b = e.target.closest("button"); if (b) go(b.dataset.v); };
+  $("sm-views").onclick = e => { const b = e.target.closest("button"); if (b) go(b.dataset.v === "day" ? dayMode : "week"); };
   if (focus) $("sm-up").onclick = () => go(view === "week" ? "day" : view, focus);
   $("sm-weeks").onclick = e => { const b = e.target.closest("button"); if (b) { wi = +b.dataset.w; render(); } };
   $("sm-dnav").onclick = e => {
     const b = e.target.closest("button"); if (!b || b.disabled) return;
+    if (b.dataset.mode) return go(b.dataset.mode);
     b.dataset.step ? stepDay(+b.dataset.step) : go(view, b.dataset.day);
   };
   $("sm-grid").onclick = e => { const el = e.target.closest(".sm-day"); if (el) go("full", el.dataset.date); };
