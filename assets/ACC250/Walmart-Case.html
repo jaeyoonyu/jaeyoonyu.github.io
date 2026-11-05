@@ -9,8 +9,8 @@
 * { box-sizing:border-box; }
 html { background:#e9ecea; }
 body { margin:0; color:#000; font:10.5pt/1.35 "Times New Roman",Times,serif; }
-.page { width:8.5in; min-height:11in; margin:18px auto; background:#fff; padding:.5in .6in .4in;
-  box-shadow:0 6px 24px rgba(0,0,0,.15); }
+.page { width:8.5in; height:11in; margin:18px auto; background:#fff; padding:.45in .65in .35in;
+  box-shadow:0 6px 24px rgba(0,0,0,.15); overflow:hidden; position:relative; }
 .bar { position:sticky; top:0; z-index:5; display:flex; gap:10px; justify-content:center; padding:10px;
   background:#16263a; }
 .bar button { font:600 13px "Segoe UI",system-ui,sans-serif; padding:7px 16px; border-radius:6px; border:0;
@@ -18,46 +18,56 @@ body { margin:0; color:#000; font:10.5pt/1.35 "Times New Roman",Times,serif; }
 .bar button.on { background:var(--accent); color:#fff; }
 
 header { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:1.2pt solid #000;
-  padding-bottom:3pt; margin-bottom:8pt; }
+  padding-bottom:3pt; margin-bottom:7pt; }
 header .course { font:700 8.5pt Arial,sans-serif; letter-spacing:.1em; text-transform:uppercase; }
 header .name span { display:inline-block; width:2.2in; border-bottom:.8pt solid #000; }
-h1 { font-size:15pt; margin:0 0 3pt; }
-.intro { margin:0 0 12pt; }
-
-.cols { display:grid; grid-template-columns:1fr 1fr; gap:.35in; align-items:start; }
+h1 { font-size:15pt; margin:0 0 2pt; }
+.intro { margin:0 0 3pt; }
+.filing { font-size:9pt; margin:0 0 7pt; padding:4pt 7pt; border:.8pt solid #000; border-radius:3pt; }
+.filing a { color:#000; word-break:break-all; }
 
 /* ---- 10-K style statements ---- */
-.stmt { font-size:9.6pt; line-height:1.2; }
+.stmt { font-size:10pt; line-height:1.2; margin-bottom:8pt; }
 .stmt .co, .stmt .ttl { text-align:center; font-weight:700; margin:0; }
-.stmt .unit { text-align:center; font-style:italic; font-size:9pt; margin:0 0 4pt; }
+.stmt .unit { text-align:center; font-style:italic; font-size:9pt; margin:0 0 3pt; }
 .stmt table { width:100%; border-collapse:collapse; }
 .stmt th { font-weight:700; text-align:right; padding:0 2pt 1pt; font-size:9pt; border-bottom:.8pt solid #000; }
 .stmt th:first-child { border:0; }
-.stmt td { padding:2.3pt 2pt; vertical-align:bottom; }
-.stmt td.n { text-align:right; white-space:nowrap; width:.95in; }
+.stmt td { padding:1.5pt 2pt; vertical-align:bottom; }
+.stmt td.n { text-align:right; white-space:nowrap; width:1.05in; }
 .stmt td.n i { font-style:normal; float:left; }
-.stmt .i1 { padding-left:10pt; } .stmt .i2 { padding-left:20pt; }
-.stmt .hd td { padding-top:6pt; }
+.stmt .i1 { padding-left:12pt; }
+.stmt .sec td { padding-top:4pt; font-weight:700; font-size:9pt; letter-spacing:.05em; }
 .stmt tr.u td.n { border-bottom:.8pt solid #000; }
 .stmt tr.uu td.n { border-bottom:2.4pt double #000; }
+.stmt tr.q td { background:#f4f6f5; }
+.clue { font-style:italic; }
+.no { display:inline-block; font:700 7.5pt Arial,sans-serif; color:#fff; background:#000; border-radius:2pt;
+  padding:0 3pt; margin-right:5pt; line-height:1.4; vertical-align:1pt; }
 
-.bl { display:inline-block; min-width:.75in; border-bottom:.9pt solid #000; text-align:right; position:relative; }
-.stmt .bl { border-bottom:0; min-width:.7in; }
-.bl b { font:700 7.5pt Arial,sans-serif; position:absolute; left:-12pt; top:0; color:#fff; background:#000;
-  border-radius:2pt; padding:0 2.5pt; line-height:1.35; }
-.bl::after { content:"\00a0"; }
-html.key .bl::after { content:attr(data-a); color:var(--key); font-weight:700; }
+.bl { display:inline-block; min-width:.8in; border-bottom:.9pt solid #000; text-align:right; }
+.nm { display:inline-block; min-width:1.7in; border-bottom:.9pt solid #000; text-align:left; margin-left:6pt; }
+.bl::after, .nm::after { content:"\00a0"; }
+html.key .bl::after, html.key .nm::after { content:attr(data-a); color:var(--key); font-weight:700; font-style:normal; }
 
-h2 { font:700 9pt Arial,sans-serif; letter-spacing:.08em; text-transform:uppercase;
-  margin:16pt 0 6pt; padding-bottom:2pt; border-bottom:.8pt solid #000; }
-ol.q { margin:0; padding-left:16pt; }
-ol.q > li { margin:0 0 10pt; }
-ol.q .bl { margin-left:16pt; }
-.why { display:none; color:var(--key); font-size:9.5pt; }
+/* ---- page 2 ---- */
+h2 { font:700 9.5pt Arial,sans-serif; letter-spacing:.08em; text-transform:uppercase;
+  margin:4pt 0 6pt; padding-bottom:2pt; border-bottom:.8pt solid #000; }
+.defs { display:grid; grid-template-columns:1fr 1fr; gap:0 .3in; font-size:9.8pt; }
+.defs h3 { font:700 8.8pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--accent);
+  margin:6pt 0 3pt; }
+.defs dl { margin:0; }
+.defs dt { font-weight:700; margin-top:4pt; }
+.defs dd { margin:0 0 0 10pt; }
+.ratios { width:100%; border-collapse:collapse; margin-top:4pt; font-size:10.5pt; }
+.ratios td { padding:9pt 4pt; border-bottom:.6pt solid #999; vertical-align:bottom; }
+.ratios td:first-child { width:28px; }
+.ratios .f { font-size:9.5pt; color:#333; }
+.ratios .bl { min-width:1.1in; }
+.ratios .ans { text-align:right; white-space:nowrap; }
+.why { display:none; color:var(--key); font-size:9.3pt; margin-top:3pt; }
 html.key .why { display:block; }
-.lines { border-bottom:.8pt solid #999; height:22pt; }
-html.key .lines { display:none; }
-.src { margin-top:12pt; font-size:7.8pt; color:#555; }
+.src { position:absolute; left:.65in; right:.65in; bottom:.3in; font-size:7.8pt; color:#555; }
 .keytag { display:none; color:var(--key); }
 html.key .keytag { display:inline; }
 
@@ -65,11 +75,12 @@ html.key .keytag { display:inline; }
   @page { size:letter; margin:0; }
   html { background:#fff; }
   .bar { display:none; }
-  .page { margin:0; box-shadow:none; }
+  .page { margin:0; box-shadow:none; break-after:page; }
 }
 @media screen and (max-width:860px) {
-  .page { width:auto; min-height:0; margin:0; padding:16px; box-shadow:none; }
-  .cols { grid-template-columns:1fr; }
+  .page { width:auto; height:auto; margin:0 0 12px; padding:16px; box-shadow:none; }
+  .src { position:static; margin-top:10px; }
+  .defs { grid-template-columns:1fr; }
 }
 </style>
 </head>
@@ -79,6 +90,7 @@ html.key .keytag { display:inline; }
   <button onclick="print()">Print</button>
 </div>
 
+<!-- =========================== PAGE 1 =========================== -->
 <div class="page">
 <header>
   <div class="course">ACC 250 &middot; In-Class Case (10 min)<span class="keytag"> &middot; Answer key</span></div>
@@ -86,9 +98,10 @@ html.key .keytag { display:inline; }
 </header>
 
 <h1>Walmart: Reading the Real Financial Statements</h1>
-<p class="intro">From Walmart&rsquo;s Form 10-K for the fiscal year ended <b>January 31, 2025</b> (some lines combined). Fill in the blanks <b>A&ndash;L</b>.</p>
+<p class="intro">The shaded rows describe an account instead of naming it. Write the <b>account name</b>, and fill in any missing <b>amount</b> using the totals. Definitions are on the back.</p>
+<p class="filing"><b>Source filing:</b> Walmart Inc. Form 10-K, fiscal year ended January 31, 2025 &nbsp;&middot;&nbsp;
+<a href="https://www.sec.gov/Archives/edgar/data/104169/000010416925000021/wmt-20250131.htm" target="_blank">sec.gov/Archives/edgar/data/104169/000010416925000021/wmt-20250131.htm</a></p>
 
-<div class="cols">
 <div class="stmt">
 <p class="co">Walmart Inc.</p>
 <p class="ttl">Consolidated Statement of Income</p>
@@ -97,16 +110,16 @@ html.key .keytag { display:inline; }
 <tr><th></th><th>Fiscal 2025</th></tr>
 <tr><td>Net sales</td><td class="n"><i>$</i>674,538</td></tr>
 <tr class="u"><td>Membership and other income</td><td class="n">6,447</td></tr>
-<tr><td class="i1">Total revenues</td><td class="n"><span class="bl" data-a="680,985"><b>A</b></span></td></tr>
-<tr class="hd"><td>Cost of sales</td><td class="n">511,753</td></tr>
-<tr class="u"><td>Operating, selling, general &amp; admin. expenses</td><td class="n">139,884</td></tr>
-<tr><td class="i1">Operating income</td><td class="n"><span class="bl" data-a="29,348"><b>B</b></span></td></tr>
-<tr class="hd"><td>Interest, net</td><td class="n">2,245</td></tr>
+<tr><td class="i1">Total revenues</td><td class="n">680,985</td></tr>
+<tr class="q"><td><span class="no">1</span><span class="clue">The cost of the merchandise Walmart sold to customers</span><span class="nm" data-a="Cost of sales (COGS)"></span></td><td class="n">511,753</td></tr>
+<tr class="q u"><td><span class="no">2</span><span class="clue">Wages, rent, utilities and other costs of running the stores</span><span class="nm" data-a="Operating (SG&amp;A) expenses"></span></td><td class="n"><span class="bl" data-a="139,884"></span></td></tr>
+<tr><td class="i1">Operating income</td><td class="n">29,348</td></tr>
+<tr><td>Interest, net</td><td class="n">2,245</td></tr>
 <tr class="u"><td>Other (gains) and losses</td><td class="n">794</td></tr>
-<tr><td class="i1">Income before income taxes</td><td class="n"><span class="bl" data-a="26,309"><b>C</b></span></td></tr>
+<tr class="q"><td><span class="no">3</span><span class="clue">Profit before the government&rsquo;s share is taken out</span><span class="nm" data-a="Income before income taxes"></span></td><td class="n"><span class="bl" data-a="26,309"></span></td></tr>
 <tr class="u"><td>Provision for income taxes</td><td class="n">6,152</td></tr>
-<tr><td class="i1">Consolidated net income</td><td class="n"><span class="bl" data-a="20,157"><b>D</b></span></td></tr>
-<tr class="u"><td>Less: attributable to noncontrolling interest</td><td class="n">(721)</td></tr>
+<tr><td class="i1">Consolidated net income</td><td class="n">20,157</td></tr>
+<tr class="u"><td>Less: net income attributable to noncontrolling interest</td><td class="n">(721)</td></tr>
 <tr class="uu"><td class="i1">Net income attributable to Walmart</td><td class="n"><i>$</i>19,436</td></tr>
 </table>
 </div>
@@ -117,41 +130,67 @@ html.key .keytag { display:inline; }
 <p class="unit">(Amounts in millions)</p>
 <table>
 <tr><th></th><th>Jan 31, 2025</th></tr>
+<tr class="sec"><td>ASSETS</td><td></td></tr>
 <tr><td>Cash and cash equivalents</td><td class="n"><i>$</i>9,037</td></tr>
-<tr><td>Receivables, net</td><td class="n">9,975</td></tr>
-<tr><td>Inventories</td><td class="n">56,435</td></tr>
+<tr class="q"><td><span class="no">4</span><span class="clue">The amount Walmart expects to collect from customers</span><span class="nm" data-a="Accounts receivable, net"></span></td><td class="n"><span class="bl" data-a="9,975"></span></td></tr>
+<tr class="q"><td><span class="no">5</span><span class="clue">Merchandise on shelves and in warehouses, waiting to be sold</span><span class="nm" data-a="Inventories"></span></td><td class="n">56,435</td></tr>
 <tr class="u"><td>Prepaid expenses and other</td><td class="n">4,011</td></tr>
-<tr><td class="i1">Total current assets</td><td class="n"><span class="bl" data-a="79,458"><b>E</b></span></td></tr>
+<tr><td class="i1">Total current assets</td><td class="n">79,458</td></tr>
 <tr class="u"><td>Property, leases, goodwill and other</td><td class="n">181,365</td></tr>
-<tr class="uu"><td class="i1">Total assets</td><td class="n"><span class="bl" data-a="$ 260,823"><b>F</b></span></td></tr>
-<tr class="hd"><td>Accounts payable</td><td class="n"><i>$</i>58,666</td></tr>
+<tr class="uu"><td class="i1">Total assets</td><td class="n"><span class="bl" data-a="$ 260,823"></span></td></tr>
+<tr class="sec"><td>LIABILITIES AND EQUITY</td><td></td></tr>
+<tr class="q"><td><span class="no">6</span><span class="clue">The amount Walmart owes suppliers for goods bought on credit</span><span class="nm" data-a="Accounts payable"></span></td><td class="n"><i>$</i>58,666</td></tr>
 <tr class="u"><td>Accrued and other current liabilities</td><td class="n">37,918</td></tr>
-<tr><td class="i1">Total current liabilities</td><td class="n"><span class="bl" data-a="96,584"><b>G</b></span></td></tr>
+<tr><td class="i1">Total current liabilities</td><td class="n"><span class="bl" data-a="96,584"></span></td></tr>
 <tr class="u"><td>Long-term debt, leases and other</td><td class="n">66,818</td></tr>
-<tr class="hd"><td>Common stock and paid-in capital</td><td class="n">6,305</td></tr>
-<tr><td>Retained earnings</td><td class="n">98,313</td></tr>
+<tr><td>Common stock and paid-in capital</td><td class="n">6,305</td></tr>
+<tr class="q"><td><span class="no">7</span><span class="clue">Profits earned over the years and kept in the business</span><span class="nm" data-a="Retained earnings"></span></td><td class="n"><span class="bl" data-a="98,313"></span></td></tr>
 <tr class="u"><td>Other equity, net</td><td class="n">(7,197)</td></tr>
-<tr class="u"><td class="i1">Total equity</td><td class="n"><span class="bl" data-a="97,421"><b>H</b></span></td></tr>
+<tr class="u"><td class="i1">Total equity</td><td class="n">97,421</td></tr>
 <tr class="uu"><td class="i1">Total liabilities and equity</td><td class="n"><i>$</i>260,823</td></tr>
 </table>
 </div>
+
 </div>
 
-<h2>How the accounts connect</h2>
-<ol class="q">
-<li><b>Gross profit</b> = Net sales &minus; Cost of sales <span class="bl" data-a="162,785"><b>I</b></span>
-&nbsp;&nbsp; <b>Gross margin %</b> = Gross profit &divide; Net sales <span class="bl" data-a="24.1%"><b>J</b></span></li>
-<li><b>Purchases.</b> Inventories were 54,892 a year earlier. Beginning inventory + Purchases &minus; Cost of sales = Ending inventory. <br>How much inventory did Walmart buy this year? <span class="bl" data-a="513,296"><b>K</b></span></li>
-<li><b>Retained earnings</b> were 89,814 a year earlier. By how much did they increase? <span class="bl" data-a="8,499"><b>L</b></span><br>
-Walmart earned 19,436, so why is the increase smaller?
-<div class="lines"></div>
-<div class="why">Part of the profit went back to shareholders as dividends (and share buybacks), which reduce retained earnings.</div></li>
-<li><b>Accounts payable</b> (58,666) is larger than <b>inventories</b> (56,435). What does that tell you?
-<div class="lines"></div>
-<div class="why">Walmart sells its goods before it has to pay its suppliers, so suppliers are financing its inventory.</div></li>
-</ol>
+<!-- =========================== PAGE 2 =========================== -->
+<div class="page">
+<h2>Key concepts (hints)</h2>
+<div class="defs">
+<div>
+<h3>Income statement</h3>
+<dl>
+<dt>Revenue (net sales)</dt><dd>What the company earns from selling goods and services, recorded when <i>earned</i>.</dd>
+<dt>Cost of sales (cost of goods sold)</dt><dd>The cost of the inventory that was <i>sold</i> during the period. It leaves the balance sheet and becomes an expense.</dd>
+<dt>Gross profit</dt><dd>Net sales &minus; cost of sales.</dd>
+<dt>Operating expenses (SG&amp;A)</dt><dd>Costs of running the business other than the goods themselves: wages, rent, utilities, advertising, depreciation.</dd>
+<dt>Operating income</dt><dd>Revenues &minus; cost of sales &minus; operating expenses. Profit from the main business.</dd>
+<dt>Income tax expense (provision)</dt><dd>The government&rsquo;s share of the profit.</dd>
+<dt>Net income</dt><dd>What is left after <i>all</i> expenses, interest and taxes.</dd>
+</dl>
+</div>
+<div>
+<h3>Balance sheet</h3>
+<dl>
+<dt>Assets = Liabilities + Equity</dt><dd>Everything the company owns is financed by creditors or by owners.</dd>
+<dt>Current assets / current liabilities</dt><dd>Expected to be used up or paid within one year.</dd>
+<dt>Accounts receivable</dt><dd>Amounts customers owe the company, expected to be collected in cash.</dd>
+<dt>Inventory</dt><dd>Goods held for sale, recorded at cost until sold.</dd>
+<dt>Accounts payable</dt><dd>Amounts the company owes suppliers for goods or services bought on credit.</dd>
+<dt>Retained earnings</dt><dd>Total net income earned since the start, minus dividends paid to shareholders.</dd>
+</dl>
+</div>
+</div>
 
-<p class="src">Source: Walmart Inc. Form 10-K, fiscal year ended January 31, 2025 (SEC EDGAR). Combined lines: &ldquo;Other equity, net&rdquo; = accumulated other comprehensive loss (13,605) + noncontrolling interest 6,408; &ldquo;Long-term debt, leases and other&rdquo; includes a $271M redeemable noncontrolling interest.</p>
+<h2 style="margin-top:16pt">Finally, calculate (use the numbers on the front)</h2>
+<table class="ratios">
+<tr><td><span class="no">8</span></td><td><b>Gross profit margin</b><br><span class="f">= (Net sales &minus; Cost of sales) &divide; Net sales</span></td><td class="ans"><span class="bl" data-a="24.1%"></span></td></tr>
+<tr><td><span class="no">9</span></td><td><b>Net profit margin</b><br><span class="f">= Net income attributable to Walmart &divide; Total revenues</span></td><td class="ans"><span class="bl" data-a="2.9%"></span></td></tr>
+<tr><td><span class="no">10</span></td><td><b>Current ratio</b><br><span class="f">= Total current assets &divide; Total current liabilities</span></td><td class="ans"><span class="bl" data-a="0.82"></span></td></tr>
+</table>
+<div class="why">8: 162,785 &divide; 674,538 = 24.1% &nbsp;&middot;&nbsp; 9: 19,436 &divide; 680,985 = 2.9% &nbsp;&middot;&nbsp; 10: 79,458 &divide; 96,584 = 0.82.<br>
+Walmart keeps only about 3 cents of every sales dollar as profit. A current ratio below 1 is normal for Walmart: it sells its inventory before it has to pay its suppliers (accounts payable is larger than inventory).</div>
+<p class="src">Some lines are combined. &ldquo;Other equity, net&rdquo; = accumulated other comprehensive loss (13,605) + noncontrolling interest 6,408. &ldquo;Long-term debt, leases and other&rdquo; includes a $271M redeemable noncontrolling interest.</p>
 </div>
 
 <script>

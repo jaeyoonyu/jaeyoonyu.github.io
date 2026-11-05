@@ -527,8 +527,9 @@ body.norail #hint { left:14px; }
 .recap td:nth-child(2) { color:var(--muted); white-space:nowrap; }
 .srcs { font-size:25px; line-height:1.55; margin:0; padding-left:1.2em; }
 .srcs a { color:var(--accent); }
-.stmt table { font-size:26px; }
-.stmt td { padding:8px 10px; }
+.items li .why { font-size:20px; }
+.items li { grid-template-columns:1fr 210px; }
+.chip { font-size:24px; }
 .hbar.wide { grid-template-columns:400px 1fr 90px; }
 </style>
 </head>
@@ -540,104 +541,55 @@ body.norail #hint { left:14px; }
 <div class="tstack">
 <p class="eyebrow">ACC 250 &middot; In-Class Case</p>
 <h1>Walmart: Reading the Real Financial Statements</h1>
-<p class="lede">How the income statement and balance sheet connect.</p>
+<p class="lede">Name the account from what it means, then find the amount from the totals.</p>
 </div>
 <p class="title-date">Form 10-K, fiscal year ended January 31, 2025 &middot; $ millions</p>
 </section>
 
-<section class="s" data-nav="A–D · Income statement">
+<section class="s" data-nav="1–3 · Income statement">
 <p class="eyebrow">Income Statement</p>
-<h2>Work down to net income</h2>
-<div class="two">
-<div class="stmt">
-<table>
-<tr><th></th><th>$M</th></tr>
-<tr><td>Net sales</td><td>674,538</td></tr>
-<tr><td>Membership and other income</td><td>6,447</td></tr>
-<tr class="total"><td><span class="hl">A</span> Total revenues</td><td class="hl">680,985</td></tr>
-<tr><td>Cost of sales</td><td>511,753</td></tr>
-<tr><td>Operating, SG&amp;A expenses</td><td>139,884</td></tr>
-<tr class="total"><td><span class="hl">B</span> Operating income</td><td class="hl">29,348</td></tr>
-<tr><td>Interest, net + other losses</td><td>3,039</td></tr>
-<tr class="total"><td><span class="hl">C</span> Income before income taxes</td><td class="hl">26,309</td></tr>
-<tr><td>Provision for income taxes</td><td>6,152</td></tr>
-<tr class="total"><td><span class="hl">D</span> Consolidated net income</td><td class="hl">20,157</td></tr>
-</table>
-</div>
-<div>
-<div class="key" style="margin-top:0"><span class="klab">Pattern</span>Each subtotal = the line above &minus; the costs in between.</div>
-<div class="note">Walmart&rsquo;s statement has <b>no gross profit line</b>. We compute it next.</div>
-</div>
-</div>
+<h2>Name it, then find it</h2>
+<ul class="items">
+<li><span><b>1</b> &nbsp;The cost of the merchandise sold to customers<br><b class="hl">Cost of sales (COGS)</b></span><span class="chip yes">511,753</span></li>
+<li><span><b>2</b> &nbsp;Wages, rent, utilities and other costs of running the stores<br><b class="hl">Operating (SG&amp;A) expenses</b></span><span class="chip yes">139,884</span><span class="why">680,985 total revenues &minus; 511,753 &minus; 29,348 operating income</span></li>
+<li><span><b>3</b> &nbsp;Profit before the government&rsquo;s share is taken out<br><b class="hl">Income before income taxes</b></span><span class="chip yes">26,309</span><span class="why">29,348 &minus; 2,245 interest &minus; 794 other losses</span></li>
+</ul>
 </section>
 
-<section class="s" data-nav="E–H · Balance sheet">
+<section class="s" data-nav="4–7 · Balance sheet">
 <p class="eyebrow">Balance Sheet</p>
-<h2>Assets = Liabilities + Equity</h2>
-<div class="two">
-<div class="stmt">
-<table>
-<tr><th>Assets</th><th>$M</th></tr>
-<tr class="total"><td><span class="hl">E</span> Total current assets</td><td class="hl">79,458</td></tr>
-<tr><td>Property, leases, goodwill, other</td><td>181,365</td></tr>
-<tr class="total"><td><span class="hl">F</span> Total assets</td><td class="hl">260,823</td></tr>
-</table>
-</div>
-<div class="stmt">
-<table>
-<tr><th>Liabilities &amp; equity</th><th>$M</th></tr>
-<tr class="total"><td><span class="hl">G</span> Total current liabilities</td><td class="hl">96,584</td></tr>
-<tr><td>Long-term debt, leases, other</td><td>66,818</td></tr>
-<tr class="total"><td><span class="hl">H</span> Total equity</td><td class="hl">97,421</td></tr>
-</table>
-</div>
-</div>
-<div class="key"><span class="klab">Check</span>96,584 + 66,818 + 97,421 = <span class="hl">260,823</span></div>
+<h2>Name it, then find it</h2>
+<ul class="items">
+<li><span><b>4</b> &nbsp;Expects to collect from customers &rarr; <b class="hl">Accounts receivable</b></span><span class="chip yes">9,975</span><span class="why">79,458 total current assets &minus; 9,037 &minus; 56,435 &minus; 4,011</span></li>
+<li><span><b>5</b> &nbsp;Merchandise waiting to be sold &rarr; <b class="hl">Inventories</b></span><span class="chip yes">56,435</span></li>
+<li><span><b>6</b> &nbsp;Owes suppliers for goods bought on credit &rarr; <b class="hl">Accounts payable</b></span><span class="chip yes">58,666</span></li>
+<li><span><b>7</b> &nbsp;Profits earned and kept in the business &rarr; <b class="hl">Retained earnings</b></span><span class="chip yes">98,313</span><span class="why">97,421 total equity &minus; 6,305 + 7,197</span></li>
+</ul>
+<div class="note">Totals: total assets <b>260,823</b> = 96,584 current liabilities + 66,818 long-term + 97,421 equity.</div>
 </section>
 
-<section class="s" data-nav="I–K · Inventory">
-<p class="eyebrow">Inventory links the two statements</p>
-<h2>Gross profit and purchases</h2>
-<div class="two">
-<div>
-<div class="note"><b>I</b> Gross profit = 674,538 &minus; 511,753 = <b class="hl">162,785</b></div>
-<div class="note"><b>J</b> Gross margin = 162,785 &divide; 674,538 = <b class="hl">24.1%</b><br><span class="fine">About $24 of every $100 of sales is left after paying for the goods.</span></div>
+<section class="s" data-nav="8–10 · Ratios">
+<p class="eyebrow">Ratios</p>
+<h2>Three numbers that describe Walmart</h2>
+<div class="hbars">
+<div class="hbar"><span>Gross profit margin</span><div class="track"><div class="fill" style="width:24.1%;background:#1a7a5e"></div></div><span class="v">24.1%</span></div>
+<div class="hbar"><span>Net profit margin</span><div class="track"><div class="fill" style="width:2.9%;background:#1a7a5e"></div></div><span class="v">2.9%</span></div>
 </div>
-<div class="stmt">
-<table>
-<tr><th>Inventory</th><th>$M</th></tr>
-<tr><td>Beginning</td><td>54,892</td></tr>
-<tr><td>+ Purchases <span class="hl">K</span></td><td class="hl">513,296</td></tr>
-<tr><td>&minus; Cost of sales</td><td>(511,753)</td></tr>
-<tr class="total"><td>= Ending</td><td>56,435</td></tr>
-</table>
+<div class="two" style="margin-top:22px">
+<div class="note"><b>8</b> 162,785 &divide; 674,538. About $24 of every $100 of sales is left after paying for the goods.</div>
+<div class="note"><b>9</b> 19,436 &divide; 680,985. After <i>every</i> expense, Walmart keeps about <b>3 cents</b> per dollar.</div>
 </div>
-</div>
+<div class="note"><b>10</b> Current ratio = 79,458 &divide; 96,584 = <b class="hl">0.82</b></div>
 </section>
 
-<section class="s" data-nav="L · Retained earnings">
-<p class="eyebrow">Net income links the two statements</p>
-<h2>Where did the profit go?</h2>
-<div class="stmt" style="max-width:1000px">
-<table>
-<tr><th>Retained earnings</th><th>$M</th></tr>
-<tr><td>Beginning</td><td>89,814</td></tr>
-<tr><td>+ Net income attributable to Walmart</td><td>19,436</td></tr>
-<tr><td>&minus; Dividends and share buybacks</td><td>(10,937)</td></tr>
-<tr class="total"><td>= Ending</td><td>98,313</td></tr>
-</table>
-</div>
-<div class="key"><span class="klab">L</span>Increase = <span class="hl">8,499</span>. The rest of the profit was returned to shareholders.</div>
-</section>
-
-<section class="s" data-nav="Q4 · Who pays for the shelves?">
+<section class="s" data-nav="Current ratio below 1?">
 <p class="eyebrow">Interpretation</p>
-<h2>Who pays for the shelves?</h2>
+<h2>A current ratio below 1. A problem?</h2>
 <div class="hbars">
 <div class="hbar"><span>Accounts payable</span><div class="track"><div class="fill" style="width:100%;background:#b3200f"></div></div><span class="v">58,666</span></div>
 <div class="hbar"><span>Inventories</span><div class="track"><div class="fill" style="width:96.2%;background:#1a7a5e"></div></div><span class="v">56,435</span></div>
 </div>
-<div class="key" style="margin-top:40px"><span class="klab">Key idea</span>Walmart sells the goods before it pays its suppliers.<br>Suppliers are financing its inventory.</div>
+<div class="key" style="margin-top:40px"><span class="klab">Not for Walmart</span>It sells the goods before it pays its suppliers.<br>Suppliers are financing its inventory.</div>
 </section>
 
 <div id="bar"></div><div id="num"></div>
