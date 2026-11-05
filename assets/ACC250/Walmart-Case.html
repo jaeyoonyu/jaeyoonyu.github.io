@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Walmart In-Class Case</title>
+<style>
+:root { --ink:#111; --muted:#555; --accent:#1a7a5e; --line:#222; --soft:#f3f5f4; }
+* { box-sizing:border-box; }
+html { background:#e9ecea; }
+body { margin:0; color:var(--ink); font:10.5pt/1.32 "Times New Roman",Times,serif; }
+.page { width:8.5in; min-height:11in; margin:18px auto; background:#fff; padding:.4in .55in .3in;
+  box-shadow:0 6px 24px rgba(0,0,0,.15); }
+.bar { position:sticky; top:0; z-index:5; display:flex; gap:10px; justify-content:center; padding:10px;
+  background:#16263a; font:13px "Segoe UI",system-ui,sans-serif; }
+.bar button { font:600 13px "Segoe UI",system-ui,sans-serif; padding:7px 16px; border-radius:6px; border:0;
+  background:#fff; color:#16263a; cursor:pointer; }
+.bar button.on { background:var(--accent); color:#fff; }
+
+header { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:2pt solid var(--line);
+  padding-bottom:4pt; margin-bottom:6pt; }
+header .course { font:700 9pt "Segoe UI",Arial,sans-serif; letter-spacing:.12em; text-transform:uppercase; }
+header .name { font-size:10.5pt; }
+header .name span { display:inline-block; width:2.2in; border-bottom:1pt solid var(--line); }
+h1 { font-size:17pt; margin:2pt 0 2pt; }
+.intro { margin:0 0 7pt; }
+.intro b { font-weight:700; }
+h2 { font:700 9.5pt "Segoe UI",Arial,sans-serif; letter-spacing:.08em; text-transform:uppercase;
+  margin:9pt 0 4pt; padding:2pt 6pt; background:var(--soft); border-left:3pt solid var(--accent); }
+h2 small { font-weight:400; letter-spacing:0; text-transform:none; color:var(--muted); }
+
+.cols { display:grid; grid-template-columns:1fr 1fr; gap:.28in; align-items:start; }
+table.fs { width:100%; border-collapse:collapse; font-size:10pt; }
+table.fs caption { text-align:left; font-weight:700; font-size:10.5pt; padding-bottom:2pt; }
+table.fs caption span { font-weight:400; font-style:italic; color:var(--muted); font-size:9pt; }
+table.fs td { padding:2.2pt 3pt; vertical-align:bottom; }
+table.fs td.amt { text-align:right; white-space:nowrap; width:1.05in; }
+table.fs tr.tot td { font-weight:700; border-top:1pt solid var(--line); }
+table.fs tr.dbl td.amt { border-bottom:2.4pt double var(--line); }
+table.fs tr.sub td:first-child { padding-left:12pt; }
+table.fs tr.gap td { padding-top:6pt; }
+table.fs tr.memo td { font-style:italic; color:var(--muted); border-top:1pt dotted #999; }
+
+.bl { display:inline-block; min-width:.95in; border-bottom:1pt solid var(--line); text-align:right;
+  position:relative; padding:0 2pt; }
+.bl.w { min-width:1.15in; }
+.bl b { font:700 8pt "Segoe UI",Arial,sans-serif; position:absolute; left:-1pt; top:-1pt; color:var(--muted); }
+.bl::after { content:"\00a0"; }
+html.key .bl::after { content:attr(data-a); color:#b3200f; font-weight:700; }
+
+ol.q { margin:0; padding-left:16pt; }
+ol.q > li { margin:0 0 4.5pt; }
+.eq { font-style:italic; color:var(--muted); font-size:9.5pt; }
+.pick { display:inline-block; margin:0 2pt; }
+.pick i { font-style:normal; padding:0 3pt; }
+html.key .pick i.r { border:1.3pt solid #b3200f; border-radius:8pt; color:#b3200f; font-weight:700; }
+.why { display:none; color:#b3200f; font-size:8.5pt; line-height:1.25; margin-top:0; }
+html.key .why { display:block; }
+.lines { border-bottom:1pt solid #999; height:13pt; }
+html.key .lines { display:none; }
+.src { margin-top:8pt; font-size:8pt; color:var(--muted); border-top:1pt solid #ccc; padding-top:3pt; }
+.keytag { display:none; float:right; color:#b3200f; font:700 9pt "Segoe UI",Arial,sans-serif; letter-spacing:.1em; }
+html.key .keytag { display:inline; }
+html.key ol.q > li { margin-bottom:3pt; }
+html.key h2 { margin:7pt 0 3pt; }
+html.key table.fs td { padding:1.7pt 3pt; }
+html.key .src { margin-top:4pt; }
+
+@media print {
+  @page { size:letter; margin:0; }
+  html { background:#fff; }
+  .bar { display:none; }
+  .page { margin:0; box-shadow:none; }
+}
+@media screen and (max-width:860px) {
+  .page { width:auto; min-height:0; margin:0; padding:16px; box-shadow:none; }
+  .cols { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+<div class="bar">
+  <button id="kbtn" onclick="toggleKey()">Show answers</button>
+  <button onclick="print()">Print</button>
+</div>
+
+<div class="page">
+<header>
+  <div class="course">ACC 250 &middot; In-Class Case (10 min) <span class="keytag">&nbsp;Answer key</span></div>
+  <div class="name">Name <span></span></div>
+</header>
+
+<h1>Walmart: Reading the Real Financial Statements</h1>
+<p class="intro">Below are Walmart&rsquo;s actual numbers, slightly condensed, for <b>fiscal 2025</b> (Feb 1, 2024 &ndash; <b>Jan 31, 2025</b>; retailers end their year after the holiday season). All amounts are in <b>$ millions</b>, so 674,538 means $674.5 billion. Fill in each lettered blank using the relationships between accounts. A calculator is fine.</p>
+
+<div class="cols">
+<div>
+<h2>Part 1 &middot; Income statement</h2>
+<table class="fs">
+<caption>Walmart Inc. &mdash; Income Statement <span>Year ended Jan 31, 2025</span></caption>
+<tr><td>Net sales</td><td class="amt">674,538</td></tr>
+<tr><td>Membership and other income</td><td class="amt">6,447</td></tr>
+<tr class="tot"><td>Total revenues</td><td class="amt"><span class="bl" data-a="680,985"><b>A</b></span></td></tr>
+<tr class="gap"><td>Cost of sales</td><td class="amt">511,753</td></tr>
+<tr><td>Gross profit <span class="eq">(net sales &minus; cost of sales)</span></td><td class="amt"><span class="bl" data-a="162,785"><b>B</b></span></td></tr>
+<tr class="gap"><td>Operating, SG&amp;A expenses</td><td class="amt">139,884</td></tr>
+<tr class="tot"><td>Operating income <span class="eq">(total revenues &minus; all operating costs)</span></td><td class="amt"><span class="bl" data-a="29,348"><b>C</b></span></td></tr>
+<tr class="gap"><td>Interest, income taxes &amp; other, net</td><td class="amt">9,191</td></tr>
+<tr class="tot dbl"><td>Net income</td><td class="amt"><span class="bl" data-a="20,157"><b>D</b></span></td></tr>
+</table>
+</div>
+
+<div>
+<h2>Part 2 &middot; Balance sheet</h2>
+<table class="fs">
+<caption>Walmart Inc. &mdash; Balance Sheet <span>Jan 31, 2025</span></caption>
+<tr><td>Cash and cash equivalents</td><td class="amt">9,037</td></tr>
+<tr><td>Receivables, net</td><td class="amt">9,975</td></tr>
+<tr><td>Inventories</td><td class="amt">56,435</td></tr>
+<tr><td>Prepaid expenses and other</td><td class="amt">4,011</td></tr>
+<tr class="tot"><td>Total current assets</td><td class="amt"><span class="bl" data-a="79,458"><b>E</b></span></td></tr>
+<tr><td>Property, leases, goodwill &amp; other</td><td class="amt">181,365</td></tr>
+<tr class="tot dbl"><td>Total assets</td><td class="amt"><span class="bl" data-a="260,823"><b>F</b></span></td></tr>
+<tr class="gap"><td>Accounts payable</td><td class="amt">58,666</td></tr>
+<tr><td>Other current liabilities</td><td class="amt">37,918</td></tr>
+<tr class="tot"><td>Total current liabilities</td><td class="amt">96,584</td></tr>
+<tr><td>Long-term liabilities</td><td class="amt"><span class="bl" data-a="66,818"><b>H</b></span></td></tr>
+<tr class="tot"><td>Total liabilities</td><td class="amt"><span class="bl" data-a="163,402"><b>G</b></span></td></tr>
+<tr><td>Total shareholders&rsquo; equity</td><td class="amt">97,421</td></tr>
+<tr class="tot dbl"><td>Total liabilities &amp; equity</td><td class="amt">260,823</td></tr>
+</table>
+<p class="eq" style="margin:2pt 0 0">Hint: find G before H.</p>
+</div>
+</div>
+
+<h2>Part 3 &middot; How the accounts connect <small>(Inventories were 54,892 on Jan 31, 2024.)</small></h2>
+<ol class="q">
+<li><b>Inventory flow.</b> Beginning inventory + Purchases &minus; Cost of sales = Ending inventory.
+How much inventory did Walmart buy during the year? &nbsp; Purchases = <span class="bl w" data-a="513,296"><b>I</b></span></li>
+<li><b>Gross margin %</b> = Gross profit &divide; Net sales = <span class="bl" data-a="24.1%"><b>J</b></span>
+&nbsp; Out of every $100 of sales, about how many dollars are left after paying for the goods? <span class="bl" data-a="$24"><b>K</b></span></li>
+<li><b>Inventory turnover</b> = Cost of sales &divide; Average inventory = <span class="bl" data-a="9.2 times"><b>L</b></span>
+<br><span style="white-space:nowrap">Days an item sits on the shelf &asymp; 365 &divide; L = <span class="bl" data-a="40 days"><b>M</b></span></span></li>
+<li><b>Who pays for the shelves?</b> Accounts payable (58,666) is <i>larger</i> than inventories (56,435). In one sentence, what does that tell you?
+<div class="lines"></div>
+<div class="why">Walmart usually sells the goods before it has to pay its suppliers, so suppliers are financing Walmart&rsquo;s inventory. (It also explains why current liabilities exceed current assets.)</div></li>
+</ol>
+
+<h2>Part 4 &middot; Concepts</h2>
+<ol class="q" start="5">
+<li><b>LIFO.</b> Walmart&rsquo;s U.S. stores use LIFO. When purchase costs are <i>rising</i>, LIFO (vs. FIFO) gives:
+Cost of sales <span class="pick"><i class="r">higher</i>/<i>lower</i></span>;
+Net income <span class="pick"><i>higher</i>/<i class="r">lower</i></span>;
+Ending inventory <span class="pick"><i>higher</i>/<i class="r">lower</i></span>.
+<div class="why">LIFO puts the newest (most expensive) costs into cost of sales, and leaves the oldest (cheapest) costs in ending inventory.</div></li>
+<li><b>Membership fees.</b> On Nov 1, a customer pays $50 cash for a 12-month Sam&rsquo;s Club membership. On Walmart&rsquo;s Dec 31 books:
+revenue earned = <span class="bl" data-a="$8.33"><b>N</b></span>;
+still owed as a liability = <span class="bl" data-a="$41.67"><b>O</b></span>, called
+<span class="bl w" data-a="Unearned revenue"><b>P</b></span>.
+<div class="why">$50 &times; 2/12 = $8.33 is earned (Nov and Dec). The other $41.67 is unearned (deferred) revenue until the service is provided. (Ch4 adjusting entry.)</div></li>
+</ol>
+
+<p class="src">Source: Walmart Inc. Form 10-K for the fiscal year ended Jan 31, 2025 (SEC EDGAR). Condensed for class: &ldquo;Property, leases, goodwill &amp; other&rdquo; and &ldquo;Long-term liabilities&rdquo; combine several lines. Total liabilities include a $271M redeemable noncontrolling interest. Net income is consolidated (including noncontrolling interests).</p>
+</div>
+
+<script>
+function toggleKey() {
+  const on = document.documentElement.classList.toggle('key');
+  const b = document.getElementById('kbtn');
+  b.textContent = on ? 'Hide answers' : 'Show answers';
+  b.classList.toggle('on', on);
+}
+if (location.hash === '#key') toggleKey();
+</script>
+</body>
+</html>
