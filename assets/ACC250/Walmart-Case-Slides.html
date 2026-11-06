@@ -527,9 +527,11 @@ body.norail #hint { left:14px; }
 .recap td:nth-child(2) { color:var(--muted); white-space:nowrap; }
 .srcs { font-size:25px; line-height:1.55; margin:0; padding-left:1.2em; }
 .srcs a { color:var(--accent); }
-.items li .why { font-size:20px; }
 .items li { grid-template-columns:1fr 210px; }
 .chip { font-size:24px; }
+.stmt table { font-size:24px; }
+.stmt td { padding:7px 10px; }
+.note { font-size:23px; }
 .hbar.wide { grid-template-columns:400px 1fr 90px; }
 </style>
 </head>
@@ -546,53 +548,65 @@ body.norail #hint { left:14px; }
 <p class="title-date">Form 10-K, fiscal year ended January 31, 2025 &middot; $ millions</p>
 </section>
 
-<section class="s" data-nav="Q1–4">
+<section class="s" data-nav="Q1–6">
 <p class="eyebrow">Find it in the statements</p>
 <h2>Know the concept, find the account</h2>
 <ul class="items">
-<li><span><b>1</b> &nbsp;Expects to collect from customers &rarr; <b class="hl">Receivables, net</b></span><span class="chip yes">9,975</span></li>
-<li><span><b>2</b> &nbsp;What the merchandise sold cost Walmart &rarr; <b class="hl">Cost of sales</b></span><span class="chip yes">511,753</span></li>
-<li><span><b>3</b> &nbsp;Expense recorded for wages, rent, utilities, advertising &rarr; <b class="hl">Operating, SG&amp;A expenses</b></span><span class="chip yes">139,884</span></li>
+<li><span><b>1</b> &nbsp;Expects to collect from customers &rarr; <b class="hl">Receivables</b></span><span class="chip yes">9,975</span></li>
+<li><span><b>2</b> &nbsp;Cost of the merchandise sold &rarr; <b class="hl">Cost of sales / merchandise costs</b></span><span class="chip yes">511,753</span></li>
+<li><span><b>3</b> &nbsp;Expense for wages, rent, utilities, advertising &rarr; <b class="hl">Operating (SG&amp;A) expenses</b></span><span class="chip yes">139,884</span></li>
 <li><span><b>4</b> &nbsp;Cost of goods still on the shelves &rarr; <b class="hl">Inventories</b></span><span class="chip yes">56,435</span></li>
+<li><span><b>5</b> &nbsp;Owes suppliers for goods bought on credit &rarr; <b class="hl">Accounts payable</b></span><span class="chip yes">58,666</span></li>
+<li><span><b>6</b> &nbsp;The government&rsquo;s share of the profit &rarr; <b class="hl">Provision for income taxes</b></span><span class="chip yes">6,152</span></li>
 </ul>
-<div class="note">Inventory is an <b>asset</b> until it is sold. Once sold, its cost becomes <b>cost of sales</b> (an expense).</div>
-<div class="note">An <b>expense</b> is not the same as cash paid: wages earned in late January but paid in February are this year&rsquo;s expense, next year&rsquo;s cash outflow.</div>
 </section>
 
-<section class="s" data-nav="Q5–8">
+<section class="s" data-nav="Q7–12">
 <p class="eyebrow">Find it in the statements</p>
 <h2>Know the concept, find the account</h2>
 <ul class="items">
-<li><span><b>5</b> &nbsp;Owes suppliers for goods bought on credit &rarr; <b class="hl">Accounts payable</b></span><span class="chip yes">58,666</span></li>
-<li><span><b>6</b> &nbsp;Earned from the main business, before interest and taxes &rarr; <b class="hl">Operating income</b></span><span class="chip yes">29,348</span></li>
-<li><span><b>7</b> &nbsp;The government&rsquo;s share of the profit &rarr; <b class="hl">Provision for income taxes</b></span><span class="chip yes">6,152</span></li>
-<li><span><b>8</b> &nbsp;Profit earned over the years and kept &rarr; <b class="hl">Retained earnings</b></span><span class="chip yes">98,313</span></li>
+<li><span><b>7</b> &nbsp;Left of revenue after all expenses &rarr; <b class="hl">Net income</b></span><span class="chip yes">20,157</span></li>
+<li><span><b>8</b> &nbsp;Expense for using up buildings and equipment &rarr; <b class="hl">Depreciation</b></span><span class="chip yes">12,973</span></li>
+<li><span><b>9</b> &nbsp;Cash from day-to-day business &rarr; <b class="hl">Operating activities</b></span><span class="chip yes">36,443</span></li>
+<li><span><b>10</b> &nbsp;Cash paid for new stores and equipment &rarr; <b class="hl">Capital expenditures</b></span><span class="chip yes">23,783</span></li>
+<li><span><b>11</b> &nbsp;Paid to shareholders &rarr; <b class="hl">Dividends</b></span><span class="chip yes">6,688</span></li>
+<li><span><b>12</b> &nbsp;Profit earned and kept over the years &rarr; <b class="hl">Retained earnings</b></span><span class="chip yes">98,313</span></li>
 </ul>
-<div class="note">Questions 1, 4, 5 and 8 are on the <b>balance sheet</b> (a point in time). Questions 2, 3, 6 and 7 are on the <b>income statement</b> (a whole year).</div>
 </section>
 
-<section class="s" data-nav="9–11 · Ratios">
+<section class="s" data-nav="Net income vs. cash">
+<p class="eyebrow">How the statements connect</p>
+<h2>Net income is not cash</h2>
+<div class="two">
+<div class="stmt">
+<table>
+<tr><th>Operating activities</th><th>$M</th></tr>
+<tr><td>Net income</td><td>20,157</td></tr>
+<tr><td>+ Depreciation (an expense, but no cash paid)</td><td>12,973</td></tr>
+<tr><td>+ All other items, net</td><td>3,313</td></tr>
+<tr class="total"><td>= Cash from operating activities</td><td class="hl">36,443</td></tr>
+</table>
+</div>
+<div class="stmt">
+<table>
+<tr><th>Retained earnings</th><th>$M</th></tr>
+<tr><td>Retained earnings, Jan 31, 2024</td><td>89,814</td></tr><tr><td>Add: Net income</td><td>20,157</td></tr><tr><td>Less: Dividends</td><td>(6,688)</td></tr><tr><td>Less: Share repurchases and other</td><td>(4,970)</td></tr><tr class="total"><td>Retained earnings, Jan 31, 2025</td><td>98,313</td></tr>
+</table>
+</div>
+</div>
+<div class="key"><span class="klab">Two bridges</span>Net income starts the cash flow statement, and it flows into retained earnings.</div>
+</section>
+
+<section class="s" data-nav="13–15 · Ratios">
 <p class="eyebrow">Ratios</p>
 <h2>Three numbers that describe Walmart</h2>
 <div class="hbars">
 <div class="hbar"><span>Gross profit margin</span><div class="track"><div class="fill" style="width:24.1%;background:#1a7a5e"></div></div><span class="v">24.1%</span></div>
-<div class="hbar"><span>Net profit margin</span><div class="track"><div class="fill" style="width:2.9%;background:#1a7a5e"></div></div><span class="v">2.9%</span></div>
+<div class="hbar"><span>Net profit margin</span><div class="track"><div class="fill" style="width:3.0%;background:#1a7a5e"></div></div><span class="v">3.0%</span></div>
 </div>
-<div class="two" style="margin-top:22px">
-<div class="note"><b>9</b> 162,785 &divide; 674,538. About $24 of every $100 of sales is left after paying for the goods.</div>
-<div class="note"><b>10</b> 19,436 &divide; 680,985. After <i>every</i> expense, Walmart keeps about <b>3 cents</b> per dollar.</div>
-</div>
-<div class="note"><b>11</b> Current ratio = 79,458 &divide; 96,584 = <b class="hl">0.82</b></div>
-</section>
-
-<section class="s" data-nav="Current ratio below 1?">
-<p class="eyebrow">Interpretation</p>
-<h2>A current ratio below 1. A problem?</h2>
-<div class="hbars">
-<div class="hbar"><span>Accounts payable</span><div class="track"><div class="fill" style="width:100%;background:#b3200f"></div></div><span class="v">58,666</span></div>
-<div class="hbar"><span>Inventories</span><div class="track"><div class="fill" style="width:96.2%;background:#1a7a5e"></div></div><span class="v">56,435</span></div>
-</div>
-<div class="key" style="margin-top:40px"><span class="klab">Not for Walmart</span>It sells the goods before it pays its suppliers.<br>Suppliers are financing its inventory.</div>
+<div class="note"><b>13</b> (674,538 &minus; 511,753) &divide; 674,538 = 24.1% &nbsp;&middot;&nbsp; <b>14</b> 20,157 &divide; 680,985 = 3.0%</div>
+<div class="note"><b>15</b> Current ratio = 79,458 &divide; 96,584 = <b class="hl">0.82</b></div>
+<div class="key"><span class="klab">Takeaway</span>Walmart keeps about 3 cents of every sales dollar as profit. A current ratio below 1 is normal for Walmart: it sells its inventory before it has to pay its suppliers (accounts payable is larger than inventory).</div>
 </section>
 
 <div id="bar"></div><div id="num"></div>
