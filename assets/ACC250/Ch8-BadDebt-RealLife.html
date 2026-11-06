@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bad Debts in Real Life</title>
+<style>
+
+
+:root { --bg:#f1f1ef; --ink:#16263a; --muted:#5c6863; --accent:#1a7a5e;
+        --red:#b3200f; --card:#fff; --border:#dfe3e0; }
+* { box-sizing:border-box; }
+html, body { margin:0; height:100%; background:#0d1310; }
+body { font:16px/1.5 "Segoe UI",system-ui,sans-serif; color:var(--ink);
+  display:flex; align-items:center; justify-content:center; overflow:hidden; }
+#stage { position:relative; width:1600px; height:900px; transform-origin:center center;
+  background:var(--bg); box-shadow:0 18px 60px rgba(0,0,0,.5); overflow:hidden; }
+.s { position:absolute; inset:0; padding:64px 90px 80px; display:none;
+  flex-direction:column; justify-content:center; }
+.s.on { display:flex; animation:in .32s ease both; }
+@keyframes in { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+
+h1 { font-family:Charter,"Bitstream Charter",Cambria,Georgia,serif;
+  font-size:70px; line-height:1.12; margin:0 0 22px; font-weight:700; }
+.title { justify-content:center; }
+.title .tstack { max-width:1300px; }
+.title-date { position:absolute; left:90px; right:90px; bottom:48px; margin:0;
+  color:var(--muted); font-size:20px; }
+h2 { font-family:Charter,"Bitstream Charter",Cambria,Georgia,serif; font-size:46px; margin:0 0 26px;
+  font-weight:700; color:var(--ink); }
+h2::after { content:""; display:block; width:110px; height:6px; background:var(--accent);
+  border-radius:3px; margin-top:14px; }
+h3 { font-family:Charter,Cambria,Georgia,serif; font-size:28px; margin:0 0 12px; font-weight:700; }
+p { margin:.35em 0; }
+.eyebrow { font-size:19px; letter-spacing:.16em; text-transform:uppercase;
+  color:var(--accent); font-weight:700; margin:0 0 14px; }
+.lede { font-size:29px; line-height:1.45; color:var(--muted); margin:.2em 0; }
+.fine { font-size:20px; color:var(--muted); line-height:1.5; }
+.hl  { color:var(--accent); font-weight:700; }
+.hlr { color:var(--red); font-weight:700; }
+
+/* ---- definition / question / answer blocks ---- */
+.def { background:var(--card); border:1px solid var(--border); border-left:8px solid var(--accent);
+  border-radius:12px; padding:24px 30px; box-shadow:0 4px 16px rgba(0,0,0,.07); }
+.def .term { font:700 32px Charter,Cambria,Georgia,serif; color:var(--accent); margin:0 0 8px; }
+.def p { font-size:28px; line-height:1.42; margin:0; }
+
+.ask { background:#fdf6e3; border:1px solid #e8dcb8; border-left:8px solid #b8901f;
+  border-radius:12px; padding:22px 28px; }
+.ask .qlab { font:700 17px "Segoe UI",sans-serif; letter-spacing:.15em; text-transform:uppercase;
+  color:#8a6d1f; display:block; margin-bottom:8px; }
+.ask p { font-size:27px; line-height:1.4; margin:0; }
+
+.tests { display:grid; gap:14px; margin-top:22px; }
+.test { display:grid; grid-template-columns:52px 1fr; align-items:start; gap:18px;
+  background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 22px;
+  font-size:25px; line-height:1.35; box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.test .n { width:52px; height:52px; border-radius:50%; background:var(--accent); color:#fff;
+  display:grid; place-items:center; font:700 25px "Segoe UI",sans-serif; }
+
+.items { list-style:none; margin:18px 0 0; padding:0; display:grid; gap:13px; }
+.items li { display:grid; grid-template-columns:1fr 190px; align-items:center; gap:22px;
+  background:var(--card); border:1px solid var(--border); border-radius:11px;
+  padding:15px 22px; font-size:25px; line-height:1.3; box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.items li .why { grid-column:1/-1; font-size:20px; color:var(--muted); margin-top:-2px; }
+.chip { justify-self:end; padding:7px 16px; border-radius:999px; font:700 19px "Segoe UI",sans-serif;
+  letter-spacing:.04em; text-align:center; white-space:nowrap; }
+.chip.yes { background:#dff2e8; color:#12664c; border:1px solid #a9d6b8; }
+.chip.no  { background:#fbe6e2; color:var(--red); border:1px solid #eab8ae; }
+
+.answer { margin-top:22px; background:var(--accent); color:#fff; border-radius:12px;
+  padding:16px 28px; font:700 32px Charter,Cambria,Georgia,serif; display:inline-block; }
+.answer.neg { background:var(--red); }
+.key { margin-top:22px; background:#dff2e8; border:2px solid var(--accent); border-radius:14px;
+  padding:20px 32px; text-align:center; color:#12664c;
+  font:700 31px/1.34 Charter,"Bitstream Charter",Cambria,Georgia,serif;
+  box-shadow:0 5px 20px rgba(26,122,94,.16); }
+.key .klab { display:block; margin-bottom:8px; color:var(--accent);
+  font:700 16px/1 "Segoe UI",sans-serif; letter-spacing:.18em; text-transform:uppercase; }
+.key .hl { color:var(--accent); }
+.note { margin-top:14px; background:var(--card); border:1px solid var(--border);
+  border-left:8px solid var(--accent); border-radius:12px; padding:16px 22px;
+  font-size:25px; line-height:1.35; color:var(--ink); box-shadow:0 3px 12px rgba(0,0,0,.05); }
+
+.two { display:grid; grid-template-columns:1fr 1fr; gap:34px; align-items:start; }
+
+/* ---- statements ---- */
+.stmt { background:var(--card); border:1px solid var(--border); border-radius:12px;
+  padding:18px 26px 14px; box-shadow:0 4px 16px rgba(0,0,0,.07); }
+.stmt h3 { font-size:25px; margin:0 0 10px; }
+.stmt table { width:100%; border-collapse:collapse; font-size:24px; }
+.stmt th { color:var(--muted); font-size:17px; letter-spacing:.06em; text-transform:uppercase;
+  text-align:right; border-bottom:2px solid var(--ink); padding:5px 8px; }
+.stmt th:first-child, .stmt td:first-child { text-align:left; }
+.stmt td { padding:7px 8px; text-align:right; border-bottom:1px solid #e7ebe8; }
+.stmt tr.total td { font-weight:700; border-top:2px solid var(--ink); border-bottom:2px solid var(--ink); }
+.scen { font-size:23px; line-height:1.42; }
+.scen h3 { font-size:25px; margin:0 0 8px; }
+.scen ul { margin:0 0 16px; padding-left:1.15em; }
+.scen li { margin:.28em 0; }
+
+.notes { margin-top:16px; background:var(--card); border:1px solid var(--border);
+  border-left:8px solid #b8901f; border-radius:12px; padding:14px 24px; }
+.notes p { margin:6px 0; font-size:20px; line-height:1.4; }
+.notes b { color:#8a6d1f; }
+.eq { margin-top:8px; text-align:center; font:700 38px Charter,Cambria,Georgia,serif; }
+
+[data-step] { opacity:0; visibility:hidden; transition:opacity .2s ease; }
+[data-step].on { opacity:1; visibility:visible; }
+
+#bar { position:absolute; left:0; bottom:0; height:5px; background:var(--accent); z-index:5; }
+#num { position:absolute; right:26px; bottom:16px; font-size:17px; color:var(--muted); z-index:5; }
+#hint { position:fixed; left:14px; bottom:10px; font-size:13px; color:#5d6b64; z-index:9; }
+
+/* ---- MCQ ---- */
+.opts { list-style:none; margin:20px 0 0; padding:0; display:grid; gap:11px; }
+.opts li { display:grid; grid-template-columns:48px 1fr 44px; align-items:center; gap:16px;
+  background:var(--card); border:1px solid var(--border); border-radius:11px;
+  padding:13px 20px; font-size:25px; line-height:1.3; box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.opts .lab { width:48px; height:48px; border-radius:50%; background:#eef1ef; color:var(--ink);
+  display:grid; place-items:center; font:700 22px "Segoe UI",sans-serif; }
+.opts .mk { text-align:center; font-size:30px; font-weight:700; }
+.opts .mk.ok { color:var(--accent); }
+.opts .mk.no { color:#c6cdc8; }
+.ans { margin-top:20px; background:#dff2e8; border:2px solid var(--accent); border-radius:14px;
+  padding:16px 28px; color:#12664c; font-size:24px; line-height:1.42; }
+.ans b { font:700 27px Charter,"Bitstream Charter",Cambria,Georgia,serif; }
+.given { background:var(--card); border:1px solid var(--border); border-left:8px solid var(--accent);
+  border-radius:12px; padding:16px 22px; font-size:20px; line-height:1.45;
+  box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.given h3 { font-size:22px; margin:0 0 4px; }
+.given h3.y2 { margin-top:14px; }
+.given ul { margin:0; padding-left:1.1em; }
+.given li { margin:.18em 0; }
+.two .opts li { font-size:23px; padding:11px 18px; }
+.two .ans { font-size:21px; padding:14px 22px; }
+
+/* ---- fill-in-the-blank statements ---- */
+.bl { display:inline-block; min-width:104px; padding:2px 10px; border:2px dashed #c3ccc6;
+  border-radius:8px; color:var(--accent); font-weight:700; }
+.stmt.q table { font-size:22px; }
+.stmt.q td { padding:8px 8px; }
+.stmt.q .given-amt { color:var(--muted); }
+
+/* ================= one-page handout (Ctrl+P) =================
+   Screen stays a slide deck; print flattens it onto one sheet.
+   Answers are hidden by default. Press K for the answer key. */
+.printhead, .printfoot { display:none; }
+@media print {
+  @page { size:letter portrait; margin:5mm 10mm; }
+  html, body { height:auto; background:#fff; display:block; overflow:visible; color:#000; }
+  body { font:8.5pt/1.26 "Segoe UI",system-ui,sans-serif; }
+  #stage { position:static; width:auto; height:auto; transform:none !important;
+           background:#fff; box-shadow:none; overflow:visible; }
+  .s { position:static; display:block !important; padding:0; margin:0 0 3.1mm;
+       animation:none; break-inside:avoid; }
+  .s.title, #bar, #num, #hint, .notes, .ans { display:none !important; }
+
+  .printhead { display:block; margin:0 0 1.6mm; padding-bottom:1mm;
+    border-bottom:1.4pt solid #000; font:700 11.5pt Charter,Cambria,Georgia,serif; }
+  .printhead span { float:right; font:400 8.5pt "Segoe UI",sans-serif; }
+  .printfoot { display:block; margin-top:1.2mm; font-size:6.5pt; line-height:1.3; color:#444; }
+
+  .eyebrow { margin:0 0 .5mm; font-size:6.6pt; letter-spacing:.08em; color:#000; }
+  .ask { background:none; border:0; border-left:2.4pt solid #000; border-radius:0;
+         padding:0 0 0 3mm; }
+  .ask .qlab { display:inline; margin:0 2mm 0 0; font-size:7.2pt; color:#000; }
+  .ask p { display:inline; font-size:9pt; }
+
+  .opts { margin:.6mm 0 0; gap:0; }
+  .opts li { display:grid; grid-template-columns:6mm 1fr; gap:2mm; align-items:start;
+             background:none; border:0; border-radius:0; box-shadow:none;
+             padding:.2mm 0; font-size:8.5pt; }
+  .opts .lab { width:auto; height:auto; background:none; border-radius:0; place-items:start;
+               font:700 8.5pt/1.26 "Segoe UI",sans-serif; }
+  .opts .mk { display:none; }
+
+  .two { display:grid; grid-template-columns:0.9fr 1.1fr; gap:3.4mm; align-items:start; }
+  .given { box-shadow:none; border:.6pt solid #999; border-left:2.4pt solid #000;
+           border-radius:0; padding:1.6mm 2.4mm; font-size:7.6pt; line-height:1.28; }
+  .given h3 { font-size:8.2pt; margin:0 0 .5mm; }
+  .given h3.y2 { margin-top:2mm; }
+
+  .stmt { box-shadow:none; border:.6pt solid #999; border-radius:0; padding:1.6mm 2.4mm; }
+  .stmt + .stmt, .stmt[style] { margin-top:2.4mm !important; }
+  .stmt h3 { font-size:8.6pt; margin:0 0 .8mm; }
+  .stmt.q table { font-size:8.2pt; }
+  .stmt th { font-size:6.8pt; padding:.5mm 2mm; }
+  .stmt.q td { padding:.85mm 2mm; }
+  .bl { min-width:19mm; padding:.4mm 1.6mm; border:.8pt dashed #666; color:#000; }
+  .bl > span { visibility:hidden !important; }
+
+  /* K = answer key */
+  html.showkey .bl > span,
+  html.showkey [data-step] { visibility:visible !important; opacity:1 !important; }
+  html.showkey .opts .mk { display:block; }
+  html.showkey .ans { display:block; background:none; border:0; border-left:2.4pt solid #000;
+                      border-radius:0; padding:0 0 0 3mm; margin-top:1.4mm;
+                      color:#000; font-size:8.5pt; }
+  html.showkey .notes { display:block; background:none; border:0; border-left:2.4pt solid #000;
+                        border-radius:0; padding:0 0 0 3mm; margin-top:2mm; }
+  html.showkey .notes p { font-size:8.5pt; margin:.6mm 0; }
+}
+
+
+/* ---- Ch2: five options per MCQ, an account bank, and journal-entry blanks ---- */
+.opts li { font-size:23px; padding:11px 18px; }
+
+.setgrid { display:grid; grid-template-columns:0.58fr 1fr; gap:30px; align-items:start;
+  margin-top:18px; }
+.banktitle { font:700 18px "Segoe UI",sans-serif; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--accent); margin:0 0 10px; }
+.bank { list-style:none; margin:0; padding:0; display:grid; gap:5px; }
+.bank li { display:grid; grid-template-columns:38px 1fr; align-items:center; gap:12px;
+  background:var(--card); border:1px solid var(--border); border-radius:10px;
+  padding:6px 14px; font-size:20px; line-height:1.25; box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.bank .lab { width:38px; height:38px; border-radius:50%; background:#eef1ef; color:var(--ink);
+  display:grid; place-items:center; font:700 18px "Segoe UI",sans-serif; }
+.bank.wide { grid-template-columns:1fr 1fr; grid-template-rows:repeat(5,auto);
+  grid-auto-flow:column; gap:10px 28px; margin-top:18px; }
+.bank.wide li { font-size:24px; padding:11px 18px; grid-template-columns:46px 1fr; }
+.bank.wide .lab { width:46px; height:46px; font-size:21px; }
+
+.je { background:var(--card); border:1px solid var(--border); border-radius:12px;
+  padding:16px 24px 12px; box-shadow:0 4px 16px rgba(0,0,0,.07); }
+.je table { width:100%; border-collapse:collapse; font-size:24px; }
+.je th { color:var(--muted); font-size:17px; letter-spacing:.06em; text-transform:uppercase;
+  text-align:right; border-bottom:2px solid var(--ink); padding:5px 8px; }
+.je th:first-child { text-align:left; }
+.je th.amt { width:140px; }
+.je td { padding:11px 8px; text-align:right; border-bottom:1px solid #e7ebe8; }
+.je td:first-child { text-align:left; }
+.je td.cr { padding-left:54px; }
+.je tbody tr:last-child td { border-bottom:0; }
+.je .bl { min-width:330px; text-align:left; font-size:23px; }
+.setgrid .ans { margin-top:18px; font-size:22px; padding:14px 24px; line-height:1.4; }
+/* the six transaction slides: no box of their own on screen, two columns in print */
+.txset, .tset { display:contents; }
+
+/* ---- the month's six transactions, listed up front (screen only) ----
+   Questions 4-11 all work from one run of transactions, so the class sees the
+   whole month at once before recording any of it. On the printed sheet every
+   transaction is restated in its own question a few centimetres below, so the
+   list there would only be a second copy. */
+.txlist { list-style:none; margin:20px 0 0; padding:0; display:grid; gap:11px; }
+.txlist li { display:grid; grid-template-columns:50px 1fr; align-items:center; gap:18px;
+  background:var(--card); border:1px solid var(--border); border-radius:11px;
+  padding:13px 22px; font-size:23px; line-height:1.3; box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.txlist .lab { width:50px; height:50px; border-radius:50%; background:#eef1ef; color:var(--ink);
+  display:grid; place-items:center; font:700 23px "Segoe UI",sans-serif; }
+
+/* ---- ending balances (Q10, Q11) ----
+   The question names the T-account but does not draw one: what is being asked
+   for is the balance it ends at and the side that balance sits on, and an
+   empty T-account grid on the slide only invites students to fill the grid. */
+.balq { background:var(--card); border:1px solid var(--border); border-radius:12px;
+  padding:22px 30px; box-shadow:0 4px 16px rgba(0,0,0,.07); }
+.balq .blab { margin:0 0 16px; color:var(--accent);
+  font:700 19px "Segoe UI",sans-serif; letter-spacing:.14em; text-transform:uppercase; }
+.balq p.line { font-size:26px; line-height:2.0; margin:0 0 12px; }
+.balq p.line:last-child { margin:0; }
+.balq .bl { min-width:150px; font-size:25px; text-align:center; }
+/* the ",000" is printed, so the blank only ever takes a number a self-made
+   scantron can carry (0-99) */
+.balq .scale { font-size:26px; }
+/* the six stems recapped beside the question; the printed sheet has them already */
+.recap .given { font-size:20px; }
+.recap .given li { margin:.3em 0; }
+.recap .given b { color:var(--accent); }
+
+@media print {
+  /* The handout is a TWO-page sheet, not a one-page squeeze: the transactions
+     are listed once at the top, each question only refers to its letter, and
+     the type is set to be read rather than to fit. (User, 2026-09-22.) */
+  @page { margin:7mm 13mm; }
+  body { font:10.5pt/1.4 "Times New Roman",Times,serif; }
+  /* The handout is set in Times New Roman throughout. The screen deck keeps the
+     house Charter/Segoe pairing; this rule only ever applies to paper, and it
+     re-declares the family everywhere the deck names one, leaving every size
+     and weight alone. (User, 2026-09-22.) */
+  body, .printhead, .printfoot, .eyebrow, .banktitle, .ask .qlab, .ask p,
+  .opts li, .opts .lab, .txlist li, .txlist .lab, .bank li, .bank .lab,
+  .je table, .je th, .balq p.line, .balq .blab, .balq .scale, .bl,
+  html.showkey .ans, html.showkey .ans b {
+    font-family:"Times New Roman",Times,serif;
+  }
+
+  /* The set question is one block and prints as one, starting at its own
+     set-up paragraph: the transactions, the account list and Q4-Q11 all sit on
+     page 2, so nothing a student needs while writing is on the other side of
+     the sheet. Page 1 is Q1-Q3. .s carries break-inside:avoid, so no single
+     question splits either. Fitting all of it on one page is what sets the
+     spacing below -- it is about 160pt tighter than the block would be on its
+     own, and every millimetre of that came out of padding, never type size. */
+  .txlist-slide { break-before:page; page-break-before:always; }
+  .s { margin:0 0 1.6mm; }
+  /* no per-question headings on paper: the "Q4" label and the stem name the
+     question, and the eyebrows were a presenter's rail label, not a reader's.
+     (User, 2026-09-22.) */
+  .eyebrow { display:none; }
+  .ask { border-left-width:2.8pt; padding-left:3.4mm; }
+  .ask .qlab { font-size:8.4pt; margin-right:2.6mm; }
+  .ask p { font-size:10pt; }
+  .key { display:none !important; }
+
+  /* the six transactions, printed once, above every question that uses them */
+  .txlist-slide { display:block !important; }
+  .txlist { margin:1.2mm 0 0; gap:0; }
+  .txlist li { display:grid; grid-template-columns:7mm 1fr; gap:2.4mm; align-items:start;
+    background:none; border:0; border-radius:0; box-shadow:none;
+    padding:.5mm 0; font-size:10.5pt; line-height:1.4; }
+  .txlist .lab { width:auto; height:auto; background:none; border-radius:0;
+    place-items:start; font:700 10.5pt/1.4 "Times New Roman",Times,serif; }
+  /* a question restates its transaction on screen and only names it in print */
+  .txfull { display:none; }
+
+  .opts { margin:1.6mm 0 0; gap:0; }
+  .opts li { display:grid; grid-template-columns:7mm 1fr; gap:2.4mm; align-items:start;
+    background:none; border:0; border-radius:0; box-shadow:none;
+    padding:1.5mm 0; font-size:10.5pt; line-height:1.4; }
+  .opts .lab { width:auto; height:auto; background:none; border-radius:0;
+    place-items:start; font:700 10.5pt/1.4 "Times New Roman",Times,serif; }
+  .opts .mk { display:none; }
+
+  .setgrid { display:block; margin-top:1.4mm; }
+  .bankwrap.repeat, .recap { display:none; }
+  .banktitle { font-size:8.4pt; letter-spacing:.08em; color:#000; margin:1.4mm 0 .8mm; }
+  .bank { gap:0; }
+  .bank.wide { display:grid; grid-template-columns:1fr 1fr; grid-template-rows:repeat(5,auto);
+    grid-auto-flow:column; gap:0 8mm; margin-top:1.2mm; }
+  .bank li, .bank.wide li { display:grid; grid-template-columns:7mm 1fr; gap:2.4mm;
+    align-items:start; background:none; border:0; border-radius:0; box-shadow:none;
+    padding:.3mm 0; font-size:10.5pt; line-height:1.4; }
+  .bank .lab, .bank.wide .lab { width:auto; height:auto; background:none; border-radius:0;
+    place-items:start; font:700 10.5pt/1.4 "Times New Roman",Times,serif; }
+
+  /* an entry is narrow, so two still sit across the sheet without crowding */
+  .txset, .tset { display:grid; grid-template-columns:1fr 1fr; gap:0 9mm; }
+  .txset .s, .tset .s { margin-bottom:1.4mm; }
+
+  .je { box-shadow:none; border:.8pt solid #999; border-radius:0;
+    padding:1.4mm 3mm; margin-top:1.2mm; }
+  .je table { font-size:10.5pt; }
+  .je th { font-size:8pt; padding:.6mm 2.4mm; }
+  .je th.amt { width:19mm; }
+  .je td { padding:1.7mm 2.4mm; }
+  .je td.cr { padding-left:9mm; }
+  .je .bl { min-width:50mm; font-size:10.5pt; }
+  /* Every account blank is the same one-line box. The hidden answer still takes
+     up space, and a long one ("7. Service Revenue (+R, +SHE)") wrapped to two
+     lines, so Q10-Q11 printed taller and wider than the other entries. */
+  .je .bl { width:50mm; min-width:0; white-space:nowrap; overflow:hidden;
+    vertical-align:middle; }
+  html.showkey .je .bl { width:auto; min-width:50mm; overflow:visible; }
+
+  .balq { box-shadow:none; border:.8pt solid #999; border-radius:0;
+    padding:1.4mm 3mm; margin-top:1.2mm; }
+  .balq .blab { font-size:8pt; letter-spacing:.1em; color:#000; margin:0 0 1.2mm; }
+  .balq p.line { font-size:10.5pt; line-height:2.4; margin:0; }
+  .balq .bl { min-width:30mm; font-size:10.5pt; }
+  .balq .scale { font-size:10.5pt; }
+
+  .bl { padding:1mm 2.4mm; border-width:1pt; }
+  .printhead { margin:0 0 2.6mm; padding-bottom:1.6mm;
+    font:700 15pt "Times New Roman",Times,serif; }
+  .printhead span { font:400 10.5pt "Times New Roman",Times,serif; }
+  .printfoot { margin-top:2mm; font-size:8pt; line-height:1.4; }
+
+  /* K = answer key. The shared shell leaves two things broken here:
+     the generic rule hides .ans with !important, so no explanation ever
+     printed, and .opts li is a two-column grid, so the revealed tick
+     wrapped onto a line of its own at its 30px screen size. */
+  html.showkey .ans { display:block !important; margin-top:2mm; font-size:10.5pt;
+    line-height:1.45; }
+  html.showkey .ans b { font:700 11.5pt/1.4 "Times New Roman",Times,serif; }
+  html.showkey .opts li { grid-template-columns:7mm 1fr 6mm; }
+  html.showkey .opts .mk { display:block; font-size:10pt; line-height:1.4;
+    text-align:center; }
+}
+
+/* ---- Q3-Q6: four definitions against one list of four accounts ----
+   The accounts are listed once, across the slide; each definition is its own
+   numbered question with its letter revealed in turn. */
+.opts.four { grid-template-columns:repeat(4,1fr); gap:12px; }
+.opts.four li { grid-template-columns:48px 1fr; }
+.dq { list-style:none; margin:18px 0 0; padding:0; display:grid; gap:10px; }
+.dq li { display:grid; grid-template-columns:64px 1fr 96px; align-items:center; gap:16px;
+  background:var(--card); border:1px solid var(--border); border-radius:11px;
+  padding:11px 20px; font-size:23px; line-height:1.3; box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.dq .qn { font:700 19px "Segoe UI",sans-serif; letter-spacing:.1em; color:#8a6d1f; }
+.dq .bl { min-width:0; text-align:center; font-size:24px; }
+@media print {
+  /* Page 1 now carries nine questions (Q1-Q9), so the option rows run tighter
+     than Ch2's airy 1.5 mm; the type size is unchanged. */
+  .opts li { padding:.85mm 0; }
+  .opts { margin-top:1mm; }
+  .opts.four { display:grid; grid-template-columns:repeat(4,auto); justify-content:start;
+    gap:0 9mm; margin-top:1.2mm; }
+  .opts.four li { grid-template-columns:5mm 1fr; }
+  html.showkey .opts.four li { grid-template-columns:5mm 1fr; }
+  .dq { margin:1mm 0 0; gap:0; }
+  .dq li { grid-template-columns:9mm 1fr 14mm; gap:2.4mm; align-items:center;
+    background:none; border:0; border-radius:0; box-shadow:none;
+    padding:1mm 0; font:10.5pt/1.4 "Times New Roman",Times,serif; }
+  .dq .qn { font:700 8.4pt "Times New Roman",Times,serif; letter-spacing:.08em; color:#000; }
+  .dq .bl { min-width:0; padding:.3mm 1mm; font-size:10.5pt; }
+}
+/* ---- left navigation rail (outside the stage; N toggles) ---- */
+:root { --railw: 236px; }
+body { padding-left:var(--railw); }
+body.norail { padding-left:0; }
+#rail { position:fixed; left:0; top:0; bottom:0; width:var(--railw); z-index:8;
+  background:#121a16; border-right:1px solid #24302a; overflow-y:auto;
+  padding:14px 0 18px; font:13px/1.35 "Segoe UI",system-ui,sans-serif; }
+body.norail #rail { display:none; }
+#rail .rhead { padding:0 16px 10px; color:#7d8c84; font-size:11px;
+  letter-spacing:.14em; text-transform:uppercase; font-weight:700; }
+#rail ol { list-style:none; margin:0; padding:0; }
+#rail li { display:grid; grid-template-columns:22px 1fr; gap:9px; align-items:start;
+  padding:8px 15px; cursor:pointer; color:#b6c3bb;
+  border-left:3px solid transparent; }
+#rail li:hover { background:#1a2520; color:#e4ece7; }
+#rail li.cur { background:#1d2f28; color:#fff; border-left-color:var(--accent); }
+#rail .rn { color:#6f7f76; font-weight:700; text-align:right; }
+#rail li.cur .rn { color:var(--accent); }
+#rail .rt { overflow-wrap:anywhere; }
+#hint { left:calc(var(--railw) + 14px); }
+body.norail #hint { left:14px; }
+@media print {
+  #rail { display:none !important; }
+  body { padding-left:0 !important; }
+}
+
+/* ---- class-review additions ---- */
+/* no animation (instructor, 2026-10-14): slides change without the fade, and nothing is revealed step by step */
+.s.on { animation:none !important; }
+[data-step] { opacity:1 !important; visibility:visible !important; transition:none !important; }
+.chart svg { display:block; width:100%; height:auto; }
+.chart text { font-family:"Segoe UI",system-ui,sans-serif; }
+.big { font:700 30px Charter,"Bitstream Charter",Cambria,Georgia,serif; color:var(--ink); margin:0 0 6px; }
+.hbars { display:grid; gap:16px; margin-top:8px; }
+.hbars.tight { gap:9px; }
+.hbar { display:grid; grid-template-columns:270px 1fr 90px; align-items:center; gap:18px; font-size:25px; }
+.hbar .track { position:relative; height:34px; background:#e3e7e4; border-radius:8px; overflow:hidden; }
+.hbar .fill { position:absolute; left:0; top:0; bottom:0; border-radius:8px; }
+.hbar .v { font-weight:700; text-align:right; }
+.hbar.sm { grid-template-columns:420px 1fr 80px; font-size:21px; gap:14px; }
+.hbar.sm .track { height:24px; }
+.hbar.low { color:var(--red); }
+.hq { display:grid; grid-template-columns:1fr 1fr; gap:34px; align-items:start; }
+.hq .ans { font-size:19.5px; padding:12px 20px; margin-top:14px; }
+.hq .ans b { font-size:23px; }
+.opts.pc { margin-top:0; gap:9px; }
+.opts.pc li { grid-template-columns:42px 1fr 200px 36px; padding:6px 14px; font-size:21px; gap:12px; }
+.opts.pc .lab { width:42px; height:42px; font-size:19px; }
+.opts.pc .mk { font-size:26px; }
+.opts.pc .pbar { display:grid; grid-template-columns:1fr 60px; align-items:center; gap:10px; }
+.opts.pc .ptrack { height:20px; background:#e3e7e4; border-radius:6px; position:relative; overflow:hidden; }
+.opts.pc .pfill { position:absolute; left:0; top:0; bottom:0; background:#9aa6a0; border-radius:6px; }
+.opts.pc .pv { font-weight:700; font-size:21px; text-align:right; }
+.opts.pc li.right .pfill { background:var(--accent); }
+.ask.sm p { font-size:24px; }
+.steps { list-style:none; padding:0; margin:10px 0 0; display:grid; gap:16px; }
+.steps li { background:var(--card); border:1px solid var(--border); border-left:8px solid var(--accent); border-radius:12px;
+  padding:18px 26px; font-size:27px; line-height:1.4; }
+.steps li b { color:var(--accent); }
+.hbar.seen { grid-template-columns:820px 1fr 90px; }
+.lead2 { font-size:19px; line-height:1.35; color:var(--muted); margin:0 0 8px; }
+.txl, .bankl { margin:4px 0 0; padding-left:0; list-style:none; display:grid; gap:6px; font-size:18.5px; line-height:1.3; }
+.txl li, .bankl li { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:6px 14px; }
+.bankl { grid-template-columns:1fr; gap:5px; font-size:18.5px; }
+.bankl li { padding:4px 14px; }
+.jet { width:100%; margin-top:26px; border-collapse:separate; border-spacing:0 10px; font-size:25px; }
+.jet th { text-align:left; font-size:16px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); padding:0 14px; }
+.jet td { background:var(--card); padding:14px 16px; border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+.jet td:first-child { border-left:1px solid var(--border); border-radius:10px 0 0 10px; font-weight:700; color:var(--muted); width:50px; }
+.jet td:last-child { border-right:1px solid var(--border); border-radius:0 10px 10px 0; }
+.jet .amt { text-align:right; width:110px; }
+.jet .pc { width:240px; font-size:21px; }
+.jet .wr { color:var(--muted); font-size:20px; }
+.blank { display:inline-block; min-width:320px; border-bottom:3px dashed #9aa6a0; padding:0 6px; color:var(--accent); font-weight:700; }
+.fsgrid { display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:start; }
+.fs { background:var(--card); border:1.5px solid #16263a; border-radius:6px; padding:8px 18px 6px; margin-bottom:12px; }
+.fsh { text-align:center; font-size:15.5px; line-height:1.25; margin-bottom:4px; }
+.fs table { width:100%; border-collapse:collapse; font-size:19px; }
+.fs td { padding:1px 4px; }
+.fs .amt { text-align:right; white-space:nowrap; }
+.fs tr.tot td { border-top:1.5px solid #16263a; font-weight:700; }
+.fs .blank { min-width:80px; text-align:right; }
+.fs .tag { margin-right:10px; font-size:15px; font-weight:700; color:#8a6d1f; background:#fdf6e3; border:1px solid #e8dcb8; border-radius:6px; padding:1px 7px; }
+.howt { width:100%; border-collapse:collapse; font-size:18px; margin-top:0; }
+.howt th { text-align:left; font-size:15px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); padding:6px 10px; border-bottom:2px solid var(--border); }
+.howt td { padding:6px 10px; border-bottom:1px solid var(--border); vertical-align:top; background:var(--card); }
+.howt .amt { font-weight:700; color:var(--accent); white-space:nowrap; }
+.howt .how { font-size:16px; line-height:1.3; }
+.stack { display:flex; height:120px; border-radius:12px; overflow:hidden; margin:26px 0 22px; box-shadow:0 1px 0 var(--border); }
+.stack .seg { display:flex; flex-direction:column; justify-content:center; align-items:center; color:#fff; min-width:0; }
+.stack .seg b { font:700 40px Charter,Cambria,Georgia,serif; line-height:1; }
+.stack .seg span { font-size:18px; margin-top:6px; opacity:.95; }
+.stack .seg:last-child { color:#16263a; }
+.stackleg { list-style:none; padding:0; margin:0; display:grid; gap:10px; font-size:25px; }
+.stackleg i { display:inline-block; width:22px; height:22px; border-radius:5px; margin-right:12px; vertical-align:-3px; }
+.stackleg .n { color:var(--muted); font-size:21px; }
+.under { display:flex; margin-top:-8px; }
+.under div { text-align:center; font-size:24px; line-height:1.3; padding:0 8px; }
+.under div:last-child { text-align:right; white-space:nowrap; direction:rtl; padding-right:0; }   /* a narrow last part: its words run leftward */
+.srclist { margin:6px 0 0; padding-left:34px; font-size:28px; line-height:1.6; }
+.legend { display:flex; gap:26px; font-size:19px; color:var(--muted); margin:2px 0 6px; flex-wrap:wrap; }
+.legend i { display:inline-block; width:15px; height:15px; border-radius:3px; margin-right:7px; vertical-align:-2px; }
+
+/* ---- Anthropic S-1 deck additions ---- */
+.je { width:100%; border-collapse:collapse; font-size:26px; background:var(--card);
+  border:1px solid var(--border); border-radius:12px; overflow:hidden; box-shadow:0 3px 12px rgba(0,0,0,.05); }
+.je th { font-size:16px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
+  text-align:right; padding:10px 18px; border-bottom:2px solid var(--border); }
+.je th:first-child, .je td:first-child { text-align:left; }
+.je td { padding:10px 18px; text-align:right; border-bottom:1px solid #e7ebe8; }
+.je td.cr { padding-left:60px; }
+.stmt tr.sub td { color:var(--muted); font-size:21px; }
+.neg { color:var(--red); }
+.src { font-size:15px; color:var(--muted); margin-top:14px; }
+.recap { width:100%; border-collapse:collapse; font-size:23px; }
+.recap th { text-align:left; font-size:16px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
+  padding:8px 14px; border-bottom:2px solid var(--ink); }
+.recap td { padding:11px 14px; border-bottom:1px solid var(--border); background:var(--card); vertical-align:top; }
+.recap td:first-child { font-weight:700; color:var(--accent); white-space:nowrap; }
+.recap td:nth-child(2) { color:var(--muted); white-space:nowrap; }
+.srcs { font-size:25px; line-height:1.55; margin:0; padding-left:1.2em; }
+.srcs a { color:var(--accent); }
+.recap td:nth-child(2) { white-space:normal; color:var(--ink); }
+.recap td:nth-child(3) { color:var(--muted); }
+.hbar.wide { grid-template-columns:400px 1fr 90px; }
+</style>
+</head>
+<body>
+<nav id="rail" aria-label="Slides"><div class="rhead">Slides</div><ol></ol></nav>
+<div id="stage">
+
+<section class="s title" data-nav="Cover">
+<div class="tstack">
+<p class="eyebrow">ACC 250 &middot; Ch8 Receivables and Bad Debts</p>
+<h1>What if the customer never pays?</h1>
+<p class="lede">How Crocs and Costco report bad debts in their 10-K filings.</p>
+</div>
+<p class="title-date">Crocs: Form 10-K, year ended Dec 31, 2024 ($ thousands) &middot; Costco: Form 10-K</p>
+</section>
+
+<section class="s" data-nav="The problem">
+<p class="eyebrow">The problem</p>
+<h2>Selling on credit has a cost</h2>
+<div class="tests">
+<div class="test"><span class="n">1</span><div>A shoe store orders <b>$100,000</b> of Crocs and promises to pay in 60 days. Crocs records revenue and an <b>account receivable</b>.</div></div>
+<div class="test"><span class="n">2</span><div>Some stores will close or fall behind, and some of that money will <b>never be collected</b>.</div></div>
+<div class="test"><span class="n">3</span><div>Crocs doesn&rsquo;t know <i>which</i> customers will not pay, or <i>when</i> it will find out.</div></div>
+</div>
+<div class="ask" style="margin-top:22px"><span class="qlab">Think about it</span><p>Should Crocs record the loss <b>now</b>, in the year of the sale, or <b>later</b>, when a customer actually fails to pay?</p></div>
+</section>
+
+<section class="s" data-nav="Crocs on the balance sheet">
+<p class="eyebrow">Crocs &middot; Balance sheet</p>
+<h2>One line, three numbers</h2>
+<div class="def"><p class="term">As printed in the 10-K</p>
+<p style="font-family:Charter,Georgia,serif">Accounts receivable, net of allowances of $31,579 and $27,591, respectively &nbsp;&nbsp; <b>257,657</b> &nbsp;&nbsp; 305,747</p></div>
+<div class="two" style="margin-top:22px">
+<div class="stmt">
+<h3>December 31, 2024 ($ thousands)</h3>
+<table>
+<tr><th></th><th>$K</th></tr>
+<tr><td>What customers owe (gross)</td><td>289,236</td></tr>
+<tr><td>Less: allowances</td><td class="neg">(31,579)</td></tr>
+<tr class="total"><td>Accounts receivable, net</td><td class="hl">257,657</td></tr>
+</table>
+</div>
+<div>
+<div class="note">The <b>allowance</b> is a <b>contra-asset</b>: it reduces receivables to the amount Crocs expects to collect.</div>
+<div class="note">The balance sheet shows the <b>net</b> amount. The allowance appears only in the line&rsquo;s description.</div>
+</div>
+</div>
+<p class="src">Gross = net + allowances (257,657 + 31,579).</p>
+</section>
+
+<section class="s" data-nav="What's in the allowance">
+<p class="eyebrow">Crocs &middot; Schedule II</p>
+<h2>Not all of it is bad debts</h2>
+<div class="hbars">
+<div class="hbar"><span>Doubtful accounts</span><div class="track"><div class="fill" style="width:40.1%;background:#b3200f"></div></div><span class="v">12,649</span></div>
+<div class="hbar"><span>Returns, discounts and other</span><div class="track"><div class="fill" style="width:59.9%;background:#9aa6a0"></div></div><span class="v">18,930</span></div>
+</div>
+<div class="note" style="margin-top:26px">Crocs&rsquo;s $31,579 of &ldquo;allowances&rdquo; combines several reserves. Only <b>$12,649</b> is the <b>allowance for doubtful accounts</b>, the amount it expects never to collect.</div>
+<div class="note">The detail is in <b>Schedule II, Valuation and Qualifying Accounts</b>, at the back of the 10-K. Always read past the face of the balance sheet.</div>
+</section>
+
+<section class="s" data-nav="The allowance during 2024">
+<p class="eyebrow">Crocs &middot; Allowance for doubtful accounts, 2024</p>
+<h2>What happened to the allowance in one year</h2>
+<div class="two">
+<div class="stmt">
+<h3>Schedule II ($ thousands)</h3>
+<table>
+<tr><th></th><th>$K</th></tr>
+<tr><td>Balance, Jan 1, 2024</td><td>13,627</td></tr>
+<tr><td>+ Charged to expense (bad debt expense)</td><td>1,352</td></tr>
+<tr><td>&minus; Deductions (write-offs, net of recoveries)</td><td class="neg">(2,330)</td></tr>
+<tr class="total"><td>Balance, Dec 31, 2024</td><td>12,649</td></tr>
+</table>
+</div>
+<div>
+<table class="je">
+<tr><th>Estimate (adjusting entry)</th><th>Dr</th><th>Cr</th></tr>
+<tr><td>Bad debt expense</td><td>1,352</td><td></td></tr>
+<tr><td class="cr">Allowance for doubtful accounts</td><td></td><td>1,352</td></tr>
+</table>
+<table class="je" style="margin-top:16px">
+<tr><th>Write-off</th><th>Dr</th><th>Cr</th></tr>
+<tr><td>Allowance for doubtful accounts</td><td>2,330</td><td></td></tr>
+<tr><td class="cr">Accounts receivable</td><td></td><td>2,330</td></tr>
+</table>
+</div>
+</div>
+<p class="src">Deductions also include small foreign currency effects. Entries are summarized for the whole year.</p>
+</section>
+
+<section class="s" data-nav="Key insight">
+<p class="eyebrow">The big idea</p>
+<h2>The expense comes first, the write-off later</h2>
+<div class="two">
+<div class="def"><p class="term">When the expense is recorded</p><p>When Crocs <b>estimates</b> the loss, in the <b>same period as the sale</b>. That is the <b>matching principle</b>.</p></div>
+<div class="def" style="border-left-color:#b8901f"><p class="term" style="color:#8a6d1f">When a customer finally defaults</p><p>The write-off only moves the amount out of AR and out of the allowance. <b>No new expense</b>, and <b>net AR does not change</b>.</p></div>
+</div>
+<div class="key"><span class="klab">Answer to slide 2</span>Record the loss now, as an estimate. That is the allowance method, and it is what GAAP requires.</div>
+</section>
+
+<section class="s" data-nav="How big is it?">
+<p class="eyebrow">Crocs &middot; Putting it in perspective</p>
+<h2>How big are Crocs&rsquo;s bad debts?</h2>
+<div class="two">
+<div class="def"><p class="term">Bad debt expense vs. revenue</p><p>$1.35 million on about <b>$4.1 billion</b> of revenue: roughly <b>3 cents per $100</b> of sales.</p></div>
+<div class="def"><p class="term">Allowance vs. gross receivables</p><p>12,649 &divide; 289,236 &asymp; <b>4.4%</b> of what customers owe is expected never to be collected.</p></div>
+</div>
+<div class="note" style="margin-top:22px">Small, but it is an <b>estimate</b> that management makes every quarter. A bigger allowance means lower net income today.</div>
+</section>
+
+<section class="s" data-nav="Costco: almost none">
+<p class="eyebrow">Costco &middot; The contrast</p>
+<h2>Why Costco has almost no bad debts</h2>
+<div class="two">
+<div>
+<div class="note">Members pay <b>at the register</b>: cash, debit or credit card. If a member never pays the credit card bill, that is the <b>bank&rsquo;s</b> loss, not Costco&rsquo;s.</div>
+<div class="note">Costco&rsquo;s receivables ($3.2 billion at Aug 31, 2025) are mostly owed by <b>vendors</b> (rebates), <b>pharmacy insurers</b> and <b>credit card partners</b>.</div>
+</div>
+<div class="def"><p class="term">What Costco&rsquo;s 10-K says</p><p>Receivables are recorded net of an allowance, and the allowance was <b>immaterial</b>, too small to matter to investors.</p></div>
+</div>
+<div class="key"><span class="klab">Key idea</span>Bad debts matter when a company sells <b>on credit to other businesses</b> (Crocs to shoe stores), not when customers pay on the spot.</div>
+</section>
+
+<section class="s" data-nav="Discuss">
+<p class="eyebrow">Before we start Ch8</p>
+<h2>Questions for you</h2>
+<ol class="steps">
+<li><b>Q1.</b> A large shoe retailer that owes Crocs money goes bankrupt. Which account(s) change? Does Crocs&rsquo;s net income change that day?</li>
+<li><b>Q2.</b> Crocs&rsquo;s managers raise the allowance estimate at year-end. What happens to net income? To net AR?</li>
+<li><b>Q3.</b> Which company would you expect to have a larger allowance relative to sales: a furniture store that offers 0% financing, or a grocery store? Why?</li>
+</ol>
+</section>
+
+<section class="s" data-nav="Ch8 · Two methods">
+<p class="eyebrow">Ch8 Concepts &middot; Review</p>
+<h2>Allowance method vs. direct write-off</h2>
+<div class="two">
+<div class="def"><p class="term">Allowance method (GAAP)</p><p>Estimate uncollectible accounts at the end of each period. Record <b>bad debt expense</b> and the <b>allowance</b> then. Matches expense with the revenue it helped earn. Reports AR at <b>net realizable value</b>.</p></div>
+<div class="def" style="border-left-color:#b8901f"><p class="term" style="color:#8a6d1f">Direct write-off method</p><p>Record bad debt expense only when a specific account is written off. Simple, but violates matching and overstates AR. Allowed only when bad debts are <b>immaterial</b> (and used for taxes).</p></div>
+</div>
+<div class="key"><span class="klab">Net realizable value</span>Accounts receivable &minus; Allowance for doubtful accounts = the amount expected to be collected.</div>
+</section>
+
+<section class="s" data-nav="Ch8 · Journal entries">
+<p class="eyebrow">Ch8 Concepts &middot; Review</p>
+<h2>The four entries</h2>
+<table class="recap">
+<tr><th>Event</th><th>Entry</th><th>Effect</th></tr>
+<tr><td>Sale on credit</td><td>Dr Accounts receivable / Cr Sales revenue</td><td>Assets &uarr;, revenue &uarr;</td></tr>
+<tr><td>Year-end estimate</td><td>Dr Bad debt expense / Cr Allowance for doubtful accounts</td><td>Net AR &darr;, net income &darr;</td></tr>
+<tr><td>Write-off</td><td>Dr Allowance for doubtful accounts / Cr Accounts receivable</td><td>No change to net AR or net income</td></tr>
+<tr><td>Recovery</td><td>Reverse the write-off, then Dr Cash / Cr Accounts receivable</td><td>No change to net income</td></tr>
+</table>
+<p class="fine" style="margin-top:16px">Bad debt expense is usually reported within selling, general and administrative expenses.</p>
+</section>
+
+<section class="s" data-nav="Ch8 · Estimating">
+<p class="eyebrow">Ch8 Concepts &middot; Review</p>
+<h2>Estimating the allowance</h2>
+<div class="two">
+<div class="def"><p class="term">Aging of receivables</p><p>Group AR by how long it has been outstanding. Apply a higher uncollectible % to older groups. The total is the <b>ending balance</b> the allowance should have.</p></div>
+<div class="def"><p class="term">Adjusting entry amount</p><p>Bad debt expense = <b>required ending balance</b> &minus; balance already in the allowance (add it back if the allowance has a debit balance).</p></div>
+</div>
+<div class="stmt" style="margin-top:22px;max-width:1000px">
+<table>
+<tr><th>Allowance for doubtful accounts (T-account logic)</th><th></th></tr>
+<tr><td>Beginning balance</td><td>+</td></tr>
+<tr><td>+ Bad debt expense (estimate)</td><td>+</td></tr>
+<tr><td>&minus; Write-offs</td><td>&minus;</td></tr>
+<tr class="total"><td>= Ending balance</td><td>=</td></tr>
+</table>
+</div>
+</section>
+
+<section class="s" data-nav="Ch8 · Ratios and notes">
+<p class="eyebrow">Ch8 Concepts &middot; Review</p>
+<h2>Receivables turnover and notes receivable</h2>
+<div class="two">
+<div class="def"><p class="term">Receivables turnover</p><p>= Net credit sales &divide; Average net AR<br>Days to collect = 365 &divide; turnover</p>
+<p class="fine" style="margin-top:10px">Crocs: 4,102 &divide; [(258 + 306) &divide; 2] &asymp; 14.6 times, about <b>25 days</b>. (Uses total revenue, which includes cash sales in its own stores, so true days to collect are longer.)</p></div>
+<div class="def"><p class="term">Notes receivable</p><p>A written promise to pay, usually with interest.<br>Interest = Face value &times; Annual rate &times; Fraction of the year</p>
+<p class="fine" style="margin-top:10px">Accrue interest earned but not yet collected at year-end: Dr Interest receivable / Cr Interest revenue.</p></div>
+</div>
+</section>
+
+<section class="s" data-nav="Sources">
+<p class="eyebrow">Sources</p>
+<h2>Where the numbers come from</h2>
+<ul class="srcs">
+<li><a href="https://www.sec.gov/Archives/edgar/data/1334036/000133403625000009/crox-20241231.htm" target="_blank">Crocs, Inc. Form 10-K, year ended Dec 31, 2024: balance sheet and Schedule II</a></li>
+<li><a href="https://www.sec.gov/Archives/edgar/data/1334036/000133403625000009/R28.htm" target="_blank">Crocs 10-K, Valuation and Qualifying Accounts (XBRL)</a></li>
+<li><a href="https://investors.crocs.com/news-and-events/press-releases/press-release-details/2025/Crocs-Inc.-Reports-Record-2024-Results-with-Annual-Revenues-of-4.1-Billion-Growing-4-Over-2023/default.aspx" target="_blank">Crocs 2024 results press release (revenue)</a></li>
+<li><a href="https://www.sec.gov/Archives/edgar/data/909832/000090983225000101/cost-20250831.htm" target="_blank">Costco Wholesale Form 10-K, fiscal year ended Aug 31, 2025: receivables policy</a></li>
+</ul>
+<p class="fine" style="margin-top:22px">Crocs amounts in $ thousands unless noted. &ldquo;Returns, discounts and other&rdquo; = total allowances minus the allowance for doubtful accounts.</p>
+</section>
+
+<div id="bar"></div><div id="num"></div>
+</div>
+<script>
+
+const stage = document.getElementById('stage');
+const S = [...document.querySelectorAll('.s')];
+const bar = document.getElementById('bar'), num = document.getElementById('num');
+let i = 0, step = 0;
+
+const maxStep = s => [...s.querySelectorAll('[data-step]')]
+  .reduce((m, el) => Math.max(m, +el.dataset.step || 0), 0);
+
+function paint() {
+  S.forEach((s, k) => s.classList.toggle('on', k === i));
+  S[i].querySelectorAll('[data-step]').forEach(el => el.classList.toggle('on', +el.dataset.step <= step));
+  bar.style.width = ((i + 1) / S.length * 100) + '%';
+  num.textContent = (i + 1) + ' / ' + S.length;
+  location.hash = i + 1;
+}
+function go(n, atEnd) {
+  if (n < 0 || n > S.length - 1) return;          // past either end: leave the slide alone
+  i = n;
+  step = atEnd ? maxStep(S[i]) : 0;
+  paint();
+}
+function next() { if (step < maxStep(S[i])) { step++; paint(); } else go(i + 1, false); }
+function prev() { if (step > 0) { step--; paint(); } else go(i - 1, true); }
+
+function railPad() {
+  if (document.body.classList.contains('norail')) return 0;
+  return parseFloat(getComputedStyle(document.documentElement)
+    .getPropertyValue('--railw')) || 0;
+}
+function fit() {
+  const k = Math.min((innerWidth - railPad()) / 1600, innerHeight / 900);
+  stage.style.transform = `scale(${k})`;
+}
+addEventListener('resize', fit);
+addEventListener('keydown', e => {
+  const k = e.key;
+  if (e.ctrlKey || e.metaKey) {                       // whole-slide jumps
+    if (k === 'ArrowRight' || k === 'ArrowDown') { go(i + 1, false); e.preventDefault(); }
+    else if (k === 'ArrowLeft' || k === 'ArrowUp') { go(i - 1, false); e.preventDefault(); }
+    else if (k === 'Home') { go(0, false); e.preventDefault(); }
+    else if (k === 'End') { go(S.length - 1, false); e.preventDefault(); }
+    return;
+  }
+  if (k === 'ArrowRight' || k === 'ArrowDown' || k === ' ' || k === 'PageDown' || k === 'Enter') { next(); e.preventDefault(); }
+  else if (k === 'ArrowLeft' || k === 'ArrowUp' || k === 'PageUp' || k === 'Backspace') { prev(); e.preventDefault(); }
+  else if (k === 'f' || k === 'F') { document.documentElement.requestFullscreen?.(); }
+  else if (k === 'n' || k === 'N') { document.body.classList.toggle('norail'); fit(); }
+  else if (k === 'k' || k === 'K') { document.documentElement.classList.toggle('showkey'); }
+});
+stage.addEventListener('click', e => { e.clientX < innerWidth * .28 ? prev() : next(); });
+
+/* ---- left navigation rail ---- */
+const railList = document.querySelector('#rail ol');
+S.forEach((s, k) => {
+  const label = s.dataset.nav
+    || s.querySelector('h2')?.textContent
+    || s.querySelector('.eyebrow')?.textContent
+    || s.querySelector('h1')?.textContent
+    || ('Slide ' + (k + 1));
+  const li = document.createElement('li');
+  li.innerHTML = '<span class="rn"></span><span class="rt"></span>';
+  li.querySelector('.rn').textContent = k + 1;
+  li.querySelector('.rt').textContent = label.replace(/\s+/g, ' ').trim();
+  li.addEventListener('click', e => { e.stopPropagation(); go(k, false); });
+  railList.appendChild(li);
+});
+const railItems = [...railList.children];
+const basePaint = paint;
+paint = function () {
+  basePaint();
+  railItems.forEach((li, k) => li.classList.toggle('cur', k === i));
+  const cur = railItems[i];
+  if (cur) cur.scrollIntoView({ block: 'nearest' });
+};
+if (innerWidth < 1150) document.body.classList.add('norail');
+
+fit();
+go(Math.max(0, (parseInt(location.hash.slice(1)) || 1) - 1), false);
+</script>
+</body>
+</html>
