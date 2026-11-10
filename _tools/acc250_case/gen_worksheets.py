@@ -146,7 +146,7 @@ BS = [('Cash and cash equivalents', ('180,485', '149,288'), '$'),
 IS_CROX = [('Revenues', '4,102,108', '$'),
            ('Cost of sales', '1,691,850', 'u'),
            ('Gross profit', '2,410,258', 'i'),
-           ('Selling, general and administrative expenses', '1,388,347', 'u hl'),
+           ('Selling, general and administrative expenses<sup>&Dagger;</sup>', '1,388,347', 'u hl'),
            ('Income from operations', '1,021,911', 'i'),
            ('Interest expense and other, net', '(111,326)', 'u'),
            ('Income before income taxes', '910,585', 'i'),
@@ -194,6 +194,7 @@ front = f'''<h1>Crocs: Bad Debts in Real Financial Statements</h1>
         ("Out of every $100 customers owe, about how much does Crocs expect to collect?", "$89"),
         ("Assuming no accounts were written off during 2024, how much bad debt expense (BDE) did Crocs record in 2024?<sup>&dagger;</sup>", "3,988")], 1, full=True)}
 <p class="fn"><sup>&dagger;</sup> You don&rsquo;t have to think about write-offs too much now; we&rsquo;ll cover them in class. For your information, a <b>write-off</b> removes a specific customer&rsquo;s account from A/R once it is known to be uncollectible. It reduces both gross A/R and ADA.</p>
+<p class="fn" style="margin-top:2pt"><sup>&Dagger;</sup> Bad debt expense is included in SG&amp;A, but it is only a <b>small portion</b> of it: well under 1% of Crocs&rsquo;s $1.39 billion of SG&amp;A in 2024.</p>
 '''
 
 back = f'''<h2 style="margin-top:2pt">Hints</h2>
