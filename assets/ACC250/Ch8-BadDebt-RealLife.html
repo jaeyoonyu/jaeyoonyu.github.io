@@ -596,7 +596,7 @@ body.norail #hint { left:14px; }
 <tr class="total"><td>Accounts receivable, net</td><td class="hl">257,657</td></tr>
 </table>
 </div>
-<div class="def" style="border-left-color:#b8901f"><p class="term" style="color:#8a6d1f">Allowance for doubtful accounts</p><p>The amount of receivables the company <b>estimates it will never collect</b>. A <b>contra-asset</b>: it is subtracted from accounts receivable.</p></div>
+<div class="def" style="border-left-color:#b8901f"><p class="term" style="color:#8a6d1f">Allowance for doubtful accounts (ADA)</p><p>The amount of receivables the company <b>estimates it will never collect</b>. A <b>contra-asset</b>: it is subtracted from accounts receivable.</p></div>
 </div>
 <div class="key"><span class="klab">Net = net realizable value</span>$257.7 million is what Crocs <b>actually expects to collect</b> in cash.</div>
 <p class="src">*Crocs&rsquo;s &ldquo;allowances&rdquo; also include reserves for customer returns and discounts. For simplicity, we treat all of it as the allowance for doubtful accounts.</p>
@@ -678,54 +678,36 @@ body.norail #hint { left:14px; }
 
 <section class="s" data-nav="Ch8 · Two methods">
 <p class="eyebrow">Ch8 Concepts &middot; Review</p>
-<h2>Allowance method vs. direct write-off</h2>
+<h2>Direct write-off vs. allowance method</h2>
 <div class="two">
-<div class="def"><p class="term">Allowance method (GAAP)</p><p>Estimate uncollectible accounts at the end of each period. Record <b>bad debt expense</b> and the <b>allowance</b> then. Matches expense with the revenue it helped earn. Reports AR at <b>net realizable value</b>.</p></div>
-<div class="def" style="border-left-color:#b8901f"><p class="term" style="color:#8a6d1f">Direct write-off method</p><p>Record bad debt expense only when a specific account is written off. Simple, but violates matching and overstates AR. Allowed only when bad debts are <b>immaterial</b> (and used for taxes).</p></div>
+<div class="def" style="border-left-color:#b8901f"><p class="term" style="color:#8a6d1f">Method 1. Direct write-off</p><p>Record BDE only when a specific account is deemed uncollectible. No estimate. The expense lands in a <b>later period</b> than the sale, so it violates matching. <b>Not allowed under GAAP</b>; used for tax purposes.</p></div>
+<div class="def"><p class="term">Method 2. Allowance method (GAAP)</p><p>At the end of each period, <b>estimate</b> BDE and record it in an adjusting entry, in the <b>same period as the credit sales</b>. A/R is reported net of the allowance.</p></div>
 </div>
-<div class="key"><span class="klab">Net realizable value</span>Accounts receivable &minus; Allowance for doubtful accounts = the amount expected to be collected.</div>
+<div class="key"><span class="klab">Net A/R</span>Gross A/R &minus; Allowance for doubtful accounts (ADA) = the amount expected to be collected.</div>
 </section>
 
 <section class="s" data-nav="Ch8 · Journal entries">
 <p class="eyebrow">Ch8 Concepts &middot; Review</p>
-<h2>The four entries</h2>
+<h2>The three entries (allowance method)</h2>
 <table class="recap">
 <tr><th>Event</th><th>Entry</th><th>Effect</th></tr>
-<tr><td>Sale on credit</td><td>Dr Accounts receivable / Cr Sales revenue</td><td>Assets &uarr;, revenue &uarr;</td></tr>
-<tr><td>Year-end estimate</td><td>Dr Bad debt expense / Cr Allowance for doubtful accounts</td><td>Net AR &darr;, net income &darr;</td></tr>
-<tr><td>Write-off</td><td>Dr Allowance for doubtful accounts / Cr Accounts receivable</td><td>No change to net AR or net income</td></tr>
-<tr><td>Recovery</td><td>Reverse the write-off, then Dr Cash / Cr Accounts receivable</td><td>No change to net income</td></tr>
+<tr><td>Credit sale</td><td>Dr A/R (+A) / Cr Sales revenue (+R)</td><td>Assets &uarr;, revenue &uarr;</td></tr>
+<tr><td>Period-end estimate (AJE)</td><td>Dr BDE (+E) / Cr ADA (+xA)</td><td>Net A/R &darr;, net income &darr;</td></tr>
+<tr><td>Write-off</td><td>Dr ADA (&minus;xA) / Cr A/R (&minus;A)</td><td>No change to net A/R or net income</td></tr>
 </table>
-<p class="fine" style="margin-top:16px">Bad debt expense is usually reported within selling, general and administrative expenses.</p>
+<p class="fine" style="margin-top:16px">ADA = allowance for doubtful accounts (contra-asset). BDE = bad debt expense (operating expense).</p>
 </section>
 
 <section class="s" data-nav="Ch8 · Estimating">
 <p class="eyebrow">Ch8 Concepts &middot; Review</p>
-<h2>Estimating the allowance</h2>
+<h2>Estimating BDE: % of credit sales</h2>
 <div class="two">
-<div class="def"><p class="term">Aging of receivables</p><p>Group AR by how long it has been outstanding. Apply a higher uncollectible % to older groups. The total is the <b>ending balance</b> the allowance should have.</p></div>
-<div class="def"><p class="term">Adjusting entry amount</p><p>Bad debt expense = <b>required ending balance</b> &minus; balance already in the allowance (add it back if the allowance has a debit balance).</p></div>
+<div class="def"><p class="term">% of credit sales method</p><p>BDE = this period&rsquo;s credit sales &times; the historical % of bad debt losses. Then ADA increases by that BDE.</p>
+<p class="fine" style="margin-top:10px">EX. Credit sales $120K, 2% historical losses &rarr; BDE = $2,400.<br>Dr BDE 2,400 / Cr ADA 2,400</p></div>
+<div class="def"><p class="term">ADA equation</p><p>Ending ADA = Beginning ADA + BDE &minus; Write-offs</p>
+<p class="fine" style="margin-top:10px">ADA is a balance sheet account (what is still expected to go uncollected). BDE is an income statement account (this period&rsquo;s adjustment).</p></div>
 </div>
-<div class="stmt" style="margin-top:22px;max-width:1000px">
-<table>
-<tr><th>Allowance for doubtful accounts (T-account logic)</th><th></th></tr>
-<tr><td>Beginning balance</td><td>+</td></tr>
-<tr><td>+ Bad debt expense (estimate)</td><td>+</td></tr>
-<tr><td>&minus; Write-offs</td><td>&minus;</td></tr>
-<tr class="total"><td>= Ending balance</td><td>=</td></tr>
-</table>
-</div>
-</section>
-
-<section class="s" data-nav="Ch8 · Ratios and notes">
-<p class="eyebrow">Ch8 Concepts &middot; Review</p>
-<h2>Receivables turnover and notes receivable</h2>
-<div class="two">
-<div class="def"><p class="term">Receivables turnover</p><p>= Net credit sales &divide; Average net AR<br>Days to collect = 365 &divide; turnover</p>
-<p class="fine" style="margin-top:10px">Crocs: 4,102 &divide; [(258 + 306) &divide; 2] &asymp; 14.6 times, about <b>25 days</b>. (Uses total revenue, which includes cash sales in its own stores, so true days to collect are longer.)</p></div>
-<div class="def"><p class="term">Notes receivable</p><p>A written promise to pay, usually with interest.<br>Interest = Face value &times; Annual rate &times; Fraction of the year</p>
-<p class="fine" style="margin-top:10px">Accrue interest earned but not yet collected at year-end: Dr Interest receivable / Cr Interest revenue.</p></div>
-</div>
+<p class="fine" style="margin-top:18px">The aging of A/R method is in the lecture notes&rsquo; appendix (not for exam).</p>
 </section>
 
 <section class="s" data-nav="Sources">

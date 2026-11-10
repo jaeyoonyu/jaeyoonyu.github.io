@@ -116,8 +116,8 @@ def pick(opts, right):
 # ======================================================================
 CROX_URL = 'https://www.sec.gov/Archives/edgar/data/1334036/000133403625000009/crox-20241231.htm'
 BS = [('Cash and cash equivalents', '180,485', '$'),
-      ('Accounts receivable', '289,236', 'hl'),
-      ('Less: Allowance for doubtful accounts', '(31,579)', 'u hl'),
+      ('Accounts receivable (gross)', '289,236', 'hl'),
+      ('Less: Allowance for doubtful accounts (ADA)', '(31,579)', 'u hl'),
       ('Accounts receivable, net', '257,657', 'i hl'),
       ('Inventories', '356,254', ''),
       ('Other current assets', '77,873', 'u'),
@@ -140,7 +140,7 @@ front = f'''<h1>Crocs: Bad Debts in a Real Balance Sheet</h1>
 <div class="cols">
 {stmt('Crocs, Inc.', 'Consolidated Balance Sheet', 'Dec 31, 2024', BS)}
 <div>
-{stmt('Crocs, Inc.', 'Allowance for Doubtful Accounts', '2024', ALLOW)}
+{stmt('Crocs, Inc.', 'Allowance for Doubtful Accounts (ADA)', '2024', ALLOW)}
 <div class="box"><b class="t">Background</b>Crocs sells many of its shoes to retailers and distributors (shoe stores, department stores) on credit. They pay weeks later.</div>
 </div>
 </div>
@@ -156,14 +156,14 @@ front = f'''<h1>Crocs: Bad Debts in a Real Balance Sheet</h1>
 back = f'''<h2 style="margin-top:2pt">Hints</h2>
 <div class="defs" style="font-size:9.3pt">
 <dl>
-<dt>Accounts receivable</dt><dd>Amounts customers owe for sales made on credit.</dd>
-<dt>Allowance for doubtful accounts</dt><dd>The part of receivables the company <i>estimates</i> it will never collect. A contra-asset subtracted from accounts receivable.</dd>
-<dt>Net realizable value</dt><dd>Accounts receivable &minus; allowance = the amount expected to be collected.</dd>
+<dt>Gross and net A/R</dt><dd>Gross A/R: what customers owe for credit sales. Net A/R = Gross A/R &minus; ADA, the amount expected to be collected.</dd>
+<dt>Allowance for doubtful accounts (ADA)</dt><dd>The estimated amount of uncollectible A/R. A contra-asset (credit balance).</dd>
+<dt>Allowance method (GAAP)</dt><dd>Estimate and record BDE at the end of each period, in the same period as the credit sales (matching principle).</dd>
 </dl>
 <dl>
-<dt>Bad debt expense</dt><dd>Recorded when the loss is <i>estimated</i> (year-end adjusting entry): Dr Bad debt expense, Cr Allowance.</dd>
-<dt>Write-off</dt><dd>Removing a specific customer&rsquo;s account: Dr Allowance, Cr Accounts receivable. No expense.</dd>
-<dt>Allowance T-account</dt><dd>Beginning + Bad debt expense &minus; Write-offs = Ending.</dd>
+<dt>Bad debt expense (BDE)</dt><dd>Adjusting entry: Dr BDE, Cr ADA. % of credit sales method: BDE = credit sales &times; historical % uncollectible.</dd>
+<dt>Write-off</dt><dd>Dr ADA, Cr A/R. No expense; net A/R does not change.</dd>
+<dt>ADA equation</dt><dd>Ending ADA = Beginning ADA + BDE &minus; Write-offs.</dd>
 </dl>
 </div>
 
@@ -181,20 +181,17 @@ back = f'''<h2 style="margin-top:2pt">Hints</h2>
 </div></div>
 
 <div class="qblock"><span class="no">9</span><div>
-<p><b>Aging method.</b> Shoe Wholesale Co. (a smaller, made-up company) ages its receivables at year-end:</p>
-<table class="mini">
-<tr><th>Age</th><th>Receivables</th><th>% uncollectible</th><th>Estimated uncollectible</th></tr>
-<tr><td>Not yet due</td><td>80,000</td><td>1%</td><td>{inl("800")}</td></tr>
-<tr><td>1&ndash;90 days past due</td><td>15,000</td><td>10%</td><td>{inl("1,500")}</td></tr>
-<tr><td>Over 90 days past due</td><td>5,000</td><td>40%</td><td>{inl("2,000")}</td></tr>
-<tr class="tot"><td>Required ending allowance</td><td>100,000</td><td></td><td>{inl("4,300")}</td></tr>
-</table>
-<p>The allowance already has a <b>credit</b> balance of 1,100 before adjusting. Bad debt expense = {inl("3,200")}</p>
+<p><b>% of credit sales method.</b> Shoe Wholesale Co. (a smaller, made-up company) made <b>$400,000</b> of credit sales in December. In the past, <b>2%</b> of credit sales have not been collected.</p>
+<p>(a) Bad debt expense for December = {inl("8,000")}</p>
+<p>(b) ADA was 3,000 on Dec 1, and 2,500 of accounts were written off during December. ADA on Dec 31 = {inl("8,500")}</p>
+<div class="why">(a) 400,000 &times; 2% = 8,000. &nbsp;(b) 3,000 + 8,000 &minus; 2,500 = 8,500.</div>
 </div></div>
 
 <div class="qblock"><span class="no">10</span><div>
-<p><b>Receivables turnover.</b> Crocs&rsquo;s 2024 revenue was about <b>$4,102 million</b>. Net receivables were $258 million (2024) and $306 million (2023).<br>
-Turnover = Revenue &divide; Average net receivables = {inl("14.6 times")} &nbsp; Days to collect = 365 &divide; turnover = {inl("25 days")}</p>
+<p><b>Direct write-off method.</b> Under the direct write-off method, when would Crocs record the expense for the shoe store in Q8(b)? {pick(["when the sale is made", "when the account is written off"], "when the account is written off")}<br>
+Why is this method not allowed under GAAP?</p>
+<div class="lines"></div>
+<div class="why">The expense would be recorded in a later period than the sale, which violates the matching principle (it is used for tax purposes).</div>
 </div></div>
 
 <div class="qblock"><span class="no">11</span><div>
@@ -204,7 +201,7 @@ Turnover = Revenue &divide; Average net receivables = {inl("14.6 times")} &nbsp;
 </div></div>
 '''
 note = ('Crocs&rsquo;s reported &ldquo;allowances&rdquo; ($31,579) also include reserves for customer returns and discounts; this worksheet treats the total as the allowance for doubtful accounts. '
-        'Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo; and long-term liabilities are derived from reported totals. Q7&ndash;Q9 use made-up numbers.')
+        'Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo; and long-term liabilities are derived from reported totals. Q7 and Q9 use made-up numbers.')
 open(os.path.join(OUT, 'Ch8-BadDebt-Worksheet.html'), 'w').write(
     page('Bad Debts Worksheet', 'Crocs', 'ACC 250 &middot; Ch8 Worksheet', front, back, note))
 print('wrote Ch8-BadDebt-Worksheet')
