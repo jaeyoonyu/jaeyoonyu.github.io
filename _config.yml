@@ -28,6 +28,7 @@ navigation:                # accepts {file, title, url, icon, sidebaricon}
   # - {file: "Depreciation.md", title: DepExp-Method}
   # - {file: "Benford-analyzer.md", title: Benford-Analyzer}
   - {file: "Grade-analyzer.md", title: Grading, group: Teaching}
+  - {file: "test.md", title: Test, group: Teaching}
   # - {file: "python-basics.md", title: Python-Basic}
   # - {file: "python-applications.md", title: Python-Applied}
   - {file: "michigan-housing.md", title: Housing, group: Others}
