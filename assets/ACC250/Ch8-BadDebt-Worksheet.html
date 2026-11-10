@@ -107,6 +107,12 @@ html.key .pick i.r { border:1.2pt solid var(--key); border-radius:7pt; color:var
 html.key .lines { display:none; }
 .why { display:none; color:var(--key); font-size:9.2pt; margin-top:2pt; }
 html.key .why { display:block; }
+table.terms { width:100%; border-collapse:collapse; font-size:9.4pt; margin:2pt 0 4pt; }
+table.terms th { font:700 8.4pt Arial,sans-serif; text-align:left; padding:3pt 6pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+table.terms td { padding:3pt 6pt; border-bottom:.6pt solid #ccc; vertical-align:top; width:42%; }
+table.terms td:first-child { width:16%; font-weight:700; color:#444; font-size:8.8pt; }
+.terms2 { font-size:9.4pt; margin:0 0 6pt; }
+.terms2 p { margin:1.5pt 0; }
 .inl { display:inline-block; min-width:.8in; vertical-align:bottom; }
 table.mini { border-collapse:collapse; font-size:9.6pt; margin:3pt 0; }
 table.mini th { font:700 7.8pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#444; padding:1pt 8pt; text-align:right; border-bottom:.8pt solid #000; }
@@ -123,7 +129,7 @@ table.mini tr.tot td { border-top:.8pt solid #000; font-weight:700; }
 </div>
 <div class="page">
 <header>
-  <div class="course">ACC 250 &middot; Ch8 Worksheet<span class="keytag"> &middot; Answer key</span></div>
+  <div class="course">ACC 250 &middot; Ch8 Opening Activity<span class="keytag"> &middot; Answer key</span></div>
   <div class="name">Name <span></span></div>
 </header>
 <h1>Crocs: Bad Debts in a Real Balance Sheet</h1>
@@ -158,60 +164,27 @@ table.mini tr.tot td { border-top:.8pt solid #000; font-weight:700; }
 <div class="box"><b class="t">Background</b>Crocs sells many of its shoes to retailers and distributors (shoe stores, department stores) on credit. They pay weeks later.</div>
 </div>
 </div>
+<h2>Accounts &amp; Terms</h2>
+<table class="terms">
+<tr><th></th><th>Allowance for Doubtful Accounts (ADA)</th><th>Bad Debt Expense (BDE)</th></tr>
+<tr><td>Where it appears</td><td><b>Balance sheet</b></td><td><b>Income statement</b></td></tr>
+<tr><td>Type of account</td><td>Contra-asset: subtracted from accounts receivable</td><td>Operating expense</td></tr>
+<tr><td>What it measures</td><td>The <b>total</b> amount of receivables still expected to go uncollected</td><td><b>This period&rsquo;s</b> estimate of new uncollectible amounts (how much ADA is increased)</td></tr>
+<tr><td>Time</td><td>A balance at <b>one date</b> (Dec 31)</td><td>An amount for a <b>whole period</b> (the year)</td></tr>
+<tr><td>At Crocs</td><td>31,579 on the balance sheet</td><td>Not shown as a separate line: included in SG&amp;A expenses</td></tr>
+</table>
+<div class="terms2">
+<p><b>Accounts receivable (gross A/R):</b> the total amount customers owe for goods sold on credit.</p>
+<p><b>Accounts receivable, net (net A/R):</b> gross A/R &minus; ADA, the amount the company expects to collect.</p>
+<p><b>Write-off:</b> removing a specific customer&rsquo;s account once it is known to be uncollectible.</p>
+</div>
+
 <h2>Find it in the statements <small>Write the amount ($ thousands, or %).</small></h2>
 <ol class="qs full"><li><span class="no">1</span><span class="qt">In total, how much did customers owe Crocs at year-end?</span><span class="bl amt" data-a="289,236"></span></li><li><span class="no">2</span><span class="qt">How much does Crocs estimate it will never collect?</span><span class="bl amt" data-a="31,579"></span></li><li><span class="no">3</span><span class="qt">How much does Crocs actually expect to collect in cash?</span><span class="bl amt" data-a="257,657"></span></li><li><span class="no">4</span><span class="qt">What percentage of what customers owe does Crocs expect never to collect?</span><span class="bl amt" data-a="10.9%"></span></li><li><span class="no">5</span><span class="qt">Out of every $100 customers owe, about how much does Crocs expect to collect?</span><span class="bl amt" data-a="$89"></span></li><li><span class="no">6</span><span class="qt">By how much did the allowance increase during 2024?</span><span class="bl amt" data-a="3,988"></span></li></ol>
 
-</div>
-<div class="page">
-<h2 style="margin-top:2pt">Hints</h2>
-<div class="defs" style="font-size:9.3pt">
-<dl>
-<dt>Gross and net A/R</dt><dd>Gross A/R: what customers owe for credit sales. Net A/R = Gross A/R &minus; ADA, the amount expected to be collected.</dd>
-<dt>Allowance for doubtful accounts (ADA)</dt><dd>The estimated amount of uncollectible A/R. A contra-asset (credit balance).</dd>
-<dt>Allowance method (GAAP)</dt><dd>Estimate and record BDE at the end of each period, in the same period as the credit sales (matching principle).</dd>
-</dl>
-<dl>
-<dt>Bad debt expense (BDE)</dt><dd>Adjusting entry: Dr BDE, Cr ADA. % of credit sales method: BDE = credit sales &times; historical % uncollectible.</dd>
-<dt>Write-off</dt><dd>Dr ADA, Cr A/R. No expense; net A/R does not change.</dd>
-<dt>ADA equation</dt><dd>Ending ADA = Beginning ADA + BDE &minus; Write-offs.</dd>
-</dl>
+<p class="src">Crocs&rsquo;s reported &ldquo;allowances&rdquo; ($31,579) also include reserves for customer returns and discounts; this worksheet treats the total as the allowance for doubtful accounts. Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo; and long-term liabilities are derived from reported totals.</p>
 </div>
 
-<h2 style="margin-top:10pt">Practice</h2>
-<div class="qblock"><span class="no">7</span><div>
-<p><b>Fill in the &ldquo;?&rdquo;.</b> Suppose Crocs wrote off <b>6,000</b> of customer accounts during 2024. How much bad debt expense did it record? <span class="bl inl amt" data-a="9,988"></span></p>
-<div class="why">27,591 + Expense &minus; 6,000 = 31,579, so Expense = 9,988.</div></div></div>
-
-<div class="qblock"><span class="no">8</span><div>
-<p><b>Journal entries.</b> (a) Record the year-end bad debt estimate from Q7.</p>
-<table class="je2"><tr><th>Account</th><th>Debit</th><th>Credit</th></tr><tr><td class="acct"><span class="bl nm" data-a="Bad debt expense"></span></td><td class="amt"><span class="bl amt" data-a="9,988"></span></td><td class="amt"></td></tr><tr class="cr"><td class="acct"><span class="bl nm" data-a="Allowance for doubtful accounts"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="9,988"></span></td></tr></table>
-<p>(b) A shoe store that owes Crocs <b>1,500</b> goes bankrupt. Write off its account.</p>
-<table class="je2"><tr><th>Account</th><th>Debit</th><th>Credit</th></tr><tr><td class="acct"><span class="bl nm" data-a="Allowance for doubtful accounts"></span></td><td class="amt"><span class="bl amt" data-a="1,500"></span></td><td class="amt"></td></tr><tr class="cr"><td class="acct"><span class="bl nm" data-a="Accounts receivable"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="1,500"></span></td></tr></table>
-<p>Effect of entry (b): net income <span class="pick"><i>decreases</i> / <i class="r">no change</i></span>; &nbsp; accounts receivable, net <span class="pick"><i>decreases</i> / <i class="r">no change</i></span></p>
-</div></div>
-
-<div class="qblock"><span class="no">9</span><div>
-<p><b>% of credit sales method.</b> Shoe Wholesale Co. (a smaller, made-up company) made <b>$400,000</b> of credit sales in December. In the past, <b>2%</b> of credit sales have not been collected.</p>
-<p>(a) Bad debt expense for December = <span class="bl inl amt" data-a="8,000"></span></p>
-<p>(b) ADA was 3,000 on Dec 1, and 2,500 of accounts were written off during December. ADA on Dec 31 = <span class="bl inl amt" data-a="8,500"></span></p>
-<div class="why">(a) 400,000 &times; 2% = 8,000. &nbsp;(b) 3,000 + 8,000 &minus; 2,500 = 8,500.</div>
-</div></div>
-
-<div class="qblock"><span class="no">10</span><div>
-<p><b>Direct write-off method.</b> Under the direct write-off method, when would Crocs record the expense for the shoe store in Q8(b)? <span class="pick"><i>when the sale is made</i> / <i class="r">when the account is written off</i></span><br>
-Why is this method not allowed under GAAP?</p>
-<div class="lines"></div>
-<div class="why">The expense would be recorded in a later period than the sale, which violates the matching principle (it is used for tax purposes).</div>
-</div></div>
-
-<div class="qblock"><span class="no">11</span><div>
-<p><b>Compare.</b> Costco says its allowance for receivables is <i>immaterial</i>. Why would Costco have almost no bad debts while Crocs does?</p>
-<div class="lines"></div>
-<div class="why">Costco&rsquo;s members pay at the register (cash, debit or credit card), so the card company, not Costco, bears the risk of non-payment. Crocs sells to other businesses on credit.</div>
-</div></div>
-
-<p class="src">Crocs&rsquo;s reported &ldquo;allowances&rdquo; ($31,579) also include reserves for customer returns and discounts; this worksheet treats the total as the allowance for doubtful accounts. Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo; and long-term liabilities are derived from reported totals. Q7 and Q9 use made-up numbers.</p>
-</div>
 <script>
 function toggleKey() {
   const on = document.documentElement.classList.toggle('key');

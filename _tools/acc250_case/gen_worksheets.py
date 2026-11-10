@@ -25,6 +25,12 @@ html.key .pick i.r { border:1.2pt solid var(--key); border-radius:7pt; color:var
 html.key .lines { display:none; }
 .why { display:none; color:var(--key); font-size:9.2pt; margin-top:2pt; }
 html.key .why { display:block; }
+table.terms { width:100%; border-collapse:collapse; font-size:9.4pt; margin:2pt 0 4pt; }
+table.terms th { font:700 8.4pt Arial,sans-serif; text-align:left; padding:3pt 6pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+table.terms td { padding:3pt 6pt; border-bottom:.6pt solid #ccc; vertical-align:top; width:42%; }
+table.terms td:first-child { width:16%; font-weight:700; color:#444; font-size:8.8pt; }
+.terms2 { font-size:9.4pt; margin:0 0 6pt; }
+.terms2 p { margin:1.5pt 0; }
 .inl { display:inline-block; min-width:.8in; vertical-align:bottom; }
 table.mini { border-collapse:collapse; font-size:9.6pt; margin:3pt 0; }
 table.mini th { font:700 7.8pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#444; padding:1pt 8pt; text-align:right; border-bottom:.8pt solid #000; }
@@ -81,11 +87,9 @@ def page(title, s, header, front, back, note):
   <div class="name">Name <span></span></div>
 </header>
 {front}
+{'' if back else f'<p class="src">{note}</p>'}
 </div>
-<div class="page">
-{back}
-<p class="src">{note}</p>
-</div>
+{f'<div class="page">{back}<p class="src">{note}</p></div>' if back else ''}
 <script>
 function toggleKey() {{
   const on = document.documentElement.classList.toggle('key');
@@ -144,6 +148,21 @@ front = f'''<h1>Crocs: Bad Debts in a Real Balance Sheet</h1>
 <div class="box"><b class="t">Background</b>Crocs sells many of its shoes to retailers and distributors (shoe stores, department stores) on credit. They pay weeks later.</div>
 </div>
 </div>
+<h2>Accounts &amp; Terms</h2>
+<table class="terms">
+<tr><th></th><th>Allowance for Doubtful Accounts (ADA)</th><th>Bad Debt Expense (BDE)</th></tr>
+<tr><td>Where it appears</td><td><b>Balance sheet</b></td><td><b>Income statement</b></td></tr>
+<tr><td>Type of account</td><td>Contra-asset: subtracted from accounts receivable</td><td>Operating expense</td></tr>
+<tr><td>What it measures</td><td>The <b>total</b> amount of receivables still expected to go uncollected</td><td><b>This period&rsquo;s</b> estimate of new uncollectible amounts (how much ADA is increased)</td></tr>
+<tr><td>Time</td><td>A balance at <b>one date</b> (Dec 31)</td><td>An amount for a <b>whole period</b> (the year)</td></tr>
+<tr><td>At Crocs</td><td>31,579 on the balance sheet</td><td>Not shown as a separate line: included in SG&amp;A expenses</td></tr>
+</table>
+<div class="terms2">
+<p><b>Accounts receivable (gross A/R):</b> the total amount customers owe for goods sold on credit.</p>
+<p><b>Accounts receivable, net (net A/R):</b> gross A/R &minus; ADA, the amount the company expects to collect.</p>
+<p><b>Write-off:</b> removing a specific customer&rsquo;s account once it is known to be uncollectible.</p>
+</div>
+
 <h2>Find it in the statements <small>Write the amount ($ thousands, or %).</small></h2>
 {qlist([("In total, how much did customers owe Crocs at year-end?", "289,236"),
         ("How much does Crocs estimate it will never collect?", "31,579"),
@@ -202,8 +221,10 @@ Why is this method not allowed under GAAP?</p>
 '''
 note = ('Crocs&rsquo;s reported &ldquo;allowances&rdquo; ($31,579) also include reserves for customer returns and discounts; this worksheet treats the total as the allowance for doubtful accounts. '
         'Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo; and long-term liabilities are derived from reported totals. Q7 and Q9 use made-up numbers.')
+note = ('Crocs&rsquo;s reported &ldquo;allowances&rdquo; ($31,579) also include reserves for customer returns and discounts; this worksheet treats the total as the allowance for doubtful accounts. '
+        'Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo; and long-term liabilities are derived from reported totals.')
 open(os.path.join(OUT, 'Ch8-BadDebt-Worksheet.html'), 'w').write(
-    page('Bad Debts Worksheet', 'Crocs', 'ACC 250 &middot; Ch8 Worksheet', front, back, note))
+    page('Bad Debts Worksheet', 'Crocs', 'ACC 250 &middot; Ch8 Opening Activity', front, '', note))
 print('wrote Ch8-BadDebt-Worksheet')
 
 # ======================================================================
