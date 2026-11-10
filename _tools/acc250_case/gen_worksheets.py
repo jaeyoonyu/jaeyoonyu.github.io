@@ -146,30 +146,28 @@ front = f'''<h1>Crocs: Bad Debts in a Real Balance Sheet</h1>
 <div>
 {stmt('Crocs, Inc.', 'Allowance for Doubtful Accounts (ADA)', '2024', ALLOW)}
 <div class="box"><b class="t">Background</b>Crocs sells many of its shoes to retailers and distributors (shoe stores, department stores) on credit. They pay weeks later.</div>
-<div class="box"><b class="t">More terms</b>
-<b>Gross A/R:</b> the total amount customers owe for goods sold on credit.<br>
-<b>Net A/R:</b> gross A/R &minus; ADA, the amount the company expects to collect.<br>
-<b>Write-off:</b> removing a specific customer&rsquo;s account once it is known to be uncollectible.</div>
 </div>
 </div>
 <h2>Accounts &amp; Terms</h2>
-<table class="terms">
-<tr><th></th><th>Allowance for Doubtful Accounts (ADA)</th><th>Bad Debt Expense (BDE)</th></tr>
-<tr><td>Where it appears</td><td><b>Balance sheet</b></td><td><b>Income statement</b></td></tr>
-<tr><td>Type of account</td><td>Contra-asset: subtracted from accounts receivable</td><td>Operating expense</td></tr>
-<tr><td>What it measures</td><td>The <b>total</b> amount of receivables still expected to go uncollected</td><td><b>This period&rsquo;s</b> estimate of new uncollectible amounts (how much ADA is increased)</td></tr>
-<tr><td>Time</td><td>A balance at <b>one date</b> (Dec 31)</td><td>An amount for a <b>whole period</b> (the year)</td></tr>
-<tr><td>Example</td><td>Last estimate: <b>$1,000</b> will not be collected.<br>New estimate: <b>$3,000</b> will not be collected.</td><td>ADA must go up by $3,000 &minus; $1,000, so record <b>BDE of $2,000</b>. BDE is the amount that brings ADA up to the new estimate.</td></tr>
-<tr><td>At Crocs</td><td>31,579 on the balance sheet</td><td>Not shown as a separate line: included in SG&amp;A expenses</td></tr>
-</table>
-<h2>Find it in the statements <small>Write the amount ($ thousands, %, or $).</small></h2>
+<div class="defs" style="font-size:9.6pt">
+<dl>
+<dt>Accounts receivable (gross A/R)</dt><dd>The total amount customers owe for goods sold on credit. An asset.</dd>
+<dt>Allowance for doubtful accounts (ADA)</dt><dd>The estimated total amount of A/R that will not be collected, as of the balance sheet date. A contra-asset subtracted from A/R.</dd>
+<dt>Accounts receivable, net (net A/R)</dt><dd>Gross A/R &minus; ADA: the amount the company expects to collect.</dd>
+</dl>
+<dl>
+<dt>Bad debt expense (BDE)</dt><dd>An operating expense on the income statement: the amount needed to bring ADA up to the new estimate. For example, if ADA was $1,000 and the company now expects $3,000 of A/R will not be collected, it records $2,000 of BDE.</dd>
+<dt>Write-off</dt><dd>Removing a specific customer&rsquo;s account once it is known to be uncollectible.</dd>
+<dt>Allowance method (GAAP)</dt><dd>Estimate BDE in the same period as the credit sales (matching principle).</dd>
+</dl>
+</div>
+<h2>Find it in the statements <small>Write the amount ($ thousands, or %).</small></h2>
 {qlist([("In total, how much did customers owe Crocs at year-end?", "289,236"),
         ("How much does Crocs estimate it will never collect?", "31,579"),
         ("How much does Crocs actually expect to collect in cash?", "257,657"),
         ("What percentage of what customers owe does Crocs expect never to collect?", "10.9%"),
         ("Out of every $100 customers owe, about how much does Crocs expect to collect?", "$89"),
-        ("By how much did the allowance increase during 2024?", "3,988"),
-        ("Sneaker Supply Co. (made up) had an ADA of $2,500. At year-end it now expects $4,000 of its receivables will not be collected (no accounts were written off). How much BDE must it record?", "1,500")], 1, full=True)}
+        ("By how much did the allowance increase during 2024?", "3,988")], 1, full=True)}
 '''
 
 back = f'''<h2 style="margin-top:2pt">Hints</h2>
@@ -222,7 +220,7 @@ Why is this method not allowed under GAAP?</p>
 note = ('Crocs&rsquo;s reported &ldquo;allowances&rdquo; ($31,579) also include reserves for customer returns and discounts; this worksheet treats the total as the allowance for doubtful accounts. '
         'Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo; and long-term liabilities are derived from reported totals. Q7 and Q9 use made-up numbers.')
 note = ('Crocs&rsquo;s reported &ldquo;allowances&rdquo; ($31,579) also include reserves for customer returns and discounts; this worksheet treats the total as the allowance for doubtful accounts. '
-        'Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo; and long-term liabilities are derived from reported totals. Q7 uses made-up numbers.')
+        'Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo; and long-term liabilities are derived from reported totals.')
 open(os.path.join(OUT, 'Ch8-BadDebt-Worksheet.html'), 'w').write(
     page('Bad Debts Worksheet', 'Crocs', 'ACC 250 &middot; Ch8 Opening Activity', front, '', note))
 print('wrote Ch8-BadDebt-Worksheet')
