@@ -26,8 +26,8 @@ html.key .lines { display:none; }
 .why { display:none; color:var(--key); font-size:9.2pt; margin-top:2pt; }
 html.key .why { display:block; }
 table.terms { width:100%; border-collapse:collapse; font-size:9.4pt; margin:2pt 0 4pt; }
-table.terms th { font:700 8.4pt Arial,sans-serif; text-align:left; padding:3pt 6pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-table.terms td { padding:3pt 6pt; border-bottom:.6pt solid #ccc; vertical-align:top; width:42%; }
+table.terms th { font:700 8.4pt Arial,sans-serif; text-align:left; padding:2.2pt 6pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+table.terms td { padding:2.2pt 6pt; border-bottom:.6pt solid #ccc; vertical-align:top; width:42%; }
 table.terms td:first-child { width:16%; font-weight:700; color:#444; font-size:8.8pt; }
 .terms2 { font-size:9.4pt; margin:0 0 6pt; }
 .terms2 p { margin:1.5pt 0; }
@@ -146,6 +146,10 @@ front = f'''<h1>Crocs: Bad Debts in a Real Balance Sheet</h1>
 <div>
 {stmt('Crocs, Inc.', 'Allowance for Doubtful Accounts (ADA)', '2024', ALLOW)}
 <div class="box"><b class="t">Background</b>Crocs sells many of its shoes to retailers and distributors (shoe stores, department stores) on credit. They pay weeks later.</div>
+<div class="box"><b class="t">More terms</b>
+<b>Gross A/R:</b> the total amount customers owe for goods sold on credit.<br>
+<b>Net A/R:</b> gross A/R &minus; ADA, the amount the company expects to collect.<br>
+<b>Write-off:</b> removing a specific customer&rsquo;s account once it is known to be uncollectible.</div>
 </div>
 </div>
 <h2>Accounts &amp; Terms</h2>
@@ -155,21 +159,17 @@ front = f'''<h1>Crocs: Bad Debts in a Real Balance Sheet</h1>
 <tr><td>Type of account</td><td>Contra-asset: subtracted from accounts receivable</td><td>Operating expense</td></tr>
 <tr><td>What it measures</td><td>The <b>total</b> amount of receivables still expected to go uncollected</td><td><b>This period&rsquo;s</b> estimate of new uncollectible amounts (how much ADA is increased)</td></tr>
 <tr><td>Time</td><td>A balance at <b>one date</b> (Dec 31)</td><td>An amount for a <b>whole period</b> (the year)</td></tr>
+<tr><td>Example</td><td>Last estimate: <b>$1,000</b> will not be collected.<br>New estimate: <b>$3,000</b> will not be collected.</td><td>ADA must go up by $3,000 &minus; $1,000, so record <b>BDE of $2,000</b>. BDE is the amount that brings ADA up to the new estimate.</td></tr>
 <tr><td>At Crocs</td><td>31,579 on the balance sheet</td><td>Not shown as a separate line: included in SG&amp;A expenses</td></tr>
 </table>
-<div class="terms2">
-<p><b>Accounts receivable (gross A/R):</b> the total amount customers owe for goods sold on credit.</p>
-<p><b>Accounts receivable, net (net A/R):</b> gross A/R &minus; ADA, the amount the company expects to collect.</p>
-<p><b>Write-off:</b> removing a specific customer&rsquo;s account once it is known to be uncollectible.</p>
-</div>
-
-<h2>Find it in the statements <small>Write the amount ($ thousands, or %).</small></h2>
+<h2>Find it in the statements <small>Write the amount ($ thousands, %, or $).</small></h2>
 {qlist([("In total, how much did customers owe Crocs at year-end?", "289,236"),
         ("How much does Crocs estimate it will never collect?", "31,579"),
         ("How much does Crocs actually expect to collect in cash?", "257,657"),
         ("What percentage of what customers owe does Crocs expect never to collect?", "10.9%"),
         ("Out of every $100 customers owe, about how much does Crocs expect to collect?", "$89"),
-        ("By how much did the allowance increase during 2024?", "3,988")], 1, full=True)}
+        ("By how much did the allowance increase during 2024?", "3,988"),
+        ("Sneaker Supply Co. (made up) had an ADA of $2,500. At year-end it now expects $4,000 of its receivables will not be collected (no accounts were written off). How much BDE must it record?", "1,500")], 1, full=True)}
 '''
 
 back = f'''<h2 style="margin-top:2pt">Hints</h2>
@@ -222,7 +222,7 @@ Why is this method not allowed under GAAP?</p>
 note = ('Crocs&rsquo;s reported &ldquo;allowances&rdquo; ($31,579) also include reserves for customer returns and discounts; this worksheet treats the total as the allowance for doubtful accounts. '
         'Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo; and long-term liabilities are derived from reported totals. Q7 and Q9 use made-up numbers.')
 note = ('Crocs&rsquo;s reported &ldquo;allowances&rdquo; ($31,579) also include reserves for customer returns and discounts; this worksheet treats the total as the allowance for doubtful accounts. '
-        'Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo; and long-term liabilities are derived from reported totals.')
+        'Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo; and long-term liabilities are derived from reported totals. Q7 uses made-up numbers.')
 open(os.path.join(OUT, 'Ch8-BadDebt-Worksheet.html'), 'w').write(
     page('Bad Debts Worksheet', 'Crocs', 'ACC 250 &middot; Ch8 Opening Activity', front, '', note))
 print('wrote Ch8-BadDebt-Worksheet')
