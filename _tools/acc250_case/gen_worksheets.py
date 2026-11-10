@@ -35,7 +35,7 @@ table.terms td:first-child { width:16%; font-weight:700; color:#444; font-size:8
 .box.quote { font-style:italic; font-size:9.2pt; margin-top:8pt; }
 .box.quote b.t { font-style:normal; }
 .box.quote mark { background:#fff7cc; font-weight:700; padding:0 1pt; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-.stmt + .stmt { margin-top:8pt; }
+.stmt td.n + td.n { width:.8in; padding-left:12pt; }
 .inl { display:inline-block; min-width:.8in; vertical-align:bottom; }
 table.mini { border-collapse:collapse; font-size:9.6pt; margin:3pt 0; }
 table.mini th { font:700 7.8pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#444; padding:1pt 8pt; text-align:right; border-bottom:.8pt solid #000; }
@@ -45,17 +45,20 @@ table.mini tr.tot td { border-top:.8pt solid #000; font-weight:700; }
 '''
 
 def stmt(co, title, colhead, rows):
+    heads = colhead if isinstance(colhead, tuple) else (colhead,)
     out = [f'<div class="stmt"><p class="co">{co}</p><p class="ttl">{title}</p><table>',
-           f'<tr><th></th><th>{colhead}</th></tr>']
+           '<tr><th></th>' + ''.join(f'<th>{h}</th>' for h in heads) + '</tr>']
     for lab, amt, fl in rows:
         f = fl.split()
         if 'sec' in f:
-            out.append(f'<tr class="sec"><td>{lab}</td><td></td></tr>'); continue
+            out.append(f'<tr class="sec"><td>{lab}</td>' + '<td></td>' * len(heads) + '</tr>'); continue
         cls = ' '.join(c for c in ('u', 'uu', 'hd') if c in f)
         lcls = ' class="i1"' if 'i' in f else ''
         d = '<i>$</i>' if '$' in f else ''
         style = ' style="background:#fff7cc"' if 'hl' in f else ''
-        out.append(f'<tr class="{cls}"{style}><td{lcls}>{lab}</td><td class="n">{d}{amt}</td></tr>')
+        amts = amt if isinstance(amt, tuple) else (amt,)
+        cells = ''.join(f'<td class="n">{d}{x}</td>' for x in amts)
+        out.append(f'<tr class="{cls}"{style}><td{lcls}>{lab}</td>{cells}</tr>')
     out.append('</table></div>')
     return '\n'.join(out)
 
@@ -124,20 +127,20 @@ def pick(opts, right):
 # Ch8: Crocs bad debts
 # ======================================================================
 CROX_URL = 'https://www.sec.gov/Archives/edgar/data/1334036/000133403625000009/crox-20241231.htm'
-BS = [('Cash and cash equivalents', '180,485', '$'),
-      ('Accounts receivable (gross)', '289,236', 'hl'),
-      ('Less: Allowance for doubtful accounts (ADA)', '(31,579)', 'u hl'),
-      ('Accounts receivable, net', '257,657', 'i hl'),
-      ('Inventories', '356,254', ''),
-      ('Other current assets', '77,873', 'u'),
-      ('Total current assets', '872,269', 'i'),
-      ('Property, goodwill, brands and other', '3,939,884', 'u'),
-      ('Total assets', '4,812,153', 'i uu $'),
-      ('Total current liabilities', '740,208', 'hd $'),
-      ('Long-term liabilities', '2,236,213', 'u'),
-      ('Total liabilities', '2,976,421', 'i'),
-      ('Total stockholders&rsquo; equity', '1,835,732', 'u'),
-      ('Total liabilities and equity', '4,812,153', 'i uu $')]
+BS = [('Cash and cash equivalents', ('180,485', '149,288'), '$'),
+      ('Accounts receivable (gross)', ('289,236', '333,338'), 'hl'),
+      ('Less: Allowance (ADA)', ('(31,579)', '(27,591)'), 'u hl'),
+      ('Accounts receivable, net', ('257,657', '305,747'), 'i hl'),
+      ('Inventories', ('356,254', '385,054'), ''),
+      ('Other current assets', ('77,873', '70,615'), 'u'),
+      ('Total current assets', ('872,269', '910,704'), 'i'),
+      ('Property, goodwill, brands and other', ('3,939,884', '3,733,130'), 'u'),
+      ('Total assets', ('4,812,153', '4,643,834'), 'i uu $'),
+      ('Total current liabilities', ('740,208', '698,296'), 'hd $'),
+      ('Long-term liabilities', ('2,236,213', '2,491,615'), 'u'),
+      ('Total liabilities', ('2,976,421', '3,189,911'), 'i'),
+      ('Total stockholders&rsquo; equity', ('1,835,732', '1,453,923'), 'u'),
+      ('Total liabilities and equity', ('4,812,153', '4,643,834'), 'i uu $')]
 IS_CROX = [('Revenues', '4,102,108', '$'),
            ('Cost of sales', '1,691,850', 'u'),
            ('Gross profit', '2,410,258', 'i'),
@@ -159,12 +162,12 @@ front = f'''<h1>Crocs: Bad Debts in Real Financial Statements</h1>
 <style>.stmt {{ font-size:9pt; }} .stmt td {{ padding:1.2pt 2pt; }} .defs dt {{ margin-top:2pt; }} ol.qs li {{ padding:4pt 0 1pt; }} .defs {{ font-size:9.2pt !important; }}</style>
 <div class="cols">
 <div>
-{stmt('Crocs, Inc.', 'Consolidated Balance Sheet', 'Dec 31, 2024', BS)}
-<div class="box quote"><b class="t">From Crocs&rsquo;s 10-K</b>&ldquo;Selling, general and administrative expenses consist primarily of labor and outside services, rent expense, <mark>bad debt expense</mark>, legal costs, amortization of intangible assets, as well as certain depreciation costs related to corporate and non-product assets and share-based compensation.&rdquo;</div>
+{stmt('Crocs, Inc.', 'Consolidated Balance Sheets', ('Dec 31, 2024', 'Dec 31, 2023'), BS)}
+
 </div>
 <div>
-{stmt('Crocs, Inc.', 'Allowance for Doubtful Accounts (ADA)', '2024', ALLOW)}
 {stmt('Crocs, Inc.', 'Consolidated Statement of Operations', '2024', IS_CROX)}
+<div class="box quote"><b class="t">From Crocs&rsquo;s 10-K</b>&ldquo;Selling, general and administrative expenses consist primarily of labor and outside services, rent expense, <mark>bad debt expense</mark>, legal costs, amortization of intangible assets, as well as certain depreciation costs related to corporate and non-product assets and share-based compensation.&rdquo;</div>
 
 </div>
 </div>

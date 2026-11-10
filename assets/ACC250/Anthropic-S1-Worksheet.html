@@ -107,6 +107,17 @@ html.key .pick i.r { border:1.2pt solid var(--key); border-radius:7pt; color:var
 html.key .lines { display:none; }
 .why { display:none; color:var(--key); font-size:9.2pt; margin-top:2pt; }
 html.key .why { display:block; }
+table.terms { width:100%; border-collapse:collapse; font-size:9.4pt; margin:2pt 0 4pt; }
+table.terms th { font:700 8.4pt Arial,sans-serif; text-align:left; padding:2.2pt 6pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+table.terms td { padding:2.2pt 6pt; border-bottom:.6pt solid #ccc; vertical-align:top; width:42%; }
+table.terms td:first-child { width:16%; font-weight:700; color:#444; font-size:8.8pt; }
+.terms2 { font-size:9.4pt; margin:0 0 6pt; }
+.terms2 p { margin:1.5pt 0; }
+.intro2 { margin:0 0 4pt; font-size:9.6pt; }
+.box.quote { font-style:italic; font-size:9.2pt; margin-top:8pt; }
+.box.quote b.t { font-style:normal; }
+.box.quote mark { background:#fff7cc; font-weight:700; padding:0 1pt; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+.stmt td.n + td.n { width:.8in; padding-left:12pt; }
 .inl { display:inline-block; min-width:.8in; vertical-align:bottom; }
 table.mini { border-collapse:collapse; font-size:9.6pt; margin:3pt 0; }
 table.mini th { font:700 7.8pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#444; padding:1pt 8pt; text-align:right; border-bottom:.8pt solid #000; }
@@ -154,9 +165,9 @@ table.mini tr.tot td { border-top:.8pt solid #000; font-weight:700; }
 <h2>Find it in the statements <small>Write the amount ($ billions) or ratio. Use parentheses for losses.</small></h2>
 <ol class="qs full"><li><span class="no">1</span><span class="qt">How much revenue did Anthropic earn in the first six months of 2026?</span><span class="bl amt" data-a="16.3"></span></li><li><span class="no">2</span><span class="qt">How many times larger is that than revenue in the same six months of 2025?</span><span class="bl amt" data-a="&asymp; 13.6 times"></span></li><li><span class="no">3</span><span class="qt">What was the operating income (loss), from the core business?</span><span class="bl amt" data-a="(0.7)"></span></li><li><span class="no">4</span><span class="qt">What was the net income (loss)?</span><span class="bl amt" data-a="(80.7)"></span></li><li><span class="no">5</span><span class="qt">What percentage of the net loss came from the fair value change on the convertible notes?</span><span class="bl amt" data-a="&asymp; 90%"></span></li><li><span class="no">6</span><span class="qt">How much higher is &ldquo;adjusted&rdquo; operating income than GAAP operating income?</span><span class="bl amt" data-a="2.3"></span></li></ol>
 
+
 </div>
-<div class="page">
-<h2 style="margin-top:2pt">Hints</h2>
+<div class="page"><h2 style="margin-top:2pt">Hints</h2>
 <div class="defs" style="font-size:9.3pt">
 <dl>
 <dt>Revenue recognition</dt><dd>Record revenue when it is <i>earned</i>. Cash received before the service is delivered is <b>unearned revenue</b>, a liability.</dd>
@@ -199,9 +210,7 @@ Journal entry on Jan 1:</p>
 <div class="lines"></div>
 <div class="why">Most of the loss is the non-cash fair value change (72.4): it raised a liability but no cash left the company.</div>
 </div></div>
-
-<p class="src">*All other items, net is derived: 80.7 &minus; 0.7 &minus; 72.4. Figures are from press and analyst coverage of the S-1 and are rounded; check the filing before citing them. Computing commitments were reported at roughly $518&ndash;537 billion. Q7 uses made-up numbers.</p>
-</div>
+<p class="src">*All other items, net is derived: 80.7 &minus; 0.7 &minus; 72.4. Figures are from press and analyst coverage of the S-1 and are rounded; check the filing before citing them. Computing commitments were reported at roughly $518&ndash;537 billion. Q7 uses made-up numbers.</p></div>
 <script>
 function toggleKey() {
   const on = document.documentElement.classList.toggle('key');
