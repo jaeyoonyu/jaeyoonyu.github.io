@@ -97,7 +97,7 @@ def page(title, s, header, front, back, note):
   <div class="name">Name <span></span></div>
 </header>
 {front}
-{'' if back else f'<p class="src">{note}</p>'}
+{'' if back or not note else f'<p class="src">{note}</p>'}
 </div>
 {f'<div class="page">{back}<p class="src">{note}</p></div>' if back else ''}
 <script>
@@ -131,7 +131,7 @@ def pick(opts, right):
 CROX_URL = 'https://www.sec.gov/Archives/edgar/data/1334036/000133403625000009/crox-20241231.htm'
 BS = [('Cash and cash equivalents', ('180,485', '149,288'), '$'),
       ('Accounts receivable (gross)', ('289,236', '333,338'), 'hl'),
-      ('Less: Allowance (ADA)', ('(31,579)', '(27,591)'), 'u hl'),
+      ('Less: Allowance (ADA)<sup>*</sup>', ('(31,579)', '(27,591)'), 'u hl'),
       ('Accounts receivable, net', ('257,657', '305,747'), 'i hl'),
       ('Inventories', ('356,254', '385,054'), ''),
       ('Other current assets', ('77,873', '70,615'), 'u'),
@@ -159,7 +159,7 @@ ALLOW = [('Balance, Dec 31, 2023', '27,591', '$'),
 
 front = f'''<h1>Crocs: Bad Debts in Real Financial Statements</h1>
 <p class="intro2">Crocs sells many of its shoes to retailers and distributors (shoe stores, department stores) on credit. They pay weeks later.</p>
-<p class="filing"><b>Source:</b> Crocs, Inc. Form 10-K, year ended December 31, 2024 (condensed; amounts in thousands) &middot;
+<p class="filing"><b>Source:</b> Crocs, Inc. Form 10-K, year ended December 31, 2024 (condensed<sup>**</sup>; amounts in thousands) &middot;
 <a href="{CROX_URL}" target="_blank">{CROX_URL.replace("https://www.", "")}</a></p>
 <style>.stmt {{ font-size:9pt; }} .stmt td {{ padding:1.2pt 2pt; }} .defs dt {{ margin-top:2pt; }} ol.qs li {{ padding:4pt 0 1pt; }} .defs {{ font-size:9.2pt !important; }}</style>
 <div class="cols">
@@ -195,6 +195,8 @@ front = f'''<h1>Crocs: Bad Debts in Real Financial Statements</h1>
         ("Assuming no accounts were written off during 2024, how much bad debt expense (BDE) did Crocs record in 2024?<sup>&dagger;</sup>", "3,988")], 1, full=True)}
 <p class="fn"><sup>&dagger;</sup> You don&rsquo;t have to think about write-offs too much now; we&rsquo;ll cover them in class. For your information, a <b>write-off</b> removes a specific customer&rsquo;s account from A/R once it is known to be uncollectible. It reduces both gross A/R and ADA.</p>
 <p class="fn" style="margin-top:2pt"><sup>&Dagger;</sup> Bad debt expense is included in SG&amp;A, but it is only a <b>small portion</b> of it: well under 1% of Crocs&rsquo;s $1.39 billion of SG&amp;A in 2024.</p>
+<p class="fn" style="margin-top:2pt"><sup>*</sup> Crocs&rsquo;s reported &ldquo;allowances&rdquo; also include reserves for customer returns and discounts; this worksheet treats the total as the allowance for doubtful accounts.</p>
+<p class="fn" style="margin-top:2pt"><sup>**</sup> Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other,&rdquo; long-term liabilities, SG&amp;A and &ldquo;interest expense and other, net&rdquo; are derived from reported totals.</p>
 '''
 
 back = f'''<h2 style="margin-top:2pt">Hints</h2>
@@ -246,8 +248,7 @@ Why is this method not allowed under GAAP?</p>
 '''
 note = ('Crocs&rsquo;s reported &ldquo;allowances&rdquo; ($31,579) also include reserves for customer returns and discounts; this worksheet treats the total as the allowance for doubtful accounts. '
         'Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo; and long-term liabilities are derived from reported totals. Q7 and Q9 use made-up numbers.')
-note = ('Crocs&rsquo;s reported &ldquo;allowances&rdquo; ($31,579) also include reserves for customer returns and discounts; this worksheet treats the total as the allowance for doubtful accounts. '
-        'Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo;, long-term liabilities, SG&amp;A and &ldquo;interest expense and other, net&rdquo; are derived from reported totals.')
+note = ''
 open(os.path.join(OUT, 'Ch8-BadDebt-Worksheet.html'), 'w').write(
     page('Bad Debts Worksheet', 'Crocs', 'ACC 250 &middot; Ch8 Opening Activity', front, '', note))
 print('wrote Ch8-BadDebt-Worksheet')
