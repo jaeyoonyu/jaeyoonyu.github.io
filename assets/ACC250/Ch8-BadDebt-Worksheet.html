@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bad Debts Worksheet</title>
+<style>
+:root { --accent:#1a7a5e; --key:#b3200f; }
+* { box-sizing:border-box; }
+html { background:#e9ecea; }
+body { margin:0; color:#000; font:10pt/1.32 "Times New Roman",Times,serif; }
+.page { width:8.5in; height:11in; margin:18px auto; background:#fff; padding:.35in .5in .3in;
+  box-shadow:0 6px 24px rgba(0,0,0,.15); overflow:hidden; position:relative; }
+.bar { position:sticky; top:0; z-index:5; display:flex; gap:10px; justify-content:center; padding:10px; background:#16263a; }
+.bar button { font:600 13px "Segoe UI",system-ui,sans-serif; padding:7px 16px; border-radius:6px; border:0;
+  background:#fff; color:#16263a; cursor:pointer; }
+.bar button.on { background:var(--accent); color:#fff; }
+
+header { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:1.2pt solid #000;
+  padding-bottom:3pt; margin-bottom:5pt; }
+header .course { font:700 8.5pt Arial,sans-serif; letter-spacing:.1em; text-transform:uppercase; }
+header .name span { display:inline-block; width:2.2in; border-bottom:.8pt solid #000; }
+h1 { font-size:14pt; margin:0 0 3pt; }
+.filing { font-size:8.3pt; margin:0 0 6pt; padding:2.5pt 6pt; border:.8pt solid #000; border-radius:3pt; }
+.filing a { color:#000; }
+
+.cols { display:grid; grid-template-columns:1fr 1fr; gap:.28in; align-items:start; margin-bottom:12pt; }
+
+/* ---- 10-K style statements ---- */
+.stmt { font-size:9.6pt; line-height:1.15; }
+.stmt .co, .stmt .ttl { text-align:center; font-weight:700; margin:0; font-size:9pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+.stmt .co { padding-top:2pt; border-radius:3pt 3pt 0 0; }
+.stmt .ttl { padding-bottom:2pt; border-radius:0 0 3pt 3pt; font-size:10pt; }
+.stmt .unit { display:none; }
+.stmt.gapt { margin-top:16pt; }
+.stmt.wide { margin-bottom:6pt; }
+.cols.in { margin:0; }
+.cols.in .sec:first-child td { padding-top:0; }
+.stmt table { width:100%; border-collapse:collapse; margin-top:2pt; }
+.stmt th { font-weight:700; text-align:right; padding:0 2pt 1pt; font-size:8.3pt; border-bottom:.8pt solid #000; }
+.stmt th:first-child { border:0; }
+.stmt td { padding:1.7pt 2pt; vertical-align:bottom; }
+.stmt td.n { text-align:right; white-space:nowrap; width:.85in; }
+.stmt td.n i { font-style:normal; float:left; }
+.stmt .i1 { padding-left:10pt; }
+.stmt .hd td { padding-top:3.5pt; }
+.stmt .sec td { padding-top:3.5pt; font-weight:700; font-style:italic; }
+.stmt tr.u td.n { border-bottom:.8pt solid #000; }
+.stmt tr.uu td.n { border-bottom:2.4pt double #000; }
+
+/* ---- questions ---- */
+h2 { font:700 9pt Arial,sans-serif; letter-spacing:.08em; text-transform:uppercase;
+  margin:4pt 0 3pt; padding-bottom:2pt; border-bottom:.8pt solid #000; }
+h2 small { font:400 8.5pt "Times New Roman",serif; letter-spacing:0; text-transform:none; margin-left:6pt; }
+.qcols { display:grid; grid-template-columns:1fr 1fr; gap:0 .28in; }
+ol.qs { list-style:none; margin:0; padding:0; }
+ol.qs li { display:grid; grid-template-columns:16pt 1fr .85in; gap:4pt; align-items:end; padding:6.5pt 0 1pt; font-size:9.8pt; line-height:1.2; }
+.no { display:inline-block; font:700 7.5pt Arial,sans-serif; color:#fff; background:#000; border-radius:2pt;
+  padding:0 3pt; line-height:1.4; text-align:center; align-self:start; margin-top:1pt; }
+.bl { display:block; border-bottom:.9pt solid #000; min-height:12pt; }
+.bl.amt { text-align:right; }
+.bl::after { content:"\00a0"; }
+html.key .bl::after { content:attr(data-a); color:var(--key); font-weight:700; }
+
+/* ---- page 2 ---- */
+.defs { display:grid; grid-template-columns:1fr 1fr; gap:0 .3in; font-size:9.6pt; }
+.defs h3 { font:700 8.6pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); margin:8pt 0 2pt; }
+.defs dl { margin:0; }
+.defs dt { font-weight:700; margin-top:4pt; }
+.defs dd { margin:0 0 0 10pt; }
+.ratios { width:100%; border-collapse:collapse; margin-top:2pt; font-size:10.5pt; }
+.ratios td { padding:9pt 4pt; border-bottom:.6pt solid #999; vertical-align:bottom; }
+.ratios td:first-child { width:28px; }
+.ratios .f { font-size:9.5pt; color:#333; }
+.ratios .ans { width:1.3in; }
+.why { display:none; color:var(--key); font-size:9.3pt; margin-top:4pt; }
+html.key .why { display:block; }
+.src { position:absolute; left:.5in; right:.5in; bottom:.3in; font-size:7.8pt; color:#555; margin:0; }
+.keytag { display:none; color:var(--key); }
+html.key .keytag { display:inline; }
+
+@media print {
+  @page { size:letter; margin:0; }
+  html { background:#fff; }
+  .bar { display:none; }
+  .page { margin:0; box-shadow:none; break-after:page; }
+}
+@media screen and (max-width:860px) {
+  .page { width:auto; height:auto; margin:0 0 12px; padding:16px; box-shadow:none; }
+  .cols, .defs, .qcols { grid-template-columns:1fr; }
+  .src { position:static; margin-top:10px; }
+}
+
+.box { border:.8pt solid #000; border-radius:3pt; padding:4pt 8pt; margin:6pt 0; font-size:9.6pt; }
+.box b.t { display:block; font:700 8.6pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; margin-bottom:2pt; }
+ol.qs.full li { grid-template-columns:16pt 1fr 1in; }
+.qblock { font-size:9.8pt; margin:9pt 0 0; display:grid; grid-template-columns:16pt 1fr; gap:4pt; }
+.qblock p { margin:0 0 3pt; }
+.je2 { border-collapse:collapse; margin:3pt 0 2pt; font-size:9.6pt; }
+.je2 th { font:700 7.8pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#444; text-align:left; padding:1pt 6pt; }
+.je2 td { padding:3pt 6pt 1pt; vertical-align:bottom; }
+.je2 .acct { width:2.6in; } .je2 .amt { width:.8in; }
+.je2 .cr .bl { margin-left:18pt; }
+.pick i { font-style:normal; padding:0 3pt; }
+html.key .pick i.r { border:1.2pt solid var(--key); border-radius:7pt; color:var(--key); font-weight:700; }
+.lines { border-bottom:.8pt solid #999; height:16pt; }
+html.key .lines { display:none; }
+.why { display:none; color:var(--key); font-size:9.2pt; margin-top:2pt; }
+html.key .why { display:block; }
+.inl { display:inline-block; min-width:.8in; vertical-align:bottom; }
+table.mini { border-collapse:collapse; font-size:9.6pt; margin:3pt 0; }
+table.mini th { font:700 7.8pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#444; padding:1pt 8pt; text-align:right; border-bottom:.8pt solid #000; }
+table.mini th:first-child, table.mini td:first-child { text-align:left; }
+table.mini td { padding:2pt 8pt; text-align:right; }
+table.mini tr.tot td { border-top:.8pt solid #000; font-weight:700; }
+
+</style>
+</head>
+<body>
+<div class="bar">
+  <button id="kbtn" onclick="toggleKey()">Show answers</button>
+  <button onclick="print()">Print</button>
+</div>
+<div class="page">
+<header>
+  <div class="course">ACC 250 &middot; Ch8 Worksheet<span class="keytag"> &middot; Answer key</span></div>
+  <div class="name">Name <span></span></div>
+</header>
+<h1>Crocs: Bad Debts in a Real Balance Sheet</h1>
+<p class="filing"><b>Source:</b> Crocs, Inc. Form 10-K, year ended December 31, 2024 (condensed; amounts in thousands) &middot;
+<a href="https://www.sec.gov/Archives/edgar/data/1334036/000133403625000009/crox-20241231.htm" target="_blank">sec.gov/Archives/edgar/data/1334036/000133403625000009/crox-20241231.htm</a></p>
+<div class="cols">
+<div class="stmt"><p class="co">Crocs, Inc.</p><p class="ttl">Consolidated Balance Sheet</p><table>
+<tr><th></th><th>Dec 31, 2024</th></tr>
+<tr class=""><td>Cash and cash equivalents</td><td class="n"><i>$</i>180,485</td></tr>
+<tr class="" style="background:#fff7cc"><td>Accounts receivable</td><td class="n">289,236</td></tr>
+<tr class="u" style="background:#fff7cc"><td>Less: Allowance for doubtful accounts</td><td class="n">(31,579)</td></tr>
+<tr class="" style="background:#fff7cc"><td class="i1">Accounts receivable, net</td><td class="n">257,657</td></tr>
+<tr class=""><td>Inventories</td><td class="n">356,254</td></tr>
+<tr class="u"><td>Other current assets</td><td class="n">77,873</td></tr>
+<tr class=""><td class="i1">Total current assets</td><td class="n">872,269</td></tr>
+<tr class="u"><td>Property, goodwill, brands and other</td><td class="n">3,939,884</td></tr>
+<tr class="uu"><td class="i1">Total assets</td><td class="n"><i>$</i>4,812,153</td></tr>
+<tr class="hd"><td>Total current liabilities</td><td class="n"><i>$</i>740,208</td></tr>
+<tr class="u"><td>Long-term liabilities</td><td class="n">2,236,213</td></tr>
+<tr class=""><td class="i1">Total liabilities</td><td class="n">2,976,421</td></tr>
+<tr class="u"><td>Total stockholders&rsquo; equity</td><td class="n">1,835,732</td></tr>
+<tr class="uu"><td class="i1">Total liabilities and equity</td><td class="n"><i>$</i>4,812,153</td></tr>
+</table></div>
+<div>
+<div class="stmt"><p class="co">Crocs, Inc.</p><p class="ttl">Allowance for Doubtful Accounts</p><table>
+<tr><th></th><th>2024</th></tr>
+<tr class=""><td>Balance, Dec 31, 2023</td><td class="n"><i>$</i>27,591</td></tr>
+<tr class=""><td>Add: Bad debt expense (new estimates)</td><td class="n">?</td></tr>
+<tr class="u"><td>Less: Accounts written off</td><td class="n">?</td></tr>
+<tr class="uu"><td class="i1">Balance, Dec 31, 2024</td><td class="n"><i>$</i>31,579</td></tr>
+</table></div>
+<div class="box"><b class="t">Background</b>Crocs sells many of its shoes to retailers and distributors (shoe stores, department stores) on credit. They pay weeks later.</div>
+</div>
+</div>
+<h2>Find it in the statements <small>Write the amount ($ thousands, or %).</small></h2>
+<ol class="qs full"><li><span class="no">1</span><span class="qt">In total, how much did customers owe Crocs at year-end?</span><span class="bl amt" data-a="289,236"></span></li><li><span class="no">2</span><span class="qt">How much does Crocs estimate it will never collect?</span><span class="bl amt" data-a="31,579"></span></li><li><span class="no">3</span><span class="qt">How much does Crocs actually expect to collect in cash?</span><span class="bl amt" data-a="257,657"></span></li><li><span class="no">4</span><span class="qt">What percentage of what customers owe does Crocs expect never to collect?</span><span class="bl amt" data-a="10.9%"></span></li><li><span class="no">5</span><span class="qt">Out of every $100 customers owe, about how much does Crocs expect to collect?</span><span class="bl amt" data-a="$89"></span></li><li><span class="no">6</span><span class="qt">By how much did the allowance increase during 2024?</span><span class="bl amt" data-a="3,988"></span></li></ol>
+
+</div>
+<div class="page">
+<h2 style="margin-top:2pt">Hints</h2>
+<div class="defs" style="font-size:9.3pt">
+<dl>
+<dt>Accounts receivable</dt><dd>Amounts customers owe for sales made on credit.</dd>
+<dt>Allowance for doubtful accounts</dt><dd>The part of receivables the company <i>estimates</i> it will never collect. A contra-asset subtracted from accounts receivable.</dd>
+<dt>Net realizable value</dt><dd>Accounts receivable &minus; allowance = the amount expected to be collected.</dd>
+</dl>
+<dl>
+<dt>Bad debt expense</dt><dd>Recorded when the loss is <i>estimated</i> (year-end adjusting entry): Dr Bad debt expense, Cr Allowance.</dd>
+<dt>Write-off</dt><dd>Removing a specific customer&rsquo;s account: Dr Allowance, Cr Accounts receivable. No expense.</dd>
+<dt>Allowance T-account</dt><dd>Beginning + Bad debt expense &minus; Write-offs = Ending.</dd>
+</dl>
+</div>
+
+<h2 style="margin-top:10pt">Practice</h2>
+<div class="qblock"><span class="no">7</span><div>
+<p><b>Fill in the &ldquo;?&rdquo;.</b> Suppose Crocs wrote off <b>6,000</b> of customer accounts during 2024. How much bad debt expense did it record? <span class="bl inl amt" data-a="9,988"></span></p>
+<div class="why">27,591 + Expense &minus; 6,000 = 31,579, so Expense = 9,988.</div></div></div>
+
+<div class="qblock"><span class="no">8</span><div>
+<p><b>Journal entries.</b> (a) Record the year-end bad debt estimate from Q7.</p>
+<table class="je2"><tr><th>Account</th><th>Debit</th><th>Credit</th></tr><tr><td class="acct"><span class="bl nm" data-a="Bad debt expense"></span></td><td class="amt"><span class="bl amt" data-a="9,988"></span></td><td class="amt"></td></tr><tr class="cr"><td class="acct"><span class="bl nm" data-a="Allowance for doubtful accounts"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="9,988"></span></td></tr></table>
+<p>(b) A shoe store that owes Crocs <b>1,500</b> goes bankrupt. Write off its account.</p>
+<table class="je2"><tr><th>Account</th><th>Debit</th><th>Credit</th></tr><tr><td class="acct"><span class="bl nm" data-a="Allowance for doubtful accounts"></span></td><td class="amt"><span class="bl amt" data-a="1,500"></span></td><td class="amt"></td></tr><tr class="cr"><td class="acct"><span class="bl nm" data-a="Accounts receivable"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="1,500"></span></td></tr></table>
+<p>Effect of entry (b): net income <span class="pick"><i>decreases</i> / <i class="r">no change</i></span>; &nbsp; accounts receivable, net <span class="pick"><i>decreases</i> / <i class="r">no change</i></span></p>
+</div></div>
+
+<div class="qblock"><span class="no">9</span><div>
+<p><b>Aging method.</b> Shoe Wholesale Co. (a smaller, made-up company) ages its receivables at year-end:</p>
+<table class="mini">
+<tr><th>Age</th><th>Receivables</th><th>% uncollectible</th><th>Estimated uncollectible</th></tr>
+<tr><td>Not yet due</td><td>80,000</td><td>1%</td><td><span class="bl inl amt" data-a="800"></span></td></tr>
+<tr><td>1&ndash;90 days past due</td><td>15,000</td><td>10%</td><td><span class="bl inl amt" data-a="1,500"></span></td></tr>
+<tr><td>Over 90 days past due</td><td>5,000</td><td>40%</td><td><span class="bl inl amt" data-a="2,000"></span></td></tr>
+<tr class="tot"><td>Required ending allowance</td><td>100,000</td><td></td><td><span class="bl inl amt" data-a="4,300"></span></td></tr>
+</table>
+<p>The allowance already has a <b>credit</b> balance of 1,100 before adjusting. Bad debt expense = <span class="bl inl amt" data-a="3,200"></span></p>
+</div></div>
+
+<div class="qblock"><span class="no">10</span><div>
+<p><b>Receivables turnover.</b> Crocs&rsquo;s 2024 revenue was about <b>$4,102 million</b>. Net receivables were $258 million (2024) and $306 million (2023).<br>
+Turnover = Revenue &divide; Average net receivables = <span class="bl inl amt" data-a="14.6 times"></span> &nbsp; Days to collect = 365 &divide; turnover = <span class="bl inl amt" data-a="25 days"></span></p>
+</div></div>
+
+<div class="qblock"><span class="no">11</span><div>
+<p><b>Compare.</b> Costco says its allowance for receivables is <i>immaterial</i>. Why would Costco have almost no bad debts while Crocs does?</p>
+<div class="lines"></div>
+<div class="why">Costco&rsquo;s members pay at the register (cash, debit or credit card), so the card company, not Costco, bears the risk of non-payment. Crocs sells to other businesses on credit.</div>
+</div></div>
+
+<p class="src">Crocs&rsquo;s reported &ldquo;allowances&rdquo; ($31,579) also include reserves for customer returns and discounts; this worksheet treats the total as the allowance for doubtful accounts. Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo; and long-term liabilities are derived from reported totals. Q7&ndash;Q9 use made-up numbers.</p>
+</div>
+<script>
+function toggleKey() {
+  const on = document.documentElement.classList.toggle('key');
+  const b = document.getElementById('kbtn');
+  b.textContent = on ? 'Hide answers' : 'Show answers';
+  b.classList.toggle('on', on);
+}
+if (location.hash === '#key') toggleKey();
+</script>
+</body>
+</html>
