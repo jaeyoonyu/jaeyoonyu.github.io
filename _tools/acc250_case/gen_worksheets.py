@@ -81,11 +81,9 @@ def page(title, s, header, front, back, note):
   <div class="name">Name <span></span></div>
 </header>
 {front}
+{'' if back else f'<p class="src">{note}</p>'}
 </div>
-<div class="page">
-{back}
-<p class="src">{note}</p>
-</div>
+{f'<div class="page">{back}<p class="src">{note}</p></div>' if back else ''}
 <script>
 function toggleKey() {{
   const on = document.documentElement.classList.toggle('key');
@@ -202,8 +200,10 @@ Why is this method not allowed under GAAP?</p>
 '''
 note = ('Crocs&rsquo;s reported &ldquo;allowances&rdquo; ($31,579) also include reserves for customer returns and discounts; this worksheet treats the total as the allowance for doubtful accounts. '
         'Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo; and long-term liabilities are derived from reported totals. Q7 and Q9 use made-up numbers.')
+note = ('Crocs&rsquo;s reported &ldquo;allowances&rdquo; ($31,579) also include reserves for customer returns and discounts; this worksheet treats the total as the allowance for doubtful accounts. '
+        'Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo; and long-term liabilities are derived from reported totals.')
 open(os.path.join(OUT, 'Ch8-BadDebt-Worksheet.html'), 'w').write(
-    page('Bad Debts Worksheet', 'Crocs', 'ACC 250 &middot; Ch8 Worksheet', front, back, note))
+    page('Bad Debts Worksheet', 'Crocs', 'ACC 250 &middot; Ch8 Opening Activity', front, '', note))
 print('wrote Ch8-BadDebt-Worksheet')
 
 # ======================================================================
