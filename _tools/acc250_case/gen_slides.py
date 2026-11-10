@@ -1,4 +1,6 @@
 import sys, os, importlib.util
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import sankey
 spec = importlib.util.spec_from_file_location('g', os.path.join(os.path.dirname(__file__), 'gen_case.py'))
 OUT = sys.argv[1]; shell = sys.argv[2]
 src = open(os.path.join(os.path.dirname(__file__), 'gen_case.py')).read()
@@ -28,6 +30,13 @@ for key, c in C.items():
 <p class="lede">Know what each account means, and you can find it in the statements.</p>
 </div>
 <p class="title-date">Form 10-K, {c['fydesc']} &middot; $ millions</p>
+</section>
+
+<section class="s" data-nav="Where the revenue goes">
+<p class="eyebrow">Income statement as a picture</p>
+<h2 style="margin-bottom:6px">Where each revenue dollar goes</h2>
+{getattr(sankey, key.lower())()}
+<p class="fine" style="font-size:16px;margin-top:-4px">*Here gross profit = total revenue &minus; {'cost of sales' if key=='Walmart' else 'merchandise costs'}, so it includes membership income. The worksheet&rsquo;s gross profit margin uses net sales only. Green = profit, red = costs.</p>
 </section>
 
 <section class="s" data-nav="Q1–6">
