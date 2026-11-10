@@ -169,7 +169,7 @@ front = f'''<h1>Crocs: Bad Debts in Real Financial Statements</h1>
 </div>
 <div>
 {stmt('Crocs, Inc.', 'Consolidated Statement of Operations', '2024', IS_CROX)}
-<div class="box quote"><b class="t">From Crocs&rsquo;s 10-K</b>&ldquo;Selling, general and administrative expenses consist primarily of labor and outside services, rent expense, <mark>bad debt expense</mark>, legal costs, amortization of intangible assets, as well as certain depreciation costs related to corporate and non-product assets and share-based compensation.&rdquo;</div>
+
 
 </div>
 </div>
@@ -194,7 +194,7 @@ front = f'''<h1>Crocs: Bad Debts in Real Financial Statements</h1>
         ("Out of every $100 customers owe, about how much does Crocs expect to collect?", "$89"),
         ("Assuming no accounts were written off during 2024, how much bad debt expense (BDE) did Crocs record in 2024?<sup>&dagger;</sup>", "3,988")], 1, full=True)}
 <p class="fn"><sup>&dagger;</sup> You don&rsquo;t have to think about write-offs too much now; we&rsquo;ll cover them in class. For your information, a <b>write-off</b> removes a specific customer&rsquo;s account from A/R once it is known to be uncollectible. It reduces both gross A/R and ADA.</p>
-<p class="fn" style="margin-top:2pt"><sup>&Dagger;</sup> Bad debt expense is included in SG&amp;A, but it is only a <b>small portion</b> of it: well under 1% of Crocs&rsquo;s $1.39 billion of SG&amp;A in 2024.</p>
+<p class="fn" style="margin-top:2pt"><sup>&Dagger;</sup> Crocs&rsquo;s 10-K: &ldquo;Selling, general and administrative expenses consist primarily of labor and outside services, rent expense, <b>bad debt expense</b>, legal costs, amortization of intangible assets, as well as certain depreciation costs related to corporate and non-product assets and share-based compensation.&rdquo; Bad debt expense is only a <b>small portion</b> of SG&amp;A: well under 1% of Crocs&rsquo;s $1.39 billion in 2024.</p>
 <p class="fn" style="margin-top:2pt"><sup>*</sup> Crocs&rsquo;s reported &ldquo;allowances&rdquo; also include reserves for customer returns and discounts; this worksheet treats the total as the allowance for doubtful accounts.</p>
 <p class="fn" style="margin-top:2pt"><sup>**</sup> Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other,&rdquo; long-term liabilities, SG&amp;A and &ldquo;interest expense and other, net&rdquo; are derived from reported totals.</p>
 '''
