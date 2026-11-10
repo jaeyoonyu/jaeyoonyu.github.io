@@ -32,6 +32,8 @@ table.terms td:first-child { width:16%; font-weight:700; color:#444; font-size:8
 .terms2 { font-size:9.4pt; margin:0 0 6pt; }
 .terms2 p { margin:1.5pt 0; }
 .intro2 { margin:0 0 4pt; font-size:9.6pt; }
+.sub2 { margin:0 0 2pt; font-size:9.6pt; }
+.fn { margin:6pt 0 0; font-size:8.8pt; color:#333; }
 .box.quote { font-style:italic; font-size:9.2pt; margin-top:8pt; }
 .box.quote b.t { font-style:normal; }
 .box.quote mark { background:#fff7cc; font-weight:700; padding:0 1pt; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
@@ -180,17 +182,18 @@ front = f'''<h1>Crocs: Bad Debts in Real Financial Statements</h1>
 </dl>
 <dl>
 <dt>Bad debt expense (BDE)</dt><dd>An operating expense on the income statement: the amount needed to bring ADA up to the new estimate. For example, if ADA was $1,000 and the company now expects $3,000 of A/R will not be collected, it records $2,000 of BDE.</dd>
-<dt>Write-off</dt><dd>Removing a specific customer&rsquo;s account once it is known to be uncollectible.</dd>
 <dt>Allowance method (GAAP)</dt><dd>Estimate BDE in the same period as the credit sales (matching principle).</dd>
 </dl>
 </div>
 <h2>Find it in the statements <small>Write the amount ($ thousands, or %).</small></h2>
+<p class="sub2">Answer as of <b>December 31, 2024</b> (the end of 2024), unless a question says otherwise.</p>
 {qlist([("In total, how much did customers owe Crocs at year-end?", "289,236"),
         ("How much does Crocs estimate it will never collect?", "31,579"),
         ("How much does Crocs actually expect to collect in cash?", "257,657"),
         ("What percentage of what customers owe does Crocs expect never to collect?", "10.9%"),
         ("Out of every $100 customers owe, about how much does Crocs expect to collect?", "$89"),
-        ("By how much did the allowance increase during 2024?", "3,988")], 1, full=True)}
+        ("Assuming no accounts were written off during 2024, how much bad debt expense (BDE) did Crocs record in 2024?<sup>&dagger;</sup>", "3,988")], 1, full=True)}
+<p class="fn"><sup>&dagger;</sup> You don&rsquo;t have to think about write-offs too much now; we&rsquo;ll cover them in class. For your information, a <b>write-off</b> removes a specific customer&rsquo;s account from A/R once it is known to be uncollectible. It reduces both gross A/R and ADA.</p>
 '''
 
 back = f'''<h2 style="margin-top:2pt">Hints</h2>
