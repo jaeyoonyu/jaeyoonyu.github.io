@@ -31,6 +31,11 @@ table.terms td { padding:2.2pt 6pt; border-bottom:.6pt solid #ccc; vertical-alig
 table.terms td:first-child { width:16%; font-weight:700; color:#444; font-size:8.8pt; }
 .terms2 { font-size:9.4pt; margin:0 0 6pt; }
 .terms2 p { margin:1.5pt 0; }
+.intro2 { margin:0 0 4pt; font-size:9.6pt; }
+.box.quote { font-style:italic; font-size:9.2pt; margin-top:8pt; }
+.box.quote b.t { font-style:normal; }
+.box.quote mark { background:#fff7cc; font-weight:700; padding:0 1pt; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+.stmt + .stmt { margin-top:8pt; }
 .inl { display:inline-block; min-width:.8in; vertical-align:bottom; }
 table.mini { border-collapse:collapse; font-size:9.6pt; margin:3pt 0; }
 table.mini th { font:700 7.8pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#444; padding:1pt 8pt; text-align:right; border-bottom:.8pt solid #000; }
@@ -133,19 +138,34 @@ BS = [('Cash and cash equivalents', '180,485', '$'),
       ('Total liabilities', '2,976,421', 'i'),
       ('Total stockholders&rsquo; equity', '1,835,732', 'u'),
       ('Total liabilities and equity', '4,812,153', 'i uu $')]
+IS_CROX = [('Revenues', '4,102,108', '$'),
+           ('Cost of sales', '1,691,850', 'u'),
+           ('Gross profit', '2,410,258', 'i'),
+           ('Selling, general and administrative expenses', '1,388,347', 'u hl'),
+           ('Income from operations', '1,021,911', 'i'),
+           ('Interest expense and other, net', '(111,326)', 'u'),
+           ('Income before income taxes', '910,585', 'i'),
+           ('Income tax benefit', '39,486', 'u'),
+           ('Net income', '950,071', 'i uu $')]
 ALLOW = [('Balance, Dec 31, 2023', '27,591', '$'),
          ('Add: Bad debt expense (new estimates)', '?', ''),
          ('Less: Accounts written off', '?', 'u'),
          ('Balance, Dec 31, 2024', '31,579', 'i uu $')]
 
-front = f'''<h1>Crocs: Bad Debts in a Real Balance Sheet</h1>
+front = f'''<h1>Crocs: Bad Debts in Real Financial Statements</h1>
+<p class="intro2">Crocs sells many of its shoes to retailers and distributors (shoe stores, department stores) on credit. They pay weeks later.</p>
 <p class="filing"><b>Source:</b> Crocs, Inc. Form 10-K, year ended December 31, 2024 (condensed; amounts in thousands) &middot;
 <a href="{CROX_URL}" target="_blank">{CROX_URL.replace("https://www.", "")}</a></p>
+<style>.stmt {{ font-size:9pt; }} .stmt td {{ padding:1.2pt 2pt; }} .defs dt {{ margin-top:2pt; }} ol.qs li {{ padding:4pt 0 1pt; }} .defs {{ font-size:9.2pt !important; }}</style>
 <div class="cols">
+<div>
 {stmt('Crocs, Inc.', 'Consolidated Balance Sheet', 'Dec 31, 2024', BS)}
+<div class="box quote"><b class="t">From Crocs&rsquo;s 10-K</b>&ldquo;Selling, general and administrative expenses consist primarily of labor and outside services, rent expense, <mark>bad debt expense</mark>, legal costs, amortization of intangible assets, as well as certain depreciation costs related to corporate and non-product assets and share-based compensation.&rdquo;</div>
+</div>
 <div>
 {stmt('Crocs, Inc.', 'Allowance for Doubtful Accounts (ADA)', '2024', ALLOW)}
-<div class="box"><b class="t">Background</b>Crocs sells many of its shoes to retailers and distributors (shoe stores, department stores) on credit. They pay weeks later.</div>
+{stmt('Crocs, Inc.', 'Consolidated Statement of Operations', '2024', IS_CROX)}
+
 </div>
 </div>
 <h2>Accounts &amp; Terms</h2>
@@ -220,7 +240,7 @@ Why is this method not allowed under GAAP?</p>
 note = ('Crocs&rsquo;s reported &ldquo;allowances&rdquo; ($31,579) also include reserves for customer returns and discounts; this worksheet treats the total as the allowance for doubtful accounts. '
         'Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo; and long-term liabilities are derived from reported totals. Q7 and Q9 use made-up numbers.')
 note = ('Crocs&rsquo;s reported &ldquo;allowances&rdquo; ($31,579) also include reserves for customer returns and discounts; this worksheet treats the total as the allowance for doubtful accounts. '
-        'Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo; and long-term liabilities are derived from reported totals.')
+        'Accounts receivable (gross), other current assets, &ldquo;property, goodwill, brands and other&rdquo;, long-term liabilities, SG&amp;A and &ldquo;interest expense and other, net&rdquo; are derived from reported totals.')
 open(os.path.join(OUT, 'Ch8-BadDebt-Worksheet.html'), 'w').write(
     page('Bad Debts Worksheet', 'Crocs', 'ACC 250 &middot; Ch8 Opening Activity', front, '', note))
 print('wrote Ch8-BadDebt-Worksheet')

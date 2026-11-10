@@ -18,7 +18,7 @@ Materials being tested before they move to a course page.
 |----------|----------|--------|-----------|------------|
 | In-Class Case: Walmart | Ch1-7 | <a href="/assets/ACC250/Walmart-Case-Slides.html?v=f6b3e5e1" target="_blank">Slides</a> | [PDF](/assets/ACC250/Walmart-Case.pdf?v=e434faa1) | [PDF](/assets/ACC250/Walmart-Case-Key.pdf?v=1cd7cc43) |
 | In-Class Case: Costco | Ch1-7 | <a href="/assets/ACC250/Costco-Case-Slides.html?v=0a08a93d" target="_blank">Slides</a> | [PDF](/assets/ACC250/Costco-Case.pdf?v=9c44a20d) | [PDF](/assets/ACC250/Costco-Case-Key.pdf?v=284b3cae) |
-| Bad Debts in Real Life: Crocs and Costco (opening) | Ch8 | <a href="/assets/ACC250/Ch8-BadDebt-RealLife.html?v=cbcaa9cb" target="_blank">Slides</a> | [PDF](/assets/ACC250/Ch8-BadDebt-Worksheet.pdf?v=f65c4cc7) | [PDF](/assets/ACC250/Ch8-BadDebt-Worksheet-Key.pdf?v=2870813b) |
+| Bad Debts in Real Life: Crocs and Costco (opening) | Ch8 | <a href="/assets/ACC250/Ch8-BadDebt-RealLife.html?v=cbcaa9cb" target="_blank">Slides</a> | [PDF](/assets/ACC250/Ch8-BadDebt-Worksheet.pdf?v=80c7e5b2) | [PDF](/assets/ACC250/Ch8-BadDebt-Worksheet-Key.pdf?v=f69a41d8) |
 | Accounting in the News: Anthropic's S-1 (IPO filing) | Overview | <a href="/assets/ACC250/Anthropic-S1.html?v=9e6ca581" target="_blank">Slides</a> | [PDF](/assets/ACC250/Anthropic-S1-Worksheet.pdf?v=64891450) | [PDF](/assets/ACC250/Anthropic-S1-Worksheet-Key.pdf?v=30c51b82) |
 
 </div>
