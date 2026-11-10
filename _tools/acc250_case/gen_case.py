@@ -17,13 +17,13 @@ C['Walmart'] = dict(
       ('Provision for income taxes','6,152','u'),('Net income','20,157','i uu $')],
   BS=[('Cash and cash equivalents','9,037','$'),('Receivables, net','9,975',''),('Inventories','56,435',''),
       ('Prepaid expenses and other','4,011','u'),('Total current assets','79,458','i'),
-      ('Property and equipment, net','119,993',''),('Leases, goodwill and other assets','61,372','u'),('Total assets','260,823','i uu $'),
+      ('Property and equipment, at cost','231,617',''),('Less: Accumulated depreciation','(111,624)','u'),('Property and equipment, net','119,993','i'),('Leases, goodwill and other assets','61,372','u'),('Total assets','260,823','i uu $'),
       ('Accounts payable','58,666','hd $'),('Accrued and other current liabilities','37,918','u'),('Total current liabilities','96,584','i'),
       ('Long-term debt','33,401',''),('Lease obligations and other long-term liabilities','33,417','u'),('Total liabilities','163,402','i'),
-      ('Common stock and paid-in capital','6,305','hd'),('Retained earnings','98,313',''),('Accumulated other comprehensive loss and other','(7,197)','u'),
+      ('Common stock and paid-in capital','6,305','hd'),('Retained earnings','98,313',''),('Others (AOCI)','(7,197)','u'),
       ('Total equity','97,421','i u'),('Total liabilities and equity','260,823','i uu $')],
   RE=[('Retained earnings, Jan 31, 2024','89,814','$'),('Add: Net income','20,157',''),('Less: Dividends','(6,688)',''),
-      ('Less: Share repurchases and other','(4,970)','u'),('Retained earnings, Jan 31, 2025','98,313','i uu $')],
+      ('Less: Others (incl. share repurchases, Ch11)','(4,970)','u'),('Retained earnings, Jan 31, 2025','98,313','i uu $')],
   CF=[('Operating activities','','sec'),('Net income','20,157','$'),('Depreciation and amortization','12,973',''),('All other operating items, net','3,313','u'),
       ('Net cash provided by operating activities','36,443','i'),
       ('Investing activities','','sec'),('Payments for property and equipment','(23,783)',''),('Other investing activities, net','2,404','u'),
@@ -32,11 +32,11 @@ C['Walmart'] = dict(
       ('Net cash used in financing activities','(14,822)','i'),
       ('Effect of exchange rates and other','(1,072)','hd u'),('Net decrease in cash','(830)','i'),
       ('Cash, beginning of year','9,867','u'),('Cash, end of year','9,037','i uu $')],
-  A=dict(ar='9,975',cogs='511,753',sga='139,884',inv='56,435',ap='58,666',tax='6,152',ni='20,157',dep='12,973',
-         ocf='36,443',capex='23,783',div='6,688',re='98,313',gpm='24.1%',npm='3.0%',cr='0.82'),
+  A=dict(ar='9,975',cogs='511,753',sga='139,884',inv='56,435',ap='58,666',tax='6,152',ni='20,157',dep='111,624',
+         ocf='231,617',capex='33,401',div='6,688',re='98,313',gpm='24.1%',npm='3.0%',cr='0.82'),
   calc=dict(gpm='(674,538 &minus; 511,753) &divide; 674,538',npm='20,157 &divide; 680,985',cr='79,458 &divide; 96,584'),
   why='Walmart keeps about 3 cents of every sales dollar as profit. A current ratio below 1 is normal for Walmart: it sells its inventory before it has to pay its suppliers (accounts payable is larger than inventory).',
-  note='Some lines are combined. Cash flow subtotals and &ldquo;other&rdquo; lines are as reported or derived from reported totals. &ldquo;Effect of exchange rates and other&rdquo; also includes the change in restricted cash. In retained earnings, &ldquo;other&rdquo; includes the share of net income that belongs to minority owners of subsidiaries.',
+  note='Some lines are combined. Receivables are reported net of an allowance for credit losses; Walmart does not disclose the allowance amount separately. In retained earnings, &ldquo;Others&rdquo; also includes the share of net income that belongs to minority owners of subsidiaries.',
 )
 
 C['Costco'] = dict(
@@ -49,14 +49,14 @@ C['Costco'] = dict(
       ('Provision for income taxes','2,719','u'),('Net income','8,099','i uu $')],
   BS=[('Cash and cash equivalents','14,161','$'),('Short-term investments and other','2,900',''),('Receivables, net','3,203',''),
       ('Merchandise inventories','18,116','u'),('Total current assets','38,380','i'),
-      ('Property and equipment, net','31,909',''),('Lease right-of-use and other assets','6,810','u'),('Total assets','77,099','i uu $'),
+      ('Property and equipment, at cost','50,840',''),('Less: Accumulated depreciation','(18,931)','u'),('Property and equipment, net','31,909','i'),('Lease right-of-use and other assets','6,810','u'),('Total assets','77,099','i uu $'),
       ('Accounts payable','19,783','hd $'),('Accrued salaries and other current liabilities','14,471',''),('Deferred membership fees','2,854','u'),
       ('Total current liabilities','37,108','i'),
       ('Long-term debt','5,713',''),('Lease and other long-term liabilities','5,114','u'),('Total liabilities','47,935','i'),
-      ('Common stock and paid-in capital','8,284','hd'),('Retained earnings','22,650',''),('Accumulated other comprehensive loss','(1,770)','u'),
+      ('Common stock and paid-in capital','8,284','hd'),('Retained earnings','22,650',''),('Others (AOCI)','(1,770)','u'),
       ('Total equity','29,164','i u'),('Total liabilities and equity','77,099','i uu $')],
   RE=[('Retained earnings, Sep 1, 2024','17,619','$'),('Add: Net income','8,099',''),('Less: Dividends','(2,183)',''),
-      ('Less: Share repurchases and other','(885)','u'),('Retained earnings, Aug 31, 2025','22,650','i uu $')],
+      ('Less: Others (incl. share repurchases, Ch11)','(885)','u'),('Retained earnings, Aug 31, 2025','22,650','i uu $')],
   CF=[('Operating activities','','sec'),('Net income','8,099','$'),('Depreciation and amortization','2,426',''),('All other operating items, net','2,810','u'),
       ('Net cash provided by operating activities','13,335','i'),
       ('Investing activities','','sec'),('Additions to property and equipment','(5,498)',''),('Other investing activities, net','187','u'),
@@ -65,11 +65,11 @@ C['Costco'] = dict(
       ('Net cash used in financing activities','(3,775)','i'),
       ('Effect of exchange rates','6','hd u'),('Net increase in cash','4,255','i'),
       ('Cash, beginning of year','9,906','u'),('Cash, end of year','14,161','i uu $')],
-  A=dict(ar='3,203',cogs='239,886',sga='24,966',inv='18,116',ap='19,783',tax='2,719',ni='8,099',dep='2,426',
-         ocf='13,335',capex='5,498',div='2,183',re='22,650',gpm='11.1%',npm='2.9%',cr='1.03'),
+  A=dict(ar='3,203',cogs='239,886',sga='24,966',inv='18,116',ap='19,783',tax='2,719',ni='8,099',dep='18,931',
+         ocf='50,840',capex='5,713',div='2,183',re='22,650',gpm='11.1%',npm='2.9%',cr='1.03'),
   calc=dict(gpm='(269,912 &minus; 239,886) &divide; 269,912',npm='8,099 &divide; 275,235',cr='38,380 &divide; 37,108'),
   why='Costco keeps about 3 cents of every sales dollar as profit, and only about 11 cents after paying for the goods: it makes much of its profit from membership fees.',
-  note='Some lines are combined. &ldquo;Interest and other income, net&rdquo; = interest income and other minus interest expense. Cash flow &ldquo;other&rdquo; lines are derived from reported totals.',
+  note='Some lines are combined. &ldquo;Interest and other income, net&rdquo; = interest income and other minus interest expense. Property and equipment at cost = net + accumulated depreciation. Costco reports its allowance on receivables as immaterial.',
 )
 
 def body(rows, colhead):
@@ -100,9 +100,9 @@ QS = [('ar','How much does {s} expect to collect from its customers?'),
       ('ap','How much does it owe suppliers for goods bought on credit?'),
       ('tax',"What is the government&rsquo;s share of this year&rsquo;s profit?"),
       ('ni','What was left of revenue after all expenses this year?'),
-      ('dep','What expense did it record for using up its buildings and equipment?'),
-      ('ocf','How much cash did its day-to-day business bring in?'),
-      ('capex','How much cash did it pay for new stores, equipment and technology?'),
+      ('dep','How much of its buildings&rsquo; and equipment&rsquo;s cost has been used up so far?'),
+      ('ocf','What did its buildings and equipment originally cost?'),
+      ('capex','How much does it owe lenders on long-term loans?'),
       ('div','How much did it pay its shareholders as dividends?'),
       ('re','How much profit has it earned over the years and kept in the business?')]
 
@@ -149,7 +149,6 @@ for key, c in C.items():
 </div>
 {stmt('Consolidated Balance Sheet','',c['end'],c['BS'])}
 </div>
-{stmt_split('Consolidated Statement of Cash Flows',c['fy'],c['CF'])}
 
 <h2>Find it in the statements <small>Write the amount ($ millions). Definitions are on the back.</small></h2>
 <div class="qcols">
@@ -185,14 +184,11 @@ for key, c in C.items():
 <dt>Current assets / current liabilities</dt><dd>Expected to be used up or paid within one year.</dd>
 <dt>Accounts receivable</dt><dd>Amounts customers owe the company, expected to be collected in cash.</dd>
 <dt>Inventory</dt><dd>Goods held for sale, recorded at cost until sold.</dd>
+<dt>Accumulated depreciation</dt><dd>All depreciation recorded so far on buildings and equipment. Cost &minus; accumulated depreciation = net (book value).</dd>
 <dt>Accounts payable</dt><dd>Amounts owed to suppliers for goods or services bought on credit.</dd>
+<dt>Long-term debt</dt><dd>Money borrowed (loans, bonds) that is due after more than one year.</dd>
 </dl>
-<h3>Statement of cash flows &middot; a whole year</h3>
-<dl>
-<dt>Operating activities</dt><dd>Cash from day-to-day business. Starts with net income and adds back expenses that used no cash, such as depreciation.</dd>
-<dt>Investing activities</dt><dd>Buying and selling long-term assets, such as stores and equipment (capital expenditures).</dd>
-<dt>Financing activities</dt><dd>Cash from or to lenders and owners: borrowing, repaying, dividends, buying back shares.</dd>
-</dl>
+
 </div>
 </div>
 

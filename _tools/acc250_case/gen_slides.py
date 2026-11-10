@@ -10,8 +10,8 @@ head = '\n'.join(lines[:535]); tail = '\n'.join(lines[734:])
 Q = [('ar','Expects to collect from customers','Receivables'),('cogs','Cost of the merchandise sold','Cost of sales / merchandise costs'),
      ('sga','Expense for wages, rent, utilities, advertising','Operating (SG&amp;A) expenses'),('inv','Cost of goods still on the shelves','Inventories'),
      ('ap','Owes suppliers for goods bought on credit','Accounts payable'),('tax','The government&rsquo;s share of the profit','Provision for income taxes'),
-     ('ni','Left of revenue after all expenses','Net income'),('dep','Expense for using up buildings and equipment','Depreciation'),
-     ('ocf','Cash from day-to-day business','Operating activities'),('capex','Cash paid for new stores and equipment','Capital expenditures'),
+     ('ni','Left of revenue after all expenses','Net income'),('dep','Cost of buildings and equipment used up so far','Accumulated depreciation'),
+     ('ocf','What buildings and equipment originally cost','Property and equipment, at cost'),('capex','Owed to lenders on long-term loans','Long-term debt'),
      ('div','Paid to shareholders','Dividends'),('re','Profit earned and kept over the years','Retained earnings')]
 for key, c in C.items():
     A = c['A']; s = c['short']
@@ -46,17 +46,14 @@ for key, c in C.items():
 </ul>
 </section>
 
-<section class="s" data-nav="Net income vs. cash">
-<p class="eyebrow">How the statements connect</p>
-<h2>Net income is not cash</h2>
+<section class="s" data-nav="Connections">
+<p class="eyebrow">How the numbers connect</p>
+<h2>Cost, used up, and what is left</h2>
 <div class="two">
 <div class="stmt">
 <table>
-<tr><th>Operating activities</th><th>$M</th></tr>
-<tr><td>Net income</td><td>{ni}</td></tr>
-<tr><td>+ Depreciation (an expense, but no cash paid)</td><td>{dep}</td></tr>
-<tr><td>+ All other items, net</td><td>{cf['All other operating items, net']}</td></tr>
-<tr class="total"><td>= Cash from operating activities</td><td class="hl">{ocf}</td></tr>
+<tr><th>Property and equipment</th><th>$M</th></tr>
+{''.join(f'<tr{" class=\"total\"" if "net" in r[0] else ""}><td>{r[0]}</td><td>{r[1]}</td></tr>' for r in c['BS'] if 'Property and equipment' in r[0] or 'Accumulated depreciation' in r[0])}
 </table>
 </div>
 <div class="stmt">
@@ -66,7 +63,7 @@ for key, c in C.items():
 </table>
 </div>
 </div>
-<div class="key"><span class="klab">Two bridges</span>Net income starts the cash flow statement, and it flows into retained earnings.</div>
+<div class="key"><span class="klab">Two connections</span>Net = cost &minus; accumulated depreciation. Net income flows into retained earnings.</div>
 </section>
 
 <section class="s" data-nav="13–15 · Ratios">

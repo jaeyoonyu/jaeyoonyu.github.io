@@ -24,21 +24,23 @@ h1 { font-size:14pt; margin:0 0 3pt; }
 .filing { font-size:8.3pt; margin:0 0 6pt; padding:2.5pt 6pt; border:.8pt solid #000; border-radius:3pt; }
 .filing a { color:#000; }
 
-.cols { display:grid; grid-template-columns:1fr 1fr; gap:.28in; align-items:start; margin-bottom:7pt; }
+.cols { display:grid; grid-template-columns:1fr 1fr; gap:.28in; align-items:start; margin-bottom:12pt; }
 
 /* ---- 10-K style statements ---- */
-.stmt { font-size:8.6pt; line-height:1.12; }
-.stmt .co, .stmt .ttl { text-align:center; font-weight:700; margin:0; font-size:9pt; }
+.stmt { font-size:9.6pt; line-height:1.15; }
+.stmt .co, .stmt .ttl { text-align:center; font-weight:700; margin:0; font-size:9pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+.stmt .co { padding-top:2pt; border-radius:3pt 3pt 0 0; }
+.stmt .ttl { padding-bottom:2pt; border-radius:0 0 3pt 3pt; font-size:10pt; }
 .stmt .unit { display:none; }
-.stmt.gapt { margin-top:12pt; }
+.stmt.gapt { margin-top:16pt; }
 .stmt.wide { margin-bottom:6pt; }
 .cols.in { margin:0; }
 .cols.in .sec:first-child td { padding-top:0; }
 .stmt table { width:100%; border-collapse:collapse; margin-top:2pt; }
 .stmt th { font-weight:700; text-align:right; padding:0 2pt 1pt; font-size:8.3pt; border-bottom:.8pt solid #000; }
 .stmt th:first-child { border:0; }
-.stmt td { padding:1.05pt 2pt; vertical-align:bottom; }
-.stmt td.n { text-align:right; white-space:nowrap; width:.78in; }
+.stmt td { padding:1.7pt 2pt; vertical-align:bottom; }
+.stmt td.n { text-align:right; white-space:nowrap; width:.85in; }
 .stmt td.n i { font-style:normal; float:left; }
 .stmt .i1 { padding-left:10pt; }
 .stmt .hd td { padding-top:3.5pt; }
@@ -52,7 +54,7 @@ h2 { font:700 9pt Arial,sans-serif; letter-spacing:.08em; text-transform:upperca
 h2 small { font:400 8.5pt "Times New Roman",serif; letter-spacing:0; text-transform:none; margin-left:6pt; }
 .qcols { display:grid; grid-template-columns:1fr 1fr; gap:0 .28in; }
 ol.qs { list-style:none; margin:0; padding:0; }
-ol.qs li { display:grid; grid-template-columns:16pt 1fr .8in; gap:4pt; align-items:end; padding:4.2pt 0 1pt; font-size:9.3pt; line-height:1.2; }
+ol.qs li { display:grid; grid-template-columns:16pt 1fr .85in; gap:4pt; align-items:end; padding:6.5pt 0 1pt; font-size:9.8pt; line-height:1.2; }
 .no { display:inline-block; font:700 7.5pt Arial,sans-serif; color:#fff; background:#000; border-radius:2pt;
   padding:0 3pt; line-height:1.4; text-align:center; align-self:start; margin-top:1pt; }
 .bl { display:block; border-bottom:.9pt solid #000; min-height:12pt; }
@@ -128,7 +130,7 @@ html.key .keytag { display:inline; }
 <tr class=""><td>Retained earnings, Jan 31, 2024</td><td class="n"><i>$</i>89,814</td></tr>
 <tr class=""><td>Add: Net income</td><td class="n">20,157</td></tr>
 <tr class=""><td>Less: Dividends</td><td class="n">(6,688)</td></tr>
-<tr class="u"><td>Less: Share repurchases and other</td><td class="n">(4,970)</td></tr>
+<tr class="u"><td>Less: Others (incl. share repurchases, Ch11)</td><td class="n">(4,970)</td></tr>
 <tr class="uu"><td class="i1">Retained earnings, Jan 31, 2025</td><td class="n"><i>$</i>98,313</td></tr>
 </table></div>
 </div>
@@ -139,7 +141,9 @@ html.key .keytag { display:inline; }
 <tr class=""><td>Inventories</td><td class="n">56,435</td></tr>
 <tr class="u"><td>Prepaid expenses and other</td><td class="n">4,011</td></tr>
 <tr class=""><td class="i1">Total current assets</td><td class="n">79,458</td></tr>
-<tr class=""><td>Property and equipment, net</td><td class="n">119,993</td></tr>
+<tr class=""><td>Property and equipment, at cost</td><td class="n">231,617</td></tr>
+<tr class="u"><td>Less: Accumulated depreciation</td><td class="n">(111,624)</td></tr>
+<tr class=""><td class="i1">Property and equipment, net</td><td class="n">119,993</td></tr>
 <tr class="u"><td>Leases, goodwill and other assets</td><td class="n">61,372</td></tr>
 <tr class="uu"><td class="i1">Total assets</td><td class="n"><i>$</i>260,823</td></tr>
 <tr class="hd"><td>Accounts payable</td><td class="n"><i>$</i>58,666</td></tr>
@@ -150,39 +154,16 @@ html.key .keytag { display:inline; }
 <tr class=""><td class="i1">Total liabilities</td><td class="n">163,402</td></tr>
 <tr class="hd"><td>Common stock and paid-in capital</td><td class="n">6,305</td></tr>
 <tr class=""><td>Retained earnings</td><td class="n">98,313</td></tr>
-<tr class="u"><td>Accumulated other comprehensive loss and other</td><td class="n">(7,197)</td></tr>
+<tr class="u"><td>Others (AOCI)</td><td class="n">(7,197)</td></tr>
 <tr class="u"><td class="i1">Total equity</td><td class="n">97,421</td></tr>
 <tr class="uu"><td class="i1">Total liabilities and equity</td><td class="n"><i>$</i>260,823</td></tr>
 </table></div>
 </div>
-<div class="stmt wide"><p class="co">Walmart Inc.</p><p class="ttl">Consolidated Statement of Cash Flows</p><div class="cols in"><div><table>
-<tr><th></th><th>Fiscal 2025</th></tr>
-<tr class="sec"><td>Operating activities</td><td></td></tr>
-<tr class=""><td>Net income</td><td class="n"><i>$</i>20,157</td></tr>
-<tr class=""><td>Depreciation and amortization</td><td class="n">12,973</td></tr>
-<tr class="u"><td>All other operating items, net</td><td class="n">3,313</td></tr>
-<tr class=""><td class="i1">Net cash provided by operating activities</td><td class="n">36,443</td></tr>
-<tr class="sec"><td>Investing activities</td><td></td></tr>
-<tr class=""><td>Payments for property and equipment</td><td class="n">(23,783)</td></tr>
-<tr class="u"><td>Other investing activities, net</td><td class="n">2,404</td></tr>
-<tr class=""><td class="i1">Net cash used in investing activities</td><td class="n">(21,379)</td></tr>
-</table></div><div><table>
-<tr><th></th><th>Fiscal 2025</th></tr>
-<tr class="sec"><td>Financing activities</td><td></td></tr>
-<tr class=""><td>Dividends paid</td><td class="n">(6,688)</td></tr>
-<tr class=""><td>Purchase of company stock</td><td class="n">(4,494)</td></tr>
-<tr class="u"><td>Other financing activities, net</td><td class="n">(3,640)</td></tr>
-<tr class=""><td class="i1">Net cash used in financing activities</td><td class="n">(14,822)</td></tr>
-<tr class="u hd"><td>Effect of exchange rates and other</td><td class="n">(1,072)</td></tr>
-<tr class=""><td class="i1">Net decrease in cash</td><td class="n">(830)</td></tr>
-<tr class="u"><td>Cash, beginning of year</td><td class="n">9,867</td></tr>
-<tr class="uu"><td class="i1">Cash, end of year</td><td class="n"><i>$</i>9,037</td></tr>
-</table></div></div></div>
 
 <h2>Find it in the statements <small>Write the amount ($ millions). Definitions are on the back.</small></h2>
 <div class="qcols">
 <ol class="qs"><li><span class="no">1</span><span class="qt">How much does Walmart expect to collect from its customers?</span><span class="bl amt" data-a="9,975"></span></li><li><span class="no">2</span><span class="qt">What did the merchandise Walmart sold this year cost it?</span><span class="bl amt" data-a="511,753"></span></li><li><span class="no">3</span><span class="qt">What expense did it record for wages, rent, utilities and advertising?</span><span class="bl amt" data-a="139,884"></span></li><li><span class="no">4</span><span class="qt">What is the cost of the goods still on its shelves and in warehouses?</span><span class="bl amt" data-a="56,435"></span></li><li><span class="no">5</span><span class="qt">How much does it owe suppliers for goods bought on credit?</span><span class="bl amt" data-a="58,666"></span></li><li><span class="no">6</span><span class="qt">What is the government&rsquo;s share of this year&rsquo;s profit?</span><span class="bl amt" data-a="6,152"></span></li></ol>
-<ol class="qs"><li><span class="no">7</span><span class="qt">What was left of revenue after all expenses this year?</span><span class="bl amt" data-a="20,157"></span></li><li><span class="no">8</span><span class="qt">What expense did it record for using up its buildings and equipment?</span><span class="bl amt" data-a="12,973"></span></li><li><span class="no">9</span><span class="qt">How much cash did its day-to-day business bring in?</span><span class="bl amt" data-a="36,443"></span></li><li><span class="no">10</span><span class="qt">How much cash did it pay for new stores, equipment and technology?</span><span class="bl amt" data-a="23,783"></span></li><li><span class="no">11</span><span class="qt">How much did it pay its shareholders as dividends?</span><span class="bl amt" data-a="6,688"></span></li><li><span class="no">12</span><span class="qt">How much profit has it earned over the years and kept in the business?</span><span class="bl amt" data-a="98,313"></span></li></ol>
+<ol class="qs"><li><span class="no">7</span><span class="qt">What was left of revenue after all expenses this year?</span><span class="bl amt" data-a="20,157"></span></li><li><span class="no">8</span><span class="qt">How much of its buildings&rsquo; and equipment&rsquo;s cost has been used up so far?</span><span class="bl amt" data-a="111,624"></span></li><li><span class="no">9</span><span class="qt">What did its buildings and equipment originally cost?</span><span class="bl amt" data-a="231,617"></span></li><li><span class="no">10</span><span class="qt">How much does it owe lenders on long-term loans?</span><span class="bl amt" data-a="33,401"></span></li><li><span class="no">11</span><span class="qt">How much did it pay its shareholders as dividends?</span><span class="bl amt" data-a="6,688"></span></li><li><span class="no">12</span><span class="qt">How much profit has it earned over the years and kept in the business?</span><span class="bl amt" data-a="98,313"></span></li></ol>
 </div>
 </div>
 
@@ -213,14 +194,11 @@ html.key .keytag { display:inline; }
 <dt>Current assets / current liabilities</dt><dd>Expected to be used up or paid within one year.</dd>
 <dt>Accounts receivable</dt><dd>Amounts customers owe the company, expected to be collected in cash.</dd>
 <dt>Inventory</dt><dd>Goods held for sale, recorded at cost until sold.</dd>
+<dt>Accumulated depreciation</dt><dd>All depreciation recorded so far on buildings and equipment. Cost &minus; accumulated depreciation = net (book value).</dd>
 <dt>Accounts payable</dt><dd>Amounts owed to suppliers for goods or services bought on credit.</dd>
+<dt>Long-term debt</dt><dd>Money borrowed (loans, bonds) that is due after more than one year.</dd>
 </dl>
-<h3>Statement of cash flows &middot; a whole year</h3>
-<dl>
-<dt>Operating activities</dt><dd>Cash from day-to-day business. Starts with net income and adds back expenses that used no cash, such as depreciation.</dd>
-<dt>Investing activities</dt><dd>Buying and selling long-term assets, such as stores and equipment (capital expenditures).</dd>
-<dt>Financing activities</dt><dd>Cash from or to lenders and owners: borrowing, repaying, dividends, buying back shares.</dd>
-</dl>
+
 </div>
 </div>
 
@@ -232,7 +210,7 @@ html.key .keytag { display:inline; }
 </table>
 <div class="why">13: (674,538 &minus; 511,753) &divide; 674,538 = 24.1% &nbsp;&middot;&nbsp; 14: 20,157 &divide; 680,985 = 3.0% &nbsp;&middot;&nbsp; 15: 79,458 &divide; 96,584 = 0.82.<br>Walmart keeps about 3 cents of every sales dollar as profit. A current ratio below 1 is normal for Walmart: it sells its inventory before it has to pay its suppliers (accounts payable is larger than inventory).</div>
 
-<p class="src">Some lines are combined. Cash flow subtotals and &ldquo;other&rdquo; lines are as reported or derived from reported totals. &ldquo;Effect of exchange rates and other&rdquo; also includes the change in restricted cash. In retained earnings, &ldquo;other&rdquo; includes the share of net income that belongs to minority owners of subsidiaries.</p>
+<p class="src">Some lines are combined. Receivables are reported net of an allowance for credit losses; Walmart does not disclose the allowance amount separately. In retained earnings, &ldquo;Others&rdquo; also includes the share of net income that belongs to minority owners of subsidiaries.</p>
 </div>
 
 <script>
