@@ -117,7 +117,7 @@ table.terms td:first-child { width:16%; font-weight:700; color:#444; font-size:8
 .box.quote { font-style:italic; font-size:9.2pt; margin-top:8pt; }
 .box.quote b.t { font-style:normal; }
 .box.quote mark { background:#fff7cc; font-weight:700; padding:0 1pt; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-.stmt + .stmt { margin-top:8pt; }
+.stmt td.n + td.n { width:.8in; padding-left:12pt; }
 .inl { display:inline-block; min-width:.8in; vertical-align:bottom; }
 table.mini { border-collapse:collapse; font-size:9.6pt; margin:3pt 0; }
 table.mini th { font:700 7.8pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#444; padding:1pt 8pt; text-align:right; border-bottom:.8pt solid #000; }
@@ -144,33 +144,26 @@ table.mini tr.tot td { border-top:.8pt solid #000; font-weight:700; }
 <style>.stmt { font-size:9pt; } .stmt td { padding:1.2pt 2pt; } .defs dt { margin-top:2pt; } ol.qs li { padding:4pt 0 1pt; } .defs { font-size:9.2pt !important; }</style>
 <div class="cols">
 <div>
-<div class="stmt"><p class="co">Crocs, Inc.</p><p class="ttl">Consolidated Balance Sheet</p><table>
-<tr><th></th><th>Dec 31, 2024</th></tr>
-<tr class=""><td>Cash and cash equivalents</td><td class="n"><i>$</i>180,485</td></tr>
-<tr class="" style="background:#fff7cc"><td>Accounts receivable (gross)</td><td class="n">289,236</td></tr>
-<tr class="u" style="background:#fff7cc"><td>Less: Allowance for doubtful accounts (ADA)</td><td class="n">(31,579)</td></tr>
-<tr class="" style="background:#fff7cc"><td class="i1">Accounts receivable, net</td><td class="n">257,657</td></tr>
-<tr class=""><td>Inventories</td><td class="n">356,254</td></tr>
-<tr class="u"><td>Other current assets</td><td class="n">77,873</td></tr>
-<tr class=""><td class="i1">Total current assets</td><td class="n">872,269</td></tr>
-<tr class="u"><td>Property, goodwill, brands and other</td><td class="n">3,939,884</td></tr>
-<tr class="uu"><td class="i1">Total assets</td><td class="n"><i>$</i>4,812,153</td></tr>
-<tr class="hd"><td>Total current liabilities</td><td class="n"><i>$</i>740,208</td></tr>
-<tr class="u"><td>Long-term liabilities</td><td class="n">2,236,213</td></tr>
-<tr class=""><td class="i1">Total liabilities</td><td class="n">2,976,421</td></tr>
-<tr class="u"><td>Total stockholders&rsquo; equity</td><td class="n">1,835,732</td></tr>
-<tr class="uu"><td class="i1">Total liabilities and equity</td><td class="n"><i>$</i>4,812,153</td></tr>
+<div class="stmt"><p class="co">Crocs, Inc.</p><p class="ttl">Consolidated Balance Sheets</p><table>
+<tr><th></th><th>Dec 31, 2024</th><th>Dec 31, 2023</th></tr>
+<tr class=""><td>Cash and cash equivalents</td><td class="n"><i>$</i>180,485</td><td class="n"><i>$</i>149,288</td></tr>
+<tr class="" style="background:#fff7cc"><td>Accounts receivable (gross)</td><td class="n">289,236</td><td class="n">333,338</td></tr>
+<tr class="u" style="background:#fff7cc"><td>Less: Allowance (ADA)</td><td class="n">(31,579)</td><td class="n">(27,591)</td></tr>
+<tr class="" style="background:#fff7cc"><td class="i1">Accounts receivable, net</td><td class="n">257,657</td><td class="n">305,747</td></tr>
+<tr class=""><td>Inventories</td><td class="n">356,254</td><td class="n">385,054</td></tr>
+<tr class="u"><td>Other current assets</td><td class="n">77,873</td><td class="n">70,615</td></tr>
+<tr class=""><td class="i1">Total current assets</td><td class="n">872,269</td><td class="n">910,704</td></tr>
+<tr class="u"><td>Property, goodwill, brands and other</td><td class="n">3,939,884</td><td class="n">3,733,130</td></tr>
+<tr class="uu"><td class="i1">Total assets</td><td class="n"><i>$</i>4,812,153</td><td class="n"><i>$</i>4,643,834</td></tr>
+<tr class="hd"><td>Total current liabilities</td><td class="n"><i>$</i>740,208</td><td class="n"><i>$</i>698,296</td></tr>
+<tr class="u"><td>Long-term liabilities</td><td class="n">2,236,213</td><td class="n">2,491,615</td></tr>
+<tr class=""><td class="i1">Total liabilities</td><td class="n">2,976,421</td><td class="n">3,189,911</td></tr>
+<tr class="u"><td>Total stockholders&rsquo; equity</td><td class="n">1,835,732</td><td class="n">1,453,923</td></tr>
+<tr class="uu"><td class="i1">Total liabilities and equity</td><td class="n"><i>$</i>4,812,153</td><td class="n"><i>$</i>4,643,834</td></tr>
 </table></div>
-<div class="box quote"><b class="t">From Crocs&rsquo;s 10-K</b>&ldquo;Selling, general and administrative expenses consist primarily of labor and outside services, rent expense, <mark>bad debt expense</mark>, legal costs, amortization of intangible assets, as well as certain depreciation costs related to corporate and non-product assets and share-based compensation.&rdquo;</div>
+
 </div>
 <div>
-<div class="stmt"><p class="co">Crocs, Inc.</p><p class="ttl">Allowance for Doubtful Accounts (ADA)</p><table>
-<tr><th></th><th>2024</th></tr>
-<tr class=""><td>Balance, Dec 31, 2023</td><td class="n"><i>$</i>27,591</td></tr>
-<tr class=""><td>Add: Bad debt expense (new estimates)</td><td class="n">?</td></tr>
-<tr class="u"><td>Less: Accounts written off</td><td class="n">?</td></tr>
-<tr class="uu"><td class="i1">Balance, Dec 31, 2024</td><td class="n"><i>$</i>31,579</td></tr>
-</table></div>
 <div class="stmt"><p class="co">Crocs, Inc.</p><p class="ttl">Consolidated Statement of Operations</p><table>
 <tr><th></th><th>2024</th></tr>
 <tr class=""><td>Revenues</td><td class="n"><i>$</i>4,102,108</td></tr>
@@ -183,6 +176,7 @@ table.mini tr.tot td { border-top:.8pt solid #000; font-weight:700; }
 <tr class="u"><td>Income tax benefit</td><td class="n">39,486</td></tr>
 <tr class="uu"><td class="i1">Net income</td><td class="n"><i>$</i>950,071</td></tr>
 </table></div>
+<div class="box quote"><b class="t">From Crocs&rsquo;s 10-K</b>&ldquo;Selling, general and administrative expenses consist primarily of labor and outside services, rent expense, <mark>bad debt expense</mark>, legal costs, amortization of intangible assets, as well as certain depreciation costs related to corporate and non-product assets and share-based compensation.&rdquo;</div>
 
 </div>
 </div>
