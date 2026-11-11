@@ -22,3 +22,7 @@ Materials being tested before they move to a course page.
 | Accounting in the News: Anthropic's S-1 (IPO filing) | Overview | <a href="/assets/ACC250/Anthropic-S1.html?v=9e6ca581" target="_blank">Slides</a> | [PDF](/assets/ACC250/Anthropic-S1-Worksheet.pdf?v=44b1a75d) | [PDF](/assets/ACC250/Anthropic-S1-Worksheet-Key.pdf?v=132d7cf6) |
 
 </div>
+
+## 🔎 Tools
+
+* [EDGAR Filings](/edgar/): type a ticker or CIK and open its 10-K, 10-Q, 8-K or DEF 14A filings on SEC EDGAR.
