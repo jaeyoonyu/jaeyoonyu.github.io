@@ -41,6 +41,19 @@ html.key .why { display:block; }
 .fn { margin:8pt 0 0; font-size:8.8pt; color:#333; }
 .pgfn { position:absolute; left:.5in; right:.5in; bottom:.32in; font-size:9.2pt; color:#000; border-top:.6pt solid #000; padding-top:3pt; }
 .pgfn sup, h2 sup { font-size:.75em; }
+.pair { display:grid; grid-template-columns:3.7in 3.4in; gap:.35in; align-items:start; margin-top:6pt; }
+.pair h2 { margin-top:2pt; }
+.pair table.je3 { width:100%; }
+table.je3 td.amt { width:.62in; }
+table.je3 td.d { width:.55in; white-space:nowrap; }
+table.tacct td.lab { white-space:nowrap; }
+.tq .inl { min-width:.75in; }
+.pair table.tacct { width:3.3in; }
+table.tacct td.lab { width:.75in; } table.tacct td.amt { width:.72in; }
+.tq { margin-top:6pt; line-height:2; }
+.hint { font-size:9pt; color:#000; margin:2pt 0 0; }
+.pair table.net3 { width:3.2in; }
+.net3cap { margin-top:8pt !important; }
 svg.tl { display:block; width:100%; height:auto; margin:0 0 4pt; font-family:Arial,Helvetica,sans-serif; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
 table.sum { border-collapse:collapse; font-size:10.5pt; margin:4pt 0; min-width:5.4in; }
 table.sum th { font:700 8.8pt Arial,sans-serif; text-align:right; padding:3pt 10pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
@@ -174,25 +187,32 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
                (20, "Jan 20", "Credit sale", "$4,000", "credit"),
                (31, "Jan 31", "AJE: BDE", "2% of credit sales", "aje")])}
 
-<h2>1. Journal entries for January transactions<sup>*</sup> <small>Use (+A), (&minus;A), (+R), (+E), (+xA), (&minus;xA).</small></h2>
+<div class="pair">
+<div>
+<h2>1. Journal entries<sup>*</sup></h2>
 {je([("Jan 5", "Cash (+A)", "Sales Rev (+R)", "4,000"),
      ("Jan 10", "A/R (+A)", "Sales Rev (+R)", "6,000"),
      ("Jan 20", "A/R (+A)", "Sales Rev (+R)", "4,000")])}
-
-<h2 style="margin-top:8pt">2. T-account for A/R</h2>
-<div class="tw">
+<p class="hint">Use (+A), (&minus;A), (+R), (+E), (+xA), (&minus;xA).</p>
+</div>
+<div>
+<h2>2. T-account for A/R</h2>
 {taccount([("Jan 10", "6,000"), ("Jan 20", "4,000")], [], "10,000")}
-<div class="tq">January credit sales = {inl("10,000")}<br><br>BDE = credit sales &times; 2% = {inl("200")}</div>
+<div class="tq">January credit sales = {inl("10,000")}<br>BDE = credit sales &times; 2% = {inl("200")}</div>
+</div>
 </div>
 
-<h2 style="margin-top:8pt">3. Adjusting journal entry (AJE), Jan 31</h2>
+<div class="pair">
+<div>
+<h2>3. Adjusting journal entry (AJE)</h2>
 {je([("Jan 31", "BDE (+E)", "ADA (+xA, &minus;A)", "200")])}
 <div class="why">The cash sale has no collection risk, so it is not in A/R and not in the 2% estimate.</div>
-
-<h2 style="margin-top:8pt">4. ADA and net A/R at the end of January</h2>
-<div class="tw">
+</div>
+<div>
+<h2>4. T-account for ADA and net A/R</h2>
 {tacct("ADA", [], [("Jan 31 AJE", "200")], "End. bal.", "200", "cr")}
-<div><p class="net3cap">Jan 31</p>{net_table("10,000", "200", "9,800")}</div>
+<p class="net3cap">Jan 31</p>{net_table("10,000", "200", "9,800")}
+</div>
 </div>
 <div class="pgfn"><sup>*</sup> Cost of goods sold entries (Dr CGS, Cr Inventory) are omitted for brevity. See Ch6.</div>
 '''
@@ -211,25 +231,31 @@ back = f'''<h1 style="margin-top:0">February</h1>
                (20, "Feb 20", "Write-off", "1% of Jan credit sales", "writeoff"),
                (28, "Feb 28", "AJE: BDE", "2% of credit sales", "aje")])}
 
-<h2>5. Journal entries for February transactions<sup>*</sup></h2>
+<div class="pair">
+<div>
+<h2>5. Journal entries<sup>*</sup></h2>
 {je([("Feb 8", "Cash (+A)", "Sales Rev (+R)", "3,000"),
      ("Feb 15", "A/R (+A)", "Sales Rev (+R)", "8,000"),
      ("Feb 20", "ADA (&minus;xA, +A)", "A/R (&minus;A)", "100")])}
 <div class="why">Feb 20: 10,000 &times; 1% = 100 is written off against ADA. No expense is recorded.</div>
-
-<h2 style="margin-top:8pt">6. T-account for A/R</h2>
-<div class="tw">
+</div>
+<div>
+<h2>6. T-account for A/R</h2>
 {taccount([("Beg. bal.", "10,000"), ("Feb 15", "8,000")], [("Feb 20", "100")], "17,900")}
-<div class="tq">February credit sales = {inl("8,000")}<br><br>BDE = credit sales &times; 2% = {inl("160")}</div>
+<div class="tq">February credit sales = {inl("8,000")}<br>BDE = credit sales &times; 2% = {inl("160")}</div>
+</div>
 </div>
 
-<h2 style="margin-top:8pt">7. Adjusting journal entry (AJE), Feb 28</h2>
+<div class="pair">
+<div>
+<h2>7. Adjusting journal entry (AJE)</h2>
 {je([("Feb 28", "BDE (+E)", "ADA (+xA, &minus;A)", "160")])}
-
-<h2 style="margin-top:8pt">8. ADA and net A/R at the end of February</h2>
-<div class="tw">
+</div>
+<div>
+<h2>8. T-account for ADA and net A/R</h2>
 {tacct("ADA", [("Feb 20", "100")], [("Beg. bal.", "200"), ("Feb 28 AJE", "160")], "End. bal.", "260", "cr")}
-<div><p class="net3cap">Feb 28</p>{net_table("17,900", "260", "17,640")}</div>
+<p class="net3cap">Feb 28</p>{net_table("17,900", "260", "17,640")}
+</div>
 </div>
 <div class="pgfn"><sup>*</sup> Cost of goods sold entries (Dr CGS, Cr Inventory) are omitted for brevity. See Ch6.</div>
 '''

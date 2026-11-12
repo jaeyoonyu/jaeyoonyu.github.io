@@ -123,6 +123,19 @@ html.key .why { display:block; }
 .fn { margin:8pt 0 0; font-size:8.8pt; color:#333; }
 .pgfn { position:absolute; left:.5in; right:.5in; bottom:.32in; font-size:9.2pt; color:#000; border-top:.6pt solid #000; padding-top:3pt; }
 .pgfn sup, h2 sup { font-size:.75em; }
+.pair { display:grid; grid-template-columns:3.7in 3.4in; gap:.35in; align-items:start; margin-top:6pt; }
+.pair h2 { margin-top:2pt; }
+.pair table.je3 { width:100%; }
+table.je3 td.amt { width:.62in; }
+table.je3 td.d { width:.55in; white-space:nowrap; }
+table.tacct td.lab { white-space:nowrap; }
+.tq .inl { min-width:.75in; }
+.pair table.tacct { width:3.3in; }
+table.tacct td.lab { width:.75in; } table.tacct td.amt { width:.72in; }
+.tq { margin-top:6pt; line-height:2; }
+.hint { font-size:9pt; color:#000; margin:2pt 0 0; }
+.pair table.net3 { width:3.2in; }
+.net3cap { margin-top:8pt !important; }
 svg.tl { display:block; width:100%; height:auto; margin:0 0 4pt; font-family:Arial,Helvetica,sans-serif; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
 table.sum { border-collapse:collapse; font-size:10.5pt; margin:4pt 0; min-width:5.4in; }
 table.sum th { font:700 8.8pt Arial,sans-serif; text-align:right; padding:3pt 10pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
@@ -172,26 +185,33 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 </ul></div>
 <svg class="tl" viewBox="0 0 740 92" role="img" aria-label="Timeline"><line x1="70" y1="40" x2="670" y2="40" stroke="#16263a" stroke-width="2.5"/><polygon points="670,35 680,40 670,45" fill="#16263a"/><circle cx="70.0" cy="40" r="7" fill="#5c6863" stroke="#fff" stroke-width="2"/><text x="70.0" y="24" text-anchor="middle" font-weight="700" font-size="13" fill="#16263a">Jan 1</text><text x="70.0" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#5c6863">Start</text><text x="70.0" y="82" text-anchor="middle" font-size="12" fill="#333">A/R = ADA = $0</text><circle cx="150.0" cy="40" r="7" fill="#5b7f95" stroke="#fff" stroke-width="2"/><text x="150.0" y="24" text-anchor="middle" font-weight="700" font-size="13" fill="#16263a">Jan 5</text><text x="150.0" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#5b7f95">Cash sale</text><text x="150.0" y="82" text-anchor="middle" font-size="12" fill="#333">$4,000</text><circle cx="250.0" cy="40" r="7" fill="#1a7a5e" stroke="#fff" stroke-width="2"/><text x="250.0" y="24" text-anchor="middle" font-weight="700" font-size="13" fill="#16263a">Jan 10</text><text x="250.0" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#1a7a5e">Credit sale</text><text x="250.0" y="82" text-anchor="middle" font-size="12" fill="#333">$6,000</text><circle cx="450.0" cy="40" r="7" fill="#1a7a5e" stroke="#fff" stroke-width="2"/><text x="450.0" y="24" text-anchor="middle" font-weight="700" font-size="13" fill="#16263a">Jan 20</text><text x="450.0" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#1a7a5e">Credit sale</text><text x="450.0" y="82" text-anchor="middle" font-size="12" fill="#333">$4,000</text><circle cx="670.0" cy="40" r="7" fill="#8a6d1f" stroke="#fff" stroke-width="2"/><text x="670.0" y="24" text-anchor="middle" font-weight="700" font-size="13" fill="#16263a">Jan 31</text><text x="670.0" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#8a6d1f">AJE: BDE</text><text x="670.0" y="82" text-anchor="middle" font-size="12" fill="#333">2% of credit sales</text></svg>
 
-<h2>1. Journal entries for January transactions<sup>*</sup> <small>Use (+A), (&minus;A), (+R), (+E), (+xA), (&minus;xA).</small></h2>
+<div class="pair">
+<div>
+<h2>1. Journal entries<sup>*</sup></h2>
 <table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Jan 5</td><td><span class="bl nm" data-a="Cash (+A)"></span></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td></tr><tr class="first"><td class="d">Jan 10</td><td><span class="bl nm" data-a="A/R (+A)"></span></td><td class="amt"><span class="bl amt" data-a="6,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="6,000"></span></td></tr><tr class="first"><td class="d">Jan 20</td><td><span class="bl nm" data-a="A/R (+A)"></span></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td></tr></table>
-
-<h2 style="margin-top:8pt">2. T-account for A/R</h2>
-<div class="tw">
+<p class="hint">Use (+A), (&minus;A), (+R), (+E), (+xA), (&minus;xA).</p>
+</div>
+<div>
+<h2>2. T-account for A/R</h2>
 <table class="tacct"><tr><th colspan="4">A/R</th></tr><tr><td class="lab">Jan 10</td><td class="amt dr"><span class="bl amt" data-a="6,000"></span></td><td class="lab cl"></td><td class="amt"></td></tr><tr><td class="lab">Jan 20</td><td class="amt dr"><span class="bl amt" data-a="4,000"></span></td><td class="lab cl"></td><td class="amt"></td></tr><tr class="bal"><td class="lab">End. bal.</td><td class="amt dr"><span class="bl amt" data-a="10,000"></span></td><td class="lab cl"></td><td class="amt"></td></tr></table>
-<div class="tq">January credit sales = <span class="bl inl amt" data-a="10,000"></span><br><br>BDE = credit sales &times; 2% = <span class="bl inl amt" data-a="200"></span></div>
+<div class="tq">January credit sales = <span class="bl inl amt" data-a="10,000"></span><br>BDE = credit sales &times; 2% = <span class="bl inl amt" data-a="200"></span></div>
+</div>
 </div>
 
-<h2 style="margin-top:8pt">3. Adjusting journal entry (AJE), Jan 31</h2>
+<div class="pair">
+<div>
+<h2>3. Adjusting journal entry (AJE)</h2>
 <table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Jan 31</td><td><span class="bl nm" data-a="BDE (+E)"></span></td><td class="amt"><span class="bl amt" data-a="200"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="ADA (+xA, &minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="200"></span></td></tr></table>
 <div class="why">The cash sale has no collection risk, so it is not in A/R and not in the 2% estimate.</div>
-
-<h2 style="margin-top:8pt">4. ADA and net A/R at the end of January</h2>
-<div class="tw">
+</div>
+<div>
+<h2>4. T-account for ADA and net A/R</h2>
 <table class="tacct"><tr><th colspan="4">ADA</th></tr><tr><td class="lab"></td><td class="amt dr"></td><td class="lab cl">Jan 31 AJE</td><td class="amt"><span class="bl amt" data-a="200"></span></td></tr><tr class="bal"><td class="lab"></td><td class="amt dr"></td><td class="lab cl">End. bal.</td><td class="amt"><span class="bl amt" data-a="200"></span></td></tr></table>
-<div><p class="net3cap">Jan 31</p><table class="net3">
+<p class="net3cap">Jan 31</p><table class="net3">
 <tr><th>Gross A/R</th><th>Less: ADA</th><th>Net A/R</th></tr>
 <tr><td><span class="bl amt" data-a="10,000"></span></td><td><span class="bl amt" data-a="200"></span></td><td><span class="bl amt" data-a="9,800"></span></td></tr>
-</table></div>
+</table>
+</div>
 </div>
 <div class="pgfn"><sup>*</sup> Cost of goods sold entries (Dr CGS, Cr Inventory) are omitted for brevity. See Ch6.</div>
 
@@ -207,26 +227,32 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 </ul></div>
 <svg class="tl" viewBox="0 0 740 92" role="img" aria-label="Timeline"><line x1="70" y1="40" x2="670" y2="40" stroke="#16263a" stroke-width="2.5"/><polygon points="670,35 680,40 670,45" fill="#16263a"/><circle cx="70.0" cy="40" r="7" fill="#5c6863" stroke="#fff" stroke-width="2"/><text x="70.0" y="24" text-anchor="middle" font-weight="700" font-size="13" fill="#16263a">Feb 1</text><text x="70.0" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#5c6863">Start</text><text x="70.0" y="82" text-anchor="middle" font-size="12" fill="#333">Jan 31 balances</text><circle cx="225.6" cy="40" r="7" fill="#5b7f95" stroke="#fff" stroke-width="2"/><text x="225.6" y="24" text-anchor="middle" font-weight="700" font-size="13" fill="#16263a">Feb 8</text><text x="225.6" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#5b7f95">Cash sale</text><text x="225.6" y="82" text-anchor="middle" font-size="12" fill="#333">$3,000</text><circle cx="381.1" cy="40" r="7" fill="#1a7a5e" stroke="#fff" stroke-width="2"/><text x="381.1" y="24" text-anchor="middle" font-weight="700" font-size="13" fill="#16263a">Feb 15</text><text x="381.1" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#1a7a5e">Credit sale</text><text x="381.1" y="82" text-anchor="middle" font-size="12" fill="#333">$8,000</text><circle cx="492.2" cy="40" r="7" fill="#b3200f" stroke="#fff" stroke-width="2"/><text x="492.2" y="24" text-anchor="middle" font-weight="700" font-size="13" fill="#16263a">Feb 20</text><text x="492.2" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#b3200f">Write-off</text><text x="492.2" y="82" text-anchor="middle" font-size="12" fill="#333">1% of Jan credit sales</text><circle cx="670.0" cy="40" r="7" fill="#8a6d1f" stroke="#fff" stroke-width="2"/><text x="670.0" y="24" text-anchor="middle" font-weight="700" font-size="13" fill="#16263a">Feb 28</text><text x="670.0" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#8a6d1f">AJE: BDE</text><text x="670.0" y="82" text-anchor="middle" font-size="12" fill="#333">2% of credit sales</text></svg>
 
-<h2>5. Journal entries for February transactions<sup>*</sup></h2>
+<div class="pair">
+<div>
+<h2>5. Journal entries<sup>*</sup></h2>
 <table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Feb 8</td><td><span class="bl nm" data-a="Cash (+A)"></span></td><td class="amt"><span class="bl amt" data-a="3,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="3,000"></span></td></tr><tr class="first"><td class="d">Feb 15</td><td><span class="bl nm" data-a="A/R (+A)"></span></td><td class="amt"><span class="bl amt" data-a="8,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="8,000"></span></td></tr><tr class="first"><td class="d">Feb 20</td><td><span class="bl nm" data-a="ADA (&minus;xA, +A)"></span></td><td class="amt"><span class="bl amt" data-a="100"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="A/R (&minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="100"></span></td></tr></table>
 <div class="why">Feb 20: 10,000 &times; 1% = 100 is written off against ADA. No expense is recorded.</div>
-
-<h2 style="margin-top:8pt">6. T-account for A/R</h2>
-<div class="tw">
+</div>
+<div>
+<h2>6. T-account for A/R</h2>
 <table class="tacct"><tr><th colspan="4">A/R</th></tr><tr><td class="lab">Beg. bal.</td><td class="amt dr"><span class="bl amt" data-a="10,000"></span></td><td class="lab cl">Feb 20</td><td class="amt"><span class="bl amt" data-a="100"></span></td></tr><tr><td class="lab">Feb 15</td><td class="amt dr"><span class="bl amt" data-a="8,000"></span></td><td class="lab cl"></td><td class="amt"></td></tr><tr class="bal"><td class="lab">End. bal.</td><td class="amt dr"><span class="bl amt" data-a="17,900"></span></td><td class="lab cl"></td><td class="amt"></td></tr></table>
-<div class="tq">February credit sales = <span class="bl inl amt" data-a="8,000"></span><br><br>BDE = credit sales &times; 2% = <span class="bl inl amt" data-a="160"></span></div>
+<div class="tq">February credit sales = <span class="bl inl amt" data-a="8,000"></span><br>BDE = credit sales &times; 2% = <span class="bl inl amt" data-a="160"></span></div>
+</div>
 </div>
 
-<h2 style="margin-top:8pt">7. Adjusting journal entry (AJE), Feb 28</h2>
+<div class="pair">
+<div>
+<h2>7. Adjusting journal entry (AJE)</h2>
 <table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Feb 28</td><td><span class="bl nm" data-a="BDE (+E)"></span></td><td class="amt"><span class="bl amt" data-a="160"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="ADA (+xA, &minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="160"></span></td></tr></table>
-
-<h2 style="margin-top:8pt">8. ADA and net A/R at the end of February</h2>
-<div class="tw">
+</div>
+<div>
+<h2>8. T-account for ADA and net A/R</h2>
 <table class="tacct"><tr><th colspan="4">ADA</th></tr><tr><td class="lab">Feb 20</td><td class="amt dr"><span class="bl amt" data-a="100"></span></td><td class="lab cl">Beg. bal.</td><td class="amt"><span class="bl amt" data-a="200"></span></td></tr><tr><td class="lab"></td><td class="amt dr"></td><td class="lab cl">Feb 28 AJE</td><td class="amt"><span class="bl amt" data-a="160"></span></td></tr><tr class="bal"><td class="lab"></td><td class="amt dr"></td><td class="lab cl">End. bal.</td><td class="amt"><span class="bl amt" data-a="260"></span></td></tr></table>
-<div><p class="net3cap">Feb 28</p><table class="net3">
+<p class="net3cap">Feb 28</p><table class="net3">
 <tr><th>Gross A/R</th><th>Less: ADA</th><th>Net A/R</th></tr>
 <tr><td><span class="bl amt" data-a="17,900"></span></td><td><span class="bl amt" data-a="260"></span></td><td><span class="bl amt" data-a="17,640"></span></td></tr>
-</table></div>
+</table>
+</div>
 </div>
 <div class="pgfn"><sup>*</sup> Cost of goods sold entries (Dr CGS, Cr Inventory) are omitted for brevity. See Ch6.</div>
 
