@@ -40,6 +40,7 @@ title: "CMU"
     <a href="https://hr.apps.cmich.edu/w2" title="Annual W-2 forms" target="_blank" rel="noopener">W-2</a>
     <a href="https://hr.apps.cmich.edu/compensation/" title="Total compensation statement" target="_blank" rel="noopener">TotalComp</a>
     <a href="https://benefits.apps.cmich.edu/SecurityPin.aspx" title="Benefits portal (security PIN)" target="_blank" rel="noopener">Benefits Enrollment</a>
+    <a href="https://cmich.teamdynamix.com/TDClient/664/Portal/Requests/Service/22453/Health-Savings-Account-HSA-Enrollment-Change/Request" title="Health Savings Account (HSA) enrollment / change request" target="_blank" rel="noopener">HSA Enrollment</a>
     <a href="https://www.cmich.edu/offices-departments/faculty-personnel-services/faculty-benefits" title="Faculty benefits overview" target="_blank" rel="noopener">Faculty Benefits</a>
   </div>
   <div class="row"><span class="lbl">Health Insurance</span>
