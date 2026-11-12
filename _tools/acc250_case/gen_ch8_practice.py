@@ -133,35 +133,35 @@ back = f'''<h1 style="margin-top:0">February</h1>
 <div class="given"><b class="t">February transactions</b>
 <ul>
 <li><b>Feb 8:</b> Sold shoes for <b>$3,000 cash</b>.</li>
-<li><b>Feb 15:</b> Sold shoes to Store C <b>on credit, $5,000</b>.</li>
+<li><b>Feb 15:</b> Sold shoes to Store C <b>on credit, $8,000</b>.</li>
 <li><b>Feb 20:</b> Store A went out of business. An amount equal to <b>1% of January&rsquo;s credit sales</b> is now deemed uncollectible and is written off.</li>
 <li><b>Feb 28:</b> Record bad debt expense: 2% of February&rsquo;s credit sales.</li>
 </ul></div>
 
 <h2>5. Journal entries for February transactions</h2>
 {je([("Feb 8", "Cash (+A)", "Sales Rev (+R)", "3,000"),
-     ("Feb 15", "A/R (+A)", "Sales Rev (+R)", "5,000"),
+     ("Feb 15", "A/R (+A)", "Sales Rev (+R)", "8,000"),
      ("Feb 20", "ADA (&minus;xA, +A)", "A/R (&minus;A)", "100")])}
 <div class="why">Feb 20: 10,000 &times; 1% = 100 is written off against ADA. No expense is recorded.</div>
 
 <h2 style="margin-top:8pt">6. Unadjusted T-account for A/R, before the Feb 28 adjustment</h2>
 <div class="tw">
-{taccount([("Beg. bal.", "10,000"), ("Feb 15", "5,000")], [("Feb 20", "100")], "14,900")}
-<div class="tq">February credit sales = {inl("5,000")}<br><br>BDE = credit sales &times; 2% = {inl("100")}</div>
+{taccount([("Beg. bal.", "10,000"), ("Feb 15", "8,000")], [("Feb 20", "100")], "17,900")}
+<div class="tq">February credit sales = {inl("8,000")}<br><br>BDE = credit sales &times; 2% = {inl("160")}</div>
 </div>
 
 <h2 style="margin-top:8pt">7. Adjusting journal entry (AJE), Feb 28</h2>
-{je([("Feb 28", "BDE (+E)", "ADA (+xA, &minus;A)", "100")])}
+{je([("Feb 28", "BDE (+E)", "ADA (+xA, &minus;A)", "160")])}
 
 <h2 style="margin-top:8pt">8. Accounts receivable at the end of February</h2>
-{ar_table("Feb 28", "14,900", "200", "14,700")}
-<div class="why">Gross A/R = 10,000 + 5,000 &minus; 100 = 14,900. ADA = 200 &minus; 100 + 100 = 200. Net A/R = 14,900 &minus; 200 = 14,700.</div>
+{ar_table("Feb 28", "17,900", "260", "17,640")}
+<div class="why">Gross A/R = 10,000 + 8,000 &minus; 100 = 17,900. ADA = 200 &minus; 100 + 160 = 260. Net A/R = 17,900 &minus; 260 = 17,640.</div>
 
 <h2 style="margin-top:8pt">9. Put it together</h2>
 <div class="qblock"><span class="no">a</span><div>
-<p>BDE for January = {inl("200")} &nbsp;&nbsp; BDE for February = {inl("100")}</p></div></div>
+<p>BDE for January = {inl("200")} &nbsp;&nbsp; BDE for February = {inl("160")}</p></div></div>
 <div class="qblock"><span class="no">b</span><div>
-<p>ADA equation for February: Beginning ADA {inl("200")} + BDE {inl("100")} &minus; Write-off {inl("100")} = Ending ADA {inl("200")}</p></div></div>
+<p>ADA equation for February: Beginning ADA {inl("200")} + BDE {inl("160")} &minus; Write-off {inl("100")} = Ending ADA {inl("260")}</p></div></div>
 <div class="qblock"><span class="no">c</span><div>
 <p>Did the Feb 20 write-off change BDE? {pick(["yes", "no"], "no")} &nbsp;&nbsp; Did it change net A/R? {pick(["yes", "no"], "no")}</p>
 <div class="why">The loss was already recorded as BDE in January (matching principle). The write-off lowers gross A/R and ADA by the same 100, so net A/R stays the same.</div></div></div>
