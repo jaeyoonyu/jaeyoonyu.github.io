@@ -136,6 +136,16 @@ table.tacct td.lab { width:.75in; } table.tacct td.amt { width:.72in; }
 .hint { font-size:9pt; color:#000; margin:2pt 0 0; }
 .pair table.net3 { width:3.2in; }
 .net3cap { margin-top:8pt !important; }
+.tq2 { font-size:10pt; margin:2pt 0 6pt; }
+table.ar3 { border-collapse:collapse; font-size:10.5pt; }
+table.ar3 th { font:700 8.8pt Arial,sans-serif; text-align:right; padding:3pt 10pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+table.ar3 th:first-child, table.ar3 td:first-child { text-align:left; }
+table.ar3 th.mean, table.ar3 td.mean { text-align:left; padding-left:18pt; }
+table.ar3 td { padding:6pt 10pt 2pt; vertical-align:bottom; }
+table.ar3 td.amt { width:1in; }
+table.ar3 td.mean { font-style:italic; color:#000; }
+table.ar3 tr.tot td { border-top:.8pt solid #000; font-weight:700; }
+table.ar3 tr.tot td.mean { font-weight:400; }
 svg.tl { display:block; width:100%; height:auto; margin:0 0 4pt; font-family:Arial,Helvetica,sans-serif; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
 table.sum { border-collapse:collapse; font-size:10.5pt; margin:4pt 0; min-width:5.4in; }
 table.sum th { font:700 8.8pt Arial,sans-serif; text-align:right; padding:3pt 10pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
@@ -194,7 +204,6 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 <div>
 <h2>2. T-account for A/R</h2>
 <table class="tacct"><tr><th colspan="4">A/R</th></tr><tr><td class="lab">Jan 10</td><td class="amt dr"><span class="bl amt" data-a="6,000"></span></td><td class="lab cl"></td><td class="amt"></td></tr><tr><td class="lab">Jan 20</td><td class="amt dr"><span class="bl amt" data-a="4,000"></span></td><td class="lab cl"></td><td class="amt"></td></tr><tr class="bal"><td class="lab">End. bal.</td><td class="amt dr"><span class="bl amt" data-a="10,000"></span></td><td class="lab cl"></td><td class="amt"></td></tr></table>
-<div class="tq">January credit sales = <span class="bl inl amt" data-a="10,000"></span><br>BDE = credit sales &times; 2% = <span class="bl inl amt" data-a="200"></span></div>
 </div>
 </div>
 
@@ -205,13 +214,20 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 <div class="why">The cash sale has no collection risk, so it is not in A/R and not in the 2% estimate.</div>
 </div>
 <div>
-<h2>4. T-account for ADA and net A/R</h2>
+<h2>4. T-account for ADA</h2>
 <table class="tacct"><tr><th colspan="4">ADA</th></tr><tr><td class="lab"></td><td class="amt dr"></td><td class="lab cl">Jan 31 AJE</td><td class="amt"><span class="bl amt" data-a="200"></span></td></tr><tr class="bal"><td class="lab"></td><td class="amt dr"></td><td class="lab cl">End. bal.</td><td class="amt"><span class="bl amt" data-a="200"></span></td></tr></table>
-<p class="net3cap">Jan 31</p><table class="net3">
-<tr><th>Gross A/R</th><th>Less: ADA</th><th>Net A/R</th></tr>
-<tr><td><span class="bl amt" data-a="10,000"></span></td><td><span class="bl amt" data-a="200"></span></td><td><span class="bl amt" data-a="9,800"></span></td></tr>
-</table>
 </div>
+</div>
+
+<h2 style="margin-top:12pt">5. Summary: January</h2>
+<div class="sumrow">
+<p class="tq2">January credit sales = <span class="bl inl amt" data-a="10,000"></span> &nbsp;&nbsp;&nbsp; BDE = credit sales &times; 2% = <span class="bl inl amt" data-a="200"></span></p>
+<table class="ar3">
+<tr><th></th><th>Jan 31</th><th class="mean">What it means</th></tr>
+<tr><td>Gross A/R</td><td class="amt"><span class="bl amt" data-a="10,000"></span></td><td class="mean">Total A/R</td></tr>
+<tr><td>Less: ADA</td><td class="amt"><span class="bl amt" data-a="200"></span></td><td class="mean">Noncollectible A/R (estimated)</td></tr>
+<tr class="tot"><td>Net A/R</td><td class="amt"><span class="bl amt" data-a="9,800"></span></td><td class="mean">Collectible portion of A/R</td></tr>
+</table>
 </div>
 <div class="pgfn"><sup>*</sup> Cost of goods sold entries (Dr CGS, Cr Inventory) are omitted for brevity. See Ch6.</div>
 
@@ -229,30 +245,36 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 
 <div class="pair">
 <div>
-<h2>5. Journal entries<sup>*</sup></h2>
+<h2>6. Journal entries<sup>*</sup></h2>
 <table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Feb 8</td><td><span class="bl nm" data-a="Cash (+A)"></span></td><td class="amt"><span class="bl amt" data-a="3,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="3,000"></span></td></tr><tr class="first"><td class="d">Feb 15</td><td><span class="bl nm" data-a="A/R (+A)"></span></td><td class="amt"><span class="bl amt" data-a="8,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="8,000"></span></td></tr><tr class="first"><td class="d">Feb 20</td><td><span class="bl nm" data-a="ADA (&minus;xA, +A)"></span></td><td class="amt"><span class="bl amt" data-a="100"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="A/R (&minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="100"></span></td></tr></table>
 <div class="why">Feb 20: 10,000 &times; 1% = 100 is written off against ADA. No expense is recorded.</div>
 </div>
 <div>
-<h2>6. T-account for A/R</h2>
+<h2>7. T-account for A/R</h2>
 <table class="tacct"><tr><th colspan="4">A/R</th></tr><tr><td class="lab">Beg. bal.</td><td class="amt dr"><span class="bl amt" data-a="10,000"></span></td><td class="lab cl">Feb 20</td><td class="amt"><span class="bl amt" data-a="100"></span></td></tr><tr><td class="lab">Feb 15</td><td class="amt dr"><span class="bl amt" data-a="8,000"></span></td><td class="lab cl"></td><td class="amt"></td></tr><tr class="bal"><td class="lab">End. bal.</td><td class="amt dr"><span class="bl amt" data-a="17,900"></span></td><td class="lab cl"></td><td class="amt"></td></tr></table>
-<div class="tq">February credit sales = <span class="bl inl amt" data-a="8,000"></span><br>BDE = credit sales &times; 2% = <span class="bl inl amt" data-a="160"></span></div>
 </div>
 </div>
 
 <div class="pair">
 <div>
-<h2>7. Adjusting journal entry (AJE)</h2>
+<h2>8. Adjusting journal entry (AJE)</h2>
 <table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Feb 28</td><td><span class="bl nm" data-a="BDE (+E)"></span></td><td class="amt"><span class="bl amt" data-a="160"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="ADA (+xA, &minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="160"></span></td></tr></table>
 </div>
 <div>
-<h2>8. T-account for ADA and net A/R</h2>
+<h2>9. T-account for ADA</h2>
 <table class="tacct"><tr><th colspan="4">ADA</th></tr><tr><td class="lab">Feb 20</td><td class="amt dr"><span class="bl amt" data-a="100"></span></td><td class="lab cl">Beg. bal.</td><td class="amt"><span class="bl amt" data-a="200"></span></td></tr><tr><td class="lab"></td><td class="amt dr"></td><td class="lab cl">Feb 28 AJE</td><td class="amt"><span class="bl amt" data-a="160"></span></td></tr><tr class="bal"><td class="lab"></td><td class="amt dr"></td><td class="lab cl">End. bal.</td><td class="amt"><span class="bl amt" data-a="260"></span></td></tr></table>
-<p class="net3cap">Feb 28</p><table class="net3">
-<tr><th>Gross A/R</th><th>Less: ADA</th><th>Net A/R</th></tr>
-<tr><td><span class="bl amt" data-a="17,900"></span></td><td><span class="bl amt" data-a="260"></span></td><td><span class="bl amt" data-a="17,640"></span></td></tr>
-</table>
 </div>
+</div>
+
+<h2 style="margin-top:12pt">10. Summary: February</h2>
+<div class="sumrow">
+<p class="tq2">February credit sales = <span class="bl inl amt" data-a="8,000"></span> &nbsp;&nbsp;&nbsp; BDE = credit sales &times; 2% = <span class="bl inl amt" data-a="160"></span></p>
+<table class="ar3">
+<tr><th></th><th>Feb 28</th><th class="mean">What it means</th></tr>
+<tr><td>Gross A/R</td><td class="amt"><span class="bl amt" data-a="17,900"></span></td><td class="mean">Total A/R</td></tr>
+<tr><td>Less: ADA</td><td class="amt"><span class="bl amt" data-a="260"></span></td><td class="mean">Noncollectible A/R (estimated)</td></tr>
+<tr class="tot"><td>Net A/R</td><td class="amt"><span class="bl amt" data-a="17,640"></span></td><td class="mean">Collectible portion of A/R</td></tr>
+</table>
 </div>
 <div class="pgfn"><sup>*</sup> Cost of goods sold entries (Dr CGS, Cr Inventory) are omitted for brevity. See Ch6.</div>
 

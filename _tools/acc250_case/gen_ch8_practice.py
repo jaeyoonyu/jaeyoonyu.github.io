@@ -54,6 +54,16 @@ table.tacct td.lab { width:.75in; } table.tacct td.amt { width:.72in; }
 .hint { font-size:9pt; color:#000; margin:2pt 0 0; }
 .pair table.net3 { width:3.2in; }
 .net3cap { margin-top:8pt !important; }
+.tq2 { font-size:10pt; margin:2pt 0 6pt; }
+table.ar3 { border-collapse:collapse; font-size:10.5pt; }
+table.ar3 th { font:700 8.8pt Arial,sans-serif; text-align:right; padding:3pt 10pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+table.ar3 th:first-child, table.ar3 td:first-child { text-align:left; }
+table.ar3 th.mean, table.ar3 td.mean { text-align:left; padding-left:18pt; }
+table.ar3 td { padding:6pt 10pt 2pt; vertical-align:bottom; }
+table.ar3 td.amt { width:1in; }
+table.ar3 td.mean { font-style:italic; color:#000; }
+table.ar3 tr.tot td { border-top:.8pt solid #000; font-weight:700; }
+table.ar3 tr.tot td.mean { font-weight:400; }
 svg.tl { display:block; width:100%; height:auto; margin:0 0 4pt; font-family:Arial,Helvetica,sans-serif; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
 table.sum { border-collapse:collapse; font-size:10.5pt; margin:4pt 0; min-width:5.4in; }
 table.sum th { font:700 8.8pt Arial,sans-serif; text-align:right; padding:3pt 10pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
@@ -120,6 +130,18 @@ def net_table(gross, ada, net):
 <tr><th>Gross A/R</th><th>Less: ADA</th><th>Net A/R</th></tr>
 <tr><td>{bl(gross)}</td><td>{bl(ada)}</td><td>{bl(net)}</td></tr>
 </table>'''
+
+
+def summary(month, date, sales, bde, gross, ada, net):
+    return f'''<div class="sumrow">
+<p class="tq2">{month} credit sales = {inl(sales)} &nbsp;&nbsp;&nbsp; BDE = credit sales &times; 2% = {inl(bde)}</p>
+<table class="ar3">
+<tr><th></th><th>{date}</th><th class="mean">What it means</th></tr>
+<tr><td>Gross A/R</td><td class="amt">{bl(gross)}</td><td class="mean">Total A/R</td></tr>
+<tr><td>Less: ADA</td><td class="amt">{bl(ada)}</td><td class="mean">Noncollectible A/R (estimated)</td></tr>
+<tr class="tot"><td>Net A/R</td><td class="amt">{bl(net)}</td><td class="mean">Collectible portion of A/R</td></tr>
+</table>
+</div>'''
 
 
 def taccount(debits, credits, bal):
@@ -198,7 +220,6 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 <div>
 <h2>2. T-account for A/R</h2>
 {taccount([("Jan 10", "6,000"), ("Jan 20", "4,000")], [], "10,000")}
-<div class="tq">January credit sales = {inl("10,000")}<br>BDE = credit sales &times; 2% = {inl("200")}</div>
 </div>
 </div>
 
@@ -209,11 +230,13 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 <div class="why">The cash sale has no collection risk, so it is not in A/R and not in the 2% estimate.</div>
 </div>
 <div>
-<h2>4. T-account for ADA and net A/R</h2>
+<h2>4. T-account for ADA</h2>
 {tacct("ADA", [], [("Jan 31 AJE", "200")], "End. bal.", "200", "cr")}
-<p class="net3cap">Jan 31</p>{net_table("10,000", "200", "9,800")}
 </div>
 </div>
+
+<h2 style="margin-top:12pt">5. Summary: January</h2>
+{summary("January", "Jan 31", "10,000", "200", "10,000", "200", "9,800")}
 <div class="pgfn"><sup>*</sup> Cost of goods sold entries (Dr CGS, Cr Inventory) are omitted for brevity. See Ch6.</div>
 '''
 
@@ -233,30 +256,31 @@ back = f'''<h1 style="margin-top:0">February</h1>
 
 <div class="pair">
 <div>
-<h2>5. Journal entries<sup>*</sup></h2>
+<h2>6. Journal entries<sup>*</sup></h2>
 {je([("Feb 8", "Cash (+A)", "Sales Rev (+R)", "3,000"),
      ("Feb 15", "A/R (+A)", "Sales Rev (+R)", "8,000"),
      ("Feb 20", "ADA (&minus;xA, +A)", "A/R (&minus;A)", "100")])}
 <div class="why">Feb 20: 10,000 &times; 1% = 100 is written off against ADA. No expense is recorded.</div>
 </div>
 <div>
-<h2>6. T-account for A/R</h2>
+<h2>7. T-account for A/R</h2>
 {taccount([("Beg. bal.", "10,000"), ("Feb 15", "8,000")], [("Feb 20", "100")], "17,900")}
-<div class="tq">February credit sales = {inl("8,000")}<br>BDE = credit sales &times; 2% = {inl("160")}</div>
 </div>
 </div>
 
 <div class="pair">
 <div>
-<h2>7. Adjusting journal entry (AJE)</h2>
+<h2>8. Adjusting journal entry (AJE)</h2>
 {je([("Feb 28", "BDE (+E)", "ADA (+xA, &minus;A)", "160")])}
 </div>
 <div>
-<h2>8. T-account for ADA and net A/R</h2>
+<h2>9. T-account for ADA</h2>
 {tacct("ADA", [("Feb 20", "100")], [("Beg. bal.", "200"), ("Feb 28 AJE", "160")], "End. bal.", "260", "cr")}
-<p class="net3cap">Feb 28</p>{net_table("17,900", "260", "17,640")}
 </div>
 </div>
+
+<h2 style="margin-top:12pt">10. Summary: February</h2>
+{summary("February", "Feb 28", "8,000", "160", "17,900", "260", "17,640")}
 <div class="pgfn"><sup>*</sup> Cost of goods sold entries (Dr CGS, Cr Inventory) are omitted for brevity. See Ch6.</div>
 '''
 
