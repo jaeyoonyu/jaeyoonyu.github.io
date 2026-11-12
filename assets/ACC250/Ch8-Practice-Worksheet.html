@@ -140,6 +140,10 @@ table.tacct td.amt { width:1in; }
 table.tacct td.dr { border-right:1.6pt solid #000; }
 table.tacct td.cl { padding-left:10pt; }
 table.tacct tr.bal td { border-top:.8pt solid #000; font-weight:700; }
+table.net3 { border-collapse:collapse; font-size:10.5pt; width:100%; }
+table.net3 th { font:700 8.8pt Arial,sans-serif; text-align:right; padding:3pt 8pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+table.net3 td { padding:8pt 8pt 2pt; text-align:right; }
+.net3cap { font:700 9pt Arial,sans-serif; margin:0 0 3pt; }
 .tq { font-size:10pt; }
 table.je3 td { padding:5pt 6pt 1pt; }
 
@@ -181,13 +185,14 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 <table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Jan 31</td><td><span class="bl nm" data-a="BDE (+E)"></span></td><td class="amt"><span class="bl amt" data-a="200"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="ADA (+xA, &minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="200"></span></td></tr></table>
 <div class="why">The cash sale has no collection risk, so it is not in A/R and not in the 2% estimate.</div>
 
-<h2 style="margin-top:8pt">4. Accounts receivable at the end of January</h2>
-<table class="ar">
-<tr><th>Accounts receivable, Jan 31</th><th>Amount</th></tr>
-<tr><td>Gross A/R</td><td class="amt"><span class="bl amt" data-a="10,000"></span></td></tr>
-<tr><td>Less: ADA</td><td class="amt"><span class="bl amt" data-a="200"></span></td></tr>
-<tr class="tot"><td>Net A/R</td><td class="amt"><span class="bl amt" data-a="9,800"></span></td></tr>
-</table>
+<h2 style="margin-top:8pt">4. ADA and net A/R at the end of January</h2>
+<div class="tw">
+<table class="tacct"><tr><th colspan="4">ADA</th></tr><tr><td class="lab"></td><td class="amt dr"></td><td class="lab cl">Jan 31 AJE</td><td class="amt"><span class="bl amt" data-a="200"></span></td></tr><tr class="bal"><td class="lab"></td><td class="amt dr"></td><td class="lab cl">End. bal.</td><td class="amt"><span class="bl amt" data-a="200"></span></td></tr></table>
+<div><p class="net3cap">Jan 31</p><table class="net3">
+<tr><th>Gross A/R</th><th>Less: ADA</th><th>Net A/R</th></tr>
+<tr><td><span class="bl amt" data-a="10,000"></span></td><td><span class="bl amt" data-a="200"></span></td><td><span class="bl amt" data-a="9,800"></span></td></tr>
+</table></div>
+</div>
 <div class="pgfn"><sup>*</sup> Cost of goods sold entries (Dr CGS, Cr Inventory) are omitted for brevity. See Ch6.</div>
 
 </div>
@@ -215,14 +220,14 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 <h2 style="margin-top:8pt">7. Adjusting journal entry (AJE), Feb 28</h2>
 <table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Feb 28</td><td><span class="bl nm" data-a="BDE (+E)"></span></td><td class="amt"><span class="bl amt" data-a="160"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="ADA (+xA, &minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="160"></span></td></tr></table>
 
-<h2 style="margin-top:8pt">8. Put it together: January and February</h2>
-<table class="sum">
-<tr><th></th><th>January</th><th>February</th></tr>
-<tr class="sep"><td>BDE for the month</td><td class="amt"><span class="bl amt" data-a="200"></span></td><td class="amt"><span class="bl amt" data-a="160"></span></td></tr>
-<tr><td>Gross A/R, end of month</td><td class="amt"><span class="bl amt" data-a="10,000"></span></td><td class="amt"><span class="bl amt" data-a="17,900"></span></td></tr>
-<tr><td>Less: ADA, end of month</td><td class="amt"><span class="bl amt" data-a="200"></span></td><td class="amt"><span class="bl amt" data-a="260"></span></td></tr>
-<tr class="tot"><td>Net A/R, end of month</td><td class="amt"><span class="bl amt" data-a="9,800"></span></td><td class="amt"><span class="bl amt" data-a="17,640"></span></td></tr>
-</table>
+<h2 style="margin-top:8pt">8. ADA and net A/R at the end of February</h2>
+<div class="tw">
+<table class="tacct"><tr><th colspan="4">ADA</th></tr><tr><td class="lab">Feb 20</td><td class="amt dr"><span class="bl amt" data-a="100"></span></td><td class="lab cl">Beg. bal.</td><td class="amt"><span class="bl amt" data-a="200"></span></td></tr><tr><td class="lab"></td><td class="amt dr"></td><td class="lab cl">Feb 28 AJE</td><td class="amt"><span class="bl amt" data-a="160"></span></td></tr><tr class="bal"><td class="lab"></td><td class="amt dr"></td><td class="lab cl">End. bal.</td><td class="amt"><span class="bl amt" data-a="260"></span></td></tr></table>
+<div><p class="net3cap">Feb 28</p><table class="net3">
+<tr><th>Gross A/R</th><th>Less: ADA</th><th>Net A/R</th></tr>
+<tr><td><span class="bl amt" data-a="17,900"></span></td><td><span class="bl amt" data-a="260"></span></td><td><span class="bl amt" data-a="17,640"></span></td></tr>
+</table></div>
+</div>
 <div class="pgfn"><sup>*</sup> Cost of goods sold entries (Dr CGS, Cr Inventory) are omitted for brevity. See Ch6.</div>
 
 </div>

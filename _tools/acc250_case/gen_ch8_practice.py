@@ -58,6 +58,10 @@ table.tacct td.amt { width:1in; }
 table.tacct td.dr { border-right:1.6pt solid #000; }
 table.tacct td.cl { padding-left:10pt; }
 table.tacct tr.bal td { border-top:.8pt solid #000; font-weight:700; }
+table.net3 { border-collapse:collapse; font-size:10.5pt; width:100%; }
+table.net3 th { font:700 8.8pt Arial,sans-serif; text-align:right; padding:3pt 8pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+table.net3 td { padding:8pt 8pt 2pt; text-align:right; }
+.net3cap { font:700 9pt Arial,sans-serif; margin:0 0 3pt; }
 .tq { font-size:10pt; }
 table.je3 td { padding:5pt 6pt 1pt; }
 '''
@@ -79,6 +83,30 @@ def je(entries):
         rows.append(f'<tr class="cr"><td></td><td>{bl(cr, "nm")}</td><td class="amt"></td><td class="amt">{bl(amt)}</td></tr>')
     rows.append('</table>')
     return ''.join(rows)
+
+
+def tacct(title, debits, credits, bal_label, bal, side):
+    """side: 'dr' or 'cr' for where the ending balance sits."""
+    n = max(len(debits), len(credits))
+    rows = [f'<table class="tacct"><tr><th colspan="4">{title}</th></tr>']
+    for i in range(n):
+        dl, da = debits[i] if i < len(debits) else ('', None)
+        cl, ca = credits[i] if i < len(credits) else ('', None)
+        rows.append(f'<tr><td class="lab">{dl}</td><td class="amt dr">{bl(da) if da else ""}</td>'
+                    f'<td class="lab cl">{cl}</td><td class="amt">{bl(ca) if ca else ""}</td></tr>')
+    if side == 'dr':
+        rows.append(f'<tr class="bal"><td class="lab">{bal_label}</td><td class="amt dr">{bl(bal)}</td><td class="lab cl"></td><td class="amt"></td></tr>')
+    else:
+        rows.append(f'<tr class="bal"><td class="lab"></td><td class="amt dr"></td><td class="lab cl">{bal_label}</td><td class="amt">{bl(bal)}</td></tr>')
+    rows.append('</table>')
+    return ''.join(rows)
+
+
+def net_table(gross, ada, net):
+    return f'''<table class="net3">
+<tr><th>Gross A/R</th><th>Less: ADA</th><th>Net A/R</th></tr>
+<tr><td>{bl(gross)}</td><td>{bl(ada)}</td><td>{bl(net)}</td></tr>
+</table>'''
 
 
 def taccount(debits, credits, bal):
@@ -161,8 +189,11 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 {je([("Jan 31", "BDE (+E)", "ADA (+xA, &minus;A)", "200")])}
 <div class="why">The cash sale has no collection risk, so it is not in A/R and not in the 2% estimate.</div>
 
-<h2 style="margin-top:8pt">4. Accounts receivable at the end of January</h2>
-{ar_table("Jan 31", "10,000", "200", "9,800")}
+<h2 style="margin-top:8pt">4. ADA and net A/R at the end of January</h2>
+<div class="tw">
+{tacct("ADA", [], [("Jan 31 AJE", "200")], "End. bal.", "200", "cr")}
+<div><p class="net3cap">Jan 31</p>{net_table("10,000", "200", "9,800")}</div>
+</div>
 <div class="pgfn"><sup>*</sup> Cost of goods sold entries (Dr CGS, Cr Inventory) are omitted for brevity. See Ch6.</div>
 '''
 
@@ -195,14 +226,11 @@ back = f'''<h1 style="margin-top:0">February</h1>
 <h2 style="margin-top:8pt">7. Adjusting journal entry (AJE), Feb 28</h2>
 {je([("Feb 28", "BDE (+E)", "ADA (+xA, &minus;A)", "160")])}
 
-<h2 style="margin-top:8pt">8. Put it together: January and February</h2>
-<table class="sum">
-<tr><th></th><th>January</th><th>February</th></tr>
-<tr class="sep"><td>BDE for the month</td><td class="amt">{bl("200")}</td><td class="amt">{bl("160")}</td></tr>
-<tr><td>Gross A/R, end of month</td><td class="amt">{bl("10,000")}</td><td class="amt">{bl("17,900")}</td></tr>
-<tr><td>Less: ADA, end of month</td><td class="amt">{bl("200")}</td><td class="amt">{bl("260")}</td></tr>
-<tr class="tot"><td>Net A/R, end of month</td><td class="amt">{bl("9,800")}</td><td class="amt">{bl("17,640")}</td></tr>
-</table>
+<h2 style="margin-top:8pt">8. ADA and net A/R at the end of February</h2>
+<div class="tw">
+{tacct("ADA", [("Feb 20", "100")], [("Beg. bal.", "200"), ("Feb 28 AJE", "160")], "End. bal.", "260", "cr")}
+<div><p class="net3cap">Feb 28</p>{net_table("17,900", "260", "17,640")}</div>
+</div>
 <div class="pgfn"><sup>*</sup> Cost of goods sold entries (Dr CGS, Cr Inventory) are omitted for brevity. See Ch6.</div>
 '''
 
