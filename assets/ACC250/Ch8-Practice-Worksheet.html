@@ -120,6 +120,17 @@ html.key .why { display:block; }
 .qblock { font-size:10pt; margin:8pt 0 0; display:grid; grid-template-columns:16pt 1fr; gap:4pt; }
 .qblock p { margin:0 0 3pt; }
 .fn { margin:8pt 0 0; font-size:8.8pt; color:#333; }
+.tw { display:grid; grid-template-columns:3.9in 1fr; gap:.3in; align-items:center; margin:4pt 0 2pt; }
+table.tacct { border-collapse:collapse; font-size:10pt; width:3.9in; }
+table.tacct th { font:700 10pt "Times New Roman",serif; text-align:center; padding:2pt; border-bottom:1.6pt solid #000; }
+table.tacct td { padding:5pt 6pt 1pt; vertical-align:bottom; }
+table.tacct td.lab { width:.85in; color:#333; }
+table.tacct td.amt { width:1in; }
+table.tacct td.dr { border-right:1.6pt solid #000; }
+table.tacct td.cl { padding-left:10pt; }
+table.tacct tr.bal td { border-top:.8pt solid #000; font-weight:700; }
+.tq { font-size:10pt; }
+table.je3 td { padding:5pt 6pt 1pt; }
 
 </style>
 </head>
@@ -145,11 +156,20 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 <li><b>Jan 31:</b> Record bad debt expense: 2% of January&rsquo;s credit sales.</li>
 </ul></div>
 
-<h2>1. Journal entries for January <small>Use (+A), (&minus;A), (+R), (+E), (+xA), (&minus;xA).</small></h2>
-<table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Jan 5</td><td><span class="bl nm" data-a="Cash (+A)"></span></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td></tr><tr class="first"><td class="d">Jan 10</td><td><span class="bl nm" data-a="A/R (+A)"></span></td><td class="amt"><span class="bl amt" data-a="6,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="6,000"></span></td></tr><tr class="first"><td class="d">Jan 20</td><td><span class="bl nm" data-a="A/R (+A)"></span></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td></tr><tr class="first"><td class="d">Jan 31</td><td><span class="bl nm" data-a="BDE (+E)"></span></td><td class="amt"><span class="bl amt" data-a="200"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="ADA (+xA, &minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="200"></span></td></tr></table>
-<div class="why">Jan 31: January credit sales = 6,000 + 4,000 = 10,000; BDE = 10,000 &times; 2% = 200. The cash sale has no collection risk, so it is not included.</div>
+<h2>1. Journal entries for January transactions <small>Use (+A), (&minus;A), (+R), (+E), (+xA), (&minus;xA).</small></h2>
+<table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Jan 5</td><td><span class="bl nm" data-a="Cash (+A)"></span></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td></tr><tr class="first"><td class="d">Jan 10</td><td><span class="bl nm" data-a="A/R (+A)"></span></td><td class="amt"><span class="bl amt" data-a="6,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="6,000"></span></td></tr><tr class="first"><td class="d">Jan 20</td><td><span class="bl nm" data-a="A/R (+A)"></span></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td></tr></table>
 
-<h2 style="margin-top:10pt">2. Accounts receivable at the end of January</h2>
+<h2 style="margin-top:8pt">2. Unadjusted T-account for A/R, before the Jan 31 adjustment</h2>
+<div class="tw">
+<table class="tacct"><tr><th colspan="4">A/R (unadjusted)</th></tr><tr><td class="lab">Jan 10</td><td class="amt dr"><span class="bl amt" data-a="6,000"></span></td><td class="lab cl"></td><td class="amt"></td></tr><tr><td class="lab">Jan 20</td><td class="amt dr"><span class="bl amt" data-a="4,000"></span></td><td class="lab cl"></td><td class="amt"></td></tr><tr class="bal"><td class="lab">Unadj. bal.</td><td class="amt dr"><span class="bl amt" data-a="10,000"></span></td><td class="lab cl"></td><td class="amt"></td></tr></table>
+<div class="tq">January credit sales = <span class="bl inl amt" data-a="10,000"></span><br><br>BDE = credit sales &times; 2% = <span class="bl inl amt" data-a="200"></span></div>
+</div>
+
+<h2 style="margin-top:8pt">3. Adjusting journal entry (AJE), Jan 31</h2>
+<table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Jan 31</td><td><span class="bl nm" data-a="BDE (+E)"></span></td><td class="amt"><span class="bl amt" data-a="200"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="ADA (+xA, &minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="200"></span></td></tr></table>
+<div class="why">The cash sale has no collection risk, so it is not in A/R and not in the 2% estimate.</div>
+
+<h2 style="margin-top:8pt">4. Accounts receivable at the end of January</h2>
 <table class="ar">
 <tr><th>Accounts receivable, Jan 31</th><th>Amount</th></tr>
 <tr><td>Gross A/R</td><td class="amt"><span class="bl amt" data-a="10,000"></span></td></tr>
@@ -169,11 +189,20 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 <li><b>Feb 28:</b> Record bad debt expense: 2% of February&rsquo;s credit sales.</li>
 </ul></div>
 
-<h2>3. Journal entries for February</h2>
-<table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Feb 8</td><td><span class="bl nm" data-a="Cash (+A)"></span></td><td class="amt"><span class="bl amt" data-a="3,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="3,000"></span></td></tr><tr class="first"><td class="d">Feb 15</td><td><span class="bl nm" data-a="A/R (+A)"></span></td><td class="amt"><span class="bl amt" data-a="5,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="5,000"></span></td></tr><tr class="first"><td class="d">Feb 20</td><td><span class="bl nm" data-a="ADA (&minus;xA, +A)"></span></td><td class="amt"><span class="bl amt" data-a="100"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="A/R (&minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="100"></span></td></tr><tr class="first"><td class="d">Feb 28</td><td><span class="bl nm" data-a="BDE (+E)"></span></td><td class="amt"><span class="bl amt" data-a="100"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="ADA (+xA, &minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="100"></span></td></tr></table>
-<div class="why">Feb 20: 10,000 &times; 1% = 100 written off against ADA (no expense). Feb 28: 5,000 &times; 2% = 100.</div>
+<h2>5. Journal entries for February transactions</h2>
+<table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Feb 8</td><td><span class="bl nm" data-a="Cash (+A)"></span></td><td class="amt"><span class="bl amt" data-a="3,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="3,000"></span></td></tr><tr class="first"><td class="d">Feb 15</td><td><span class="bl nm" data-a="A/R (+A)"></span></td><td class="amt"><span class="bl amt" data-a="5,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="5,000"></span></td></tr><tr class="first"><td class="d">Feb 20</td><td><span class="bl nm" data-a="ADA (&minus;xA, +A)"></span></td><td class="amt"><span class="bl amt" data-a="100"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="A/R (&minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="100"></span></td></tr></table>
+<div class="why">Feb 20: 10,000 &times; 1% = 100 is written off against ADA. No expense is recorded.</div>
 
-<h2 style="margin-top:10pt">4. Accounts receivable at the end of February</h2>
+<h2 style="margin-top:8pt">6. Unadjusted T-account for A/R, before the Feb 28 adjustment</h2>
+<div class="tw">
+<table class="tacct"><tr><th colspan="4">A/R (unadjusted)</th></tr><tr><td class="lab">Beg. bal.</td><td class="amt dr"><span class="bl amt" data-a="10,000"></span></td><td class="lab cl">Feb 20</td><td class="amt"><span class="bl amt" data-a="100"></span></td></tr><tr><td class="lab">Feb 15</td><td class="amt dr"><span class="bl amt" data-a="5,000"></span></td><td class="lab cl"></td><td class="amt"></td></tr><tr class="bal"><td class="lab">Unadj. bal.</td><td class="amt dr"><span class="bl amt" data-a="14,900"></span></td><td class="lab cl"></td><td class="amt"></td></tr></table>
+<div class="tq">February credit sales = <span class="bl inl amt" data-a="5,000"></span><br><br>BDE = credit sales &times; 2% = <span class="bl inl amt" data-a="100"></span></div>
+</div>
+
+<h2 style="margin-top:8pt">7. Adjusting journal entry (AJE), Feb 28</h2>
+<table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Feb 28</td><td><span class="bl nm" data-a="BDE (+E)"></span></td><td class="amt"><span class="bl amt" data-a="100"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="ADA (+xA, &minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="100"></span></td></tr></table>
+
+<h2 style="margin-top:8pt">8. Accounts receivable at the end of February</h2>
 <table class="ar">
 <tr><th>Accounts receivable, Feb 28</th><th>Amount</th></tr>
 <tr><td>Gross A/R</td><td class="amt"><span class="bl amt" data-a="14,900"></span></td></tr>
@@ -182,7 +211,7 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 </table>
 <div class="why">Gross A/R = 10,000 + 5,000 &minus; 100 = 14,900. ADA = 200 &minus; 100 + 100 = 200. Net A/R = 14,900 &minus; 200 = 14,700.</div>
 
-<h2 style="margin-top:10pt">5. Put it together</h2>
+<h2 style="margin-top:8pt">9. Put it together</h2>
 <div class="qblock"><span class="no">a</span><div>
 <p>BDE for January = <span class="bl inl amt" data-a="200"></span> &nbsp;&nbsp; BDE for February = <span class="bl inl amt" data-a="100"></span></p></div></div>
 <div class="qblock"><span class="no">b</span><div>
