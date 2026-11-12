@@ -236,7 +236,6 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 <div>
 <h2>3. Adjusting journal entry (AJE)</h2>
 {je([("Jan 31", "BDE (+E)", "ADA (+xA, &minus;A)", "200")])}
-<div class="why">The cash sale has no collection risk, so it is not in A/R and not in the 2% estimate.</div>
 </div>
 <div>
 <h2>4. T-account for ADA</h2>
@@ -269,7 +268,6 @@ back = f'''<h1 style="margin-top:0">February</h1>
 {je([("Feb 8", "Cash (+A)", "Sales Rev (+R)", "3,000"),
      ("Feb 15", "A/R (+A)", "Sales Rev (+R)", "8,000"),
      ("Feb 20", "ADA (&minus;xA, +A)", "A/R (&minus;A)", "100")])}
-<div class="why">Feb 20: 10,000 &times; 1% = 100 is written off against ADA. No expense is recorded.</div>
 </div>
 <div>
 <h2>7. T-account for A/R</h2>
