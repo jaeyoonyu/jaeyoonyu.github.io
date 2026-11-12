@@ -18,7 +18,7 @@ body { margin:0; color:#000; font:10pt/1.32 "Times New Roman",Times,serif; }
 
 header { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:1.2pt solid #000;
   padding-bottom:3pt; margin-bottom:5pt; }
-header .course { font:700 8.5pt Arial,sans-serif; letter-spacing:.1em; text-transform:uppercase; }
+header .course { font:700 8.5pt Arial,sans-serif; letter-spacing:.01em; }
 header .name span { display:inline-block; width:2.2in; border-bottom:.8pt solid #000; }
 h1 { font-size:14pt; margin:0 0 3pt; }
 .filing { font-size:8.3pt; margin:0 0 6pt; padding:2.5pt 6pt; border:.8pt solid #000; border-radius:3pt; }
@@ -49,7 +49,7 @@ h1 { font-size:14pt; margin:0 0 3pt; }
 .stmt tr.uu td.n { border-bottom:2.4pt double #000; }
 
 /* ---- questions ---- */
-h2 { font:700 9pt Arial,sans-serif; letter-spacing:.08em; text-transform:uppercase;
+h2 { font:700 9pt Arial,sans-serif; letter-spacing:.01em;
   margin:4pt 0 3pt; padding-bottom:2pt; border-bottom:.8pt solid #000; }
 h2 small { font:400 8.5pt "Times New Roman",serif; letter-spacing:0; text-transform:none; margin-left:6pt; }
 .qcols { display:grid; grid-template-columns:1fr 1fr; gap:0 .28in; }
@@ -64,7 +64,7 @@ html.key .bl::after { content:attr(data-a); color:var(--key); font-weight:700; }
 
 /* ---- page 2 ---- */
 .defs { display:grid; grid-template-columns:1fr 1fr; gap:0 .3in; font-size:9.6pt; }
-.defs h3 { font:700 8.6pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); margin:8pt 0 2pt; }
+.defs h3 { font:700 8.6pt Arial,sans-serif; letter-spacing:.01em; color:var(--accent); margin:8pt 0 2pt; }
 .defs dl { margin:0; }
 .defs dt { font-weight:700; margin-top:4pt; }
 .defs dd { margin:0 0 0 10pt; }
@@ -93,11 +93,11 @@ html.key .keytag { display:inline; }
 
 .intro2 { margin:0 0 6pt; font-size:10pt; }
 .given { border:.8pt solid #000; border-radius:3pt; padding:5pt 9pt; margin:4pt 0 8pt; font-size:10pt; }
-.given b.t { display:block; font:700 8.6pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; margin-bottom:3pt; }
+.given b.t { display:block; font:700 8.6pt Arial,sans-serif; letter-spacing:.01em; margin-bottom:3pt; }
 .given ul { margin:0; padding-left:16pt; }
 .given li { margin:2pt 0; }
 table.je3 { width:100%; border-collapse:collapse; font-size:10pt; margin:2pt 0 4pt; }
-table.je3 th { font:700 7.8pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#444;
+table.je3 th { font:700 7.8pt Arial,sans-serif; letter-spacing:.01em; color:#444;
   text-align:left; padding:2pt 6pt; border-bottom:.8pt solid #000; }
 table.je3 th.r { text-align:right; }
 table.je3 td { padding:7pt 6pt 1pt; vertical-align:bottom; }
@@ -146,7 +146,7 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 </ul></div>
 
 <h2>1. Journal entries for January <small>Use (+A), (&minus;A), (+R), (+E), (+xA), (&minus;xA).</small></h2>
-<table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Jan 5</td><td><span class="bl nm" data-a="Cash (+A)"></span></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales revenues (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td></tr><tr class="first"><td class="d">Jan 10</td><td><span class="bl nm" data-a="A/R (+A)"></span></td><td class="amt"><span class="bl amt" data-a="6,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales revenues (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="6,000"></span></td></tr><tr class="first"><td class="d">Jan 20</td><td><span class="bl nm" data-a="A/R (+A)"></span></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales revenues (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td></tr><tr class="first"><td class="d">Jan 31</td><td><span class="bl nm" data-a="BDE (+E)"></span></td><td class="amt"><span class="bl amt" data-a="200"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="ADA (+xA, &minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="200"></span></td></tr></table>
+<table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Jan 5</td><td><span class="bl nm" data-a="Cash (+A)"></span></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td></tr><tr class="first"><td class="d">Jan 10</td><td><span class="bl nm" data-a="A/R (+A)"></span></td><td class="amt"><span class="bl amt" data-a="6,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="6,000"></span></td></tr><tr class="first"><td class="d">Jan 20</td><td><span class="bl nm" data-a="A/R (+A)"></span></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="4,000"></span></td></tr><tr class="first"><td class="d">Jan 31</td><td><span class="bl nm" data-a="BDE (+E)"></span></td><td class="amt"><span class="bl amt" data-a="200"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="ADA (+xA, &minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="200"></span></td></tr></table>
 <div class="why">Jan 31: January credit sales = 6,000 + 4,000 = 10,000; BDE = 10,000 &times; 2% = 200. The cash sale has no collection risk, so it is not included.</div>
 
 <h2 style="margin-top:10pt">2. Accounts receivable at the end of January</h2>
@@ -170,7 +170,7 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 </ul></div>
 
 <h2>3. Journal entries for February</h2>
-<table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Feb 8</td><td><span class="bl nm" data-a="Cash (+A)"></span></td><td class="amt"><span class="bl amt" data-a="3,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales revenues (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="3,000"></span></td></tr><tr class="first"><td class="d">Feb 15</td><td><span class="bl nm" data-a="A/R (+A)"></span></td><td class="amt"><span class="bl amt" data-a="5,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales revenues (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="5,000"></span></td></tr><tr class="first"><td class="d">Feb 20</td><td><span class="bl nm" data-a="ADA (&minus;xA, +A)"></span></td><td class="amt"><span class="bl amt" data-a="100"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="A/R (&minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="100"></span></td></tr><tr class="first"><td class="d">Feb 28</td><td><span class="bl nm" data-a="BDE (+E)"></span></td><td class="amt"><span class="bl amt" data-a="100"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="ADA (+xA, &minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="100"></span></td></tr></table>
+<table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Feb 8</td><td><span class="bl nm" data-a="Cash (+A)"></span></td><td class="amt"><span class="bl amt" data-a="3,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="3,000"></span></td></tr><tr class="first"><td class="d">Feb 15</td><td><span class="bl nm" data-a="A/R (+A)"></span></td><td class="amt"><span class="bl amt" data-a="5,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Sales Rev (+R)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="5,000"></span></td></tr><tr class="first"><td class="d">Feb 20</td><td><span class="bl nm" data-a="ADA (&minus;xA, +A)"></span></td><td class="amt"><span class="bl amt" data-a="100"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="A/R (&minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="100"></span></td></tr><tr class="first"><td class="d">Feb 28</td><td><span class="bl nm" data-a="BDE (+E)"></span></td><td class="amt"><span class="bl amt" data-a="100"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="ADA (+xA, &minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="100"></span></td></tr></table>
 <div class="why">Feb 20: 10,000 &times; 1% = 100 written off against ADA (no expense). Feb 28: 5,000 &times; 2% = 100.</div>
 
 <h2 style="margin-top:10pt">4. Accounts receivable at the end of February</h2>

@@ -10,12 +10,12 @@ OUT = sys.argv[1]
 HERE = os.path.dirname(os.path.abspath(__file__))
 CSS = open(os.path.join(HERE, 'case.css')).read() + '''
 .box { border:.8pt solid #000; border-radius:3pt; padding:4pt 8pt; margin:6pt 0; font-size:9.6pt; }
-.box b.t { display:block; font:700 8.6pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; margin-bottom:2pt; }
+.box b.t { display:block; font:700 8.6pt Arial,sans-serif; letter-spacing:.01em; margin-bottom:2pt; }
 ol.qs.full li { grid-template-columns:16pt 1fr 1in; }
 .qblock { font-size:9.8pt; margin:9pt 0 0; display:grid; grid-template-columns:16pt 1fr; gap:4pt; }
 .qblock p { margin:0 0 3pt; }
 .je2 { border-collapse:collapse; margin:3pt 0 2pt; font-size:9.6pt; }
-.je2 th { font:700 7.8pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#444; text-align:left; padding:1pt 6pt; }
+.je2 th { font:700 7.8pt Arial,sans-serif; letter-spacing:.01em; color:#444; text-align:left; padding:1pt 6pt; }
 .je2 td { padding:3pt 6pt 1pt; vertical-align:bottom; }
 .je2 .acct { width:2.6in; } .je2 .amt { width:.8in; }
 .je2 .cr .bl { margin-left:18pt; }
@@ -40,7 +40,7 @@ table.terms td:first-child { width:16%; font-weight:700; color:#444; font-size:8
 .stmt td.n + td.n { width:.8in; padding-left:12pt; }
 .inl { display:inline-block; min-width:.8in; vertical-align:bottom; }
 table.mini { border-collapse:collapse; font-size:9.6pt; margin:3pt 0; }
-table.mini th { font:700 7.8pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#444; padding:1pt 8pt; text-align:right; border-bottom:.8pt solid #000; }
+table.mini th { font:700 7.8pt Arial,sans-serif; letter-spacing:.01em; color:#444; padding:1pt 8pt; text-align:right; border-bottom:.8pt solid #000; }
 table.mini th:first-child, table.mini td:first-child { text-align:left; }
 table.mini td { padding:2pt 8pt; text-align:right; }
 table.mini tr.tot td { border-top:.8pt solid #000; font-weight:700; }

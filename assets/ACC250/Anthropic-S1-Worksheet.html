@@ -18,7 +18,7 @@ body { margin:0; color:#000; font:10pt/1.32 "Times New Roman",Times,serif; }
 
 header { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:1.2pt solid #000;
   padding-bottom:3pt; margin-bottom:5pt; }
-header .course { font:700 8.5pt Arial,sans-serif; letter-spacing:.1em; text-transform:uppercase; }
+header .course { font:700 8.5pt Arial,sans-serif; letter-spacing:.01em; }
 header .name span { display:inline-block; width:2.2in; border-bottom:.8pt solid #000; }
 h1 { font-size:14pt; margin:0 0 3pt; }
 .filing { font-size:8.3pt; margin:0 0 6pt; padding:2.5pt 6pt; border:.8pt solid #000; border-radius:3pt; }
@@ -49,7 +49,7 @@ h1 { font-size:14pt; margin:0 0 3pt; }
 .stmt tr.uu td.n { border-bottom:2.4pt double #000; }
 
 /* ---- questions ---- */
-h2 { font:700 9pt Arial,sans-serif; letter-spacing:.08em; text-transform:uppercase;
+h2 { font:700 9pt Arial,sans-serif; letter-spacing:.01em;
   margin:4pt 0 3pt; padding-bottom:2pt; border-bottom:.8pt solid #000; }
 h2 small { font:400 8.5pt "Times New Roman",serif; letter-spacing:0; text-transform:none; margin-left:6pt; }
 .qcols { display:grid; grid-template-columns:1fr 1fr; gap:0 .28in; }
@@ -64,7 +64,7 @@ html.key .bl::after { content:attr(data-a); color:var(--key); font-weight:700; }
 
 /* ---- page 2 ---- */
 .defs { display:grid; grid-template-columns:1fr 1fr; gap:0 .3in; font-size:9.6pt; }
-.defs h3 { font:700 8.6pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); margin:8pt 0 2pt; }
+.defs h3 { font:700 8.6pt Arial,sans-serif; letter-spacing:.01em; color:var(--accent); margin:8pt 0 2pt; }
 .defs dl { margin:0; }
 .defs dt { font-weight:700; margin-top:4pt; }
 .defs dd { margin:0 0 0 10pt; }
@@ -92,12 +92,12 @@ html.key .keytag { display:inline; }
 }
 
 .box { border:.8pt solid #000; border-radius:3pt; padding:4pt 8pt; margin:6pt 0; font-size:9.6pt; }
-.box b.t { display:block; font:700 8.6pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; margin-bottom:2pt; }
+.box b.t { display:block; font:700 8.6pt Arial,sans-serif; letter-spacing:.01em; margin-bottom:2pt; }
 ol.qs.full li { grid-template-columns:16pt 1fr 1in; }
 .qblock { font-size:9.8pt; margin:9pt 0 0; display:grid; grid-template-columns:16pt 1fr; gap:4pt; }
 .qblock p { margin:0 0 3pt; }
 .je2 { border-collapse:collapse; margin:3pt 0 2pt; font-size:9.6pt; }
-.je2 th { font:700 7.8pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#444; text-align:left; padding:1pt 6pt; }
+.je2 th { font:700 7.8pt Arial,sans-serif; letter-spacing:.01em; color:#444; text-align:left; padding:1pt 6pt; }
 .je2 td { padding:3pt 6pt 1pt; vertical-align:bottom; }
 .je2 .acct { width:2.6in; } .je2 .amt { width:.8in; }
 .je2 .cr .bl { margin-left:18pt; }
@@ -114,13 +114,15 @@ table.terms td:first-child { width:16%; font-weight:700; color:#444; font-size:8
 .terms2 { font-size:9.4pt; margin:0 0 6pt; }
 .terms2 p { margin:1.5pt 0; }
 .intro2 { margin:0 0 4pt; font-size:9.6pt; }
+.sub2 { margin:0 0 2pt; font-size:9.6pt; }
+.fn { margin:6pt 0 0; font-size:8.8pt; color:#333; }
 .box.quote { font-style:italic; font-size:9.2pt; margin-top:8pt; }
 .box.quote b.t { font-style:normal; }
 .box.quote mark { background:#fff7cc; font-weight:700; padding:0 1pt; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
 .stmt td.n + td.n { width:.8in; padding-left:12pt; }
 .inl { display:inline-block; min-width:.8in; vertical-align:bottom; }
 table.mini { border-collapse:collapse; font-size:9.6pt; margin:3pt 0; }
-table.mini th { font:700 7.8pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#444; padding:1pt 8pt; text-align:right; border-bottom:.8pt solid #000; }
+table.mini th { font:700 7.8pt Arial,sans-serif; letter-spacing:.01em; color:#444; padding:1pt 8pt; text-align:right; border-bottom:.8pt solid #000; }
 table.mini th:first-child, table.mini td:first-child { text-align:left; }
 table.mini td { padding:2pt 8pt; text-align:right; }
 table.mini tr.tot td { border-top:.8pt solid #000; font-weight:700; }
