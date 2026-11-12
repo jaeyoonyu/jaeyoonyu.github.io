@@ -38,6 +38,17 @@ html.key .why { display:block; }
 .qblock { font-size:10pt; margin:8pt 0 0; display:grid; grid-template-columns:16pt 1fr; gap:4pt; }
 .qblock p { margin:0 0 3pt; }
 .fn { margin:8pt 0 0; font-size:8.8pt; color:#333; }
+.tw { display:grid; grid-template-columns:3.9in 1fr; gap:.3in; align-items:center; margin:4pt 0 2pt; }
+table.tacct { border-collapse:collapse; font-size:10pt; width:3.9in; }
+table.tacct th { font:700 10pt "Times New Roman",serif; text-align:center; padding:2pt; border-bottom:1.6pt solid #000; }
+table.tacct td { padding:5pt 6pt 1pt; vertical-align:bottom; }
+table.tacct td.lab { width:.85in; color:#333; }
+table.tacct td.amt { width:1in; }
+table.tacct td.dr { border-right:1.6pt solid #000; }
+table.tacct td.cl { padding-left:10pt; }
+table.tacct tr.bal td { border-top:.8pt solid #000; font-weight:700; }
+.tq { font-size:10pt; }
+table.je3 td { padding:5pt 6pt 1pt; }
 '''
 
 
@@ -55,6 +66,20 @@ def je(entries):
     for d, dr, cr, amt in entries:
         rows.append(f'<tr class="first"><td class="d">{d}</td><td>{bl(dr, "nm")}</td><td class="amt">{bl(amt)}</td><td class="amt"></td></tr>')
         rows.append(f'<tr class="cr"><td></td><td>{bl(cr, "nm")}</td><td class="amt"></td><td class="amt">{bl(amt)}</td></tr>')
+    rows.append('</table>')
+    return ''.join(rows)
+
+
+def taccount(debits, credits, bal):
+    """debits/credits: lists of (label, amount). Amounts are blanks for students."""
+    n = max(len(debits), len(credits))
+    rows = ['<table class="tacct"><tr><th colspan="4">A/R (unadjusted)</th></tr>']
+    for i in range(n):
+        dl, da = debits[i] if i < len(debits) else ('', None)
+        cl, ca = credits[i] if i < len(credits) else ('', None)
+        rows.append(f'<tr><td class="lab">{dl}</td><td class="amt dr">{bl(da) if da else ""}</td>'
+                    f'<td class="lab cl">{cl}</td><td class="amt">{bl(ca) if ca else ""}</td></tr>')
+    rows.append(f'<tr class="bal"><td class="lab">Unadj. bal.</td><td class="amt dr">{bl(bal)}</td><td class="lab cl"></td><td class="amt"></td></tr>')
     rows.append('</table>')
     return ''.join(rows)
 
@@ -84,14 +109,22 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 <li><b>Jan 31:</b> Record bad debt expense: 2% of January&rsquo;s credit sales.</li>
 </ul></div>
 
-<h2>1. Journal entries for January <small>Use (+A), (&minus;A), (+R), (+E), (+xA), (&minus;xA).</small></h2>
+<h2>1. Journal entries for January transactions <small>Use (+A), (&minus;A), (+R), (+E), (+xA), (&minus;xA).</small></h2>
 {je([("Jan 5", "Cash (+A)", "Sales Rev (+R)", "4,000"),
      ("Jan 10", "A/R (+A)", "Sales Rev (+R)", "6,000"),
-     ("Jan 20", "A/R (+A)", "Sales Rev (+R)", "4,000"),
-     ("Jan 31", "BDE (+E)", "ADA (+xA, &minus;A)", "200")])}
-<div class="why">Jan 31: January credit sales = 6,000 + 4,000 = 10,000; BDE = 10,000 &times; 2% = 200. The cash sale has no collection risk, so it is not included.</div>
+     ("Jan 20", "A/R (+A)", "Sales Rev (+R)", "4,000")])}
 
-<h2 style="margin-top:10pt">2. Accounts receivable at the end of January</h2>
+<h2 style="margin-top:8pt">2. Unadjusted T-account for A/R, before the Jan 31 adjustment</h2>
+<div class="tw">
+{taccount([("Jan 10", "6,000"), ("Jan 20", "4,000")], [], "10,000")}
+<div class="tq">January credit sales = {inl("10,000")}<br><br>BDE = credit sales &times; 2% = {inl("200")}</div>
+</div>
+
+<h2 style="margin-top:8pt">3. Adjusting journal entry (AJE), Jan 31</h2>
+{je([("Jan 31", "BDE (+E)", "ADA (+xA, &minus;A)", "200")])}
+<div class="why">The cash sale has no collection risk, so it is not in A/R and not in the 2% estimate.</div>
+
+<h2 style="margin-top:8pt">4. Accounts receivable at the end of January</h2>
 {ar_table("Jan 31", "10,000", "200", "9,800")}
 <p class="fn">Cost of goods sold entries are omitted for brevity (see Ch6).</p>
 '''
@@ -105,18 +138,26 @@ back = f'''<h1 style="margin-top:0">February</h1>
 <li><b>Feb 28:</b> Record bad debt expense: 2% of February&rsquo;s credit sales.</li>
 </ul></div>
 
-<h2>3. Journal entries for February</h2>
+<h2>5. Journal entries for February transactions</h2>
 {je([("Feb 8", "Cash (+A)", "Sales Rev (+R)", "3,000"),
      ("Feb 15", "A/R (+A)", "Sales Rev (+R)", "5,000"),
-     ("Feb 20", "ADA (&minus;xA, +A)", "A/R (&minus;A)", "100"),
-     ("Feb 28", "BDE (+E)", "ADA (+xA, &minus;A)", "100")])}
-<div class="why">Feb 20: 10,000 &times; 1% = 100 written off against ADA (no expense). Feb 28: 5,000 &times; 2% = 100.</div>
+     ("Feb 20", "ADA (&minus;xA, +A)", "A/R (&minus;A)", "100")])}
+<div class="why">Feb 20: 10,000 &times; 1% = 100 is written off against ADA. No expense is recorded.</div>
 
-<h2 style="margin-top:10pt">4. Accounts receivable at the end of February</h2>
+<h2 style="margin-top:8pt">6. Unadjusted T-account for A/R, before the Feb 28 adjustment</h2>
+<div class="tw">
+{taccount([("Beg. bal.", "10,000"), ("Feb 15", "5,000")], [("Feb 20", "100")], "14,900")}
+<div class="tq">February credit sales = {inl("5,000")}<br><br>BDE = credit sales &times; 2% = {inl("100")}</div>
+</div>
+
+<h2 style="margin-top:8pt">7. Adjusting journal entry (AJE), Feb 28</h2>
+{je([("Feb 28", "BDE (+E)", "ADA (+xA, &minus;A)", "100")])}
+
+<h2 style="margin-top:8pt">8. Accounts receivable at the end of February</h2>
 {ar_table("Feb 28", "14,900", "200", "14,700")}
 <div class="why">Gross A/R = 10,000 + 5,000 &minus; 100 = 14,900. ADA = 200 &minus; 100 + 100 = 200. Net A/R = 14,900 &minus; 200 = 14,700.</div>
 
-<h2 style="margin-top:10pt">5. Put it together</h2>
+<h2 style="margin-top:8pt">9. Put it together</h2>
 <div class="qblock"><span class="no">a</span><div>
 <p>BDE for January = {inl("200")} &nbsp;&nbsp; BDE for February = {inl("100")}</p></div></div>
 <div class="qblock"><span class="no">b</span><div>
