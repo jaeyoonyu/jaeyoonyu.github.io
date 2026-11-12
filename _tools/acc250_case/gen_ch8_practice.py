@@ -38,6 +38,14 @@ html.key .why { display:block; }
 .qblock { font-size:10pt; margin:8pt 0 0; display:grid; grid-template-columns:16pt 1fr; gap:4pt; }
 .qblock p { margin:0 0 3pt; }
 .fn { margin:8pt 0 0; font-size:8.8pt; color:#333; }
+svg.tl { display:block; width:100%; height:auto; margin:0 0 4pt; font-family:Arial,Helvetica,sans-serif; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+table.sum { border-collapse:collapse; font-size:10.5pt; margin:4pt 0; min-width:5.4in; }
+table.sum th { font:700 8.8pt Arial,sans-serif; text-align:right; padding:3pt 10pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+table.sum th:first-child, table.sum td:first-child { text-align:left; }
+table.sum td { padding:6pt 10pt 2pt; vertical-align:bottom; }
+table.sum td.amt { width:1.2in; }
+table.sum tr.tot td { border-top:.8pt solid #000; font-weight:700; }
+table.sum tr.sep td { border-bottom:.8pt solid #999; }
 .tw { display:grid; grid-template-columns:3.9in 1fr; gap:.3in; align-items:center; margin:4pt 0 2pt; }
 table.tacct { border-collapse:collapse; font-size:10pt; width:3.9in; }
 table.tacct th { font:700 10pt "Times New Roman",serif; text-align:center; padding:2pt; border-bottom:1.6pt solid #000; }
@@ -84,6 +92,27 @@ def taccount(debits, credits, bal):
     return ''.join(rows)
 
 
+COLORS = {'start': '#5c6863', 'cash': '#5b7f95', 'credit': '#1a7a5e', 'writeoff': '#b3200f', 'aje': '#8a6d1f'}
+
+
+def timeline(ndays, events):
+    """events: (day, date label, line 1, line 2, kind). Inline SVG, prints in color or gray."""
+    W, x0, x1, y = 740, 70, 670, 40
+    def X(d): return x0 + (d - 1) / (ndays - 1) * (x1 - x0)
+    out = [f'<svg class="tl" viewBox="0 0 {W} 92" role="img" aria-label="Timeline">',
+           f'<line x1="{x0}" y1="{y}" x2="{x1}" y2="{y}" stroke="#16263a" stroke-width="2.5"/>',
+           f'<polygon points="{x1},{y-5} {x1+10},{y} {x1},{y+5}" fill="#16263a"/>']
+    for d, lab, l1, l2, k in events:
+        c = COLORS[k]; x = X(d)
+        out.append(f'<circle cx="{x:.1f}" cy="{y}" r="7" fill="{c}" stroke="#fff" stroke-width="2"/>')
+        out.append(f'<text x="{x:.1f}" y="{y-16}" text-anchor="middle" font-weight="700" font-size="13" fill="#16263a">{lab}</text>')
+        out.append(f'<text x="{x:.1f}" y="{y+26}" text-anchor="middle" font-size="12" font-weight="700" fill="{c}">{l1}</text>')
+        if l2:
+            out.append(f'<text x="{x:.1f}" y="{y+42}" text-anchor="middle" font-size="12" fill="#333">{l2}</text>')
+    out.append('</svg>')
+    return ''.join(out)
+
+
 def ar_table(date, gross, ada, net):
     return f'''<table class="ar">
 <tr><th>Accounts receivable, {date}</th><th>Amount</th></tr>
@@ -108,6 +137,11 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 <li><b>Jan 20:</b> Sold shoes to Store B <b>on credit, $4,000</b>.</li>
 <li><b>Jan 31:</b> Record bad debt expense: 2% of January&rsquo;s credit sales.</li>
 </ul></div>
+{timeline(31, [(1, "Jan 1", "Start", "A/R = ADA = $0", "start"),
+               (5, "Jan 5", "Cash sale", "$4,000", "cash"),
+               (10, "Jan 10", "Credit sale", "$6,000", "credit"),
+               (20, "Jan 20", "Credit sale", "$4,000", "credit"),
+               (31, "Jan 31", "AJE: BDE", "2% of credit sales", "aje")])}
 
 <h2>1. Journal entries for January transactions <small>Use (+A), (&minus;A), (+R), (+E), (+xA), (&minus;xA).</small></h2>
 {je([("Jan 5", "Cash (+A)", "Sales Rev (+R)", "4,000"),
@@ -137,6 +171,11 @@ back = f'''<h1 style="margin-top:0">February</h1>
 <li><b>Feb 20:</b> Store A went out of business. An amount equal to <b>1% of January&rsquo;s credit sales</b> is now deemed uncollectible and is written off.</li>
 <li><b>Feb 28:</b> Record bad debt expense: 2% of February&rsquo;s credit sales.</li>
 </ul></div>
+{timeline(28, [(1, "Feb 1", "Start", "Jan 31 balances", "start"),
+               (8, "Feb 8", "Cash sale", "$3,000", "cash"),
+               (15, "Feb 15", "Credit sale", "$8,000", "credit"),
+               (20, "Feb 20", "Write-off", "1% of Jan credit sales", "writeoff"),
+               (28, "Feb 28", "AJE: BDE", "2% of credit sales", "aje")])}
 
 <h2>5. Journal entries for February transactions</h2>
 {je([("Feb 8", "Cash (+A)", "Sales Rev (+R)", "3,000"),
@@ -153,18 +192,14 @@ back = f'''<h1 style="margin-top:0">February</h1>
 <h2 style="margin-top:8pt">7. Adjusting journal entry (AJE), Feb 28</h2>
 {je([("Feb 28", "BDE (+E)", "ADA (+xA, &minus;A)", "160")])}
 
-<h2 style="margin-top:8pt">8. Accounts receivable at the end of February</h2>
-{ar_table("Feb 28", "17,900", "260", "17,640")}
-<div class="why">Gross A/R = 10,000 + 8,000 &minus; 100 = 17,900. ADA = 200 &minus; 100 + 160 = 260. Net A/R = 17,900 &minus; 260 = 17,640.</div>
-
-<h2 style="margin-top:8pt">9. Put it together</h2>
-<div class="qblock"><span class="no">a</span><div>
-<p>BDE for January = {inl("200")} &nbsp;&nbsp; BDE for February = {inl("160")}</p></div></div>
-<div class="qblock"><span class="no">b</span><div>
-<p>ADA equation for February: Beginning ADA {inl("200")} + BDE {inl("160")} &minus; Write-off {inl("100")} = Ending ADA {inl("260")}</p></div></div>
-<div class="qblock"><span class="no">c</span><div>
-<p>Did the Feb 20 write-off change BDE? {pick(["yes", "no"], "no")} &nbsp;&nbsp; Did it change net A/R? {pick(["yes", "no"], "no")}</p>
-<div class="why">The loss was already recorded as BDE in January (matching principle). The write-off lowers gross A/R and ADA by the same 100, so net A/R stays the same.</div></div></div>
+<h2 style="margin-top:8pt">8. Put it together: January and February</h2>
+<table class="sum">
+<tr><th></th><th>January</th><th>February</th></tr>
+<tr class="sep"><td>BDE for the month</td><td class="amt">{bl("200")}</td><td class="amt">{bl("160")}</td></tr>
+<tr><td>Gross A/R, end of month</td><td class="amt">{bl("10,000")}</td><td class="amt">{bl("17,900")}</td></tr>
+<tr><td>Less: ADA, end of month</td><td class="amt">{bl("200")}</td><td class="amt">{bl("260")}</td></tr>
+<tr class="tot"><td>Net A/R, end of month</td><td class="amt">{bl("9,800")}</td><td class="amt">{bl("17,640")}</td></tr>
+</table>
 '''
 
 html = f'''<!DOCTYPE html>
