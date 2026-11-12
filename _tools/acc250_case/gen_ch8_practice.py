@@ -11,11 +11,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CSS = open(os.path.join(HERE, 'case.css')).read() + '''
 .intro2 { margin:0 0 6pt; font-size:10pt; }
 .given { border:.8pt solid #000; border-radius:3pt; padding:5pt 9pt; margin:4pt 0 8pt; font-size:10pt; }
-.given b.t { display:block; font:700 8.6pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; margin-bottom:3pt; }
+.given b.t { display:block; font:700 8.6pt Arial,sans-serif; letter-spacing:.01em; margin-bottom:3pt; }
 .given ul { margin:0; padding-left:16pt; }
 .given li { margin:2pt 0; }
 table.je3 { width:100%; border-collapse:collapse; font-size:10pt; margin:2pt 0 4pt; }
-table.je3 th { font:700 7.8pt Arial,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#444;
+table.je3 th { font:700 7.8pt Arial,sans-serif; letter-spacing:.01em; color:#444;
   text-align:left; padding:2pt 6pt; border-bottom:.8pt solid #000; }
 table.je3 th.r { text-align:right; }
 table.je3 td { padding:7pt 6pt 1pt; vertical-align:bottom; }
@@ -85,9 +85,9 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 </ul></div>
 
 <h2>1. Journal entries for January <small>Use (+A), (&minus;A), (+R), (+E), (+xA), (&minus;xA).</small></h2>
-{je([("Jan 5", "Cash (+A)", "Sales revenues (+R)", "4,000"),
-     ("Jan 10", "A/R (+A)", "Sales revenues (+R)", "6,000"),
-     ("Jan 20", "A/R (+A)", "Sales revenues (+R)", "4,000"),
+{je([("Jan 5", "Cash (+A)", "Sales Rev (+R)", "4,000"),
+     ("Jan 10", "A/R (+A)", "Sales Rev (+R)", "6,000"),
+     ("Jan 20", "A/R (+A)", "Sales Rev (+R)", "4,000"),
      ("Jan 31", "BDE (+E)", "ADA (+xA, &minus;A)", "200")])}
 <div class="why">Jan 31: January credit sales = 6,000 + 4,000 = 10,000; BDE = 10,000 &times; 2% = 200. The cash sale has no collection risk, so it is not included.</div>
 
@@ -106,8 +106,8 @@ back = f'''<h1 style="margin-top:0">February</h1>
 </ul></div>
 
 <h2>3. Journal entries for February</h2>
-{je([("Feb 8", "Cash (+A)", "Sales revenues (+R)", "3,000"),
-     ("Feb 15", "A/R (+A)", "Sales revenues (+R)", "5,000"),
+{je([("Feb 8", "Cash (+A)", "Sales Rev (+R)", "3,000"),
+     ("Feb 15", "A/R (+A)", "Sales Rev (+R)", "5,000"),
      ("Feb 20", "ADA (&minus;xA, +A)", "A/R (&minus;A)", "100"),
      ("Feb 28", "BDE (+E)", "ADA (+xA, &minus;A)", "100")])}
 <div class="why">Feb 20: 10,000 &times; 1% = 100 written off against ADA (no expense). Feb 28: 5,000 &times; 2% = 100.</div>
