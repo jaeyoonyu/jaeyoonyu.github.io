@@ -38,6 +38,8 @@ html.key .why { display:block; }
 .qblock { font-size:10pt; margin:8pt 0 0; display:grid; grid-template-columns:16pt 1fr; gap:4pt; }
 .qblock p { margin:0 0 3pt; }
 .fn { margin:8pt 0 0; font-size:8.8pt; color:#333; }
+.pgfn { position:absolute; left:.5in; right:.5in; bottom:.32in; font-size:9.2pt; color:#000; border-top:.6pt solid #000; padding-top:3pt; }
+.pgfn sup, h2 sup { font-size:.75em; }
 svg.tl { display:block; width:100%; height:auto; margin:0 0 4pt; font-family:Arial,Helvetica,sans-serif; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
 table.sum { border-collapse:collapse; font-size:10.5pt; margin:4pt 0; min-width:5.4in; }
 table.sum th { font:700 8.8pt Arial,sans-serif; text-align:right; padding:3pt 10pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
@@ -143,7 +145,7 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
                (20, "Jan 20", "Credit sale", "$4,000", "credit"),
                (31, "Jan 31", "AJE: BDE", "2% of credit sales", "aje")])}
 
-<h2>1. Journal entries for January transactions <small>Use (+A), (&minus;A), (+R), (+E), (+xA), (&minus;xA).</small></h2>
+<h2>1. Journal entries for January transactions<sup>*</sup> <small>Use (+A), (&minus;A), (+R), (+E), (+xA), (&minus;xA).</small></h2>
 {je([("Jan 5", "Cash (+A)", "Sales Rev (+R)", "4,000"),
      ("Jan 10", "A/R (+A)", "Sales Rev (+R)", "6,000"),
      ("Jan 20", "A/R (+A)", "Sales Rev (+R)", "4,000")])}
@@ -160,7 +162,7 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 
 <h2 style="margin-top:8pt">4. Accounts receivable at the end of January</h2>
 {ar_table("Jan 31", "10,000", "200", "9,800")}
-<p class="fn">Cost of goods sold entries are omitted for brevity (see Ch6).</p>
+<div class="pgfn"><sup>*</sup> Cost of goods sold entries (Dr CGS, Cr Inventory) are omitted for brevity. See Ch6.</div>
 '''
 
 back = f'''<h1 style="margin-top:0">February</h1>
@@ -177,7 +179,7 @@ back = f'''<h1 style="margin-top:0">February</h1>
                (20, "Feb 20", "Write-off", "1% of Jan credit sales", "writeoff"),
                (28, "Feb 28", "AJE: BDE", "2% of credit sales", "aje")])}
 
-<h2>5. Journal entries for February transactions</h2>
+<h2>5. Journal entries for February transactions<sup>*</sup></h2>
 {je([("Feb 8", "Cash (+A)", "Sales Rev (+R)", "3,000"),
      ("Feb 15", "A/R (+A)", "Sales Rev (+R)", "8,000"),
      ("Feb 20", "ADA (&minus;xA, +A)", "A/R (&minus;A)", "100")])}
@@ -200,6 +202,7 @@ back = f'''<h1 style="margin-top:0">February</h1>
 <tr><td>Less: ADA, end of month</td><td class="amt">{bl("200")}</td><td class="amt">{bl("260")}</td></tr>
 <tr class="tot"><td>Net A/R, end of month</td><td class="amt">{bl("9,800")}</td><td class="amt">{bl("17,640")}</td></tr>
 </table>
+<div class="pgfn"><sup>*</sup> Cost of goods sold entries (Dr CGS, Cr Inventory) are omitted for brevity. See Ch6.</div>
 '''
 
 html = f'''<!DOCTYPE html>
