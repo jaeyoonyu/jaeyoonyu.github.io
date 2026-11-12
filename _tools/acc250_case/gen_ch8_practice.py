@@ -112,13 +112,13 @@ def net_table(gross, ada, net):
 def taccount(debits, credits, bal):
     """debits/credits: lists of (label, amount). Amounts are blanks for students."""
     n = max(len(debits), len(credits))
-    rows = ['<table class="tacct"><tr><th colspan="4">A/R (unadjusted)</th></tr>']
+    rows = ['<table class="tacct"><tr><th colspan="4">A/R</th></tr>']
     for i in range(n):
         dl, da = debits[i] if i < len(debits) else ('', None)
         cl, ca = credits[i] if i < len(credits) else ('', None)
         rows.append(f'<tr><td class="lab">{dl}</td><td class="amt dr">{bl(da) if da else ""}</td>'
                     f'<td class="lab cl">{cl}</td><td class="amt">{bl(ca) if ca else ""}</td></tr>')
-    rows.append(f'<tr class="bal"><td class="lab">Unadj. bal.</td><td class="amt dr">{bl(bal)}</td><td class="lab cl"></td><td class="amt"></td></tr>')
+    rows.append(f'<tr class="bal"><td class="lab">End. bal.</td><td class="amt dr">{bl(bal)}</td><td class="lab cl"></td><td class="amt"></td></tr>')
     rows.append('</table>')
     return ''.join(rows)
 
@@ -179,7 +179,7 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
      ("Jan 10", "A/R (+A)", "Sales Rev (+R)", "6,000"),
      ("Jan 20", "A/R (+A)", "Sales Rev (+R)", "4,000")])}
 
-<h2 style="margin-top:8pt">2. Unadjusted T-account for A/R, before the Jan 31 adjustment</h2>
+<h2 style="margin-top:8pt">2. T-account for A/R</h2>
 <div class="tw">
 {taccount([("Jan 10", "6,000"), ("Jan 20", "4,000")], [], "10,000")}
 <div class="tq">January credit sales = {inl("10,000")}<br><br>BDE = credit sales &times; 2% = {inl("200")}</div>
@@ -217,7 +217,7 @@ back = f'''<h1 style="margin-top:0">February</h1>
      ("Feb 20", "ADA (&minus;xA, +A)", "A/R (&minus;A)", "100")])}
 <div class="why">Feb 20: 10,000 &times; 1% = 100 is written off against ADA. No expense is recorded.</div>
 
-<h2 style="margin-top:8pt">6. Unadjusted T-account for A/R, before the Feb 28 adjustment</h2>
+<h2 style="margin-top:8pt">6. T-account for A/R</h2>
 <div class="tw">
 {taccount([("Beg. bal.", "10,000"), ("Feb 15", "8,000")], [("Feb 20", "100")], "17,900")}
 <div class="tq">February credit sales = {inl("8,000")}<br><br>BDE = credit sales &times; 2% = {inl("160")}</div>
