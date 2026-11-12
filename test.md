@@ -19,6 +19,7 @@ Materials being tested before they move to a course page.
 | In-Class Case: Walmart | Ch1-7 | <a href="/assets/ACC250/Walmart-Case-Slides.html?v=2e59ffde" target="_blank">Slides</a> | [PDF](/assets/ACC250/Walmart-Case.pdf?v=e434faa1) | [PDF](/assets/ACC250/Walmart-Case-Key.pdf?v=1cd7cc43) |
 | In-Class Case: Costco | Ch1-7 | <a href="/assets/ACC250/Costco-Case-Slides.html?v=9c835d2f" target="_blank">Slides</a> | [PDF](/assets/ACC250/Costco-Case.pdf?v=9c44a20d) | [PDF](/assets/ACC250/Costco-Case-Key.pdf?v=284b3cae) |
 | Bad Debts in Real Life: Crocs and Costco (opening) | Ch8 | <a href="/assets/ACC250/Ch8-BadDebt-RealLife.html?v=cc52e7b6" target="_blank">Slides</a> | [PDF](/assets/ACC250/Ch8-BadDebt-Worksheet.pdf?v=cb5c6d70) | [PDF](/assets/ACC250/Ch8-BadDebt-Worksheet-Key.pdf?v=575807af) |
+| Ch8 Practice: % of Credit Sales (Jan-Feb) | Ch8 | — | [PDF](/assets/ACC250/Ch8-Practice-Worksheet.pdf?v=8183f5df) | [PDF](/assets/ACC250/Ch8-Practice-Worksheet-Key.pdf?v=9c7c1e3f) |
 | Accounting in the News: Anthropic's S-1 (IPO filing) | Overview | <a href="/assets/ACC250/Anthropic-S1.html?v=b26f1b52" target="_blank">Slides</a> | [PDF](/assets/ACC250/Anthropic-S1-Worksheet.pdf?v=44b1a75d) | [PDF](/assets/ACC250/Anthropic-S1-Worksheet-Key.pdf?v=132d7cf6) |
 
 </div>
