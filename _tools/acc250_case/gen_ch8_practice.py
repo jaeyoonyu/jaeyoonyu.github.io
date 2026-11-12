@@ -64,6 +64,14 @@ table.ar3 td.amt { width:1in; }
 table.ar3 td.mean { font-style:italic; color:#000; }
 table.ar3 tr.tot td { border-top:.8pt solid #000; font-weight:700; }
 table.ar3 tr.tot td.mean { font-weight:400; }
+/* spacing: spread the free space through the page */
+.pair { margin-top:13pt !important; }
+table.je3 td { padding:7pt 6pt 2pt !important; }
+table.tacct td { padding:8pt 6pt 2pt !important; }
+.tq2 { margin:4pt 0 8pt !important; }
+table.ar3 td { padding:7pt 10pt 2pt !important; }
+.sumh { margin-top:16pt !important; }
+svg.tl { margin-bottom:6pt !important; }
 svg.tl { display:block; width:100%; height:auto; margin:0 0 4pt; font-family:Arial,Helvetica,sans-serif; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
 table.sum { border-collapse:collapse; font-size:10.5pt; margin:4pt 0; min-width:5.4in; }
 table.sum th { font:700 8.8pt Arial,sans-serif; text-align:right; padding:3pt 10pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
@@ -134,7 +142,8 @@ def net_table(gross, ada, net):
 
 def summary(month, date, sales, bde, gross, ada, net):
     return f'''<div class="sumrow">
-<p class="tq2">{month} credit sales = {inl(sales)} &nbsp;&nbsp;&nbsp; BDE = credit sales &times; 2% = {inl(bde)}</p>
+<p class="tq2">{month} credit sales = {inl(sales)}</p>
+<p class="tq2">BDE = credit sales &times; 2% = {inl(bde)}</p>
 <table class="ar3">
 <tr><th></th><th>{date}</th><th class="mean">What it means</th></tr>
 <tr><td>Gross A/R</td><td class="amt">{bl(gross)}</td><td class="mean">Total A/R</td></tr>
@@ -235,7 +244,7 @@ Based on experience, it expects <b>2% of each month&rsquo;s credit sales</b> to 
 </div>
 </div>
 
-<h2 style="margin-top:12pt">5. Summary: January</h2>
+<h2 class="sumh">5. Summary: January</h2>
 {summary("January", "Jan 31", "10,000", "200", "10,000", "200", "9,800")}
 <div class="pgfn"><sup>*</sup> Cost of goods sold entries (Dr CGS, Cr Inventory) are omitted for brevity. See Ch6.</div>
 '''
@@ -279,7 +288,7 @@ back = f'''<h1 style="margin-top:0">February</h1>
 </div>
 </div>
 
-<h2 style="margin-top:12pt">10. Summary: February</h2>
+<h2 class="sumh">10. Summary: February</h2>
 {summary("February", "Feb 28", "8,000", "160", "17,900", "260", "17,640")}
 <div class="pgfn"><sup>*</sup> Cost of goods sold entries (Dr CGS, Cr Inventory) are omitted for brevity. See Ch6.</div>
 '''
