@@ -16,11 +16,11 @@ Materials being tested before they move to a course page.
 
 | Material | Chapters | Slides | Worksheet | Answer key |
 |----------|----------|--------|-----------|------------|
-| In-Class Case: Walmart | Ch1-7 | <a href="/assets/ACC250/Walmart-Case-Slides.html?v=1a712888" target="_blank">Slides</a> | [PDF](/assets/ACC250/Walmart-Case.pdf?v=1bdf1c5c) | [PDF](/assets/ACC250/Walmart-Case-Key.pdf?v=bf99d5c3) |
-| In-Class Case: Costco | Ch1-7 | <a href="/assets/ACC250/Costco-Case-Slides.html?v=11b1a4e8" target="_blank">Slides</a> | [PDF](/assets/ACC250/Costco-Case.pdf?v=587c1f75) | [PDF](/assets/ACC250/Costco-Case-Key.pdf?v=7dc03514) |
-| Bad Debts in Real Life: Crocs and Costco (opening) | Ch8 | <a href="/assets/ACC250/Ch8-BadDebt-RealLife.html?v=d775de9d" target="_blank">Slides</a> | [PDF](/assets/ACC250/Ch8-BadDebt-Worksheet.pdf?v=461e795e) | [PDF](/assets/ACC250/Ch8-BadDebt-Worksheet-Key.pdf?v=a2dc56e5) |
-| Ch8 Practice: % of Credit Sales (Jan-Feb) | Ch8 | <a href="/assets/ACC250/Ch8-Practice-Slides.html?v=05cf0385" target="_blank">Slides</a> | [PDF](/assets/ACC250/Ch8-Practice-Worksheet.pdf?v=00d267fa) | [PDF](/assets/ACC250/Ch8-Practice-Worksheet-Key.pdf?v=88b67d27) |
-| Accounting in the News: Anthropic's S-1 (IPO filing) | Overview | <a href="/assets/ACC250/Anthropic-S1.html?v=c0bf6288" target="_blank">Slides</a> | [PDF](/assets/ACC250/Anthropic-S1-Worksheet.pdf?v=8cd70999) | [PDF](/assets/ACC250/Anthropic-S1-Worksheet-Key.pdf?v=97c43015) |
+| In-Class Case: Walmart | Ch1-7 | <a href="/assets/ACC250/Walmart-Case-Slides.html?v=f46e749f" target="_blank">Slides</a> | [PDF](/assets/ACC250/Walmart-Case.pdf?v=1bdf1c5c) | [PDF](/assets/ACC250/Walmart-Case-Key.pdf?v=bf99d5c3) |
+| In-Class Case: Costco | Ch1-7 | <a href="/assets/ACC250/Costco-Case-Slides.html?v=1c3e6c90" target="_blank">Slides</a> | [PDF](/assets/ACC250/Costco-Case.pdf?v=587c1f75) | [PDF](/assets/ACC250/Costco-Case-Key.pdf?v=7dc03514) |
+| Bad Debts in Real Life: Crocs and Costco (opening) | Ch8 | <a href="/assets/ACC250/Ch8-BadDebt-RealLife.html?v=4ddeb162" target="_blank">Slides</a> | [PDF](/assets/ACC250/Ch8-BadDebt-Worksheet.pdf?v=461e795e) | [PDF](/assets/ACC250/Ch8-BadDebt-Worksheet-Key.pdf?v=a2dc56e5) |
+| Ch8 Practice: % of Credit Sales (Jan-Feb) | Ch8 | <a href="/assets/ACC250/Ch8-Practice-Slides.html?v=5559c747" target="_blank">Slides</a> | [PDF](/assets/ACC250/Ch8-Practice-Worksheet.pdf?v=00d267fa) | [PDF](/assets/ACC250/Ch8-Practice-Worksheet-Key.pdf?v=88b67d27) |
+| Accounting in the News: Anthropic's S-1 (IPO filing) | Overview | <a href="/assets/ACC250/Anthropic-S1.html?v=e110deba" target="_blank">Slides</a> | [PDF](/assets/ACC250/Anthropic-S1-Worksheet.pdf?v=8cd70999) | [PDF](/assets/ACC250/Anthropic-S1-Worksheet-Key.pdf?v=97c43015) |
 
 </div>
 
