@@ -15,6 +15,50 @@ def photo(name, cap):
         return f'<figure class="ph"><img src="img/{name}" alt=""><figcaption>{cap}</figcaption></figure>'
     return ''
 
+
+import math
+def pie(items, total_label):
+    """items: (name, value $B, logo file or None, logo w, logo h, color). Inline SVG pie with logo labels."""
+    W, H, cx, cy, r = 1100, 560, 550, 268, 205
+    tot = sum(v for _, v, *_ in items)
+    out = [f'<svg viewBox="0 0 {W} {H}" style="width:100%;height:auto;display:block" font-family="Helvetica Neue,Arial,sans-serif">']
+    a0 = -math.pi / 2
+    for name, v, logo, lw, lh, col in items:
+        a1 = a0 + v / tot * 2 * math.pi
+        x0, y0 = cx + r * math.cos(a0), cy + r * math.sin(a0)
+        x1, y1 = cx + r * math.cos(a1), cy + r * math.sin(a1)
+        big = 1 if a1 - a0 > math.pi else 0
+        out.append(f'<path d="M{cx},{cy} L{x0:.1f},{y0:.1f} A{r},{r} 0 {big} 1 {x1:.1f},{y1:.1f} Z" fill="{col}" stroke="#fff" stroke-width="3"/>')
+        am = (a0 + a1) / 2
+        pct = v / tot * 100
+        # percent inside the slice
+        ix, iy = cx + r * .66 * math.cos(am), cy + r * .66 * math.sin(am)
+        out.append(f'<text x="{ix:.1f}" y="{iy+9:.1f}" text-anchor="middle" font-size="26" font-weight="700" fill="#fff">{pct:.0f}%</text>')
+        # label outside: logo + value
+        lx, ly = cx + (r + 34) * math.cos(am), cy + (r + 34) * math.sin(am)
+        right = math.cos(am) >= 0
+        anchor = 'start' if right else 'end'
+        bx = lx if right else lx - max(lw, 150)
+        out.append(f'<line x1="{cx + r*math.cos(am):.1f}" y1="{cy + r*math.sin(am):.1f}" x2="{lx:.1f}" y2="{ly:.1f}" stroke="#888" stroke-width="1.5"/>')
+        if logo:
+            ix0 = lx if right else lx - lw
+            out.append(f'<image href="img/logos/{logo}" x="{ix0:.1f}" y="{ly - lh - 2:.1f}" width="{lw}" height="{lh}" preserveAspectRatio="xMidYMid meet"/>')
+        else:
+            out.append(f'<text x="{lx:.1f}" y="{ly - 6:.1f}" text-anchor="{anchor}" font-size="24" font-weight="700" fill="#333">{name}</text>')
+        out.append(f'<text x="{lx:.1f}" y="{ly + 24:.1f}" text-anchor="{anchor}" font-size="22" fill="#333">${v:.1f}B</text>')
+        a0 = a1
+    out.append(f'<text x="{cx}" y="{H - 4}" text-anchor="middle" font-size="22" fill="#333">{total_label}</text>')
+    out.append('</svg>')
+    return ''.join(out)
+
+PORTFOLIO = pie([("Apple", 66.0, "apple.svg", 34, 42, "#6e6e6e"),
+                 ("American Express", 51.3, "amex.svg", 62, 62, "#2e77bb"),
+                 ("Alphabet", 37.8, "alphabet.svg", 130, 32, "#34a853"),
+                 ("Coca-Cola", 32.5, "cocacola.svg", 120, 38, "#e41e2b"),
+                 ("Bank of America", 27.5, "bofa.svg", 200, 20, "#012169"),
+                 ("All others", 84.2, None, 0, 0, "#b9b9b9")],
+                "Total: $299.3B, June 30, 2026")
+
 slides = []
 
 slides.append(('title', '', '''
@@ -33,20 +77,10 @@ slides.append(('', 'Berkshire Hathaway, Warren Buffett and Greg Abel', f'''
 <div class="phrow">{photo("buffett.jpg", "Warren Buffett (U.S. International Trade Administration, public domain)")}{photo("abel.jpg", "Greg Abel (Tankforwin, CC BY-SA 4.0)")}</div>
 <p class="credit">Photos via Wikimedia Commons.</p>'''))
 
-slides.append(('', 'Berkshire&rsquo;s Stock Portfolio', '''
-<p>Besides the businesses it owns, Berkshire holds shares of other public companies.</p>
-<table class="bt">
-<tr><th>Company</th><th class="r">Market value</th><th class="r">% of portfolio</th></tr>
-<tr><td>Apple</td><td class="r">$66.0B</td><td class="r">22.0%</td></tr>
-<tr><td>American Express</td><td class="r">$51.3B</td><td class="r">17.1%</td></tr>
-<tr><td>Alphabet (Google)</td><td class="r">$37.8B</td><td class="r">12.6%</td></tr>
-<tr><td>Coca-Cola</td><td class="r">$32.5B</td><td class="r">10.9%</td></tr>
-<tr><td>Bank of America</td><td class="r">$27.5B</td><td class="r">9.2%</td></tr>
-<tr><td>All others (Chevron, &hellip;)</td><td class="r">$84.2B</td><td class="r">28.1%</td></tr>
-<tr class="yel"><td><b>Total</b></td><td class="r"><b>$299.3B</b></td><td class="r"><b>100%</b></td></tr>
-</table>
-<ul><li>Five stocks make up about <b>72%</b> of the portfolio.</li></ul>
-<p class="note">As of June 30, 2026 (Form 13F, U.S.-listed stocks). &ldquo;Others&rdquo; is the total minus the five largest. The September 30 list is due November 16, 2026.</p>'''))
+slides.append(('', 'Berkshire&rsquo;s Stock Portfolio', f'''
+<p>Besides the businesses it owns, Berkshire holds shares of other public companies. Five stocks make up about <b>72%</b>.</p>
+{PORTFOLIO}
+<p class="note" style="margin-top:4px;font-size:16px">As of June 30, 2026 (Form 13F, U.S.-listed stocks). &ldquo;All others&rdquo; (incl. Chevron) = total minus the five largest. Logos via Wikimedia Commons; trademarks of their owners.</p>'''))
 
 slides.append(('', 'The News: Q3 2026 Results', '''
 <p><span class="ex">Q3 2026</span> (reported Nov 7, 2026)</p>
