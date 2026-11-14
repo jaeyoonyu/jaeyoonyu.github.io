@@ -21,6 +21,7 @@ Materials being tested before they move to a course page.
 | Bad Debts in Real Life: Crocs and Costco (opening) | Ch8 | <a href="/assets/ACC250/Ch8-BadDebt-RealLife.html?v=4ddeb162" target="_blank">Slides</a> | [PDF](/assets/ACC250/Ch8-BadDebt-Worksheet.pdf?v=461e795e) | [PDF](/assets/ACC250/Ch8-BadDebt-Worksheet-Key.pdf?v=a2dc56e5) |
 | Ch8 Practice: % of Credit Sales (Jan-Feb) | Ch8 | <a href="/assets/ACC250/Ch8-Practice-Slides.html?v=5559c747" target="_blank">Slides</a> | [PDF](/assets/ACC250/Ch8-Practice-Worksheet.pdf?v=00d267fa) | [PDF](/assets/ACC250/Ch8-Practice-Worksheet-Key.pdf?v=88b67d27) |
 | Accounting in the News: Anthropic's S-1 (IPO filing) | Overview | <a href="/assets/ACC250/Anthropic-S1.html?v=e110deba" target="_blank">Slides</a> | [PDF](/assets/ACC250/Anthropic-S1-Worksheet.pdf?v=8cd70999) | [PDF](/assets/ACC250/Anthropic-S1-Worksheet-Key.pdf?v=97c43015) |
+| Accounting in the News: Berkshire Buybacks | Ch11 | <a href="/assets/ACC250/Berkshire-Buyback.html?v=d7aad346" target="_blank">Slides</a> | — | — |
 
 </div>
 
