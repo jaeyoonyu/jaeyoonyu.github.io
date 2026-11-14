@@ -33,6 +33,21 @@ slides.append(('', 'Berkshire Hathaway, Warren Buffett and Greg Abel', f'''
 <div class="phrow">{photo("buffett.jpg", "Warren Buffett (U.S. International Trade Administration, public domain)")}{photo("abel.jpg", "Greg Abel (Tankforwin, CC BY-SA 4.0)")}</div>
 <p class="credit">Photos via Wikimedia Commons.</p>'''))
 
+slides.append(('', 'Berkshire&rsquo;s Stock Portfolio', '''
+<p>Besides the businesses it owns, Berkshire holds shares of other public companies.</p>
+<table class="bt">
+<tr><th>Company</th><th class="r">Market value</th><th class="r">% of portfolio</th></tr>
+<tr><td>Apple</td><td class="r">$66.0B</td><td class="r">22.0%</td></tr>
+<tr><td>American Express</td><td class="r">$51.3B</td><td class="r">17.1%</td></tr>
+<tr><td>Alphabet (Google)</td><td class="r">$37.8B</td><td class="r">12.6%</td></tr>
+<tr><td>Coca-Cola</td><td class="r">$32.5B</td><td class="r">10.9%</td></tr>
+<tr><td>Bank of America</td><td class="r">$27.5B</td><td class="r">9.2%</td></tr>
+<tr><td>All others (Chevron, &hellip;)</td><td class="r">$84.2B</td><td class="r">28.1%</td></tr>
+<tr class="yel"><td><b>Total</b></td><td class="r"><b>$299.3B</b></td><td class="r"><b>100%</b></td></tr>
+</table>
+<ul><li>Five stocks make up about <b>72%</b> of the portfolio.</li></ul>
+<p class="note">As of June 30, 2026 (Form 13F, U.S.-listed stocks). &ldquo;Others&rdquo; is the total minus the five largest. The September 30 list is due November 16, 2026.</p>'''))
+
 slides.append(('', 'The News: Q3 2026 Results', '''
 <p><span class="ex">Q3 2026</span> (reported Nov 7, 2026)</p>
 <table class="bt">
@@ -105,6 +120,7 @@ slides.append(('', 'Sources', '''
 <li><a href="https://www.cnbc.com/2026/11/07/berkshire-hathaway-q3-2026-earnings-buybacks.html" target="_blank">CNBC, Nov 7, 2026</a>: Berkshire more than doubles buybacks in Q3 as earnings decline</li>
 <li><a href="https://www.insurancejournal.com/news/national/2026/11/09/891933.htm" target="_blank">Insurance Journal, Nov 9, 2026</a>: Berkshire boosts buybacks as operating income slips</li>
 <li><a href="https://www.fool.com/investing/2026/11/13/greg-abel-bought-back-a-record-amount-of-berkshire-hathaway/" target="_blank">Motley Fool, Nov 13, 2026</a>: Abel bought back a record $9.6B of stock</li>
+<li><a href="https://www.cnbc.com/2026/08/15/berkshire-adds-17-billion-to-alphabet-stake.html" target="_blank">CNBC, Aug 15, 2026</a>: Berkshire adds $17 billion to Alphabet stake (Q2 13F)</li>
 <li><a href="https://www.berkshirehathaway.com/reports.html" target="_blank">Berkshire Hathaway quarterly reports</a></li>
 </ul>
 <p class="note">Operating earnings: $12.7B, down 5.8% from $13.5B a year earlier. The EPS example uses made-up numbers.</p>'''))
