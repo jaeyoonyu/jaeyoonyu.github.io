@@ -125,7 +125,10 @@ slides.append(('', 'Effect: Fewer Shares Outstanding', '''
 
 slides.append(('', 'Accounting for a Buyback: Treasury Stock (Ch11)', '''
 <p><span class="ex">EX.</span> Berkshire buys back $9.6B of its own stock.</p>
-<div class="rbox je"><span class="jd">Q3:</span><span class="jl">Treasury Stock (+xSE, &minus;SE)<br><span class="ind">Cash (&minus;A)</span></span><span class="ja">9.6B<br><span class="ind2">9.6B</span></span></div>
+<div class="rbox je"><table>
+<tr><td class="jd" rowspan="2">Q3:</td><td class="jl">Treasury Stock (+xSE, &minus;SE)</td><td class="jdr">9.6B</td><td class="jcr"></td></tr>
+<tr><td class="jl"><span class="ind">Cash (&minus;A)</span></td><td class="jdr"></td><td class="jcr">9.6B</td></tr>
+</table></div>
 <ul>
 <li><b>Treasury stock</b>: a contra-equity account (xSE) &rarr; reduces stockholders&rsquo; equity.</li>
 <li>Assets &darr; and SE &darr; by the same amount. No expense &rarr; net income unchanged.</li>
@@ -217,11 +220,14 @@ table.bt .r {{ text-align:right; }}
 table.bt tr.pink td {{ background:#f6c6c6; }}
 table.bt tr.yel td {{ background:#fff26b; }}
 .rbox {{ border:2px solid #e57373; border-radius:16px; padding:14px 22px; margin:22px 0; }}
-.rbox.je {{ display:grid; grid-template-columns:80px 1fr 140px; align-items:center; max-width:760px; }}
-.jd {{ font-weight:700; }}
-.jl {{ border-left:2px solid #000; padding-left:16px; }}
-.ind {{ padding-left:40px; }} .ind2 {{ padding-left:60px; }}
-.ja {{ text-align:right; }}
+.rbox.je {{ display:inline-block; padding:10px 26px; }}
+.rbox.je table {{ border-collapse:collapse; }}
+.rbox.je td {{ padding:2px 0; }}
+.jd {{ font-weight:700; padding-right:16px !important; vertical-align:middle; }}
+.jl {{ border-left:2px solid #000; padding-left:16px !important; padding-right:40px !important; }}
+.ind {{ padding-left:30px; }}
+.jdr {{ text-align:right; width:110px; }}
+.jcr {{ text-align:right; width:90px; }}
 .ph {{ margin:0 0 14px; text-align:center; }}
 .ph {{ margin-top:10px; }}
 .phrow {{ display:flex; justify-content:center; gap:40px; }}
