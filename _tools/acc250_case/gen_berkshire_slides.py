@@ -25,8 +25,6 @@ slides.append(('title', '', '''
 </div>'''))
 
 slides.append(('', 'Berkshire Hathaway and Warren Buffett', f'''
-<div class="cols2">
-<div>
 <p class="h">Berkshire Hathaway</p>
 <ul>
 <li>A holding company that owns whole businesses: <b>GEICO</b> (insurance), <b>BNSF</b> (railroad), <b>Berkshire Hathaway Energy</b>, See&rsquo;s Candies, Dairy Queen, &hellip;</li>
@@ -38,9 +36,7 @@ slides.append(('', 'Berkshire Hathaway and Warren Buffett', f'''
 <li>Stepped down as CEO at the end of 2025; still chairman.</li>
 <li><b>Greg Abel</b>: CEO since January 2026.</li>
 </ul>
-</div>
-<div>{photo("buffett.jpg", "Warren Buffett")}{photo("berkshire.jpg", "Berkshire Hathaway, Omaha")}</div>
-</div>'''))
+{photo("buffett.jpg", "Warren Buffett")}{photo("berkshire.jpg", "Berkshire Hathaway, Omaha")}'''))
 
 slides.append(('', 'The News: Q3 2026 Results', '''
 <p><span class="ex">Q3 2026</span> (reported Nov 7, 2026)</p>
@@ -181,7 +177,6 @@ table.bt tr.yel td {{ background:#fff26b; }}
 .jl {{ border-left:2px solid #000; padding-left:16px; }}
 .ind {{ padding-left:40px; }} .ind2 {{ padding-left:60px; }}
 .ja {{ text-align:right; }}
-.cols2 {{ display:grid; grid-template-columns:1.25fr 1fr; gap:30px; align-items:start; }}
 .ph {{ margin:0 0 14px; text-align:center; }}
 .ph img {{ max-width:100%; max-height:300px; border:1px solid #ccc; }}
 .ph figcaption {{ font-size:18px; color:#444; }}
