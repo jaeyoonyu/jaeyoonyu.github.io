@@ -22,7 +22,8 @@ Template: `_tools/acc250_case/gen_berkshire_slides.py` (copy its CSS, footer and
 - Footer bar in three blue segments: course name | topic | `n / N`.
 - Round blue bullets; numbered items in small blue circles.
 - Tables: booktabs style (rule above and below the header, thick rule at the bottom), sized to their content. Highlight rows in pink (`#f6c6c6`) or yellow (`#fff26b`).
-- Examples start with a yellow, underlined, bold **EX.** label. Journal entries go in a rounded red-bordered box with the date at left and a vertical rule.
+- Examples start with a yellow, underlined, bold **EX.** label.
+- **Journal entries** follow the lecture notes exactly: a rounded red-bordered box; the bold date (e.g. `Jan 1:`) at left, then a vertical rule; the debit account flush left and the credit account **indented** under it; the debit amount in its own column and the credit amount in a **separate column further right** (never both amounts in one column). Build it as a small table (date | account | debit | credit) so the columns line up.
 - **One column.** Never put things side by side unless the slide is literally comparing two things (and even then prefer a table).
 - **No "Claude style"**: no cream backgrounds, cards with colored left borders, eyebrow labels, pill chips, big tinted "key idea" boxes or decorative icons.
 - **Never all caps.** No `text-transform: uppercase`, no letter-spaced small caps labels.
