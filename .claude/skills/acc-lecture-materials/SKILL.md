@@ -28,6 +28,8 @@ Template: `_tools/acc250_case/gen_berkshire_slides.py` (copy its CSS, footer and
 - **Never all caps.** No `text-transform: uppercase`, no letter-spaced small caps labels.
 - Company + CEO introduction goes on **one** slide.
 - Photos: freely licensed (Wikimedia Commons: public domain or CC BY), with the credit and license in a small caption. Save them in `assets/ACC250/img/`. Prefer people (CEO) over buildings.
+- **Show data as a chart, not a table, when the point is the shape of the numbers**: shares of a whole (a portfolio, revenue by segment) are a **pie chart**; flows through the income statement are a Sankey (`_tools/acc250_case/sankey.py`). Draw charts as inline SVG (see `pie()` in `gen_berkshire_slides.py`): percent inside each slice, label and dollar amount outside, the total and the "as of" date underneath. Keep a table only when students need to read or compute exact numbers.
+- **Use company logos** whenever companies are named in a chart or list: download the SVG from Wikimedia Commons (`https://commons.wikimedia.org/wiki/Special:FilePath/<File>.svg`, with a descriptive User-Agent; space requests a few seconds apart), check the file has no `<script>`, save it in `assets/ACC250/img/logos/`, and note "Logos via Wikimedia Commons; trademarks of their owners." on the slide.
 - End with discussion questions, then a Sources slide with links.
 
 ## Worksheets (one sheet, printed on Letter)
