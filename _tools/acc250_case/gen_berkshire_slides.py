@@ -1,0 +1,217 @@
+#!/usr/bin/env python3
+"""Berkshire buyback slides in the style of the ACC250 Beamer lecture notes (4:3).
+
+Usage: python _tools/acc250_case/gen_berkshire_slides.py assets/ACC250
+Optional photos (shown if present): assets/ACC250/img/buffett.jpg, assets/ACC250/img/berkshire.jpg
+"""
+import os, sys
+
+OUT = sys.argv[1]
+FOOT_L = 'ACC250: Intro to Financial Accounting'
+FOOT_M = 'Accounting in the News: Berkshire Buybacks'
+
+def photo(name, cap):
+    if os.path.exists(os.path.join(OUT, 'img', name)):
+        return f'<figure class="ph"><img src="img/{name}" alt=""><figcaption>{cap}</figcaption></figure>'
+    return ''
+
+slides = []
+
+slides.append(('title', '', '''
+<div class="tblock">
+<p class="tsmall">ACC250: Intro to Financial Accounting</p>
+<p class="tbig">Accounting in the News: Berkshire Buybacks</p>
+<p class="tauth">Jaeyoon Yu, Ph.D.<br>Central Michigan University</p>
+</div>'''))
+
+slides.append(('', 'Berkshire Hathaway and Warren Buffett', f'''
+<div class="cols2">
+<div>
+<p class="h">Berkshire Hathaway</p>
+<ul>
+<li>A holding company that owns whole businesses: <b>GEICO</b> (insurance), <b>BNSF</b> (railroad), <b>Berkshire Hathaway Energy</b>, See&rsquo;s Candies, Dairy Queen, &hellip;</li>
+<li>Also owns large stakes in Apple, Coca-Cola, American Express, &hellip;</li>
+</ul>
+<p class="h">Warren Buffett</p>
+<ul>
+<li>Ran Berkshire for six decades.</li>
+<li>Stepped down as CEO at the end of 2025; still chairman.</li>
+<li><b>Greg Abel</b>: CEO since January 2026.</li>
+</ul>
+</div>
+<div>{photo("buffett.jpg", "Warren Buffett")}{photo("berkshire.jpg", "Berkshire Hathaway, Omaha")}</div>
+</div>'''))
+
+slides.append(('', 'The News: Q3 2026 Results', '''
+<p><span class="ex">Q3 2026</span> (reported Nov 7, 2026)</p>
+<table class="bt">
+<tr><th>Item</th><th class="r">Amount</th><th class="r">Change</th></tr>
+<tr><td>Revenue</td><td class="r">$105.6B</td><td class="r">+11%</td></tr>
+<tr><td>Operating earnings</td><td class="r">$12.7B</td><td class="r">&minus;6%</td></tr>
+<tr><td>Cash on hand</td><td class="r">$377.4B</td><td class="r">+3% vs Q2</td></tr>
+<tr class="pink"><td>Stock buybacks</td><td class="r">$9.6B</td><td class="r">Q2: $4.5B</td></tr>
+</table>
+<ul>
+<li>Operating earnings fell, dragged down by weaker <b>insurance</b> underwriting.</li>
+<li>Buybacks <b>more than doubled</b> from the previous quarter.</li>
+</ul>'''))
+
+slides.append(('', 'What Can a Company Do with Extra Cash?', '''
+<ol>
+<li><b>Invest outside</b>: buy another company, build new plants.</li>
+<li><b>Pay dividends</b>: cash to all shareholders. (Berkshire pays none.)</li>
+<li><b>Buy back its own shares</b>: cash to the shareholders who choose to sell.</li>
+</ol>
+<div class="rbox">With $377B of cash and few large deals at good prices, option 1 is hard. &rarr; Option 3.</div>'''))
+
+slides.append(('', 'When Does a Buyback Make Sense?', '''
+<ol>
+<li><b>No better investment outside</b><br>Idle cash earns little.</li>
+<li><b>Own stock looks cheap</b><br>Management believes the shares are worth <span class="hl">more than their price</span> and will rise.</li>
+</ol>
+<div class="rbox"><b>Berkshire&rsquo;s rule</b>: buy back only when the price is below a conservative estimate of intrinsic value, and keep at least $30B of cash.</div>'''))
+
+slides.append(('', 'Effect: Fewer Shares Outstanding', '''
+<p><span class="ex">EX.</span> Net income $100; the company buys back 10 of its 100 shares.</p>
+<table class="bt">
+<tr><th></th><th class="r">Before</th><th class="r">After</th></tr>
+<tr><td>Net income</td><td class="r">$100</td><td class="r">$100</td></tr>
+<tr><td>Shares outstanding</td><td class="r">100</td><td class="r">90</td></tr>
+<tr class="yel"><td><b>EPS</b> = NI &divide; shares outstanding</td><td class="r"><b>$1.00</b></td><td class="r"><b>$1.11</b></td></tr>
+</table>
+<ul>
+<li>Same profit, fewer owners &rarr; each remaining share owns a <b>bigger slice</b>.</li>
+</ul>'''))
+
+slides.append(('', 'Accounting for a Buyback: Treasury Stock (Ch11)', '''
+<p><span class="ex">EX.</span> Berkshire buys back $9.6B of its own stock.</p>
+<div class="rbox je"><span class="jd">Q3:</span><span class="jl">Treasury Stock (+xSE, &minus;SE)<br><span class="ind">Cash (&minus;A)</span></span><span class="ja">9.6B<br><span class="ind2">9.6B</span></span></div>
+<ul>
+<li><b>Treasury stock</b>: a contra-equity account (xSE) &rarr; reduces stockholders&rsquo; equity.</li>
+<li>Assets &darr; and SE &darr; by the same amount. No expense &rarr; net income unchanged.</li>
+<li>Shares <b>issued</b>: unchanged. Shares <b>outstanding</b>: &darr;.</li>
+</ul>'''))
+
+slides.append(('', 'The Catch: Price Matters', '''
+<table class="bt">
+<tr><th>Buyback price</th><th>Remaining shareholders</th></tr>
+<tr><td>Below value</td><td>Gain: $1 of value bought for less than $1</td></tr>
+<tr class="pink"><td>Above value</td><td>Lose: the company overpaid for its own shares</td></tr>
+</table>
+<ul>
+<li>Berkshire&rsquo;s shares hit record highs this fall &rarr; analysts question whether the pace can continue.</li>
+</ul>'''))
+
+slides.append(('', 'Questions', '''
+<ol>
+<li>A company earns $500 with 250 shares outstanding, then buys back 50 shares. EPS before and after?</li>
+<li>After a $9.6B buyback, what happens to total assets, total SE, and net income?</li>
+<li>Berkshire has $377B of cash. Why buy back shares instead of paying a dividend?</li>
+</ol>'''))
+
+slides.append(('', 'Sources', '''
+<ul class="src">
+<li><a href="https://www.cnbc.com/2026/11/07/berkshire-hathaway-q3-2026-earnings-buybacks.html" target="_blank">CNBC, Nov 7, 2026</a>: Berkshire more than doubles buybacks in Q3 as earnings decline</li>
+<li><a href="https://www.insurancejournal.com/news/national/2026/11/09/891933.htm" target="_blank">Insurance Journal, Nov 9, 2026</a>: Berkshire boosts buybacks as operating income slips</li>
+<li><a href="https://www.fool.com/investing/2026/11/13/greg-abel-bought-back-a-record-amount-of-berkshire-hathaway/" target="_blank">Motley Fool, Nov 13, 2026</a>: Abel bought back a record $9.6B of stock</li>
+<li><a href="https://www.berkshirehathaway.com/reports.html" target="_blank">Berkshire Hathaway quarterly reports</a></li>
+</ul>
+<p class="note">Operating earnings: $12.7B, down 5.8% from $13.5B a year earlier. The EPS example uses made-up numbers.</p>'''))
+
+N = len(slides)
+secs = []
+for i, (kind, title, body) in enumerate(slides, 1):
+    head = '' if kind == 'title' else f'<div class="ft">{title}</div>'
+    secs.append(f'''<section class="s{' title' if kind else ''}" data-nav="{title or 'Title'}">
+{head}<div class="body">{body}</div>
+<div class="foot"><span class="f1">{FOOT_L}</span><span class="f2">{FOOT_M}</span><span class="f3">{i} / {N}</span></div>
+</section>''')
+
+html = f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Berkshire Buybacks</title>
+<style>
+:root {{ --blue:#3333b3; --b1:#2c2c8a; --b2:#5a5ad0; --b3:#a6a6e8; }}
+* {{ box-sizing:border-box; }}
+html, body {{ margin:0; height:100%; background:#555; }}
+body {{ display:flex; align-items:center; justify-content:center; overflow:hidden;
+  font-family:"Latin Modern Sans","CMU Sans Serif","Helvetica Neue",Arial,sans-serif; color:#000; }}
+#stage {{ position:relative; width:1200px; height:900px; background:#fff; transform-origin:center; box-shadow:0 10px 40px rgba(0,0,0,.4); }}
+.s {{ position:absolute; inset:0; display:none; }}
+.s.on {{ display:block; }}
+.ft {{ position:absolute; left:0; right:0; top:0; padding:22px 40px 12px; font-size:40px; color:var(--blue);
+  border-bottom:2px solid var(--blue); }}
+.body {{ position:absolute; left:40px; right:40px; top:110px; bottom:60px; font-size:30px; line-height:1.38; }}
+.title .body {{ top:0; display:flex; align-items:center; justify-content:center; text-align:center; }}
+.tsmall {{ color:var(--blue); font-size:30px; margin:0 0 8px; }}
+.tbig {{ color:var(--blue); font-size:42px; margin:0 0 50px; }}
+.tauth {{ font-size:26px; margin:0; }}
+.foot {{ position:absolute; left:0; right:0; bottom:0; height:30px; display:flex; font-size:15px; color:#fff; }}
+.foot span {{ display:flex; align-items:center; padding:0 18px; }}
+.f1 {{ background:var(--b1); width:36%; justify-content:center; }}
+.f2 {{ background:var(--b2); width:40%; justify-content:center; }}
+.f3 {{ background:var(--b3); flex:1; justify-content:flex-end; }}
+ul, ol {{ margin:.3em 0 .5em; padding-left:1.5em; }}
+li {{ margin:.25em 0; }}
+ul {{ list-style:none; }}
+ul > li {{ position:relative; }}
+ul > li::before {{ content:""; position:absolute; left:-1.05em; top:.48em; width:.42em; height:.42em; border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #8a8ae6, var(--blue)); }}
+ol {{ counter-reset:k; list-style:none; }}
+ol > li {{ counter-increment:k; position:relative; }}
+ol > li::before {{ content:counter(k); position:absolute; left:-1.5em; top:.12em; width:1.05em; height:1.05em; border-radius:50%;
+  background:var(--blue); color:#fff; font-size:.7em; display:flex; align-items:center; justify-content:center; }}
+p {{ margin:.3em 0; }}
+.h {{ font-weight:700; margin:.4em 0 .1em; }}
+.ex {{ background:#ffeb3b; font-weight:700; text-decoration:underline; padding:0 4px; }}
+.hl {{ color:#1a8a1a; font-weight:700; text-decoration:underline; }}
+table.bt {{ border-collapse:collapse; margin:16px auto 18px; font-size:28px; min-width:70%; }}
+table.bt th {{ border-top:2px solid #000; border-bottom:1px solid #000; padding:6px 16px; text-align:left; font-weight:400; }}
+table.bt td {{ padding:6px 16px; }}
+table.bt tr:last-child td {{ border-bottom:2px solid #000; }}
+table.bt .r {{ text-align:right; }}
+table.bt tr.pink td {{ background:#f6c6c6; }}
+table.bt tr.yel td {{ background:#fff26b; }}
+.rbox {{ border:2px solid #e57373; border-radius:16px; padding:14px 22px; margin:22px 0; }}
+.rbox.je {{ display:grid; grid-template-columns:80px 1fr 140px; align-items:center; max-width:760px; }}
+.jd {{ font-weight:700; }}
+.jl {{ border-left:2px solid #000; padding-left:16px; }}
+.ind {{ padding-left:40px; }} .ind2 {{ padding-left:60px; }}
+.ja {{ text-align:right; }}
+.cols2 {{ display:grid; grid-template-columns:1.25fr 1fr; gap:30px; align-items:start; }}
+.ph {{ margin:0 0 14px; text-align:center; }}
+.ph img {{ max-width:100%; max-height:300px; border:1px solid #ccc; }}
+.ph figcaption {{ font-size:18px; color:#444; }}
+.src {{ font-size:24px; }}
+.src a {{ color:var(--blue); }}
+.note {{ font-size:20px; margin-top:24px; }}
+@media print {{ body {{ background:#fff; display:block; }} #stage {{ transform:none !important; box-shadow:none; }} }}
+</style>
+</head>
+<body>
+<div id="stage">
+{chr(10).join(secs)}
+</div>
+<script>
+const S=[...document.querySelectorAll('.s')]; let i=0;
+function go(n){{ if(n<0||n>=S.length) return; i=n; S.forEach((s,k)=>s.classList.toggle('on',k===i)); location.hash=i+1; }}
+function fit(){{ const k=Math.min(innerWidth/1200, innerHeight/900); document.getElementById('stage').style.transform=`scale(${{k}})`; }}
+addEventListener('resize',fit);
+addEventListener('keydown',e=>{{ const k=e.key;
+  if(['ArrowRight','ArrowDown',' ','PageDown','Enter'].includes(k)){{go(i+1);e.preventDefault();}}
+  else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(k)){{go(i-1);e.preventDefault();}}
+  else if(k==='Home') go(0); else if(k==='End') go(S.length-1);
+  else if(k==='f'||k==='F') document.documentElement.requestFullscreen?.(); }});
+document.getElementById('stage').addEventListener('click',e=>{{ if(e.target.closest('a')) return; e.clientX<innerWidth*.3?go(i-1):go(i+1); }});
+let tx=0; addEventListener('touchstart',e=>tx=e.touches[0].clientX,{{passive:true}});
+addEventListener('touchend',e=>{{const d=e.changedTouches[0].clientX-tx; if(Math.abs(d)>50) go(d<0?i+1:i-1);}},{{passive:true}});
+fit(); go(Math.max(0,(parseInt(location.hash.slice(1))||1)-1));
+</script>
+</body>
+</html>
+'''
+open(os.path.join(OUT, 'Berkshire-Buyback.html'), 'w').write(html)
+print('wrote Berkshire-Buyback', N)
