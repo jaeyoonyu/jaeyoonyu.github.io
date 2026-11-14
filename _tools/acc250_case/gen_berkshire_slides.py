@@ -24,21 +24,14 @@ slides.append(('title', '', '''
 <p class="tauth">Jaeyoon Yu, Ph.D.<br>Central Michigan University</p>
 </div>'''))
 
-slides.append(('', 'Berkshire Hathaway', f'''
+slides.append(('', 'Berkshire Hathaway, Warren Buffett and Greg Abel', f'''
 <ul>
-<li>A holding company that owns whole businesses: <b>GEICO</b> (insurance), <b>BNSF</b> (railroad), <b>Berkshire Hathaway Energy</b>, See&rsquo;s Candies, Dairy Queen, &hellip;</li>
-<li>Also owns large stakes in Apple, Coca-Cola, American Express, &hellip;</li>
-<li>Based in Omaha, Nebraska.</li>
-</ul>
-{photo("berkshire.jpg", "Kiewit Plaza, Omaha: Berkshire&rsquo;s longtime headquarters. Photo: shannonpatrick17, CC BY 2.0, via Wikimedia Commons")}'''))
-
-slides.append(('', 'Warren Buffett and Greg Abel', f'''
-<ul>
-<li><b>Warren Buffett</b> ran Berkshire for six decades.</li>
-<li>Stepped down as CEO at the end of 2025; still chairman.</li>
+<li><b>Berkshire Hathaway</b> (Omaha, Nebraska): owns whole businesses such as <b>GEICO</b>, <b>BNSF</b> railroad and Berkshire Hathaway Energy, and large stakes in Apple, Coca-Cola, American Express, &hellip;</li>
+<li><b>Warren Buffett</b> ran Berkshire for six decades; stepped down as CEO at the end of 2025 and is still chairman.</li>
 <li><b>Greg Abel</b>: CEO since January 2026.</li>
 </ul>
-{photo("buffett.jpg", "Warren Buffett, 2015. Photo: U.S. International Trade Administration, public domain, via Wikimedia Commons")}'''))
+<div class="phrow">{photo("buffett.jpg", "Warren Buffett (U.S. International Trade Administration, public domain)")}{photo("abel.jpg", "Greg Abel (Tankforwin, CC BY-SA 4.0)")}</div>
+<p class="credit">Photos via Wikimedia Commons.</p>'''))
 
 slides.append(('', 'The News: Q3 2026 Results', '''
 <p><span class="ex">Q3 2026</span> (reported Nov 7, 2026)</p>
@@ -180,8 +173,10 @@ table.bt tr.yel td {{ background:#fff26b; }}
 .ind {{ padding-left:40px; }} .ind2 {{ padding-left:60px; }}
 .ja {{ text-align:right; }}
 .ph {{ margin:0 0 14px; text-align:center; }}
-.ph {{ margin-top:18px; }}
-.ph img {{ max-width:100%; max-height:420px; border:1px solid #ccc; }}
+.ph {{ margin-top:10px; }}
+.phrow {{ display:flex; justify-content:center; gap:40px; }}
+.credit {{ font-size:14px; color:#444; text-align:center; margin:0; }}
+.ph img {{ height:330px; border:1px solid #ccc; }}
 .ph figcaption {{ font-size:15px; color:#444; margin-top:4px; }}
 .src {{ font-size:24px; }}
 .src a {{ color:var(--blue); }}
