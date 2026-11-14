@@ -24,19 +24,21 @@ slides.append(('title', '', '''
 <p class="tauth">Jaeyoon Yu, Ph.D.<br>Central Michigan University</p>
 </div>'''))
 
-slides.append(('', 'Berkshire Hathaway and Warren Buffett', f'''
-<p class="h">Berkshire Hathaway</p>
+slides.append(('', 'Berkshire Hathaway', f'''
 <ul>
 <li>A holding company that owns whole businesses: <b>GEICO</b> (insurance), <b>BNSF</b> (railroad), <b>Berkshire Hathaway Energy</b>, See&rsquo;s Candies, Dairy Queen, &hellip;</li>
 <li>Also owns large stakes in Apple, Coca-Cola, American Express, &hellip;</li>
+<li>Based in Omaha, Nebraska.</li>
 </ul>
-<p class="h">Warren Buffett</p>
+{photo("berkshire.jpg", "Kiewit Plaza, Omaha: Berkshire&rsquo;s longtime headquarters. Photo: shannonpatrick17, CC BY 2.0, via Wikimedia Commons")}'''))
+
+slides.append(('', 'Warren Buffett and Greg Abel', f'''
 <ul>
-<li>Ran Berkshire for six decades.</li>
+<li><b>Warren Buffett</b> ran Berkshire for six decades.</li>
 <li>Stepped down as CEO at the end of 2025; still chairman.</li>
 <li><b>Greg Abel</b>: CEO since January 2026.</li>
 </ul>
-{photo("buffett.jpg", "Warren Buffett")}{photo("berkshire.jpg", "Berkshire Hathaway, Omaha")}'''))
+{photo("buffett.jpg", "Warren Buffett, 2015. Photo: U.S. International Trade Administration, public domain, via Wikimedia Commons")}'''))
 
 slides.append(('', 'The News: Q3 2026 Results', '''
 <p><span class="ex">Q3 2026</span> (reported Nov 7, 2026)</p>
@@ -178,8 +180,9 @@ table.bt tr.yel td {{ background:#fff26b; }}
 .ind {{ padding-left:40px; }} .ind2 {{ padding-left:60px; }}
 .ja {{ text-align:right; }}
 .ph {{ margin:0 0 14px; text-align:center; }}
-.ph img {{ max-width:100%; max-height:300px; border:1px solid #ccc; }}
-.ph figcaption {{ font-size:18px; color:#444; }}
+.ph {{ margin-top:18px; }}
+.ph img {{ max-width:100%; max-height:420px; border:1px solid #ccc; }}
+.ph figcaption {{ font-size:15px; color:#444; margin-top:4px; }}
 .src {{ font-size:24px; }}
 .src a {{ color:var(--blue); }}
 .note {{ font-size:20px; margin-top:24px; }}
