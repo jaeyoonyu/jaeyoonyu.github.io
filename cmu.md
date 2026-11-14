@@ -11,12 +11,13 @@ title: "CMU"
 .cmu h4 { font-family: Charter, "Bitstream Charter", Cambria, Georgia, serif; margin: 18px 0 8px; }
 .cmu .row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; padding: 6px 0;
   border-bottom: 1px solid var(--line); }
-.cmu .lbl { width: 140px; font-size: 10px; text-transform: uppercase; letter-spacing: .08em;
+.cmu .lbl { width: 140px; font-size: 11px; letter-spacing: .02em;
   color: var(--muted); font-weight: 600; }
 .cmu a { border: 1px solid var(--line); border-radius: 999px; padding: 2px 11px; font-size: 13px;
   text-decoration: none; color: inherit; }
 .cmu a:hover { border-color: var(--accent); color: var(--accent); }
-@media (max-width: 600px) { .cmu .lbl { width: 100%; } }
+.cmu .note { flex-basis: 100%; padding-left: 146px; font-size: 12px; color: var(--muted); }
+@media (max-width: 600px) { .cmu .lbl { width: 100%; } .cmu .note { padding-left: 0; } }
 </style>
 
 <div class="cmu">
@@ -43,6 +44,7 @@ title: "CMU"
     <a href="https://cmich.teamdynamix.com/TDClient/664/Portal/Requests/Service/22453/Health-Savings-Account-HSA-Enrollment-Change/Request" title="Enroll in or change automatic HSA contributions (from salary or a personal bank account)" target="_blank" rel="noopener">HSA Contributions</a>
     <a href="https://healthequity.com/" title="HealthEquity: HSA balance and transactions" target="_blank" rel="noopener">HSA Balance</a>
     <a href="https://www.cmich.edu/offices-departments/faculty-personnel-services/faculty-benefits" title="Faculty benefits overview" target="_blank" rel="noopener">Faculty Benefits</a>
+    <span class="note">HSA, 403(b), and 457(b) limits all reset each calendar year (Jan–Dec).</span>
   </div>
   <div class="row"><span class="lbl">Health Insurance</span>
     <a href="https://www.cmich.edu/docs/default-source/finance-and-administrative-services-division/human-resources/benefits/open-enrollment/2026-messa-plan-comparison-grid.pdf" title="2026 MESSA plan comparison grid (PDF)" target="_blank" rel="noopener">2026 Plan Comparison</a>
