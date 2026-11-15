@@ -50,6 +50,18 @@ Type a **ticker** (e.g., WMT) or a **CIK** (e.g., 104169), then pick a form. The
     <a href="#" data-q="AAPL">AAPL</a> &middot;
     <a href="#" data-q="104169">104169</a> (Walmart&rsquo;s CIK)
   </p>
+  <p class="eg-try">IPO S-1s:
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=UBER&amp;type=S-1&amp;dateb=&amp;owner=include&amp;count=40" target="_blank" rel="noopener" title="Uber S-1 filings (2019 IPO)">Uber <small>2019</small></a> &middot;
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=ZM&amp;type=S-1&amp;dateb=&amp;owner=include&amp;count=40" target="_blank" rel="noopener" title="Zoom S-1 filings (2019 IPO)">Zoom <small>2019</small></a> &middot;
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=PINS&amp;type=S-1&amp;dateb=&amp;owner=include&amp;count=40" target="_blank" rel="noopener" title="Pinterest S-1 filings (2019 IPO)">Pinterest <small>2019</small></a> &middot;
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=SNOW&amp;type=S-1&amp;dateb=&amp;owner=include&amp;count=40" target="_blank" rel="noopener" title="Snowflake S-1 filings (2020 IPO)">Snowflake <small>2020</small></a> &middot;
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=ABNB&amp;type=S-1&amp;dateb=&amp;owner=include&amp;count=40" target="_blank" rel="noopener" title="Airbnb S-1 filings (2020 IPO)">Airbnb <small>2020</small></a> &middot;
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=DASH&amp;type=S-1&amp;dateb=&amp;owner=include&amp;count=40" target="_blank" rel="noopener" title="DoorDash S-1 filings (2020 IPO)">DoorDash <small>2020</small></a> &middot;
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=COIN&amp;type=S-1&amp;dateb=&amp;owner=include&amp;count=40" target="_blank" rel="noopener" title="Coinbase S-1 filings (2021 IPO)">Coinbase <small>2021</small></a> &middot;
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=HOOD&amp;type=S-1&amp;dateb=&amp;owner=include&amp;count=40" target="_blank" rel="noopener" title="Robinhood S-1 filings (2021 IPO)">Robinhood <small>2021</small></a> &middot;
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=RIVN&amp;type=S-1&amp;dateb=&amp;owner=include&amp;count=40" target="_blank" rel="noopener" title="Rivian S-1 filings (2021 IPO)">Rivian <small>2021</small></a> &middot;
+    <a href="https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;CIK=1713445&amp;type=S-1&amp;dateb=&amp;owner=include&amp;count=40" target="_blank" rel="noopener" title="Reddit S-1 filings (2024 IPO)">Reddit <small>2024</small></a>
+  </p>
 </div>
 
 <style>
@@ -102,7 +114,7 @@ Type a **ticker** (e.g., WMT) or a **CIK** (e.g., 104169), then pick a form. The
     b.addEventListener('click', function () { open(b.getAttribute('data-type')); });
   });
   document.getElementById('eg-form').addEventListener('submit', function (e) { e.preventDefault(); open('10-K'); });
-  document.querySelectorAll('.eg-try a').forEach(function (a) {
+  document.querySelectorAll('.eg-try a[data-q]').forEach(function (a) {
     a.addEventListener('click', function (e) { e.preventDefault(); input.value = a.getAttribute('data-q'); msg.textContent = ''; input.focus(); });
   });
 })();
