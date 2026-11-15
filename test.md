@@ -38,6 +38,8 @@ Type a **ticker** (e.g., WMT) or a **CIK** (e.g., 104169), then pick a form. The
     <button type="button" data-type="10-Q">10-Q <span>quarterly</span></button>
     <button type="button" data-type="8-K">8-K <span>current events</span></button>
     <button type="button" data-type="DEF 14A">DEF 14A <span>proxy</span></button>
+    <button type="button" data-type="S-1">S-1 <span>IPO registration</span></button>
+    <button type="button" data-type="DRS">DRS <span>draft registration</span></button>
     <button type="button" data-type="" class="all">All filings</button>
   </div>
   <p id="eg-msg" class="eg-msg" role="status"></p>
@@ -93,8 +95,6 @@ Type a **ticker** (e.g., WMT) or a **CIK** (e.g., 104169), then pick a form. The
       return;
     }
     msg.textContent = '';
-    try { localStorage.setItem('edgar-q', q); } catch (e) {}
-    history.replaceState(null, '', '?q=' + encodeURIComponent(q));
     window.open(url(q, type), '_blank', 'noopener');
   }
 
@@ -105,15 +105,12 @@ Type a **ticker** (e.g., WMT) or a **CIK** (e.g., 104169), then pick a form. The
   document.querySelectorAll('.eg-try a').forEach(function (a) {
     a.addEventListener('click', function (e) { e.preventDefault(); input.value = a.getAttribute('data-q'); msg.textContent = ''; input.focus(); });
   });
-
-  var start = new URLSearchParams(location.search).get('q');
-  if (!start) { try { start = localStorage.getItem('edgar-q'); } catch (e) {} }
-  if (start) input.value = start;
 })();
 </script>
 
 ### Notes
 - **10-K**: annual report with audited financial statements. **10-Q**: quarterly report (unaudited). **8-K**: current report on major events, such as earnings releases, acquisitions, or executive changes. **DEF 14A**: proxy statement for the shareholder meeting, including executive pay and board elections.
+- **S-1**: IPO registration statement. **DRS**: draft registration filed confidentially before the IPO; EDGAR shows it only after release.
 - Each form list also includes amendments (for example, 10-K/A).
 - Pressing **Enter** opens the 10-K list.
 - Foreign companies file different forms (20-F annual, 6-K current), so use **All filings** for them.
