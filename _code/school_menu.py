@@ -39,9 +39,11 @@ HEALTHY = [r"\bfresh\b", r"salad", r"broccoli", r"carrot", r"celery", r"cucumber
 PLAIN = [r"potato", r"bagel", r"\bsub\b", r"sandwich", r"scrambler", r"pocket", r"pretzel", r"cereal",
          r"smoothie", r"cheese sauce", r"biscuit", r"cheddar/mozzarella"]
 # Entree-category items that are parts of the dish listed around them (taco bar, pasta + sauce).
-COMPONENT = (r"diced tomato|shredded|lettuce|tortilla chips|taco meat|pasta$|penne|noodles|^cream cheese"
-             r"|spread$|syrup$|sauce$|croutons|bun$")
-TOPPING = r"diced|shredded|lettuce|chips|tortilla"
+# Matched on the whole name: a component names the part itself ("Shredded Lettuce", "Penne Pasta"),
+# so a dish that merely contains one ("Turkey, Cheese, Lettuce Sub", "Chicken and Waffle with Syrup") is not one.
+COMPONENT = (r"^(fresh )?diced tomato|^shredded|^lettuce$|tortilla chips$|taco meat$|pasta$|^penne|noodles$|^cream cheese"
+             r"|spread$|^syrup$|sauce$|^croutons$|bun$")
+TOPPING = r"^(fresh )?diced|^shredded|^lettuce$|chips$"
 
 
 def get_json(url):
@@ -85,31 +87,39 @@ def item(f):
 def week_items(meal, monday):
     """date -> {'main': [...], 'sides': [...], 'note': str} for the days of that week.
 
-    Nutrislice lists each main dish followed by the grain/vegetable that comes with it,
-    then the shared fruit and vegetable choices, then drinks and condiments. So
-    everything before the first fruit is the main block: each grain or vegetable there
-    joins the dish before it as its 'with' list, and anything else opens a new dish. Drinks (always white or
-    chocolate milk) and condiments are dropped.
+    Nutrislice lists each main dish followed by what comes with it (grain, vegetable,
+    sometimes a fruit like baked apple slices), then the shared fruit and vegetable
+    choices, then drinks and condiments. So every item that isn't fruit, vegetable or
+    grain is a main dish wherever it sits; the fruit, vegetable or grain items between
+    two main dishes join the dish before them as its 'with' list. After the last main
+    dish, grain and vegetable items still join it until the first fruit; from there on
+    everything is shared fruit & veg. Drinks (always white or chocolate milk) and
+    condiments are dropped.
     """
     data = get_json(API.format(school=SCHOOL, menu=MENUS[meal], d=monday))
     out = {}
     for day in data.get("days", []):
-        main, sides, notes, in_main = [], [], [], True
+        foods, notes = [], []
         for m in day.get("menu_items", []):
             f = m.get("food")
             if not f:
                 if m.get("text") and not m.get("is_section_title"):
                     notes.append(m["text"].strip())
-                continue
+            elif (f.get("food_category") or "") not in ("beverage", "condiment"):
+                foods.append(f)
+        side_cats = ("fruit", "vegetable", "grain")
+        last_dish = max((i for i, f in enumerate(foods) if (f.get("food_category") or "") not in side_cats), default=-1)
+        main, sides, in_main = [], [], True
+        for i, f in enumerate(foods):
             cat = f.get("food_category") or ""
-            if cat in ("beverage", "condiment"):
-                continue
-            if cat == "fruit":
+            if i > last_dish and cat == "fruit":
                 in_main = False
             it = item(f)
             if not in_main:
                 sides.append(it)
-            elif not main or (cat not in ("grain", "vegetable") and not re.search(COMPONENT, it["n"].lower())):
+            elif i < last_dish and cat in side_cats and main:
+                main[-1]["w"].append(it)
+            elif not main or (cat not in ("grain", "vegetable") and (" with " in it["n"].lower() or not re.search(COMPONENT, it["n"].lower()))):
                 main.append(dict(it, w=[]))
             elif re.search(TOPPING, main[-1]["n"].lower()) and re.search(r"meat|sauce", it["n"].lower()):
                 # Taco day lists the tomatoes first; the meat names the dish.
