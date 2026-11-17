@@ -44,6 +44,7 @@ Generators: `_tools/acc250_case/` (`gen_case.py`, `gen_worksheets.py`, `gen_ch8_
 - Procedure practice (e.g. Ch8): per month, a timeline graphic, then journal entries next to the T-account (A/R), the AJE next to the ADA T-account, then a **Summary** at the bottom: inputs (e.g. credit sales, then BDE on the line below) and one vertical table (Gross A/R / Less: ADA / Net A/R) with a "What it means" column (Total A/R / Noncollectible A/R (estimated) / Collectible portion of A/R).
 - Use different numbers for different amounts in the same month so they cannot be confused (e.g. a write-off and BDE must not both be 100).
 - Journal entry tables: no underlines; keep the writing space.
+- **Every table row stays on one line**: no wrapped cells (`white-space:nowrap` on `th`/`td`; shorten labels or let the table scroll horizontally on the web instead).
 - Compact tables; never stretch a table to full width just to fill space. Spread free space between sections, not at the bottom.
 - Footnotes are real footnotes: a marker (*, †, ‡) in the text and a black footnote with a rule at the page bottom. Never small gray text dropped under a table. Notes about simplifications (e.g. "Cost of goods sold entries are omitted for brevity. See Ch6.") are footnotes.
 - Check every page fits (one page for openers, front/back for practice) by rendering to PDF with Playwright and looking at the images.
