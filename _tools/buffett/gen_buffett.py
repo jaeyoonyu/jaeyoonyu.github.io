@@ -154,7 +154,7 @@ for i, (theme, years, diff, a250, a531, quote, qs) in enumerate(T, 1):
 <p class="meta">Letters: {', '.join(str(y) for y in years)} &middot; Difficulty: {diff}</p>
 <div class="q">{qt}</div>
 <ol class="qs">{''.join(items)}</ol>
-<p class="src">Read the letters at berkshirehathaway.com/letters: {links}. Numbers in the questions are made up unless stated.</p>
+<p class="src">Source: Warren E. Buffett, Letters to Berkshire Hathaway Shareholders: {links} (berkshirehathaway.com/letters). Quotation &copy; Berkshire Hathaway Inc., all rights reserved; quoted for non-commercial teaching. Numbers in the questions are made up unless stated.</p>
 </div><script>if(location.hash==='#key')document.documentElement.classList.add('key')</script></body></html>'''
     open(os.path.join(OUT, f'Q{i:02d}.html'), 'w').write(html)
     rows.append((i, theme, years, diff, a250, a531))
@@ -194,7 +194,13 @@ Warren Buffett&rsquo;s annual letters to Berkshire Hathaway shareholders ([berks
 </div>
 
 **Difficulty**: Intro = needs only ACC250 concepts; Intermediate = intermediate accounting or auditing; Advanced = beyond the intro sequence.
-Questions use made-up numbers unless stated. Quotes are from the letters.
+Questions use made-up numbers unless stated.
+
+### Source and copyright
+
+**Source:** Warren E. Buffett, *Letters to Berkshire Hathaway Shareholders*, 1977&ndash;2024, Berkshire Hathaway Inc., [berkshirehathaway.com/letters](https://www.berkshirehathaway.com/letters/letters.html).
+
+**Copyright:** The letters are &copy; Berkshire Hathaway Inc. All rights reserved. The reading packets and question sheets quote short excerpts for non-commercial teaching only; each cites the letter it quotes and links to the full text. The summaries and questions are original course material by Jaeyoon Yu. This page is not affiliated with or endorsed by Berkshire Hathaway Inc.
 '''
 open(os.path.join(ROOT, 'buffett-letters.md'), 'w').write(md)
 print('wrote buffett-letters.md')

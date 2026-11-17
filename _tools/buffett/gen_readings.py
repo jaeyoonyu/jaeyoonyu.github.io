@@ -99,7 +99,7 @@ for i, ((theme, years, diff, *_), (rx, summary)) in enumerate(zip(T, K), 1):
 <p class="meta">Letters: {', '.join(str(y) for y in years)} &middot; Difficulty: {diff}</p>
 <div class="sum"><b class="t">Summary</b>{summary}</div>
 {chr(10).join(body)}
-<p class="src">Excerpts from Warren Buffett&rsquo;s letters to Berkshire Hathaway shareholders, &copy; Berkshire Hathaway Inc., for classroom use. &ldquo;&hellip;&rdquo; marks skipped text. Full letters: {links}.</p>
+<p class="src">Source: Warren E. Buffett, Letters to Berkshire Hathaway Shareholders: {links} (berkshirehathaway.com/letters). Excerpts &copy; Berkshire Hathaway Inc., all rights reserved; reproduced in part for non-commercial teaching. &ldquo;&hellip;&rdquo; marks skipped text. The summary is original course material by Jaeyoon Yu; not affiliated with or endorsed by Berkshire Hathaway Inc.</p>
 </div></body></html>'''
     open(os.path.join(ROOT, 'assets', 'Buffett', f'R{i:02d}.html'), 'w').write(html)
 print('wrote', len(T), 'readings')
