@@ -32,6 +32,16 @@ Template: `_tools/acc250_case/gen_berkshire_slides.py` (copy its CSS, footer and
 - **Show data as a chart, not a table, when the point is the shape of the numbers**: shares of a whole (a portfolio, revenue by segment) are a **pie chart**; flows through the income statement are a Sankey (`_tools/acc250_case/sankey.py`). Draw charts as inline SVG (see `pie()` in `gen_berkshire_slides.py`): percent inside each slice, label and dollar amount outside, the total and the "as of" date underneath. Keep a table only when students need to read or compute exact numbers.
 - **Use company logos** whenever companies are named in a chart or list: download the SVG from Wikimedia Commons (`https://commons.wikimedia.org/wiki/Special:FilePath/<File>.svg`, with a descriptive User-Agent; space requests a few seconds apart), check the file has no `<script>`, save it in `assets/ACC250/img/logos/`, and note "Logos via Wikimedia Commons; trademarks of their owners." on the slide.
 - End with discussion questions, then a Sources slide with links.
+- Frame content is vertically centered (Beamer default).
+
+### Step-by-step concept decks
+
+Template: `_tools/letters/gen_letter_slides.py` with content in `_tools/letters/slide_content.py` (helpers `EX`, `JE`, `TB`, `UL`, `pie`).
+
+1. Title slide, then **What the Letter/Source Says**: the verbatim quote in a red rounded box, with author and year.
+2. **Step 1, Step 2, Step 3, ...**: one idea per frame, each building on the last (definition &rarr; journal entry &rarr; calculation table &rarr; comparison). Each step uses one small made-up **EX.** with round numbers and highlights the result row.
+3. **Back to the Letter**: two or three bullets tying the steps to the real company.
+4. **Questions** (same as the worksheet, same option order), then **Sources**.
 
 ## Worksheets (one sheet, printed on Letter)
 
@@ -59,4 +69,5 @@ Generators: `_tools/acc250_case/` (`gen_case.py`, `gen_worksheets.py`, `gen_ch8_
 2. Link new material on the Test page (`test.md`) first. Chapter material later goes in the ACC250 Lecture Notes table's **Worksheet** column (`ACC250.md`).
 3. Every link to `/assets/...pdf|html` carries `?v=<first 8 hex of md5>`; recompute only for the files you changed (do not restamp unrelated links).
 4. Commit on the working branch, push, open a PR to `main`, merge it, and tell the user it takes 1-2 minutes to show on the site.
-5. Show the user screenshots of the result (student and key pages, or a grid of slides).
+5. Check that no frame overflows (compare `.body` scrollHeight with clientHeight in Playwright).
+6. Show the user screenshots of the result (student and key pages, or a grid of slides).

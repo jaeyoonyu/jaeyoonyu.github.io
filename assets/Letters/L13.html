@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Economic vs. accounting goodwill</title>
+<style>:root { --blue:#3333b3; --b1:#2c2c8a; --b2:#5a5ad0; --b3:#a6a6e8; }
+* { box-sizing:border-box; }
+html, body { margin:0; height:100%; background:#555; }
+body { display:flex; align-items:center; justify-content:center; overflow:hidden;
+  font-family:"Latin Modern Sans","CMU Sans Serif","Helvetica Neue",Arial,sans-serif; color:#000; }
+#stage { position:relative; width:1200px; height:900px; background:#fff; transform-origin:center; box-shadow:0 10px 40px rgba(0,0,0,.4); }
+.s { position:absolute; inset:0; display:none; }
+.s.on { display:block; }
+.ft { position:absolute; left:0; right:0; top:0; padding:22px 40px 12px; font-size:40px; color:var(--blue);
+  border-bottom:2px solid var(--blue); }
+.body { position:absolute; left:40px; right:40px; top:110px; bottom:60px; font-size:30px; line-height:1.38; }
+.title .body { top:0; display:flex; align-items:center; justify-content:center; text-align:center; }
+.tsmall { color:var(--blue); font-size:30px; margin:0 0 8px; }
+.tbig { color:var(--blue); font-size:42px; margin:0 0 50px; }
+.tauth { font-size:26px; margin:0; }
+.foot { position:absolute; left:0; right:0; bottom:0; height:30px; display:flex; font-size:15px; color:#fff; }
+.foot span { display:flex; align-items:center; padding:0 18px; }
+.f1 { background:var(--b1); width:36%; justify-content:center; }
+.f2 { background:var(--b2); width:40%; justify-content:center; }
+.f3 { background:var(--b3); flex:1; justify-content:flex-end; }
+ul, ol { margin:.3em 0 .5em; padding-left:1.5em; }
+li { margin:.25em 0; }
+ul { list-style:none; }
+ul > li { position:relative; }
+ul > li::before { content:""; position:absolute; left:-1.05em; top:.48em; width:.42em; height:.42em; border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #8a8ae6, var(--blue)); }
+ol { counter-reset:k; list-style:none; }
+ol > li { counter-increment:k; position:relative; }
+ol > li::before { content:counter(k); position:absolute; left:-1.5em; top:.12em; width:1.05em; height:1.05em; border-radius:50%;
+  background:var(--blue); color:#fff; font-size:.7em; display:flex; align-items:center; justify-content:center; }
+p { margin:.3em 0; }
+.h { font-weight:700; margin:.4em 0 .1em; }
+.ex { background:#ffeb3b; font-weight:700; text-decoration:underline; padding:0 4px; }
+.hl { color:#1a8a1a; font-weight:700; text-decoration:underline; }
+table.bt { border-collapse:collapse; margin:16px auto 18px; font-size:28px; min-width:70%; }
+table.bt th { border-top:2px solid #000; border-bottom:1px solid #000; padding:6px 16px; text-align:left; font-weight:400; }
+table.bt td { padding:6px 16px; }
+table.bt tr:last-child td { border-bottom:2px solid #000; }
+table.bt .r { text-align:right; }
+table.bt tr.pink td { background:#f6c6c6; }
+table.bt tr.yel td { background:#fff26b; }
+.rbox { border:2px solid #e57373; border-radius:16px; padding:14px 22px; margin:22px 0; }
+.rbox.je { display:inline-block; padding:10px 26px; }
+.rbox.je table { border-collapse:collapse; }
+.rbox.je td { padding:2px 0; }
+.jd { font-weight:700; padding-right:16px !important; vertical-align:middle; }
+.jl { border-left:2px solid #000; padding-left:16px !important; padding-right:40px !important; }
+.ind { padding-left:30px; }
+.jdr { text-align:right; width:110px; }
+.jcr { text-align:right; width:90px; }
+.ph { margin:0 0 14px; text-align:center; }
+.ph { margin-top:10px; }
+.phrow { display:flex; justify-content:center; gap:40px; }
+.credit { font-size:14px; color:#444; text-align:center; margin:0; }
+.ph img { height:330px; border:1px solid #ccc; }
+.ph figcaption { font-size:15px; color:#444; margin-top:4px; }
+.src { font-size:24px; }
+.src a { color:var(--blue); }
+.note { font-size:20px; margin-top:24px; }
+@media print { body { background:#fff; display:block; } #stage { transform:none !important; box-shadow:none; } }
+
+.s:not(.title) .body { display:flex; flex-direction:column; justify-content:center; padding-bottom:30px; }
+.s:not(.title) .body > * { flex:none; }
+.s:not(.title) .body > .rbox.je { align-self:flex-start; }
+.tsub { font-size:24px; color:#000; margin:-34px 0 46px; }
+table.bt.sm { font-size:24px; }
+table.bt th.r { text-align:right; }
+.rbox.je tr.gap td { height:12px; }
+.quote { font-style:italic; font-size:30px; }
+.who { text-align:right; font-size:24px; margin-top:6px; }
+.note { font-size:18px; margin-top:10px; }
+.mc { font-size:24px; margin:.1em 0 .3em; }
+@media print { @page { size:1200px 900px; margin:0; } html, body { height:auto; overflow:visible; background:#fff; }
+  #stage { width:1200px; height:auto; } .s { display:block !important; position:relative; width:1200px; height:900px; page-break-after:always; break-after:page; } }
+
+ol.mc { counter-reset:m; list-style:upper-alpha; padding-left:1.2em; } ol.mc > li { counter-increment:m; } ol.mc > li::before { display:none; }
+</style>
+</head>
+<body>
+<div id="stage">
+<section class="s title">
+<div class="body"><div class="tblock">
+<p class="tsmall">Shareholder Letters: Accounting Themes</p>
+<p class="tbig">Economic vs. accounting goodwill</p>
+<p class="tsub">Berkshire letters: 1983, 1999, 2015</p>
+<p class="tauth">Jaeyoon Yu, Ph.D.<br>Central Michigan University</p>
+</div></div>
+<div class="foot"><span class="f1">Shareholder Letters: Accounting Themes</span><span class="f2">Economic vs. accounting goodwill</span><span class="f3">1 / 8</span></div>
+</section>
+<section class="s">
+<div class="ft">What the Letter Says</div><div class="body"><div class="rbox"><p class="quote">&ldquo;We own several businesses that possess economic Goodwill ... far larger than the accounting Goodwill that is carried on our balance sheet.&rdquo;</p><p class="who">Warren E. Buffett, 1983 letter</p></div><ul><li>Key letters: 1983, 1999, 2015</li><li>Course fit: ACC250 Ch9 &middot; ACC531 &mdash; &middot; Difficulty: Intermediate</li></ul></div>
+<div class="foot"><span class="f1">Shareholder Letters: Accounting Themes</span><span class="f2">Economic vs. accounting goodwill</span><span class="f3">2 / 8</span></div>
+</section>
+<section class="s">
+<div class="ft">Step 1: The Purchase</div><div class="body"><p><span class="ex">EX.</span> Pay $500 cash for a company. Fair value of its assets: $450; liabilities: $70.</p><table class="bt"><tr><th></th><th class=r>Amount</th></tr><tr><td>Fair value of assets</td><td class=r>$450</td></tr><tr><td>&minus; Fair value of liabilities</td><td class=r>(70)</td></tr><tr class=pink><td>Identifiable net assets</td><td class=r>$380</td></tr></table></div>
+<div class="foot"><span class="f1">Shareholder Letters: Accounting Themes</span><span class="f2">Economic vs. accounting goodwill</span><span class="f3">3 / 8</span></div>
+</section>
+<section class="s">
+<div class="ft">Step 2: Goodwill = Price &minus; Net Assets</div><div class="body"><table class="bt"><tr><th></th><th class=r>Amount</th></tr><tr><td>Purchase price</td><td class=r>$500</td></tr><tr><td>&minus; Identifiable net assets</td><td class=r>(380)</td></tr><tr class=yel><td>Goodwill</td><td class=r>$120</td></tr></table><div class="rbox je"><table><tr><td class="jd" rowspan="4">Acq. date:</td><td class="jl">Assets (+A)</td><td class="jdr">450</td><td class="jcr"></td></tr><tr><td class="jl">Goodwill (+A)</td><td class="jdr">120</td><td class="jcr"></td></tr><tr><td class="jl"><span class="ind">Liabilities (+L)</span></td><td class="jdr"></td><td class="jcr">70</td></tr><tr><td class="jl"><span class="ind">Cash (&minus;A)</span></td><td class="jdr"></td><td class="jcr">500</td></tr></table></div></div>
+<div class="foot"><span class="f1">Shareholder Letters: Accounting Themes</span><span class="f2">Economic vs. accounting goodwill</span><span class="f3">4 / 8</span></div>
+</section>
+<section class="s">
+<div class="ft">Step 3: After the Purchase</div><div class="body"><ul><li>Goodwill is <b>not amortized</b> (U.S. GAAP since 2002); it is tested for <b>impairment</b>.</li><li>Goodwill a company <b>builds itself</b> (brand, reputation) is <b>never</b> recorded.</li></ul></div>
+<div class="foot"><span class="f1">Shareholder Letters: Accounting Themes</span><span class="f2">Economic vs. accounting goodwill</span><span class="f3">5 / 8</span></div>
+</section>
+<section class="s">
+<div class="ft">Back to the Letter</div><div class="body"><ul><li>Buffett (1983): <b>economic</b> goodwill = the power to earn high returns on tangible assets.</li><li><b>Accounting</b> goodwill = only what was paid in an acquisition &rarr; the two can differ enormously.</li><li>See&rsquo;s Candies: large economic goodwill, small accounting goodwill.</li></ul></div>
+<div class="foot"><span class="f1">Shareholder Letters: Accounting Themes</span><span class="f2">Economic vs. accounting goodwill</span><span class="f3">6 / 8</span></div>
+</section>
+<section class="s">
+<div class="ft">Questions</div><div class="body"><ol class="qq"><li>A company pays $500 million for another company whose identifiable net assets have a fair value of $380 million. How much goodwill does it record ($ millions)?</li><li>Why can a business&rsquo;s economic goodwill be far larger than the goodwill on its balance sheet?<ol class="mc" type="A"><li>Goodwill is always amortized to zero within one year</li><li>Auditors require goodwill to be recorded at half its value</li><li>Goodwill is a liability, not an asset</li><li>Goodwill is recorded only when a business is purchased; goodwill a company builds internally is never recorded</li></ol></li></ol></div>
+<div class="foot"><span class="f1">Shareholder Letters: Accounting Themes</span><span class="f2">Economic vs. accounting goodwill</span><span class="f3">7 / 8</span></div>
+</section>
+<section class="s">
+<div class="ft">Sources</div><div class="body"><ul class="src"><li><a href="https://www.berkshirehathaway.com/letters/1983.html" target="_blank">Warren E. Buffett, 1983 letter</a> (berkshirehathaway.com/letters)</li><li><a href="https://www.berkshirehathaway.com/letters/final1999pdf.pdf" target="_blank">Warren E. Buffett, 1999 letter</a> (berkshirehathaway.com/letters)</li><li><a href="https://www.berkshirehathaway.com/letters/2015ltr.pdf" target="_blank">Warren E. Buffett, 2015 letter</a> (berkshirehathaway.com/letters)</li>
+<li><a href="R13.pdf">Reading packet</a> and <a href="Q13.pdf">question sheet</a> for this theme</li></ul>
+<p class="note">Letters &copy; Berkshire Hathaway Inc.; quoted for non-commercial teaching. Examples use made-up numbers unless a slide says otherwise. Not affiliated with or endorsed by Berkshire Hathaway Inc.</p></div>
+<div class="foot"><span class="f1">Shareholder Letters: Accounting Themes</span><span class="f2">Economic vs. accounting goodwill</span><span class="f3">8 / 8</span></div>
+</section>
+</div>
+<script>const S=[...document.querySelectorAll('.s')]; let i=0;
+function go(n){ if(n<0||n>=S.length) return; i=n; S.forEach((s,k)=>s.classList.toggle('on',k===i)); location.hash=i+1; }
+function fit(){ const k=Math.min(innerWidth/1200, innerHeight/900); document.getElementById('stage').style.transform=`scale(${k})`; }
+addEventListener('resize',fit);
+addEventListener('keydown',e=>{ const k=e.key;
+  if(['ArrowRight','ArrowDown',' ','PageDown','Enter'].includes(k)){go(i+1);e.preventDefault();}
+  else if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(k)){go(i-1);e.preventDefault();}
+  else if(k==='Home') go(0); else if(k==='End') go(S.length-1);
+  else if(k==='f'||k==='F') document.documentElement.requestFullscreen?.(); });
+document.getElementById('stage').addEventListener('click',e=>{ if(e.target.closest('a')) return; e.clientX<innerWidth*.3?go(i-1):go(i+1); });
+let tx=0; addEventListener('touchstart',e=>tx=e.touches[0].clientX,{passive:true});
+addEventListener('touchend',e=>{const d=e.changedTouches[0].clientX-tx; if(Math.abs(d)>50) go(d<0?i+1:i-1);},{passive:true});
+fit(); go(Math.max(0,(parseInt(location.hash.slice(1))||1)-1));
+</script>
+</body>
+</html>
