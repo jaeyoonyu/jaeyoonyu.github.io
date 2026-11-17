@@ -410,23 +410,23 @@ def h(p):
     return hashlib.md5(open(f, 'rb').read()).hexdigest()[:8] if os.path.exists(f) else '0'
 
 
-lines = ['| # | Topic | Accounting theme | Company | Key letters | Reading | Difficulty | ACC250 | ACC531 | Questions | Key |',
-         '|---|---|---|---|---|---|---|---|---|---|---|']
+lines = ['| # | Topic | Accounting theme | Company | Key letters | Lecture | Reading | Difficulty | ACC250 | ACC531 | Questions | Key |',
+         '|---|---|---|---|---|---|---|---|---|---|---|---|']
 prev = None
 for i, th in enumerate(THEMES, 1):
     c = CO[th['co']]
     yl = ', '.join(f'[{y}]({c["url"](y)})' for y in th['years'])
-    q = f'/assets/Letters/Q{i:02d}.pdf'; k = f'/assets/Letters/Q{i:02d}-Key.pdf'; rd = f'/assets/Letters/R{i:02d}.pdf'
+    q = f'/assets/Letters/Q{i:02d}.pdf'; k = f'/assets/Letters/Q{i:02d}-Key.pdf'; rd = f'/assets/Letters/R{i:02d}.pdf'; lh = f'/assets/Letters/L{i:02d}.html'; lp = f'/assets/Letters/L{i:02d}.pdf'
     tp = th['topic'] if th['topic'] != prev else ''
     prev = th['topic']
-    lines.append(f'| {i} | {tp} | {th["theme"]} | {c["name"]} | {yl} | [PDF]({rd}?v={h(rd)}) | {th["diff"]} | {th["a250"] or "—"} | {th["a531"] or "—"} | [PDF]({q}?v={h(q)}) | [PDF]({k}?v={h(k)}) |')
+    lines.append(f'| {i} | {tp} | {th["theme"]} | {c["name"]} | {yl} | [Slides]({lh}?v={h(lh)}){{:target="_blank"}} &middot; [PDF]({lp}?v={h(lp)}) | [PDF]({rd}?v={h(rd)}) | {th["diff"]} | {th["a250"] or "—"} | {th["a531"] or "—"} | [PDF]({q}?v={h(q)}) | [PDF]({k}?v={h(k)}) |')
 
 md = f'''---
 layout: page
 title: "Shareholder Letters: Accounting Themes"
 ---
 
-Two sets of annual shareholder letters explain many accounting issues in plain English: Warren Buffett&rsquo;s letters to **Berkshire Hathaway** shareholders (1977&ndash;2024; the 2025 letter is by his successor, Greg Abel) and Jeff Bezos&rsquo;s and Andy Jassy&rsquo;s letters to **Amazon** shareholders (1997&ndash;2025). The table groups the themes by topic and shows the letters that discuss each theme most and where it fits in ACC250 (Intro to Financial Accounting) and ACC531 (Auditing). For each theme, the **Reading** packet starts with a short summary and collects only the relevant passages from its key letters; a one-page question sheet and answer key follow.
+Two sets of annual shareholder letters explain many accounting issues in plain English: Warren Buffett&rsquo;s letters to **Berkshire Hathaway** shareholders (1977&ndash;2024; the 2025 letter is by his successor, Greg Abel) and Jeff Bezos&rsquo;s and Andy Jassy&rsquo;s letters to **Amazon** shareholders (1997&ndash;2025). The table groups the themes by topic and shows the letters that discuss each theme most and where it fits in ACC250 (Intro to Financial Accounting) and ACC531 (Auditing). For each theme, the **Lecture** slides walk through the idea step by step with a small example, the **Reading** packet starts with a short summary and collects only the relevant passages from its key letters, and a one-page question sheet and answer key follow.
 
 <style>
 .bt {{ overflow-x:auto; }}

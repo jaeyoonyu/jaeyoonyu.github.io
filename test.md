@@ -129,4 +129,4 @@ Type a **ticker** (e.g., WMT) or a **CIK** (e.g., 104169), then pick a form. The
 
 ## 📜 Shareholder Letters
 
-* [Shareholder Letters: Accounting Themes](/shareholder-letters/): 26 accounting themes from Berkshire Hathaway (1977&ndash;2025) and Amazon (1997&ndash;2025) shareholder letters, sorted by topic, with links, difficulty, ACC250/ACC531 fit, a reading packet, and a question sheet with key for each.
+* [Shareholder Letters: Accounting Themes](/shareholder-letters/): 26 accounting themes from Berkshire Hathaway (1977&ndash;2025) and Amazon (1997&ndash;2025) shareholder letters, sorted by topic, with links, difficulty, ACC250/ACC531 fit, step-by-step lecture slides, a reading packet, and a question sheet with key for each.
