@@ -90,14 +90,14 @@ EVENTS = [(0.0, "Jan 1, 2026", "Buy the roaster", "Cost = ?", "buy"),
           (0.25, "Dec 31, 2026", "AJE", "Year 1", "aje"),
           (0.5, "Dec 31, 2027", "AJE", "Year 2", "aje"),
           (0.75, "Dec 31, 2028", "AJE", "Year 3", "aje"),
-          (1.0, "Dec 31, 2029", "AJE", "Year 4, BV = 4,000", "end")]
+          (1.0, "Dec 31, 2029", "AJE", "Year 4, BV = 2,000", "end")]
 
 # ---------------------------------------------------------------- numbers
-COST, RES, LIFE = 80000, 4000, 4
-SLM = [(1, 80000, 19000, 19000, 61000), (2, 61000, 19000, 38000, 42000),
-       (3, 42000, 19000, 57000, 23000), (4, 23000, 19000, 76000, 4000)]
-DDM = [(1, 80000, 40000, 40000, 40000), (2, 40000, 20000, 60000, 20000),
-       (3, 20000, 10000, 70000, 10000), (4, 10000, 6000, 76000, 4000)]
+COST, RES, LIFE = 20000, 2000, 4
+SLM = [(1, 20000, 4500, 4500, 15500), (2, 15500, 4500, 9000, 11000),
+       (3, 11000, 4500, 13500, 6500), (4, 6500, 4500, 18000, 2000)]
+DDM = [(1, 20000, 10000, 10000, 10000), (2, 10000, 5000, 15000, 5000),
+       (3, 5000, 2500, 17500, 2500), (4, 2500, 500, 18000, 2000)]
 f = '{:,}'.format
 
 
@@ -114,8 +114,8 @@ front = f'''<h1>Depreciation Step by Step: Straight-Line Method</h1>
 
 <div class="given"><b class="t">The purchase</b>
 <ul>
-<li><b>Jan 1, 2026:</b> Bought a coffee roaster. List price <b>$76,000</b>, less a <b>$4,000</b> discount. Also paid sales tax <b>$5,000</b>, delivery <b>$1,200</b> and installation <b>$1,800</b>. Everything was paid in <b>cash</b>.</li>
-<li>Expected <b>useful life: 4 years</b>. Expected <b>residual value: $4,000</b> (what it can be sold for after 4 years).</li>
+<li><b>Jan 1, 2026:</b> Bought a coffee roaster. List price <b>$19,000</b>, less a <b>$1,000</b> discount. Also paid sales tax <b>$1,000</b>, delivery <b>$500</b> and installation <b>$500</b>. Everything was paid in <b>cash</b>.</li>
+<li>Expected <b>useful life: 4 years</b>. Expected <b>residual value: $2,000</b> (what it can be sold for after 4 years).</li>
 <li>Campus Brew uses the <b>straight-line method</b> and records depreciation in an adjusting entry every <b>Dec 31</b>.</li>
 </ul></div>
 {timeline(EVENTS)}
@@ -124,56 +124,56 @@ front = f'''<h1>Depreciation Step by Step: Straight-Line Method</h1>
 <div>
 <h2>1. Acquisition cost</h2>
 <table class="cost">
-<tr><td>List price</td><td class="amt">76,000</td></tr>
-<tr><td>Less: Discount</td><td class="amt">(4,000)</td></tr>
-<tr><td>Sales tax</td><td class="amt">5,000</td></tr>
-<tr><td>Delivery</td><td class="amt">1,200</td></tr>
-<tr><td>Installation</td><td class="amt">1,800</td></tr>
-<tr class="tot"><td>Acquisition cost</td><td class="amt">{bl("80,000")}</td></tr>
+<tr><td>List price</td><td class="amt">19,000</td></tr>
+<tr><td>Less: Discount</td><td class="amt">(1,000)</td></tr>
+<tr><td>Sales tax</td><td class="amt">1,000</td></tr>
+<tr><td>Delivery</td><td class="amt">500</td></tr>
+<tr><td>Installation</td><td class="amt">500</td></tr>
+<tr class="tot"><td>Acquisition cost</td><td class="amt">{bl("20,000")}</td></tr>
 </table>
 <p class="hint">All of these are capitalized: they get the roaster ready to use.</p>
 </div>
 <div>
 <h2>2. Journal entry at purchase</h2>
-{je([("Jan 1", "PPE (+A)", "Cash (&minus;A)", "80,000")])}
+{je([("Jan 1", "PPE (+A)", "Cash (&minus;A)", "20,000")])}
 </div>
 </div>
 
 <div class="pair">
 <div>
 <h2>3. Adjusting journal entry (AJE), Dec 31, 2026</h2>
-<p class="formula">Annual DepExp = (Cost &minus; Residual value) &divide; Useful life = {inl("19,000")}</p>
-{je([("Dec 31", "DepExp (+E)", "AccDep (+xA)", "19,000")])}
+<p class="formula">Annual DepExp = (Cost &minus; Residual value) &divide; Useful life = {inl("4,500")}</p>
+{je([("Dec 31", "DepExp (+E)", "AccDep (+xA)", "4,500")])}
 </div>
 <div>
 <h2>4. T-account for AccDep</h2>
-{tacct("Accumulated Depreciation", [], [("Dec 31, 2026", "19,000"), ("Dec 31, 2027", "19,000")], "End. bal. 2027", "38,000", "cr")}
+{tacct("Accumulated Depreciation", [], [("Dec 31, 2026", "4,500"), ("Dec 31, 2027", "4,500")], "End. bal. 2027", "9,000", "cr")}
 </div>
 </div>
 
 <h2 class="sumh">5. Straight-line schedule</h2>
-{sched(SLM, "76,000")}
+{sched(SLM, "18,000")}
 <p class="hint">Beg BV = last year&rsquo;s Ending BV. &nbsp; Ending BV = Cost &minus; AccDep.</p>
 '''
 
 back = f'''<h1 style="margin-top:0">The Same Roaster: Double-Declining Balance Method</h1>
-<p class="intro2">Suppose Campus Brew used the <b>double-declining balance method</b> instead. Cost <b>$80,000</b>, residual value <b>$4,000</b>, useful life <b>4 years</b>, bought Jan 1, 2026.</p>
+<p class="intro2">Suppose Campus Brew used the <b>double-declining balance method</b> instead. Cost <b>$20,000</b>, residual value <b>$2,000</b>, useful life <b>4 years</b>, bought Jan 1, 2026.</p>
 
 <div class="pair">
 <div>
 <h2>6. The rate and Year 1</h2>
 <p class="formula">Rate = 2 &divide; Useful life = {inl("50%")}</p>
-<p class="formula">Year 1 DepExp = Rate &times; (Cost &minus; AccDep) = {inl("40,000")}</p>
-<p class="formula">Year 4 (the last year): DepExp = Beg BV &minus; Residual value = {inl("6,000")}</p>
+<p class="formula">Year 1 DepExp = Rate &times; (Cost &minus; AccDep) = {inl("10,000")}</p>
+<p class="formula">Year 4 (the last year): DepExp = Beg BV &minus; Residual value = {inl("500")}</p>
 </div>
 <div>
 <h2>7. AJE, Dec 31, 2026 (DDM)</h2>
-{je([("Dec 31", "DepExp (+E)", "AccDep (+xA)", "40,000")])}
+{je([("Dec 31", "DepExp (+E)", "AccDep (+xA)", "10,000")])}
 </div>
 </div>
 
 <h2 class="sumh">8. Double-declining schedule</h2>
-{sched(DDM, "76,000")}
+{sched(DDM, "18,000")}
 <p class="hint">The last year is not 50% of Beg BV: it brings Ending BV down to the residual value.</p>
 
 <div class="pair2">
@@ -181,11 +181,11 @@ back = f'''<h1 style="margin-top:0">The Same Roaster: Double-Declining Balance M
 <h2>9. Compare the two methods</h2>
 <table class="sched">
 <tr><th>Year</th><th>SLM DepExp</th><th>DDM DepExp</th></tr>
-<tr><td>1</td><td>{bl("19,000")}</td><td>{bl("40,000")}</td></tr>
-<tr><td>2</td><td>{bl("19,000")}</td><td>{bl("20,000")}</td></tr>
-<tr><td>3</td><td>{bl("19,000")}</td><td>{bl("10,000")}</td></tr>
-<tr><td>4</td><td>{bl("19,000")}</td><td>{bl("6,000")}</td></tr>
-<tr class="tot"><td>Total</td><td>{bl("76,000")}</td><td>{bl("76,000")}</td></tr>
+<tr><td>1</td><td>{bl("4,500")}</td><td>{bl("10,000")}</td></tr>
+<tr><td>2</td><td>{bl("4,500")}</td><td>{bl("5,000")}</td></tr>
+<tr><td>3</td><td>{bl("4,500")}</td><td>{bl("2,500")}</td></tr>
+<tr><td>4</td><td>{bl("4,500")}</td><td>{bl("500")}</td></tr>
+<tr class="tot"><td>Total</td><td>{bl("18,000")}</td><td>{bl("18,000")}</td></tr>
 </table>
 </div>
 <div>
@@ -271,7 +271,7 @@ def ssched(rows, last_hl=False):
     for y, beg, dep, acc, end in rows:
         hl = ' class="y"' if last_hl and y == 4 else ''
         out.append(f'<tr><td>{y}</td><td>{f(beg)}</td><td{hl}>{f(dep)}</td><td>{f(acc)}</td><td>{f(end)}</td></tr>')
-    out.append('<tr class="tot"><td>Total</td><td></td><td>76,000</td><td></td><td></td></tr></table>')
+    out.append('<tr class="tot"><td>Total</td><td></td><td>18,000</td><td></td><td></td></tr></table>')
     return ''.join(out)
 
 
@@ -285,7 +285,7 @@ body = f'''
 <h1>Depreciation Step by Step</h1>
 <p class="lede">Campus Brew Co. (a made-up company) buys a coffee roaster and depreciates it by the straight-line and the double-declining balance methods.</p>
 </div>
-<p class="title-date">Cost $80,000 &middot; residual value $4,000 &middot; useful life 4 years</p>
+<p class="title-date">Cost $20,000 &middot; residual value $2,000 &middot; useful life 4 years</p>
 </section>
 
 <section class="s" data-nav="Timeline">
@@ -301,14 +301,14 @@ body = f'''
 <div class="two">
 <div><table class="sch" style="width:auto">
 <tr><th style="text-align:left">Item</th><th>$</th></tr>
-<tr><td style="text-align:left">List price</td><td>76,000</td></tr>
-<tr><td style="text-align:left">Less: Discount</td><td>(4,000)</td></tr>
-<tr><td style="text-align:left">Sales tax</td><td>5,000</td></tr>
-<tr><td style="text-align:left">Delivery</td><td>1,200</td></tr>
-<tr><td style="text-align:left">Installation</td><td>1,800</td></tr>
-<tr class="tot"><td style="text-align:left">Acquisition cost</td><td><span class="hl">80,000</span></td></tr>
+<tr><td style="text-align:left">List price</td><td>19,000</td></tr>
+<tr><td style="text-align:left">Less: Discount</td><td>(1,000)</td></tr>
+<tr><td style="text-align:left">Sales tax</td><td>1,000</td></tr>
+<tr><td style="text-align:left">Delivery</td><td>500</td></tr>
+<tr><td style="text-align:left">Installation</td><td>500</td></tr>
+<tr class="tot"><td style="text-align:left">Acquisition cost</td><td><span class="hl">20,000</span></td></tr>
 </table></div>
-<div>{sje([("Jan 1", "PPE (+A)", "Cash (&minus;A)", "80,000")])}
+<div>{sje([("Jan 1", "PPE (+A)", "Cash (&minus;A)", "20,000")])}
 <div class="key" style="margin-top:22px"><span class="klab">Cost principle</span>Every cost to get the roaster ready to use is capitalized. No expense on Jan 1.</div></div>
 </div>
 </section>
@@ -317,21 +317,21 @@ body = f'''
 <p class="eyebrow">Steps 3 and 4</p>
 <h2>The year-end adjustment (straight-line)</h2>
 <div class="two">
-<div><p class="big">(80,000 &minus; 4,000) &divide; 4 = <span class="hl">19,000</span></p>
-{sje([("Dec 31, 2026", "Depreciation Exp (+E)", "AccDep (+xA, &minus;A)", "19,000")])}</div>
+<div><p class="big">(20,000 &minus; 2,000) &divide; 4 = <span class="hl">4,500</span></p>
+{sje([("Dec 31, 2026", "Depreciation Exp (+E)", "AccDep (+xA, &minus;A)", "4,500")])}</div>
 <div><table class="tacct"><tr><th colspan="4">Accumulated Depreciation</th></tr>
-<tr><td class="l"></td><td class="a dr"></td><td class="l cl">Dec 31, 2026</td><td class="a">19,000</td></tr>
-<tr><td class="l"></td><td class="a dr"></td><td class="l cl">Dec 31, 2027</td><td class="a">19,000</td></tr>
-<tr class="bal"><td class="l"></td><td class="a dr"></td><td class="l cl">End. bal.</td><td class="a">38,000</td></tr></table></div>
+<tr><td class="l"></td><td class="a dr"></td><td class="l cl">Dec 31, 2026</td><td class="a">4,500</td></tr>
+<tr><td class="l"></td><td class="a dr"></td><td class="l cl">Dec 31, 2027</td><td class="a">4,500</td></tr>
+<tr class="bal"><td class="l"></td><td class="a dr"></td><td class="l cl">End. bal.</td><td class="a">9,000</td></tr></table></div>
 </div>
-<div class="note" style="margin-top:20px">The AJE does not touch PPE or Cash. PPE stays at cost (80,000); AccDep grows by 19,000 every year.</div>
+<div class="note" style="margin-top:20px">The AJE does not touch PPE or Cash. PPE stays at cost (20,000); AccDep grows by 4,500 every year.</div>
 </section>
 
 <section class="s" data-nav="5 &middot; SLM schedule">
 <p class="eyebrow">Step 5</p>
 <h2>Straight-line schedule</h2>
 {ssched(SLM)}
-<div class="key"><span class="klab">Check</span>Ending BV = Cost &minus; AccDep. After 4 years: 80,000 &minus; 76,000 = 4,000, the residual value.</div>
+<div class="key"><span class="klab">Check</span>Ending BV = Cost &minus; AccDep. After 4 years: 20,000 &minus; 18,000 = 2,000, the residual value.</div>
 </section>
 
 <section class="s" data-nav="6&ndash;7 &middot; DDM rate">
@@ -339,8 +339,8 @@ body = f'''
 <h2>Double-declining: the rate and Year 1</h2>
 <div class="two">
 <div><p class="big">Rate = 2 &divide; 4 = <span class="hl">50%</span></p>
-<p class="big">Year 1 = 50% &times; (80,000 &minus; 0) = <span class="hl">40,000</span></p></div>
-<div>{sje([("Dec 31, 2026", "Depreciation Exp (+E)", "AccDep (+xA, &minus;A)", "40,000")])}</div>
+<p class="big">Year 1 = 50% &times; (20,000 &minus; 0) = <span class="hl">10,000</span></p></div>
+<div>{sje([("Dec 31, 2026", "Depreciation Exp (+E)", "AccDep (+xA, &minus;A)", "10,000")])}</div>
 </div>
 <div class="note" style="margin-top:20px">Residual value is <b>not</b> subtracted in the DDM formula. It only matters in the last year.</div>
 </section>
@@ -349,19 +349,19 @@ body = f'''
 <p class="eyebrow">Step 8</p>
 <h2>Double-declining schedule</h2>
 {ssched(DDM, last_hl=True)}
-<div class="key"><span class="klab">Last year</span>50% &times; 10,000 would be 5,000, but the last year brings BV down to the residual value: 10,000 &minus; 4,000 = <b>6,000</b>.</div>
+<div class="key"><span class="klab">Last year</span>50% &times; 2,500 would be 1,250, but the last year brings BV down to the residual value: 2,500 &minus; 2,000 = <b>500</b>.</div>
 </section>
 
 <section class="s" data-nav="9&ndash;10 &middot; Compare">
 <p class="eyebrow">Steps 9 and 10</p>
 <h2>Same total, different timing</h2>
 <div class="hbars">
-<div class="hbar"><span>Year 1 SLM</span><div class="track"><div class="fill" style="width:47.5%;background:#1a7a5e"></div></div><span class="v">19,000</span></div>
-<div class="hbar"><span>Year 1 DDM</span><div class="track"><div class="fill" style="width:100%;background:#b3200f"></div></div><span class="v">40,000</span></div>
-<div class="hbar"><span>Year 4 SLM</span><div class="track"><div class="fill" style="width:47.5%;background:#1a7a5e"></div></div><span class="v">19,000</span></div>
-<div class="hbar"><span>Year 4 DDM</span><div class="track"><div class="fill" style="width:15%;background:#b3200f"></div></div><span class="v">6,000</span></div>
+<div class="hbar"><span>Year 1 SLM</span><div class="track"><div class="fill" style="width:45%;background:#1a7a5e"></div></div><span class="v">4,500</span></div>
+<div class="hbar"><span>Year 1 DDM</span><div class="track"><div class="fill" style="width:100%;background:#b3200f"></div></div><span class="v">10,000</span></div>
+<div class="hbar"><span>Year 4 SLM</span><div class="track"><div class="fill" style="width:45%;background:#1a7a5e"></div></div><span class="v">4,500</span></div>
+<div class="hbar"><span>Year 4 DDM</span><div class="track"><div class="fill" style="width:5%;background:#b3200f"></div></div><span class="v">500</span></div>
 </div>
-<div class="note" style="margin-top:22px">DDM: more expense early, so <b>lower net income in 2026</b>. Both total <b>76,000</b> and end at a BV of <b>4,000</b>.</div>
+<div class="note" style="margin-top:22px">DDM: more expense early, so <b>lower net income in 2026</b>. Both total <b>18,000</b> and end at a BV of <b>2,000</b>.</div>
 </section>
 
 <section class="s" data-nav="Takeaways">
