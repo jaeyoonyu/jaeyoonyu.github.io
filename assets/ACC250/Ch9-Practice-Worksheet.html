@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ch9 Practice Worksheet</title>
+<style>
+:root { --accent:#1a7a5e; --key:#b3200f; }
+* { box-sizing:border-box; }
+html { background:#e9ecea; }
+body { margin:0; color:#000; font:10pt/1.32 "Times New Roman",Times,serif; }
+.page { width:8.5in; height:11in; margin:18px auto; background:#fff; padding:.35in .5in .3in;
+  box-shadow:0 6px 24px rgba(0,0,0,.15); overflow:hidden; position:relative; }
+.bar { position:sticky; top:0; z-index:5; display:flex; gap:10px; justify-content:center; padding:10px; background:#16263a; }
+.bar button { font:600 13px "Segoe UI",system-ui,sans-serif; padding:7px 16px; border-radius:6px; border:0;
+  background:#fff; color:#16263a; cursor:pointer; }
+.bar button.on { background:var(--accent); color:#fff; }
+
+header { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:1.2pt solid #000;
+  padding-bottom:3pt; margin-bottom:5pt; }
+header .course { font:700 8.5pt Arial,sans-serif; letter-spacing:.01em; }
+header .name span { display:inline-block; width:2.2in; border-bottom:.8pt solid #000; }
+h1 { font-size:14pt; margin:0 0 3pt; }
+.filing { font-size:8.3pt; margin:0 0 6pt; padding:2.5pt 6pt; border:.8pt solid #000; border-radius:3pt; }
+.filing a { color:#000; }
+
+.cols { display:grid; grid-template-columns:1fr 1fr; gap:.28in; align-items:start; margin-bottom:12pt; }
+
+/* ---- 10-K style statements ---- */
+.stmt { font-size:9.6pt; line-height:1.15; }
+.stmt .co, .stmt .ttl { text-align:center; font-weight:700; margin:0; font-size:9pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+.stmt .co { padding-top:2pt; border-radius:3pt 3pt 0 0; }
+.stmt .ttl { padding-bottom:2pt; border-radius:0 0 3pt 3pt; font-size:10pt; }
+.stmt .unit { display:none; }
+.stmt.gapt { margin-top:16pt; }
+.stmt.wide { margin-bottom:6pt; }
+.cols.in { margin:0; }
+.cols.in .sec:first-child td { padding-top:0; }
+.stmt table { width:100%; border-collapse:collapse; margin-top:2pt; }
+.stmt th { font-weight:700; text-align:right; padding:0 2pt 1pt; font-size:8.3pt; border-bottom:.8pt solid #000; }
+.stmt th:first-child { border:0; }
+.stmt td { padding:1.7pt 2pt; vertical-align:bottom; }
+.stmt td.n { text-align:right; white-space:nowrap; width:.85in; }
+.stmt td.n i { font-style:normal; float:left; }
+.stmt .i1 { padding-left:10pt; }
+.stmt .hd td { padding-top:3.5pt; }
+.stmt .sec td { padding-top:3.5pt; font-weight:700; font-style:italic; }
+.stmt tr.u td.n { border-bottom:.8pt solid #000; }
+.stmt tr.uu td.n { border-bottom:2.4pt double #000; }
+
+/* ---- questions ---- */
+h2 { font:700 9pt Arial,sans-serif; letter-spacing:.01em;
+  margin:4pt 0 3pt; padding-bottom:2pt; border-bottom:.8pt solid #000; }
+h2 small { font:400 8.5pt "Times New Roman",serif; letter-spacing:0; text-transform:none; margin-left:6pt; }
+.qcols { display:grid; grid-template-columns:1fr 1fr; gap:0 .28in; }
+ol.qs { list-style:none; margin:0; padding:0; }
+ol.qs li { display:grid; grid-template-columns:16pt 1fr .85in; gap:4pt; align-items:end; padding:6.5pt 0 1pt; font-size:9.8pt; line-height:1.2; }
+.no { display:inline-block; font:700 7.5pt Arial,sans-serif; color:#fff; background:#000; border-radius:2pt;
+  padding:0 3pt; line-height:1.4; text-align:center; align-self:start; margin-top:1pt; }
+.bl { display:block; border-bottom:.9pt solid #000; min-height:12pt; }
+.bl.amt { text-align:right; }
+.bl::after { content:"\00a0"; }
+html.key .bl::after { content:attr(data-a); color:var(--key); font-weight:700; }
+
+/* ---- page 2 ---- */
+.defs { display:grid; grid-template-columns:1fr 1fr; gap:0 .3in; font-size:9.6pt; }
+.defs h3 { font:700 8.6pt Arial,sans-serif; letter-spacing:.01em; color:var(--accent); margin:8pt 0 2pt; }
+.defs dl { margin:0; }
+.defs dt { font-weight:700; margin-top:4pt; }
+.defs dd { margin:0 0 0 10pt; }
+.ratios { width:100%; border-collapse:collapse; margin-top:2pt; font-size:10.5pt; }
+.ratios td { padding:9pt 4pt; border-bottom:.6pt solid #999; vertical-align:bottom; }
+.ratios td:first-child { width:28px; }
+.ratios .f { font-size:9.5pt; color:#333; }
+.ratios .ans { width:1.3in; }
+.why { display:none; color:var(--key); font-size:9.3pt; margin-top:4pt; }
+html.key .why { display:block; }
+.src { position:absolute; left:.5in; right:.5in; bottom:.3in; font-size:7.8pt; color:#555; margin:0; }
+.keytag { display:none; color:var(--key); }
+html.key .keytag { display:inline; }
+
+@media print {
+  @page { size:letter; margin:0; }
+  html { background:#fff; }
+  .bar { display:none; }
+  .page { margin:0; box-shadow:none; break-after:page; }
+}
+@media screen and (max-width:860px) {
+  .page { width:auto; height:auto; margin:0 0 12px; padding:16px; box-shadow:none; }
+  .cols, .defs, .qcols { grid-template-columns:1fr; }
+  .src { position:static; margin-top:10px; }
+}
+
+.intro2 { margin:0 0 6pt; font-size:10pt; }
+.given { border:.8pt solid #000; border-radius:3pt; padding:5pt 9pt; margin:4pt 0 8pt; font-size:10pt; }
+.given b.t { display:block; font:700 8.6pt Arial,sans-serif; letter-spacing:.01em; margin-bottom:3pt; }
+.given ul { margin:0; padding-left:16pt; }
+.given li { margin:2pt 0; }
+table.je3 { width:100%; border-collapse:collapse; font-size:10pt; margin:2pt 0 4pt; }
+table.je3 th { font:700 7.8pt Arial,sans-serif; letter-spacing:.01em; color:#444;
+  text-align:left; padding:2pt 6pt; border-bottom:.8pt solid #000; }
+table.je3 th.r { text-align:right; }
+table.je3 td { padding:7pt 6pt 1pt; vertical-align:bottom; }
+table.je3 td.d { width:.6in; font-weight:700; }
+table.je3 td.amt { width:.95in; }
+table.je3 tr.first td { border-top:.6pt solid #ccc; }
+table.je3 .cr .bl { margin-left:22pt; }
+table.je3 .bl { border-bottom:0; min-height:14pt; }
+table.ar { border-collapse:collapse; font-size:10.5pt; margin:4pt 0; min-width:4.6in; }
+table.ar th { font:700 8.4pt Arial,sans-serif; text-align:right; padding:3pt 10pt; background:#ffe14d;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+table.ar th:first-child, table.ar td:first-child { text-align:left; }
+table.ar td { padding:6pt 10pt 2pt; vertical-align:bottom; }
+table.ar td.amt { width:1.2in; }
+table.ar tr.tot td { border-top:.8pt solid #000; font-weight:700; }
+.inl { display:inline-block; min-width:.9in; vertical-align:bottom; }
+.pick i { font-style:normal; padding:0 3pt; }
+html.key .pick i.r { border:1.2pt solid var(--key); border-radius:7pt; color:var(--key); font-weight:700; }
+.why { display:none; color:var(--key); font-size:9.3pt; margin-top:2pt; }
+html.key .why { display:block; }
+.qblock { font-size:10pt; margin:8pt 0 0; display:grid; grid-template-columns:16pt 1fr; gap:4pt; }
+.qblock p { margin:0 0 3pt; }
+.fn { margin:8pt 0 0; font-size:8.8pt; color:#333; }
+.pgfn { position:absolute; left:.5in; right:.5in; bottom:.32in; font-size:9.2pt; color:#000; border-top:.6pt solid #000; padding-top:3pt; }
+.pgfn sup, h2 sup { font-size:.75em; }
+.pair { display:grid; grid-template-columns:3.7in 3.4in; gap:.35in; align-items:start; margin-top:6pt; }
+.pair h2 { margin-top:2pt; }
+.pair table.je3 { width:100%; }
+table.je3 td.amt { width:.62in; }
+table.je3 td.d { width:.55in; white-space:nowrap; }
+table.tacct td.lab { white-space:nowrap; }
+.tq .inl { min-width:.75in; }
+.pair table.tacct { width:3.3in; }
+table.tacct td.lab { width:.75in; } table.tacct td.amt { width:.72in; }
+.tq { margin-top:6pt; line-height:2; }
+.hint { font-size:9pt; color:#000; margin:2pt 0 0; }
+.pair table.net3 { width:3.2in; }
+.net3cap { margin-top:8pt !important; }
+.tq2 { font-size:10pt; margin:2pt 0 6pt; }
+table.ar3 { border-collapse:collapse; font-size:10.5pt; }
+table.ar3 th { font:700 8.8pt Arial,sans-serif; text-align:right; padding:3pt 10pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+table.ar3 th:first-child, table.ar3 td:first-child { text-align:left; }
+table.ar3 th.mean, table.ar3 td.mean { text-align:left; padding-left:18pt; }
+table.ar3 td { padding:6pt 10pt 2pt; vertical-align:bottom; }
+table.ar3 td.amt { width:1in; }
+table.ar3 td.mean { font-style:italic; color:#000; }
+table.ar3 tr.tot td { border-top:.8pt solid #000; font-weight:700; }
+table.ar3 tr.tot td.mean { font-weight:400; }
+/* spacing: spread the free space through the page */
+.pair { margin-top:13pt !important; }
+table.je3 td { padding:7pt 6pt 2pt !important; }
+table.tacct td { padding:8pt 6pt 2pt !important; }
+.tq2 { margin:4pt 0 8pt !important; }
+table.ar3 td { padding:7pt 10pt 2pt !important; }
+.sumh { margin-top:16pt !important; }
+svg.tl { margin-bottom:6pt !important; }
+svg.tl { display:block; width:100%; height:auto; margin:0 0 4pt; font-family:Arial,Helvetica,sans-serif; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+table.sum { border-collapse:collapse; font-size:10.5pt; margin:4pt 0; min-width:5.4in; }
+table.sum th { font:700 8.8pt Arial,sans-serif; text-align:right; padding:3pt 10pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+table.sum th:first-child, table.sum td:first-child { text-align:left; }
+table.sum td { padding:6pt 10pt 2pt; vertical-align:bottom; }
+table.sum td.amt { width:1.2in; }
+table.sum tr.tot td { border-top:.8pt solid #000; font-weight:700; }
+table.sum tr.sep td { border-bottom:.8pt solid #999; }
+.tw { display:grid; grid-template-columns:3.9in 1fr; gap:.3in; align-items:center; margin:4pt 0 2pt; }
+table.tacct { border-collapse:collapse; font-size:10pt; width:3.9in; }
+table.tacct th { font:700 10pt "Times New Roman",serif; text-align:center; padding:2pt; border-bottom:1.6pt solid #000; }
+table.tacct td { padding:5pt 6pt 1pt; vertical-align:bottom; }
+table.tacct td.lab { width:.85in; color:#333; }
+table.tacct td.amt { width:1in; }
+table.tacct td.dr { border-right:1.6pt solid #000; }
+table.tacct td.cl { padding-left:10pt; }
+table.tacct tr.bal td { border-top:.8pt solid #000; font-weight:700; }
+table.net3 { border-collapse:collapse; font-size:10.5pt; width:100%; }
+table.net3 th { font:700 8.8pt Arial,sans-serif; text-align:right; padding:3pt 8pt; background:#ffe14d; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+table.net3 td { padding:8pt 8pt 2pt; text-align:right; }
+.net3cap { font:700 9pt Arial,sans-serif; margin:0 0 3pt; }
+.tq { font-size:10pt; }
+table.je3 td { padding:5pt 6pt 1pt; }
+
+table.cost { border-collapse:collapse; font-size:10.5pt; width:100%; margin:2pt 0 4pt; }
+table.cost td { padding:3pt 10pt 1pt; vertical-align:bottom; }
+table.cost td.amt { width:1.1in; text-align:right; }
+table.cost tr.tot td { border-top:.8pt solid #000; font-weight:700; padding-top:6pt; }
+table.sched { border-collapse:collapse; font-size:10.5pt; width:100%; margin:3pt 0 2pt; }
+table.sched th { font:700 8.8pt Arial,sans-serif; text-align:right; padding:3pt 8pt; background:#ffe14d;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+table.sched th:first-child, table.sched td:first-child { text-align:center; width:.7in; }
+table.sched td { padding:8pt 8pt 2pt; text-align:right; }
+table.sched td.given { color:#000; }
+table.sched tr.tot td { border-top:.8pt solid #000; font-weight:700; }
+.formula { font-size:10.5pt; margin:3pt 0 5pt; }
+.pair2 { display:grid; grid-template-columns:1fr 1fr; gap:.35in; align-items:start; margin-top:10pt; }
+
+</style>
+</head>
+<body>
+<div class="bar">
+  <button id="kbtn" onclick="toggleKey()">Show answers</button>
+  <button onclick="print()">Print</button>
+</div>
+<div class="page">
+<header>
+  <div class="course">ACC 250 &middot; Ch9 Worksheet<span class="keytag"> &middot; Answer key</span></div>
+  <div class="name">Name <span></span></div>
+</header>
+<h1>Depreciation Step by Step: Straight-Line Method</h1>
+<p class="intro2"><b>Campus Brew Co.</b> (a made-up company) roasts coffee for cafes. Its year ends on <b>December 31</b>.</p>
+
+<div class="given"><b class="t">The purchase</b>
+<ul>
+<li><b>Jan 1, 2026:</b> Bought a coffee roaster. List price <b>$76,000</b>, less a <b>$4,000</b> discount. Also paid sales tax <b>$5,000</b>, delivery <b>$1,200</b> and installation <b>$1,800</b>. Everything was paid in <b>cash</b>.</li>
+<li>Expected <b>useful life: 4 years</b>. Expected <b>residual value: $4,000</b> (what it can be sold for after 4 years).</li>
+<li>Campus Brew uses the <b>straight-line method</b> and records depreciation in an adjusting entry every <b>Dec 31</b>.</li>
+</ul></div>
+<svg class="tl" viewBox="0 0 740 92" role="img" aria-label="Timeline"><line x1="70" y1="40" x2="670" y2="40" stroke="#16263a" stroke-width="2.5"/><polygon points="670,30.0 680.5,40 670,50.0" fill="#16263a"/><circle cx="70.0" cy="40" r="7" fill="#5b7f95" stroke="#fff" stroke-width="2"/><text x="70.0" y="24" text-anchor="middle" font-weight="700" font-size="13" fill="#16263a">Jan 1, 2026</text><text x="70.0" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#5b7f95">Buy the roaster</text><text x="70.0" y="82" text-anchor="middle" font-size="12" fill="#333">Cost = ?</text><circle cx="212.5" cy="40" r="7" fill="#8a6d1f" stroke="#fff" stroke-width="2"/><text x="212.5" y="24" text-anchor="middle" font-weight="700" font-size="13" fill="#16263a">Dec 31, 2026</text><text x="212.5" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#8a6d1f">AJE</text><text x="212.5" y="82" text-anchor="middle" font-size="12" fill="#333">Year 1</text><circle cx="355.0" cy="40" r="7" fill="#8a6d1f" stroke="#fff" stroke-width="2"/><text x="355.0" y="24" text-anchor="middle" font-weight="700" font-size="13" fill="#16263a">Dec 31, 2027</text><text x="355.0" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#8a6d1f">AJE</text><text x="355.0" y="82" text-anchor="middle" font-size="12" fill="#333">Year 2</text><circle cx="497.5" cy="40" r="7" fill="#8a6d1f" stroke="#fff" stroke-width="2"/><text x="497.5" y="24" text-anchor="middle" font-weight="700" font-size="13" fill="#16263a">Dec 31, 2028</text><text x="497.5" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#8a6d1f">AJE</text><text x="497.5" y="82" text-anchor="middle" font-size="12" fill="#333">Year 3</text><circle cx="640.0" cy="40" r="7" fill="#1a7a5e" stroke="#fff" stroke-width="2"/><text x="640.0" y="24" text-anchor="middle" font-weight="700" font-size="13" fill="#16263a">Dec 31, 2029</text><text x="640.0" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#1a7a5e">AJE</text><text x="640.0" y="82" text-anchor="middle" font-size="12" fill="#333">Year 4, BV = 4,000</text></svg>
+
+<div class="pair">
+<div>
+<h2>1. Acquisition cost</h2>
+<table class="cost">
+<tr><td>List price</td><td class="amt">76,000</td></tr>
+<tr><td>Less: Discount</td><td class="amt">(4,000)</td></tr>
+<tr><td>Sales tax</td><td class="amt">5,000</td></tr>
+<tr><td>Delivery</td><td class="amt">1,200</td></tr>
+<tr><td>Installation</td><td class="amt">1,800</td></tr>
+<tr class="tot"><td>Acquisition cost</td><td class="amt"><span class="bl amt" data-a="80,000"></span></td></tr>
+</table>
+<p class="hint">All of these are capitalized: they get the roaster ready to use.</p>
+</div>
+<div>
+<h2>2. Journal entry at purchase</h2>
+<table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Jan 1</td><td><span class="bl nm" data-a="PPE (+A)"></span></td><td class="amt"><span class="bl amt" data-a="80,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="Cash (&minus;A)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="80,000"></span></td></tr></table>
+</div>
+</div>
+
+<div class="pair">
+<div>
+<h2>3. Adjusting journal entry (AJE), Dec 31, 2026</h2>
+<p class="formula">Annual DepExp = (Cost &minus; Residual value) &divide; Useful life = <span class="bl inl amt" data-a="19,000"></span></p>
+<table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Dec 31</td><td><span class="bl nm" data-a="DepExp (+E)"></span></td><td class="amt"><span class="bl amt" data-a="19,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="AccDep (+xA)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="19,000"></span></td></tr></table>
+</div>
+<div>
+<h2>4. T-account for AccDep</h2>
+<table class="tacct"><tr><th colspan="4">Accumulated Depreciation</th></tr><tr><td class="lab"></td><td class="amt dr"></td><td class="lab cl">Dec 31, 2026</td><td class="amt"><span class="bl amt" data-a="19,000"></span></td></tr><tr><td class="lab"></td><td class="amt dr"></td><td class="lab cl">Dec 31, 2027</td><td class="amt"><span class="bl amt" data-a="19,000"></span></td></tr><tr class="bal"><td class="lab"></td><td class="amt dr"></td><td class="lab cl">End. bal. 2027</td><td class="amt"><span class="bl amt" data-a="38,000"></span></td></tr></table>
+</div>
+</div>
+
+<h2 class="sumh">5. Straight-line schedule</h2>
+<table class="sched"><tr><th>Year</th><th>Beg BV</th><th>DepExp</th><th>AccDep (end)</th><th>Ending BV</th></tr><tr><td>1</td><td><span class="bl amt" data-a="80,000"></span></td><td><span class="bl amt" data-a="19,000"></span></td><td><span class="bl amt" data-a="19,000"></span></td><td><span class="bl amt" data-a="61,000"></span></td></tr><tr><td>2</td><td><span class="bl amt" data-a="61,000"></span></td><td><span class="bl amt" data-a="19,000"></span></td><td><span class="bl amt" data-a="38,000"></span></td><td><span class="bl amt" data-a="42,000"></span></td></tr><tr><td>3</td><td><span class="bl amt" data-a="42,000"></span></td><td><span class="bl amt" data-a="19,000"></span></td><td><span class="bl amt" data-a="57,000"></span></td><td><span class="bl amt" data-a="23,000"></span></td></tr><tr><td>4</td><td><span class="bl amt" data-a="23,000"></span></td><td><span class="bl amt" data-a="19,000"></span></td><td><span class="bl amt" data-a="76,000"></span></td><td><span class="bl amt" data-a="4,000"></span></td></tr><tr class="tot"><td>Total</td><td></td><td><span class="bl amt" data-a="76,000"></span></td><td></td><td></td></tr></table>
+<p class="hint">Beg BV = last year&rsquo;s Ending BV. &nbsp; Ending BV = Cost &minus; AccDep.</p>
+
+</div>
+<div class="page">
+<h1 style="margin-top:0">The Same Roaster: Double-Declining Balance Method</h1>
+<p class="intro2">Suppose Campus Brew used the <b>double-declining balance method</b> instead. Cost <b>$80,000</b>, residual value <b>$4,000</b>, useful life <b>4 years</b>, bought Jan 1, 2026.</p>
+
+<div class="pair">
+<div>
+<h2>6. The rate and Year 1</h2>
+<p class="formula">Rate = 2 &divide; Useful life = <span class="bl inl amt" data-a="50%"></span></p>
+<p class="formula">Year 1 DepExp = Rate &times; (Cost &minus; AccDep) = <span class="bl inl amt" data-a="40,000"></span></p>
+<p class="formula">Year 4 (the last year): DepExp = Beg BV &minus; Residual value = <span class="bl inl amt" data-a="6,000"></span></p>
+</div>
+<div>
+<h2>7. AJE, Dec 31, 2026 (DDM)</h2>
+<table class="je3"><tr><th>Date</th><th>Account</th><th class="r">Debit</th><th class="r">Credit</th></tr><tr class="first"><td class="d">Dec 31</td><td><span class="bl nm" data-a="DepExp (+E)"></span></td><td class="amt"><span class="bl amt" data-a="40,000"></span></td><td class="amt"></td></tr><tr class="cr"><td></td><td><span class="bl nm" data-a="AccDep (+xA)"></span></td><td class="amt"></td><td class="amt"><span class="bl amt" data-a="40,000"></span></td></tr></table>
+</div>
+</div>
+
+<h2 class="sumh">8. Double-declining schedule</h2>
+<table class="sched"><tr><th>Year</th><th>Beg BV</th><th>DepExp</th><th>AccDep (end)</th><th>Ending BV</th></tr><tr><td>1</td><td><span class="bl amt" data-a="80,000"></span></td><td><span class="bl amt" data-a="40,000"></span></td><td><span class="bl amt" data-a="40,000"></span></td><td><span class="bl amt" data-a="40,000"></span></td></tr><tr><td>2</td><td><span class="bl amt" data-a="40,000"></span></td><td><span class="bl amt" data-a="20,000"></span></td><td><span class="bl amt" data-a="60,000"></span></td><td><span class="bl amt" data-a="20,000"></span></td></tr><tr><td>3</td><td><span class="bl amt" data-a="20,000"></span></td><td><span class="bl amt" data-a="10,000"></span></td><td><span class="bl amt" data-a="70,000"></span></td><td><span class="bl amt" data-a="10,000"></span></td></tr><tr><td>4</td><td><span class="bl amt" data-a="10,000"></span></td><td><span class="bl amt" data-a="6,000"></span></td><td><span class="bl amt" data-a="76,000"></span></td><td><span class="bl amt" data-a="4,000"></span></td></tr><tr class="tot"><td>Total</td><td></td><td><span class="bl amt" data-a="76,000"></span></td><td></td><td></td></tr></table>
+<p class="hint">The last year is not 50% of Beg BV: it brings Ending BV down to the residual value.</p>
+
+<div class="pair2">
+<div>
+<h2>9. Compare the two methods</h2>
+<table class="sched">
+<tr><th>Year</th><th>SLM DepExp</th><th>DDM DepExp</th></tr>
+<tr><td>1</td><td><span class="bl amt" data-a="19,000"></span></td><td><span class="bl amt" data-a="40,000"></span></td></tr>
+<tr><td>2</td><td><span class="bl amt" data-a="19,000"></span></td><td><span class="bl amt" data-a="20,000"></span></td></tr>
+<tr><td>3</td><td><span class="bl amt" data-a="19,000"></span></td><td><span class="bl amt" data-a="10,000"></span></td></tr>
+<tr><td>4</td><td><span class="bl amt" data-a="19,000"></span></td><td><span class="bl amt" data-a="6,000"></span></td></tr>
+<tr class="tot"><td>Total</td><td><span class="bl amt" data-a="76,000"></span></td><td><span class="bl amt" data-a="76,000"></span></td></tr>
+</table>
+</div>
+<div>
+<h2>10. What it means</h2>
+<div class="tq">
+<p>Higher depreciation expense in 2026: <span class="pick"><i>SLM</i> / <i class="r">DDM</i></span></p>
+<p>Higher net income in 2026: <span class="pick"><i class="r">SLM</i> / <i>DDM</i></span></p>
+<p>Total depreciation over 4 years: <span class="pick"><i class="r">same</i> / <i>different</i></span></p>
+<p>Book value at Dec 31, 2029: <span class="pick"><i class="r">same</i> / <i>different</i></span></p>
+<p>Does the Dec 31 entry use cash? <span class="pick"><i>yes</i> / <i class="r">no</i></span></p>
+</div>
+</div>
+</div>
+
+</div>
+<script>
+function toggleKey() {
+  const on = document.documentElement.classList.toggle('key');
+  const b = document.getElementById('kbtn');
+  b.textContent = on ? 'Hide answers' : 'Show answers';
+  b.classList.toggle('on', on);
+}
+if (location.hash === '#key') toggleKey();
+</script>
+</body>
+</html>
