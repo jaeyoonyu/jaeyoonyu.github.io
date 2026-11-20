@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Ch11 reading assignment: stock buybacks, shares outstanding and EPS (four pages, Letter: Part 1 reading, step by step; Part 2 case, Berkshire and Amazon).
+"""Ch11 reading assignment: stock buybacks, shares outstanding and EPS (four pages, Letter: Part 1 reading on Berkshire and Amazon; Part 2 illustration, step by step).
 
 Usage: python _tools/acc250_case/gen_buyback_reading.py assets/ACC250
 Writes Ch11-Buyback-Reading.html; print it to Ch11-Buyback-Reading.pdf and -Key.pdf (#key view).
@@ -138,7 +138,7 @@ table.bt th{border-top:1.2pt solid #000;border-bottom:.6pt solid #000;padding:2p
 table.bt td{padding:1.5pt 10pt;text-align:right;white-space:nowrap}table.bt tr:last-child td{border-bottom:1.2pt solid #000}
 table.bt th:first-child,table.bt td:first-child{text-align:left}table.bt tr.y td{background:#fff26b;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .ex{background:#ffeb3b;font-weight:700;text-decoration:underline;padding:0 2pt;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-ol.q{margin:2pt 0 0;padding-left:16pt}ol.q>li{margin:0 0 9pt}ol.q.case>li{margin:0 0 100pt}
+ol.q{margin:2pt 0 0;padding-left:16pt}ol.q>li{margin:0 0 9pt}ol.q.case>li{margin:0 0 80pt}
 .ans{display:inline-block;border-bottom:.8pt solid #000;text-align:center;margin-left:4pt}
 .ans::after{content:"\\00a0"}html.key .ans::after{content:attr(data-a);color:#b3200f;font-weight:700}
 .keytag{display:none;color:#b3200f}html.key .keytag{display:inline}
@@ -157,15 +157,13 @@ def qbox(text, who):
 
 P1 = f'''<div class="page">
 {HEAD}
-<h1>Stock Buybacks: Fewer Shares, Bigger Slices</h1>
-<p class="sub">Part 1 (Reading) explains the ideas step by step. Part 2 (Case) applies them to Berkshire Hathaway and Amazon. No prior knowledge needed.</p>
-<h2 class="part">Part 1. Reading: Shares, Buybacks and EPS</h2>
+<h2 class="part">Part 2. Illustration: Shares, Buybacks and EPS, Step by Step</h2>
 
-<h2>1.1 A share is a slice of the company</h2>
+<h2>2.1 A share is a slice of the company</h2>
 <p>A corporation divides its ownership into equal pieces called <b>shares</b>. If you own some of the shares, you own that fraction of the company: a fraction of its profit and a fraction of its <b>shareholders&rsquo; equity (SHE)</b>, which is what would be left for the owners if the company sold its assets and paid off its liabilities (SHE = A &minus; L).</p>
 <div class="fig w70">{FIG1}<p class="cap">Figure 1. Owning 1 of 10 shares means owning 10% of the company.</p></div>
 
-<h2>1.2 Four ways to count shares</h2>
+<h2>2.2 Four ways to count shares</h2>
 <div class="def">
 <p><b>Authorized</b>: the most shares the board of directors allows the company to issue.</p>
 <p><b>Issued</b>: shares the company has sold to investors at some point.</p>
@@ -175,10 +173,10 @@ P1 = f'''<div class="page">
 <div class="fig w80">{FIG2}<p class="cap">Figure 2. The Ch11 example: 1M authorized, 700K issued, 100K repurchased &rArr; 600K outstanding.</p></div>
 <p>Only <b>outstanding</b> shares count as owners. Treasury shares get no vote, no dividends and no slice of the profit.</p>
 
-<h2>1.3 What is a buyback?</h2>
+<h2>2.3 What is a buyback?</h2>
 <p>In a <b>stock buyback</b> (also called a <b>share repurchase</b>), the company uses its own cash to buy its shares from investors who want to sell. The shares become <b>treasury stock</b>.</p>
 <div class="fig w75">{FIG3}<p class="cap">Figure 3. Cash goes out to the sellers; the shares come back to the company.</p></div>
-<h2>1.4 The accounting: cash down, SHE down, no expense</h2>
+<h2>2.4 The accounting: cash down, SHE down, no expense</h2>
 <p><span class="ex">EX.</span> A company pays $100 cash to buy back its own shares.</p>
 <div class="je"><table>
 <tr><td class="d" rowspan="2">Date:</td><td class="a">Treasury Stock (+xSE, &minus;SE)</td><td class="dr">100</td><td class="cr"></td></tr>
@@ -191,7 +189,7 @@ P2 = f'''<div class="page">
 <p>Treasury stock is a <b>contra-equity</b> account: it is subtracted from SHE. It is <b>not</b> an asset and <b>not</b> an expense, so <b>net income does not change</b>.</p>
 <div class="fig w70">{FIG4}<p class="cap">Figure 4. A buyback shrinks both sides of the balance sheet by the cash paid.</p></div>
 
-<h2>1.5 Fewer shares &rArr; higher earnings per share (EPS)</h2>
+<h2>2.5 Fewer shares &rArr; higher earnings per share (EPS)</h2>
 <p><b>EPS</b> = Net income &divide; Average shares outstanding.* It tells you how much profit each slice earns. A buyback does not change net income (the pizza), but there are fewer slices, so <b>each slice gets bigger</b>.</p>
 <div class="fig w80">{FIG5}<p class="cap">Figure 5. Same profit, fewer shares, higher EPS.</p></div>
 <p><span class="ex">EX.</span> Net income $100K; 50K shares outstanding. The company buys back 10K shares.</p>
@@ -199,70 +197,72 @@ P2 = f'''<div class="page">
 <tr><td>Net income</td><td>$100K</td><td>$100K</td></tr><tr><td>Shares outstanding</td><td>50K</td><td>40K</td></tr>
 <tr class="y"><td>EPS</td><td>$2.00</td><td>$2.50</td></tr></table>
 
-<h2>1.6 Is a bigger slice always good?</h2>
+<h2>2.6 Is a bigger slice always good?</h2>
 <p>Not automatically. The cash paid to sellers is gone, so the company owns less. Remaining owners win only if the price paid is <b>below</b> what the shares are really worth (their <b>intrinsic value</b>). That is why firms tend to buy back when they think their stock price is <b>low</b> and they have more cash than good investments.</p>
 
-<h2>1.7 Check your understanding</h2>
+<h2>2.7 Check your understanding</h2>
 <ol class="q">
 <li>A company has issued 900K shares and holds 150K treasury shares. How many shares are outstanding? {blank('750K')}</li>
 <li>Net income is $240K and 60K shares are outstanding all year. What is EPS? {blank('$4.00')}</li>
 <li>Same company, but it buys back 20K shares on the first day of the year. Net income is still $240K. What is EPS now? {blank('$6.00')}</li>
 <li>A company buys back $50K of its own shares. Write increase, decrease or no change. Cash {blank('decrease', '.85in')} &nbsp; SHE {blank('decrease', '.85in')} &nbsp; Net income {blank('no change', '.85in')}</li>
 </ol>
-<div class="fn"><p>* The examples assume the buyback happens at the start of the year, so average shares outstanding = shares after the buyback. All numbers in Part 1 are made up.</p></div>
+<div class="fn"><p>* The examples assume the buyback happens at the start of the year, so average shares outstanding = shares after the buyback. All numbers in Part 2 are made up.</p></div>
 </div>'''
 
 PA = f'''<div class="page">
 {HEAD}
-<h2 class="part">Part 2. Case: Buybacks at Berkshire Hathaway and Amazon</h2>
+<h1>Stock Buybacks: Fewer Shares, Bigger Slices</h1>
+<p class="sub">Part 1 (Reading) tells the story of real buybacks at Berkshire Hathaway and Amazon. Part 2 (Illustration) walks through the accounting step by step. No prior knowledge needed.</p>
+<h2 class="part">Part 1. Reading: Buybacks at Berkshire Hathaway and Amazon</h2>
 
-<h2>2.1 Berkshire buys back $9.6 billion of its own stock</h2>
-<p>In the third quarter of 2026, Berkshire Hathaway, the company Warren Buffett built over six decades and now run by Greg Abel, spent $9.6 billion on a single kind of investment: <b>its own stock</b>. That was more than twice the $4.5 billion it had spent the quarter before.* The business did not grow; it paid out cash. But as Part 1 showed, the same business is now divided among fewer shares, so every owner who did not sell holds a bigger slice. Buffett put it in one line:</p>
+<h2>1.1 Berkshire buys back $9.6 billion of its own stock</h2>
+<p>In the third quarter of 2026, Berkshire Hathaway, the company Warren Buffett built over six decades and now run by Greg Abel, spent $9.6 billion on a single kind of investment: <b>its own stock</b>. That was more than twice the $4.5 billion it had spent the quarter before.* A share is one equal slice of a company&rsquo;s ownership. When a company buys back some of its shares, the business stays the same (minus the cash it paid out), but it is now divided among fewer slices, so every owner who did not sell holds a <b>bigger</b> slice without paying anything. Part 2 illustrates this step by step. Buffett put it in one line:</p>
 {qbox('The math isn&rsquo;t complicated: When the share count goes down, your interest in our many businesses goes up.', 'Warren E. Buffett, 2022 letter to Berkshire shareholders')}
 <p>This works even for owners who do nothing. Berkshire owns part of Apple, which buys back its own stock every year. Without buying a single extra share, Berkshire&rsquo;s stake in Apple rose from 5.39% to 5.55% during 2021 (2021 letter): Apple&rsquo;s buybacks did the work.</p>
 
-<h2>2.2 Buffett&rsquo;s rule: buy only below value</h2>
+<h2>1.2 Buffett&rsquo;s rule: buy only below value</h2>
 <p>If buybacks always made the remaining owners richer, every company would buy back stock all the time. They do not, because the price can be too high. Suppose a business is truly worth $100 per share. If the company buys a share for $80, the owners who stay are better off: the company gave up $80 of cash for a slice worth $100. If it pays $130, the owners who stay are worse off. The seller gains either way.</p>
 {qbox('From the standpoint of exiting shareholders, repurchases are always a plus. For continuing shareholders, however, repurchases only make sense if the shares are bought at a price below intrinsic value.', 'Warren E. Buffett, 2016 letter')}
 <p>Buffett gives two conditions for a sensible buyback: the company must have enough cash for its own operating needs, and its stock must be selling at a clear discount to intrinsic value, &ldquo;conservatively calculated&rdquo; (2011 letter). Berkshire took its own rule seriously. In 2011 it announced it would buy back shares only at up to 110% of book value. It managed to buy just $67 million of stock before the price rose above that limit, and then it stopped. As Buffett put it that year, &ldquo;what is smart at one price is dumb at another.&rdquo;</p>
 <p>When the price has been right, Berkshire has bought a lot. It spent $24.7 billion in 2020, repurchasing about 5% of its shares, and bought back 1.2% of its outstanding shares in 2022 (2020 and 2022 letters). Greg Abel, CEO since 2026, restated the same rule in his first letter:</p>
 {qbox('We will buy back Berkshire shares when they trade below our estimate of intrinsic value, conservatively determined, ensuring that repurchases enhance per-share value for continuing owners.', 'Greg Abel, 2025 letter to Berkshire shareholders')}
-<h2>2.3 Amazon: share counts can go up, too</h2>
-<p>Many companies, Amazon among them, pay employees partly in stock, and every new share issued makes each existing slice a little smaller. Jeff Bezos, Amazon&rsquo;s founder, set a target in 2001 for how much the share count could grow, for this reason:</p>
-{qbox('Limiting share count means more cash flow per share and more long-term value for owners.', 'Jeffrey P. Bezos, 2001 letter to Amazon shareholders')}
-<p>A buyback can offset that growth. In March 2022 Amazon&rsquo;s board authorized up to $10 billion of repurchases.&dagger; Buffett warns, though, that offsetting new shares is not by itself a good reason to buy back stock: the price still has to be below value.</p>
-
-<div class="fn"><p>* Berkshire Hathaway Q3 2026 results, reported Nov 7, 2026 (<a href="https://www.berkshirehathaway.com/reports.html">berkshirehathaway.com/reports</a>). &dagger; Amazon.com, Inc., press release, March 9, 2022 (with the 20-for-1 stock split).</p></div>
+<div class="fn"><p>* Berkshire Hathaway Q3 2026 results, reported Nov 7, 2026 (<a href="https://www.berkshirehathaway.com/reports.html">berkshirehathaway.com/reports</a>).</p></div>
 </div>'''
 
 PB = f'''<div class="page">
 {HEAD}
-<h2>2.4 Where to find buybacks in a 10-K</h2>
+<h2>1.3 Amazon: share counts can go up, too</h2>
+<p>Many companies, Amazon among them, pay employees partly in stock, and every new share issued makes each existing slice a little smaller. Jeff Bezos, Amazon&rsquo;s founder, set a target in 2001 for how much the share count could grow, for this reason:</p>
+{qbox('Limiting share count means more cash flow per share and more long-term value for owners.', 'Jeffrey P. Bezos, 2001 letter to Amazon shareholders')}
+<p>A buyback can offset that growth. In March 2022 Amazon&rsquo;s board authorized up to $10 billion of repurchases.&dagger; Buffett warns, though, that offsetting new shares is not by itself a good reason to buy back stock: the price still has to be below value.</p>
+
+<h2>1.4 Where to find buybacks in a 10-K</h2>
 <table class="bt"><tr><th>Statement</th><th style="text-align:left">What you see</th></tr>
 <tr><td>Balance sheet (SHE section)</td><td style="text-align:left">Treasury stock, at cost, subtracted from SHE</td></tr>
 <tr><td>Statement of cash flows</td><td style="text-align:left">Repurchases of common stock (a financing cash outflow)</td></tr>
 <tr><td>Income statement</td><td style="text-align:left">No expense; EPS uses fewer (average) shares outstanding</td></tr>
 <tr><td>Notes and MD&amp;A</td><td style="text-align:left">Shares bought, price paid, amount left in the authorization</td></tr></table>
 
-<h2>2.5 Why buybacks are debated</h2>
+<h2>1.5 Why buybacks are debated</h2>
 <p>Critics argue that buybacks can be used to push up <b>earnings per share</b>, sometimes to hit targets that determine executives&rsquo; bonuses, and that the cash could go to wages or new investment instead. Since 2023, U.S. companies have paid a 1% excise tax on the stock they repurchase.&Dagger; Buffett&rsquo;s answer is that a buyback at a sensible price harms no one: &ldquo;When you are told that all repurchases are harmful to shareholders or to the country, or particularly beneficial to CEOs, you are listening to either an economic illiterate or a silver-tongued demagogue&rdquo; (2022 letter).</p>
 
-<h2>2.6 Case questions</h2>
+<h2>1.6 Questions</h2>
 <ol class="q case">
-<li>Berkshire spent $9.6 billion on buybacks in Q3 2026. Using Part 1, what happened to its cash, its SHE, its net income and its shares outstanding?</li>
+<li>Berkshire spent $9.6 billion on buybacks in Q3 2026. Using Part 2, what happened to its cash, its SHE, its net income and its shares outstanding?</li>
 <li>In 2011, why did Berkshire stop buying back its stock after only $67 million?</li>
 <li>Amazon pays employees partly in stock. What does that do to EPS, and how can a buyback offset it?</li>
 </ol>
-<div class="fn"><p>&Dagger; Inflation Reduction Act of 2022, Internal Revenue Code &sect;4501. Letters &copy; Berkshire Hathaway Inc. and Amazon.com, Inc.; quoted for non-commercial teaching.</p></div>
+<div class="fn"><p>&dagger; Amazon.com, Inc., press release, March 9, 2022 (with the 20-for-1 stock split). &Dagger; Inflation Reduction Act of 2022, Internal Revenue Code &sect;4501. Letters &copy; Berkshire Hathaway Inc. and Amazon.com, Inc.; quoted for non-commercial teaching.</p></div>
 </div>'''
 
 html = f'''<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ch11 Reading: Stock Buybacks</title><style>{CSS}</style></head><body>
 <div class="bar"><button onclick="document.documentElement.classList.toggle('key')">Show/hide answers</button><button onclick="print()">Print</button></div>
-{P1}
-{P2}
 {PA}
 {PB}
+{P1}
+{P2}
 <script>if(location.hash==='#key')document.documentElement.classList.add('key')</script></body></html>'''
 open(os.path.join(OUT, 'Ch11-Buyback-Reading.html'), 'w', encoding='utf-8').write(html)
 print('wrote Ch11-Buyback-Reading.html')
