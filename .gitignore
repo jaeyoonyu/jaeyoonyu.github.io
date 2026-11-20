@@ -11,3 +11,7 @@ _code/work-in-progress/
 
 # Full-text news articles: kept locally for making slides, never published
 actg-news/Articles/
+
+# answer key / answer-bearing HTML for assigned readings (kept local)
+assets/ACC250/Ch11-Buyback-Reading-Key.pdf
+assets/ACC250/Ch11-Buyback-Reading.html
