@@ -155,19 +155,23 @@ def qbox(text, who):
     return f'<div class="qb"><p>&ldquo;{text}&rdquo;</p><p class="who">&mdash; {who}</p></div>'
 
 
-def apple_bars():
-    data = [('Mid-2018', 5.2), ('End of 2020', 5.39), ('End of 2021', 5.55)]
-    base, k = 5.0, 170          # axis starts at 5.0% to show the change
-    out = [f'<svg viewBox="0 0 640 150" {FONT}>']  # bars: 0.55 points -> ~94px
-    for i, (lab, v) in enumerate(data):
-        x = 120 + i * 160
-        h = (v - base) * k
-        out.append(f'<rect x="{x}" y="{120 - h:.1f}" width="90" height="{h:.1f}" fill="{BLUE}"/>'
-                   f'<text x="{x + 45}" y="{112 - h:.1f}" text-anchor="middle" font-size="14" font-weight="700">{v:.2f}%</text>'
-                   f'<text x="{x + 45}" y="138" text-anchor="middle" font-size="13">{lab}</text>')
-    out.append('<line x1="100" y1="120" x2="590" y2="120" stroke="#000"/>'
-               '<text x="96" y="124" text-anchor="end" font-size="11">5.0%</text></svg>')
-    return ''.join(out)
+def owners_fig():
+    """Four equal owners; one sells back to the company; three remain at 1/3 each."""
+    def person(x, y, col, label):
+        return (f'<circle cx="{x}" cy="{y}" r="11" fill="{col}"/><path d="M{x-17},{y+38} Q{x-17},{y+14} {x},{y+14} Q{x+17},{y+14} {x+17},{y+38} Z" fill="{col}"/>'
+                f'<text x="{x}" y="{y+56}" text-anchor="middle" font-size="13" font-weight="700">{label}</text>')
+    s = [f'<svg viewBox="0 0 640 130" {FONT}>',
+         '<text x="135" y="16" text-anchor="middle" font-size="13" font-weight="700">Before: 4 shares outstanding</text>',
+         '<text x="505" y="16" text-anchor="middle" font-size="13" font-weight="700">After: 3 shares outstanding</text>']
+    for k in range(4):
+        s.append(person(45 + k * 60, 40, GRAY if k == 3 else BLUE, '25%'))
+    for k in range(3):
+        s.append(person(445 + k * 60, 40, BLUE, '33%'))
+    s.append('<defs><marker id="ar2" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" refX="11" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 Z" fill="#000"/></marker></defs>'
+             '<line x1="270" y1="62" x2="400" y2="62" stroke="#000" stroke-width="2" marker-end="url(#ar2)"/>'
+             '<text x="335" y="52" text-anchor="middle" font-size="12">company buys back</text>'
+             '<text x="335" y="82" text-anchor="middle" font-size="12">1 share for cash</text></svg>')
+    return ''.join(s)
 
 
 PA = f'''<div class="page">
@@ -177,28 +181,32 @@ PA = f'''<div class="page">
 <h2>Part 1. A company buying itself</h2>
 <p>In the third quarter of 2026, Berkshire Hathaway, the company Warren Buffett built over six decades and now run by Greg Abel, spent $9.6 billion on a single kind of investment: <b>its own stock</b>. That was more than twice the $4.5 billion it had spent the quarter before.* It sounds odd at first. Why would a company pay billions of dollars for pieces of itself? And who gains when it does?</p>
 <p>Start with what a share is. A company is owned by its shareholders, and each share is one equal slice of that ownership. When a company buys back some of its shares from investors who want to sell, those slices stop counting. The company has not built a new factory or opened a new store; the business is the same size, minus the cash it paid out. But it is now divided among <b>fewer</b> owners, so every owner who did not sell holds a slightly <b>bigger</b> slice of the same business, without paying anything.</p>
-<p>Buffett has shown how this works from the other side, as an investor in a company that buys back its own shares. Berkshire bought Apple stock from late 2016 to mid-2018 and ended up owning 5.2% of Apple. In 2020 Berkshire sold a small part of those shares. Yet by the end of that year its stake had <b>grown</b> to about 5.4%, and a year later it was 5.55%.</p>
-{qbox('That increase was costless to us, coming about because Apple has continuously repurchased its shares, thereby substantially shrinking the number it now has outstanding.', 'Warren E. Buffett, 2020 letter to Berkshire shareholders')}
-<div class="fig w80">{apple_bars()}<p class="cap">Figure A. Berkshire&rsquo;s ownership of Apple rose even though Berkshire bought no more Apple shares and sold a few in 2020 (2020 and 2021 letters).</p></div>
-<p>A fraction of a percentage point sounds small, but Apple is enormous. Buffett pointed out that each 0.1% of Apple&rsquo;s 2021 earnings amounted to about $100 million. Owning 0.16 percentage points more of Apple meant a claim on roughly $160 million more of Apple&rsquo;s yearly profit, and Berkshire did nothing to get it.</p>
-{qbox('We spent no Berkshire funds to gain our accretion. Apple&rsquo;s repurchases did the job.', 'Warren E. Buffett, 2021 letter')}
-<p>Buffett summed up the arithmetic in one line a year later. It is the central idea of this reading:</p>
-{qbox('The math isn&rsquo;t complicated: When the share count goes down, your interest in our many businesses goes up.', 'Warren E. Buffett, 2022 letter')}
+<div class="fig w80">{owners_fig()}<p class="cap">Figure A. One of four owners sells a share back to the company. The business is the same; the three who stay now own a third each.</p></div>
+<p>Buffett summed up the arithmetic in one line. It is the central idea of this reading:</p>
+{qbox('The math isn&rsquo;t complicated: When the share count goes down, your interest in our many businesses goes up.', 'Warren E. Buffett, 2022 letter to Berkshire shareholders')}
+<p>This works even for owners who do nothing. Berkshire owns part of Apple, which buys back its own stock every year. Without buying a single extra share, Berkshire&rsquo;s stake in Apple rose from 5.39% to 5.55% during 2021 (2021 letter): Apple&rsquo;s buybacks did the work.</p>
+<h2>The price is what matters</h2>
+<p>If buybacks always made the remaining owners richer, every company would buy back stock all the time. They do not, because the company has to <b>pay</b> for the shares, and the price can be too high. Suppose a business is truly worth $100 per share. If the company buys a share for $80, the owners who stay are better off: the company gave up $80 of cash for a slice worth $100. If it pays $130, the owners who stay are worse off: $130 of their cash went out for something worth $100. The seller gains either way.</p>
+{qbox('From the standpoint of exiting shareholders, repurchases are always a plus. For continuing shareholders, however, repurchases only make sense if the shares are bought at a price below intrinsic value.', 'Warren E. Buffett, 2016 letter')}
 <div class="fn"><p>* Berkshire Hathaway Q3 2026 results, reported Nov 7, 2026 (<a href="https://www.berkshirehathaway.com/reports.html">berkshirehathaway.com/reports</a>).</p></div>
 </div>'''
 
 PB = f'''<div class="page">
 {HEAD}
-<h2>The price is what matters</h2>
-<p>If buybacks always made the remaining owners richer, every company would buy back stock all the time. They do not, because the company has to <b>pay</b> for the shares, and the price can be too high. Suppose a business is truly worth $100 per share. If the company buys a share for $80, the owners who stay are better off: the company gave up $80 of cash for a slice worth $100. If it pays $130, the owners who stay are worse off: $130 of their cash went out for something worth $100. The seller gains either way.</p>
-{qbox('From the standpoint of exiting shareholders, repurchases are always a plus. For continuing shareholders, however, repurchases only make sense if the shares are bought at a price below intrinsic value.', 'Warren E. Buffett, 2016 letter')}
 <p><b>Intrinsic value</b> is what the business is really worth, based on the cash it will produce in the future. It is an estimate, not a number on the balance sheet. Buffett gives two conditions for a sensible buyback: the company must have enough cash for its own operating needs, and its stock must be selling at a clear discount to intrinsic value, &ldquo;conservatively calculated&rdquo; (2011 letter). Berkshire took its own rule seriously. In 2011 it announced it would buy back shares only at up to 110% of book value. It managed to buy just $67 million of stock before the price rose above that limit, and then it stopped. As Buffett put it that year, &ldquo;what is smart at one price is dumb at another.&rdquo;</p>
+
 <p>When the price has been right, Berkshire has bought a lot. It spent $24.7 billion in 2020, repurchasing about 5% of its shares, and bought back 1.2% of its outstanding shares in 2022 (2020 and 2022 letters). Greg Abel, CEO since 2026, restated the same rule in his first letter:</p>
 {qbox('We will buy back Berkshire shares when they trade below our estimate of intrinsic value, conservatively determined, ensuring that repurchases enhance per-share value for continuing owners.', 'Greg Abel, 2025 letter to Berkshire shareholders')}
 <h2>The other direction: adding shares</h2>
 <p>Share counts can also go <b>up</b>. Many companies, Amazon among them, pay employees partly in stock, and every new share issued makes each existing slice a little smaller. Jeff Bezos, Amazon&rsquo;s founder, set a target in 2001 for how much the share count could grow, for this reason:</p>
 {qbox('Limiting share count means more cash flow per share and more long-term value for owners.', 'Jeffrey P. Bezos, 2001 letter to Amazon shareholders')}
 <p>A buyback can offset that growth. In March 2022 Amazon&rsquo;s board authorized up to $10 billion of repurchases.&dagger; Buffett warns, though, that offsetting new shares is not by itself a good reason to buy back stock: the price still has to be below value.</p>
+<h2>Where to find buybacks in a 10-K</h2>
+<table class="bt"><tr><th>Statement</th><th style="text-align:left">What you see</th></tr>
+<tr><td>Balance sheet (SHE section)</td><td style="text-align:left">Treasury stock, at cost, subtracted from SHE</td></tr>
+<tr><td>Statement of cash flows</td><td style="text-align:left">Repurchases of common stock (a financing cash outflow)</td></tr>
+<tr><td>Income statement</td><td style="text-align:left">No expense; EPS uses fewer (average) shares outstanding</td></tr>
+<tr><td>Notes and MD&amp;A</td><td style="text-align:left">Shares bought, price paid, amount left in the authorization</td></tr></table>
 <h2>Why buybacks are debated</h2>
 <p>Critics argue that buybacks can be used to push up <b>earnings per share</b>, sometimes to hit targets that determine executives&rsquo; bonuses, and that the cash could go to wages or new investment instead. Since 2023, U.S. companies have paid a 1% excise tax on the stock they repurchase.&Dagger; Buffett&rsquo;s answer is that a buyback at a sensible price harms no one: &ldquo;When you are told that all repurchases are harmful to shareholders or to the country, or particularly beneficial to CEOs, you are listening to either an economic illiterate or a silver-tongued demagogue&rdquo; (2022 letter). In Part 2 you will see how a buyback is recorded and exactly how it changes shares outstanding and EPS.</p>
 <div class="fn"><p>&dagger; Amazon.com, Inc., press release, March 9, 2022 (with the 20-for-1 stock split). &Dagger; Inflation Reduction Act of 2022, Internal Revenue Code &sect;4501. Letters &copy; Berkshire Hathaway Inc. and Amazon.com, Inc.; quoted for non-commercial teaching.</p></div>
