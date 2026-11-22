@@ -1,10 +1,10 @@
 {% raw %}
 <style>
-.md { --line: rgba(128,128,128,.22); --muted: rgba(120,128,124,1); --accent: #1a7a5e; --today: rgba(26,122,94,.07);
+.md { --line: rgba(128,128,128,.22); --muted: rgba(120,128,124,1); --accent: #1a7a5e; --today: rgba(26,122,94,.07); --today-col: rgba(26,122,94,.10);
   --th-bg: #fff; font-size: 14px; line-height: 1.4;
   width: min(1100px, calc(100vw - 32px)); position: relative; left: 50%; transform: translateX(-50%); }
 @media (prefers-color-scheme: dark) {
-  .md { --muted: #96a29b; --accent: #53c79e; --today: rgba(83,199,158,.09); --th-bg: #1d1f23; }
+  .md { --muted: #96a29b; --accent: #53c79e; --today: rgba(83,199,158,.09); --today-col: rgba(83,199,158,.13); --th-bg: #1d1f23; }
 }
 .md * { box-sizing: border-box; }
 .md-sub { color: var(--muted); font-size: 12.5px; margin: -6px 0 14px; line-height: 1.7; }
@@ -26,41 +26,38 @@
 .md-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: var(--muted); margin-bottom: 8px; }
 .md-sw { display: inline-block; width: 12px; height: 8px; border-radius: 2px; margin-right: 5px; vertical-align: 0; }
 
-/* week view: one block per day, one lane per sub-type */
-.md-week { border-top: 1px solid var(--line); }
-.md-day { display: grid; grid-template-columns: 96px 1fr; border-bottom: 1px solid var(--line); }
-.md-day.today { background: var(--today); }
-.md-dn { padding: 3px 0 3px 6px; font-weight: 700; font-size: 13px; line-height: 1.2; align-self: center; }
-.md-dn small { font-weight: 400; font-size: 11px; color: var(--muted); margin-left: 4px; }
-.md-day.today .md-dn { color: var(--accent); }
-.md-lanes { padding: 3px 0; }
-.md-lane { display: grid; grid-template-columns: var(--ln, 0px) minmax(0, 1fr); gap: 10px; align-items: center; min-height: 22px; }
-.md-ln { font-size: 11px; color: var(--muted); white-space: nowrap; overflow: hidden; }
-.md-track { position: relative; height: 19px; background: rgba(128,128,128,.07); border-radius: 4px;
-  background-image: repeating-linear-gradient(90deg, rgba(128,128,128,.16) 0 1px, transparent 1px calc(100% / var(--hours))); }
-.md-closed { position: absolute; top: 0; bottom: 0; background: repeating-linear-gradient(135deg, rgba(128,128,128,.13) 0 3px, transparent 3px 7px); }
-.md-bar { position: absolute; top: 2px; bottom: 2px; border-radius: 4px; color: #fff; font-size: 10.5px; font-weight: 600;
-  display: flex; align-items: center; padding: 0 5px; overflow: hidden; white-space: nowrap; font-variant-numeric: tabular-nums; }
+/* week view, vertical: one column per day (today outlined in the accent color), time running down; multi-lane activities
+   split each day into sub-columns (Swim: lap | rec / open). Built to fit a phone screen without scrolling sideways. */
+.md-cal { --hh: 30px; display: grid; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+@media (min-width: 700px) { .md-cal { --hh: 36px; } }
+.md-hd { text-align: center; padding: 4px 0 3px; font-weight: 700; font-size: 13px; line-height: 1.15;
+  border-left: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--th-bg); }
+.md-hd small { display: block; font-weight: 400; font-size: 10.5px; color: var(--muted); }
+.md-hd.today { background: var(--accent); color: #fff; border-color: var(--accent); }
+.md-hd.today small { color: rgba(255,255,255,.9); font-weight: 600; }
+.md-hd.gut { border-left: 0; }
+.md-gut, .md-col { position: relative; height: calc(var(--hours) * var(--hh)); }
+.md-gut { font-size: 10px; color: var(--muted); }
+.md-gut span { position: absolute; right: 4px; transform: translateY(-50%); white-space: nowrap; }
+.md-gut span:first-child { transform: none; }
+.md-col { border-left: 1px solid var(--line);
+  background-image: repeating-linear-gradient(180deg, rgba(128,128,128,.16) 0 1px, transparent 1px var(--hh)); }
+.md-col.today { background-color: var(--today-col); box-shadow: inset 2px 0 0 var(--accent), inset -2px 0 0 var(--accent); }
+.md-closed { position: absolute; left: 0; right: 0; background: repeating-linear-gradient(135deg, rgba(128,128,128,.14) 0 3px, transparent 3px 7px); }
+.md-bar { position: absolute; border-radius: 4px; color: #fff; font-size: 9.5px; font-weight: 600; line-height: 1.1; letter-spacing: -.03em;
+  display: flex; flex-direction: column; justify-content: space-between; align-items: center; padding: 2px 0;
+  overflow: hidden; white-space: nowrap; font-variant-numeric: tabular-nums; cursor: pointer; }
+.md-cal.narrow .md-bar { font-size: 8.5px; letter-spacing: -.06em; }
 .md-bar.past { opacity: .35; }
 .md-bar.off { background: transparent !important; border: 1.5px dashed var(--muted); color: var(--muted); }
-/* Now: a bold red line on today, a faint one on the other days (same time of day), and a time pill on the axis. */
-.md-nowline { position: absolute; top: -4px; bottom: -4px; width: 3px; margin-left: -1.5px; background: #ff3b30; z-index: 2;
+.md-bar.sel { outline: 2px solid currentColor; outline-color: var(--accent); outline-offset: 1px; z-index: 3; }
+/* Now: a bold red line across today's column, a faint dashed one on the other days, and the time on the gutter. */
+.md-nowline { position: absolute; left: 0; right: 0; height: 3px; margin-top: -1.5px; background: #ff3b30; z-index: 4;
   border-radius: 2px; box-shadow: 0 0 0 2px rgba(255,59,48,.22), 0 0 10px rgba(255,59,48,.75); }
-.md-nowline.ghost { width: 0; margin-left: 0; background: none; box-shadow: none; border-left: 1.5px dashed rgba(255,59,48,.55); }
-.md-nowpill { position: absolute; top: -1px; transform: translateX(-50%); background: #ff3b30; color: #fff; font-size: 10.5px;
-  font-weight: 700; padding: 0 6px; border-radius: 999px; z-index: 4; white-space: nowrap; line-height: 16px; }
-.md-ticks { position: relative; height: 16px; font-size: 10.5px; color: var(--muted); }
-.md-axisrow { position: sticky; top: 0; z-index: 3; background: var(--th-bg); border-bottom: 1px solid var(--line); }
-.md-ticks span { position: absolute; transform: translateX(-50%); white-space: nowrap; top: 1px; }
-.md-ticks span:first-child { transform: none; }
-.md-ticks span:last-child { transform: translateX(-100%); }
-.md-ticks span.md-nowpill { transform: translateX(-50%); top: -1px; }
-.md-scroll { overflow-x: auto; }
-.md-week { min-width: 720px; }
-.md-scroll { overflow-y: visible; }
-@media (max-width: 700px) {
-  .md-day { grid-template-columns: 78px 1fr; }
-}
+.md-nowline.ghost { height: 0; margin-top: 0; background: none; box-shadow: none; border-top: 1.5px dashed rgba(255,59,48,.5); z-index: 1; }
+.md-gut span.md-nowpill { right: 1px; transform: translateY(-50%); background: #ff3b30; color: #fff; font-size: 10px; font-weight: 700;
+  padding: 0 4px; border-radius: 999px; z-index: 5; line-height: 16px; }
+.md-info { min-height: 22px; font-size: 13.5px; margin: 8px 0 0; }
 
 /* all activities, for reference */
 .md-all { margin-top: 26px; }
@@ -86,6 +83,7 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
   <div class="md-status" id="md-status"></div>
   <div class="md-legend" id="md-legend"></div>
   <div id="md-week"></div>
+  <div class="md-info" id="md-info"></div>
   <details class="md-all">
     <summary>All activities, this week</summary>
     <div class="md-tw" id="md-tw"></div>
@@ -142,13 +140,7 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
     const a = t(r[0]), b = t(r[1]);
     return a.slice(-2) === b.slice(-2) ? `${a.slice(0, -3)} – ${b}` : `${a} – ${b}`;
   };
-  const pct = h => ((h - T0) / (T1 - T0)) * 100;
   const short = h => { const s = t(h); return s.replace(":00", "").replace(" AM", "a").replace(" PM", "p"); };
-  function label(s) {
-    const a = short(s.r[0]), b = short(s.r[1]);
-    const txt = a.slice(-1) === b.slice(-1) ? `${a.slice(0, -1)}–${b}` : `${a}–${b}`;
-    return s.note && s.note !== "*" ? `${txt} · ${s.note}` : s.note === "*" ? `${txt} *` : txt;
-  }
 
   // This week's dates (Mon–Sun), so date-specific cancellations land on the right day.
   let now = new Date();
@@ -185,40 +177,52 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
       `<button data-i="${i}" class="${i === cur ? "on" : ""}" style="--c:${a.c}">${status(a).open ? `<span class="live" title="Open now"></span>` : ""}${esc(a.n)}</button>`).join("");
   }
 
+  const cshort = h => { const hh = Math.floor(h), mm = Math.round((h - hh) * 60); return `${hh % 12 || 12}${mm ? ":" + String(mm).padStart(2, "0") : ""}`; };
+  const tip = (d, l, s) => `<span class="md-sw" style="background:${l.c}"></span><b>${DAYN[d]}${d === dow ? " (today)" : ""}</b> · ${esc(l.n)} · ${range(s.r)}`
+    + (s.note === "*" ? " · varies with the program schedule" : s.note ? " · " + esc(s.note) : "") + (s.off ? " — " + esc(s.off) : "");
+  let tips = [], sel = -1;
+
   function renderActivity() {
     const a = ACTS[cur], multi = a.lanes.length > 1;
-    $("md").style.setProperty("--ln", multi ? "92px" : "0px");
     $("md").style.setProperty("--hours", T1 - T0);
     $("md-head").innerHTML = `<h3>${esc(a.n)}</h3>${a.sub ? `<span>${esc(a.sub)}</span>` : ""}`;
     $("md-status").innerHTML = status(a).html;
+    // Sub-columns per day: a series sits in its `row`, or spans every column in `rows` (basketball "adult & youth").
+    const cols = [];
+    a.lanes.forEach(l => (l.rows || [l.row || l.n]).forEach(k => { if (!cols.includes(k)) cols.push(k); }));
     $("md-legend").innerHTML = multi ? a.lanes.map(l =>
-      `<span><span class="md-sw" style="background:${l.c}"></span>${esc(l.n)}${l.sub ? ` — ${esc(l.sub)}` : ""}</span>`).join("") : "";
-    let html = "";
+      `<span><span class="md-sw" style="background:${l.c}"></span>${esc(l.n)}${l.sub ? ` — ${esc(l.sub)}` : ""}</span>`).join("")
+      + `<span>Each day, left to right: ${cols.map(esc).join(" | ")}</span>` : "";
+    const y = h => ((h - T0) / (T1 - T0)) * 100;
+    const showNow = nowH > T0 && nowH < T1;
+    tips = [];
+    let head = `<div class="md-hd gut"></div>`;
     const ticks = [];
-    for (let h = T0; h <= T1; h++) ticks.push(`<span style="left:${pct(h)}%">${short(h)}</span>`);
-    const pill = nowH > T0 && nowH < T1 ? `<span class="md-nowpill" style="left:${pct(nowH)}%">Now ${t(nowH).replace(" AM", "a").replace(" PM", "p")}</span>` : "";
-    html += `<div class="md-day md-axisrow"><div></div><div class="md-lanes"><div class="md-lane"><div></div><div class="md-ticks">${pill}${ticks.join("")}</div></div></div></div>`;
+    for (let h = T0; h < T1; h++) ticks.push(`<span style="top:${y(h)}%">${short(h)}</span>`);
+    let body = `<div class="md-gut">${ticks.join("")}${showNow ? `<span class="md-nowpill" style="top:${y(nowH)}%">${short(nowH)}</span>` : ""}</div>`;
     DAYN.forEach((dn, d) => {
       const b = BUILDING[d], isToday = d === dow;
-      const rows = [];
-      // A series sits on its `row`, or on every row in `rows` (basketball "adult & youth" shows on both).
-      a.lanes.forEach(l => (l.rows || [l.row || l.n]).forEach(k => { const r = rows.find(x => x.k === k); r ? r.ls.push(l) : rows.push({ k, ls: [l] }); }));
-      const lanes = rows.map(row => {
-        const bars = row.ls.flatMap(l => slots(l, d).map(s => [l, s])).map(([l, s]) => {
+      head += `<div class="md-hd ${isToday ? "today" : ""}">${dn}<small>${isToday ? "Today" : `${dates[d].getMonth() + 1}/${dates[d].getDate()}`}</small></div>`;
+      const bars = a.lanes.flatMap(l => {
+        const idx = (l.rows || [l.row || l.n]).map(k => cols.indexOf(k)), c0 = Math.min(...idx), span = idx.length;
+        return slots(l, d).map(s => {
           const cls = s.off ? "off" : isToday && nowH >= s.r[1] ? "past" : "";
-          return `<div class="md-bar ${cls}" style="left:${pct(s.r[0])}%;width:${pct(s.r[1]) - pct(s.r[0])}%;background:${l.c}"
-            title="${esc(`${l.n}: ${range(s.r)}${s.note ? " · " + s.note : ""}${s.off ? " — " + s.off : ""}`)}">${esc(s.off || label(s))}</div>`;
-        }).join("");
-        const nowline = nowH > T0 && nowH < T1 ? `<div class="md-nowline${isToday ? "" : " ghost"}" style="left:${pct(nowH)}%"></div>` : "";
-        const closed = `<div class="md-closed" style="left:0;width:${pct(b[0])}%"></div><div class="md-closed" style="left:${pct(b[1])}%;right:0"></div>`;
-        return `<div class="md-lane"><div class="md-ln">${multi ? esc(row.k) : ""}</div>
-          <div class="md-track">${closed}${bars}${nowline}</div></div>`;
+          const i = tips.push(tip(d, l, s)) - 1;
+          const txt = s.off ? "off" : `<span>${cshort(s.r[0])}${s.note === "*" ? "*" : ""}</span><span>${cshort(s.r[1])}</span>`;
+          return `<div class="md-bar ${cls}${i === sel ? " sel" : ""}" data-t="${i}" style="top:${y(s.r[0])}%;height:${y(s.r[1]) - y(s.r[0])}%;`
+            + `left:calc(${c0 * 100 / cols.length}% + 1px);width:calc(${span * 100 / cols.length}% - 2px);background:${l.c}">${txt}</div>`;
+        });
       }).join("");
-      html += `<div class="md-day ${isToday ? "today" : ""}"><div class="md-dn">${dn}<small>${isToday ? "today" : `${dates[d].getMonth() + 1}/${dates[d].getDate()}`}</small></div>
-        <div class="md-lanes">${lanes}</div></div>`;
+      const closed = `<div class="md-closed" style="top:0;height:${y(b[0])}%"></div><div class="md-closed" style="top:${y(b[1])}%;bottom:0"></div>`;
+      const nowline = showNow ? `<div class="md-nowline${isToday ? "" : " ghost"}" style="top:${y(nowH)}%"></div>` : "";
+      body += `<div class="md-col ${isToday ? "today" : ""}">${closed}${bars}${nowline}</div>`;
     });
-    $("md-week").innerHTML = `<div class="md-scroll" id="md-scroll"><div class="md-week">${html}</div></div>`;
+    const tmpl = `34px repeat(7, minmax(0, 1fr))`;
+    $("md-week").innerHTML = `<div class="md-cal${cols.length > 1 ? " narrow" : ""}" style="grid-template-columns:${tmpl}">${head}${body}</div>`;
+    if (sel >= tips.length) sel = -1;
+    $("md-info").innerHTML = sel >= 0 ? tips[sel] : `<span style="color:var(--muted)">Tap a bar for details.</span>`;
   }
+  $("md-week").onclick = e => { const b = e.target.closest(".md-bar"); sel = b ? +b.dataset.t : -1; renderActivity(); };
 
   function renderTable() {
     const head = `<tr><th>Activity</th>${DAYN.map((n, i) => `<th class="${i === dow ? "today" : ""}">${n} <small>${dates[i].getMonth() + 1}/${dates[i].getDate()}</small></th>`).join("")}</tr>`;
@@ -234,15 +238,15 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
     $("md-tw").innerHTML = `<table class="md-t"><thead>${head}</thead><tbody>${body}</tbody></table>`;
   }
 
-  const go = i => { cur = (i + ACTS.length) % ACTS.length; history.replaceState(null, "", "#center/" + ACTS[cur].id); renderButtons(); renderActivity(); };
+  const go = i => { cur = (i + ACTS.length) % ACTS.length; sel = -1; history.replaceState(null, "", "#center/" + ACTS[cur].id); renderButtons(); renderActivity(); };
   $("md-acts").onclick = e => { const b = e.target.closest("button"); if (b) go(+b.dataset.i); };
   document.addEventListener("keydown", e => {
     // Keys belong to whichever /family/ section is open.
     if (/INPUT|TEXTAREA|SELECT/.test(e.target.tagName) || !$("md").offsetParent || (e.key !== "ArrowLeft" && e.key !== "ArrowRight")) return;
     const step = e.key === "ArrowLeft" ? -1 : 1;
     if (e.ctrlKey || e.metaKey) { e.preventDefault(); go(cur + step); return; }
-    const tw = $("md-tw").offsetParent && $("md-tw").scrollWidth > $("md-tw").clientWidth ? $("md-tw") : $("md-scroll");
-    if (tw && tw.scrollWidth > tw.clientWidth) { e.preventDefault(); tw.scrollBy({ left: step * 160, behavior: "smooth" }); }
+    const tw = $("md-tw");
+    if (tw.offsetParent && tw.scrollWidth > tw.clientWidth) { e.preventDefault(); tw.scrollBy({ left: step * 160, behavior: "smooth" }); }
   });
   renderButtons(); renderActivity(); renderTable();
   // Move the now line (and open/closed status) along every minute while the page is open.

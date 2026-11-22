@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<!-- Phones get the desktop layout (five days side by side; pinch to zoom), like "Request desktop site". -->
-<meta name="viewport" content="width=1024">
+<!-- Phones get the desktop layout (five days side by side; pinch to zoom), like "Request desktop site",
+     unless the page sets `mobile: true` (Community Center: a vertical week built for phone width). -->
+<meta name="viewport" content="{% if page.mobile %}width=device-width, initial-scale=1{% else %}width=1024{% endif %}">
 <meta name="robots" content="noindex">
 <title>{% if page.title != "Family" %}{{ page.title }} · {% endif %}Family</title>
 <style>
@@ -24,6 +25,12 @@ a { color: inherit; }
 .fh nav a.on { background: var(--c, var(--accent)); color: #fff; font-weight: 600; }
 .fh-home { margin-left: auto; font-size: 12.5px; color: var(--muted); text-decoration: none; }
 .fh-home:hover { text-decoration: underline; }
+/* Phone width (only pages with `mobile: true` get there): the header scrolls away so the schedule gets the screen. */
+@media (max-width: 700px) {
+  .fh { position: static; }
+  .fh-in { gap: 6px 14px; padding: 8px 12px; }
+  .fh-home { display: none; }
+}
 main { max-width: 1240px; margin: 0 auto; padding: 14px 16px 40px; }
 main h1 { font-size: 26px; margin: 4px 0 12px; }
 /* The sections were built to break out of a narrow column; here the column is already wide. */
