@@ -30,15 +30,15 @@
    split each day into sub-columns (Swim: lap | rec / open). Built to fit a phone screen without scrolling sideways. */
 .md-cal { --hh: 34px; display: grid; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
 @media (min-width: 700px) { .md-cal { --hh: 38px; } }
-.md-hd { text-align: center; padding: 5px 0 4px; font-weight: 800; font-size: 16px; line-height: 1.15;
+.md-hd { text-align: center; padding: 5px 0 4px; font-weight: 800; font-size: 17px; line-height: 1.15;
   border-left: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--th-bg); }
-.md-hd small { display: block; font-weight: 500; font-size: 11.5px; color: var(--muted); }
+.md-hd small { display: block; font-weight: 600; font-size: 13.5px; color: var(--muted); }
 .md-hd.today { background: var(--accent); color: #fff; border-color: var(--accent); }
 .md-hd.today small { color: rgba(255,255,255,.92); font-weight: 700; }
 .md-hd.gut { border-left: 0; }
 .md-gut, .md-col { position: relative; height: calc(var(--hours) * var(--hh)); }
-.md-gut { font-size: 11px; font-weight: 600; color: var(--muted); }
-.md-gut span { position: absolute; right: 4px; transform: translateY(-50%); white-space: nowrap; }
+.md-gut { font-size: 13px; font-weight: 700; color: var(--muted); }
+.md-gut span { position: absolute; right: 3px; transform: translateY(-50%); white-space: nowrap; }
 .md-gut span:first-child { transform: none; }
 .md-col { border-left: 1px solid var(--line);
   background-image: repeating-linear-gradient(180deg, rgba(128,128,128,.16) 0 1px, transparent 1px var(--hh)); }
@@ -46,13 +46,13 @@
 .md-closed { position: absolute; left: 0; right: 0; background: repeating-linear-gradient(135deg, rgba(128,128,128,.14) 0 3px, transparent 3px 7px); }
 /* A bar is a thin stem in the series color with its start and end times as chips at the two ends.
    The chips sit above the now line, so the line never hides a time. */
-.md-bar { position: absolute; color: #fff; font-size: 12px; font-weight: 700; line-height: 1.2; letter-spacing: -.02em;
+.md-bar { position: absolute; color: #fff; font-size: 13px; font-weight: 700; line-height: 1.2; letter-spacing: -.02em;
   display: flex; flex-direction: column; justify-content: space-between; align-items: center;
   white-space: nowrap; font-variant-numeric: tabular-nums; cursor: pointer; }
 .md-bar::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 6px; margin-left: -3px;
   border-radius: 3px; background: var(--c); }
-.md-cal.narrow .md-bar { font-size: 10.5px; letter-spacing: -.04em; }
-.md-bar span { position: relative; z-index: 5; background: var(--c); border-radius: 4px; padding: 0 2px; }
+.md-cal.narrow .md-bar { font-size: 11.5px; letter-spacing: -.05em; }
+.md-bar span { position: relative; z-index: 5; background: var(--c); border-radius: 4px; padding: 0 1px; }
 .md-bar.past { opacity: .35; }
 .md-bar.off::before { background: none; border-left: 2px dashed var(--muted); width: 0; margin-left: -1px; border-radius: 0; }
 .md-bar.off span { background: var(--th-bg); color: var(--muted); border: 1px dashed var(--muted); }
@@ -61,8 +61,8 @@
 .md-nowline { position: absolute; left: 0; right: 0; height: 3px; margin-top: -1.5px; background: #ff3b30; z-index: 4;
   border-radius: 2px; box-shadow: 0 0 0 2px rgba(255,59,48,.22), 0 0 10px rgba(255,59,48,.75); }
 .md-nowline.ghost { height: 0; margin-top: 0; background: none; box-shadow: none; border-top: 1.5px dashed rgba(255,59,48,.5); z-index: 1; }
-.md-gut span.md-nowpill { right: 1px; transform: translateY(-50%); background: #ff3b30; color: #fff; font-size: 10px; font-weight: 700;
-  padding: 0 4px; border-radius: 999px; z-index: 5; line-height: 16px; }
+.md-gut span.md-nowpill { left: 1px; right: auto; transform: translateY(-50%); background: #ff3b30; color: #fff; font-size: 12px; font-weight: 700;
+  padding: 0 3px; border-radius: 999px; z-index: 5; line-height: 16px; }
 .md-info { min-height: 22px; font-size: 13.5px; margin: 8px 0 0; }
 
 /* all activities, for reference */
@@ -223,7 +223,7 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
       const nowline = showNow ? `<div class="md-nowline${isToday ? "" : " ghost"}" style="top:${y(nowH)}%"></div>` : "";
       body += `<div class="md-col ${isToday ? "today" : ""}">${closed}${bars}${nowline}</div>`;
     });
-    const tmpl = `34px repeat(7, minmax(0, 1fr))`;
+    const tmpl = `36px repeat(7, minmax(0, 1fr))`;
     $("md-week").innerHTML = `<div class="md-cal${cols.length > 1 ? " narrow" : ""}" style="grid-template-columns:${tmpl}">${head}${body}</div>`;
     if (sel >= tips.length) sel = -1;
     $("md-info").innerHTML = sel >= 0 ? tips[sel] : `<span style="color:var(--muted)">Tap a bar for details.</span>`;
