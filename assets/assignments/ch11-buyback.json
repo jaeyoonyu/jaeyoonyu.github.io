@@ -131,36 +131,8 @@
      "text": "Reading about real companies (Berkshire Hathaway, Amazon) made the accounting easier to understand."
     },
     {
-     "id": "fb3",
-     "label": "3",
-     "type": "choice",
-     "points": 0,
-     "optional": true,
-     "choices": [
-      "More helpful",
-      "About the same",
-      "Less helpful"
-     ],
-     "text": "Compared with a regular homework problem set, this assignment was:"
-    },
-    {
-     "id": "fb4",
-     "label": "4",
-     "type": "choice",
-     "points": 0,
-     "optional": true,
-     "choices": [
-      "Strongly agree",
-      "Agree",
-      "Neutral",
-      "Disagree",
-      "Strongly disagree"
-     ],
-     "text": "I would like assignments like this in other chapters and courses."
-    },
-    {
      "id": "fb5",
-     "label": "5",
+     "label": "3",
      "type": "text",
      "points": 0,
      "optional": true,
