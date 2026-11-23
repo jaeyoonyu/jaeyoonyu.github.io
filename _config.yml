@@ -54,4 +54,4 @@ plugins:
   - jekyll-gist
 
 # Class submissions (Google Apps Script web app URL; see _tools/submit/SETUP.md)
-submit_endpoint: ""
+submit_endpoint: "https://script.google.com/macros/s/AKfycbwRuf8cqa6-HHCV69-l0Uz26uRry1B0gQLPlGH4sAhtS9enaBiErlS1kyl9X6Vf7fg-/exec"
