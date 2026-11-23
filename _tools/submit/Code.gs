@@ -63,7 +63,9 @@ function doPost(e) {
     var student = null;
     roster.forEach(function (r) { if (String(r.Email).trim().toLowerCase() === email) student = r; });
     if (roster.length && !student) return json_({ok: false, message: 'This email is not on the class roster. Check the spelling (use your CMU email).'});
-    student = student || {Name: '', Email: email, Section: ''};
+    var typed = String(p.name || '').trim().slice(0, 100);
+    student = student || {Name: typed, Email: email, Section: ''};
+    if (!student.Name) student.Name = typed;
 
     // assignment settings: repository file, then the sheet row (non-empty cells win)
     var remote = remoteConf_(id);
@@ -116,7 +118,7 @@ function doPost(e) {
     var keepManual = row <= n ? sh.getRange(row, manualCol).getValue() : '';
     var vals = cols.map(function (c) {
       if (c === 'Time') return new Date();
-      if (c === 'Name') return student.Name;
+      if (c === 'Name') return safe_(student.Name);
       if (c === 'Email') return email;
       if (c === 'Section') return student.Section;
       if (c === 'Late') return conf.due && new Date() > new Date(conf.due) ? 'late' : '';

@@ -23,4 +23,4 @@ sitemap: false
 </style>
 
 <div id="submit-app" data-endpoint="{{ site.submit_endpoint }}"><p>Loading…</p></div>
-<script src="/assets/submit/submit.js?v=3"></script>
+<script src="/assets/submit/submit.js?v=4"></script>
