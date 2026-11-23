@@ -7,6 +7,7 @@ One file per assignment, named `<id>.json` like the question file in `assets/ass
 ```
 
 - `code`: word students must enter ("" for none). Also set `"code": true` in the question file so the page shows the box.
+- `due`: submissions after this time are marked `late` in the Sheet but still accepted.
 - `closes`: after this time submissions are refused (null to keep open). Use the -05:00 offset (Eastern).
 - `key`: accepted answers per question id; numbers match within 0.5%, "$", "," and K/M suffixes are handled.
 - A row in the Sheet's Assignments tab, if filled in, overrides these values. Changes reach the script within about 5 minutes.

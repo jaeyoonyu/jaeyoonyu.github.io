@@ -29,6 +29,7 @@
     meta.append(document.createTextNode((a.course ? a.course + ' \u00b7 ' : '') + 'Due: ' + (a.due || '\u2014')));
     if (a.reading) { meta.append(document.createTextNode(' \u00b7 ')); meta.append(el('a', {href: a.reading.url, target: '_blank'}, a.reading.label)); }
     form.append(meta);
+    if (a.note) form.append(el('p', {class: 'sub-note'}, a.note));
 
     var who = el('div', {class: 'sub-who'});
     var em = el('input', {type: 'email', id: 'sub-email', autocomplete: 'email', placeholder: 'yourid@cmich.edu', required: ''});
