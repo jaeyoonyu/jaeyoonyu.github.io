@@ -69,7 +69,7 @@
       var email = em.value.trim();
       if (!/^\S+@\S+\.\S+$/.test(email)) { msg.className = 'sub-msg bad'; msg.textContent = 'Enter your CMU email.'; em.focus(); return; }
       var answers = {}, blank = 0;
-      qs.forEach(function (x) { answers[x.q.id] = x.inp.value.trim(); if (!answers[x.q.id]) blank++; });
+      qs.forEach(function (x) { answers[x.q.id] = x.inp.value.trim(); if (!answers[x.q.id] && !x.q.optional) blank++; });
       try { localStorage.setItem('sub-email', email); } catch (e) {}
       btn.disabled = true; msg.className = 'sub-msg'; msg.textContent = 'Sending\u2026';
       var body = {assignment: a.id, title: a.title, email: email, code: code ? code.value.trim() : '', answers: answers,
