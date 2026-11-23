@@ -52,3 +52,6 @@ plugins:
   - jekyll-sitemap
   - jekyll-include-cache
   - jekyll-gist
+
+# Class submissions (Google Apps Script web app URL; see _tools/submit/SETUP.md)
+submit_endpoint: ""
