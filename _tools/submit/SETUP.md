@@ -1,0 +1,37 @@
+# Class submissions: one-time setup (about 10 minutes)
+
+Students answer on the site (`/submit/?a=<assignment id>`); every answer lands in one Google Sheet.
+Questions live in this repository (`assets/assignments/<id>.json`); answers, roster, answer keys and
+submission codes live only in the Sheet.
+
+## 1. Make the Sheet and paste the script
+1. Create a new Google Sheet (e.g. "ACC250 Submissions").
+2. Extensions > Apps Script. Delete what is there, paste all of `_tools/submit/Code.gs`, click Save.
+3. In the function menu at the top choose `setup`, click Run, and allow the permissions it asks for
+   ("unverified app" warning: Advanced > Go to project). The Sheet now has the tabs
+   Roster, Assignments, Gradebook, Questions, Log.
+
+## 2. Publish it as a web app
+1. Deploy > New deployment > gear icon > Web app.
+2. Execute as: **Me**. Who has access: **Anyone**. Deploy.
+3. Copy the Web app URL (ends in `/exec`) and give it to Claude (it goes in `_config.yml` as `submit_endpoint`).
+   If you later change the script, use Deploy > Manage deployments > edit > New version, so the URL stays the same.
+
+## 3. Paste the roster
+Roster tab: Name | Email | Section, one student per row (from the LMS export). Only these emails can submit.
+
+## 4. Each assignment: one row in the Assignments tab (optional)
+| ID | Title | Code | Closes | Key |
+|---|---|---|---|---|
+| ch11-buyback | Ch11 Opening: Stock Buybacks | (your code word) | 2026-12-03 23:59 | q1=12; q2=4.5\|$4.50; q3=no change |
+
+- **Code**: the word you say in class; leave blank for no code.
+- **Closes**: after this time submissions are refused; leave blank to keep it open.
+- **Key** (the example is made up; keys are never kept in this public repository): answers for auto-graded items (`id=answer`, alternatives with `|`). Leave blank for text-only work.
+- With no row, an assignment still accepts submissions from roster emails (a row is added automatically).
+
+## Where to look
+- **Gradebook**: one row per student, one column per assignment: the total, `submitted` (text-only work not yet scored) or `missing`.
+- **<assignment id> tab**: each student's latest answers, `Auto` score, a `Manual` column you fill in, `Total`.
+- **Questions**: the exact question text students answered. **Log**: every submission, resubmissions included.
+- To rebuild the Gradebook after editing the roster: Apps Script > run `rebuildGradebook`.

@@ -1,0 +1,101 @@
+{
+ "id": "ch11-buyback",
+ "title": "Ch11 Opening: Stock Buybacks",
+ "course": "ACC250",
+ "due": "See the course schedule",
+ "code": true,
+ "reading": {
+  "label": "Reading (PDF)",
+  "url": "/assets/ACC250/Ch11-Buyback-Reading.pdf"
+ },
+ "sections": [
+  {
+   "title": "Part 1. Reading: 1.6 Questions",
+   "questions": [
+    {
+     "id": "p1q1",
+     "type": "text",
+     "points": 2,
+     "text": "Berkshire spent $9.6 billion on buybacks in Q3 2026. Using Part 2, what happened to its cash, its SHE, its net income and its shares outstanding?",
+     "label": "1"
+    },
+    {
+     "id": "p1q2",
+     "type": "text",
+     "points": 2,
+     "text": "In 2011, why did Berkshire stop buying back its stock after only $67 million?",
+     "label": "2"
+    },
+    {
+     "id": "p1q3",
+     "type": "text",
+     "points": 2,
+     "text": "Amazon pays employees partly in stock. What does that do to EPS, and how can a buyback offset it?",
+     "label": "3"
+    }
+   ]
+  },
+  {
+   "title": "Part 2. Illustration: 2.7 Check your understanding",
+   "questions": [
+    {
+     "id": "p2q1",
+     "type": "number",
+     "points": 1,
+     "text": "A company has issued 900K shares and holds 150K treasury shares. How many shares are outstanding?",
+     "label": "1"
+    },
+    {
+     "id": "p2q2",
+     "type": "number",
+     "points": 1,
+     "text": "Net income is $240K and 60K shares are outstanding all year. What is EPS?",
+     "label": "2"
+    },
+    {
+     "id": "p2q3",
+     "type": "number",
+     "points": 1,
+     "text": "Same company, but it buys back 20K shares on the first day of the year. Net income is still $240K. What is EPS now?",
+     "label": "3"
+    },
+    {
+     "id": "p2q4a",
+     "type": "choice",
+     "points": 1,
+     "choices": [
+      "Increase",
+      "Decrease",
+      "No change"
+     ],
+     "text": "A company buys back $50K of its own shares. What happens to cash?",
+     "label": "4"
+    },
+    {
+     "id": "p2q4b",
+     "type": "choice",
+     "points": 1,
+     "choices": [
+      "Increase",
+      "Decrease",
+      "No change"
+     ],
+     "text": "Same buyback. What happens to SHE?",
+     "label": "4"
+    },
+    {
+     "id": "p2q4c",
+     "type": "choice",
+     "points": 1,
+     "choices": [
+      "Increase",
+      "Decrease",
+      "No change"
+     ],
+     "text": "Same buyback. What happens to net income?",
+     "label": "4"
+    }
+   ]
+  }
+ ]
+}
