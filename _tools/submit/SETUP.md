@@ -20,15 +20,11 @@ submission codes live only in the Sheet.
 ## 3. Paste the roster
 Roster tab: Name | Email | Section, one student per row (from the LMS export). Only these emails can submit.
 
-## 4. Each assignment: one row in the Assignments tab (optional)
-| ID | Title | Code | Closes | Key |
-|---|---|---|---|---|
-| ch11-buyback | Ch11 Opening: Stock Buybacks | (your code word) | 2026-12-03 23:59 | q1=12; q2=4.5\|$4.50; q3=no change |
-
-- **Code**: the word you say in class; leave blank for no code.
-- **Closes**: after this time submissions are refused; leave blank to keep it open.
-- **Key** (the example is made up; keys are never kept in this public repository): answers for auto-graded items (`id=answer`, alternatives with `|`). Leave blank for text-only work.
-- With no row, an assignment still accepts submissions from roster emails (a row is added automatically).
+## 4. Each assignment
+Claude adds two files to the repository: the questions (`assets/assignments/<id>.json`, shown on the page) and the
+settings (`_assignments/<id>.json`: code, close time, answer key; read only by the script, never shown on the page).
+Nothing to do in the Sheet. A filled-in row in the Assignments tab (ID | Title | Code | Closes | Key, Key as
+`q1=750K|750,000; q2=4`) overrides the file, for a change you want to make yourself.
 
 ## Where to look
 - **Gradebook**: one row per student, one column per assignment: the total, `submitted` (text-only work not yet scored) or `missing`.
