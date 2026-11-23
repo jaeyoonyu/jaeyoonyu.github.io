@@ -12,9 +12,13 @@
  *   Log          every submission, including resubmissions
  *   <ID>         one tab per assignment: the latest submission of each student
  *
- * Key format: q1=750K|750,000; q2=4; q4a=decrease   (alternatives separated by |, items by ;)
+ * Settings per assignment come from _assignments/<ID>.json in the site repository (read from GitHub; never shown on
+ * the students' page): {"code": "...", "closes": "2026-12-03T23:59:00-05:00", "key": {"q1": ["750K", "750,000"], ...}}.
+ * A row in the Assignments tab overrides it field by field (Key there as q1=750K|750,000; q2=4).
  * Numbers match if within 0.5%; "$", "," and spaces are ignored; K and M suffixes are read as thousands and millions.
  */
+
+var REPO_RAW = 'https://raw.githubusercontent.com/jaeyoonyu/jaeyoonyu.github.io/main/_assignments/';
 
 var TABS = {
   Roster: ['Name', 'Email', 'Section'],
@@ -61,17 +65,20 @@ function doPost(e) {
     if (roster.length && !student) return json_({ok: false, message: 'This email is not on the class roster. Check the spelling (use your CMU email).'});
     student = student || {Name: '', Email: email, Section: ''};
 
-    // assignment settings (optional row)
-    var conf = null;
-    rows_(ss.getSheetByName('Assignments')).forEach(function (r) { if (String(r.ID).trim() === id) conf = r; });
-    if (conf && String(conf.Code).trim() && String(conf.Code).trim().toLowerCase() !== String(p.code || '').trim().toLowerCase())
+    // assignment settings: repository file, then the sheet row (non-empty cells win)
+    var remote = remoteConf_(id);
+    var row0 = null;
+    rows_(ss.getSheetByName('Assignments')).forEach(function (r) { if (String(r.ID).trim() === id) row0 = r; });
+    var conf = {
+      code: String((row0 && row0.Code) || remote.code || '').trim(),
+      closes: (row0 && row0.Closes) || remote.closes || '',
+      key: (row0 && String(row0.Key).trim()) ? parseKey_(row0.Key) : (remote.key || {})
+    };
+    if (conf.code && conf.code.toLowerCase() !== String(p.code || '').trim().toLowerCase())
       return json_({ok: false, message: 'The submission code is not correct.'});
-    if (conf && conf.Closes && new Date() > new Date(conf.Closes))
+    if (conf.closes && new Date() > new Date(conf.closes))
       return json_({ok: false, message: 'Submissions for this assignment are closed.'});
-    if (!conf) {
-      ss.getSheetByName('Assignments').appendRow([id, p.title || id, '', '', '']);
-      conf = {ID: id, Title: p.title || id, Code: '', Closes: '', Key: ''};
-    }
+    if (!row0) ss.getSheetByName('Assignments').appendRow([id, p.title || id, '', '', '']);
 
     var items = (p.questions || []).map(function (q) { return {id: String(q.id), text: String(q.text || ''), type: q.type || 'text', points: Number(q.points || 0)}; });
     var answers = p.answers || {};
@@ -79,7 +86,7 @@ function doPost(e) {
     ss.getSheetByName('Log').appendRow([new Date(), id, email, safe_(JSON.stringify(answers))]);
 
     // per-assignment tab: latest submission per student
-    var key = parseKey_(conf.Key);
+    var key = conf.key;
     var auto = 0, autoMax = 0;
     items.forEach(function (q) {
       if (key[q.id]) { autoMax += q.points || 1; if (matches_(answers[q.id], key[q.id])) auto += q.points || 1; }
@@ -162,6 +169,19 @@ function saveQuestions_(ss, id, items) {
   items.forEach(function (q) {
     if (have[q.id] !== q.text) sh.appendRow([now, id, q.id, q.text, q.type, q.points]);
   });
+}
+
+function remoteConf_(id) {
+  var cache = CacheService.getScriptCache(), hit = cache.get('conf:' + id);
+  if (hit) return JSON.parse(hit);
+  var conf = {};
+  try {
+    var r = UrlFetchApp.fetch(REPO_RAW + encodeURIComponent(id) + '.json', {muteHttpExceptions: true});
+    if (r.getResponseCode() === 200) conf = JSON.parse(r.getContentText());
+  } catch (e) {}
+  if (conf.key) Object.keys(conf.key).forEach(function (k) { if (!Array.isArray(conf.key[k])) conf.key[k] = [String(conf.key[k])]; });
+  cache.put('conf:' + id, JSON.stringify(conf), 120);
+  return conf;
 }
 
 function parseKey_(s) {
