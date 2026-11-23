@@ -77,9 +77,9 @@
       qs.forEach(function (x) { answers[x.q.id] = x.inp.value.trim(); if (!answers[x.q.id] && !x.q.optional) blank++; });
       try { localStorage.setItem('sub-email', email); localStorage.setItem('sub-name', name); } catch (e) {}
       btn.disabled = true; msg.className = 'sub-msg'; msg.textContent = 'Sending\u2026';
-      answers._name = name;   // kept in the Log tab even by an older script
+      answers.name = name;   // saved as its own column by the Sheet script
       var body = {assignment: a.id, title: a.title, name: name, email: email, code: code ? code.value.trim() : '', answers: answers,
-        questions: qs.map(function (x) { return {id: x.q.id, text: x.q.text, type: x.q.type, points: x.q.points || 0}; })};
+        questions: [{id: 'name', text: 'Name', type: 'text', points: 0}].concat(qs.map(function (x) { return {id: x.q.id, text: x.q.text, type: x.q.type, points: x.q.points || 0}; }))};
       fetch(endpoint, {method: 'POST', headers: {'Content-Type': 'text/plain;charset=utf-8'}, body: JSON.stringify(body)})
         .then(function (r) { return r.json(); })
         .then(function (res) {

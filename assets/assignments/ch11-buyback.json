@@ -105,36 +105,66 @@
      "label": "1",
      "type": "choice",
      "points": 0,
+     "optional": true,
      "choices": [
-      "Very clear",
-      "Mostly clear",
-      "Somewhat confusing",
-      "Very confusing"
+      "Strongly agree",
+      "Agree",
+      "Neutral",
+      "Disagree",
+      "Strongly disagree"
      ],
-     "text": "How clear were the reading and the examples?",
-     "optional": true
+     "text": "This assignment helped me understand stock buybacks, shares outstanding and EPS."
     },
     {
      "id": "fb2",
      "label": "2",
      "type": "choice",
      "points": 0,
+     "optional": true,
      "choices": [
-      "Less than 30 minutes",
-      "30 to 60 minutes",
-      "1 to 2 hours",
-      "More than 2 hours"
+      "Strongly agree",
+      "Agree",
+      "Neutral",
+      "Disagree",
+      "Strongly disagree"
      ],
-     "text": "About how long did this assignment take you?",
-     "optional": true
+     "text": "Reading about real companies (Berkshire Hathaway, Amazon) made the accounting easier to understand."
     },
     {
      "id": "fb3",
      "label": "3",
+     "type": "choice",
+     "points": 0,
+     "optional": true,
+     "choices": [
+      "More helpful",
+      "About the same",
+      "Less helpful"
+     ],
+     "text": "Compared with a regular homework problem set, this assignment was:"
+    },
+    {
+     "id": "fb4",
+     "label": "4",
+     "type": "choice",
+     "points": 0,
+     "optional": true,
+     "choices": [
+      "Strongly agree",
+      "Agree",
+      "Neutral",
+      "Disagree",
+      "Strongly disagree"
+     ],
+     "text": "I would like assignments like this in other chapters and courses."
+    },
+    {
+     "id": "fb5",
+     "label": "5",
      "type": "text",
      "points": 0,
-     "text": "What helped you most, and what should I change for the next assignment?",
-     "optional": true
+     "optional": true,
+     "text": "What would make this kind of assignment more useful?"
     }
    ]
   }
