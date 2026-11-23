@@ -8,6 +8,7 @@ sitemap: false
 .sub-form h2 { margin-bottom:.2em; }
 .sub-form h3 { margin:1.4em 0 .4em; font-size:1.05em; }
 .sub-meta { color:#555; margin-top:0; }
+.sub-note { margin:.3em 0 0; padding:.45em .7em; border-left:3px solid #3333b3; background:#f3f3fb; }
 .sub-who { display:grid; grid-template-columns:max-content minmax(0, 22em); gap:.5em 1em; align-items:center; margin:1em 0; }
 .sub-form input, .sub-form textarea, .sub-form select { font:inherit; padding:.35em .5em; border:1px solid #bbb; border-radius:4px; box-sizing:border-box; }
 .sub-form textarea { width:100%; }
@@ -22,4 +23,4 @@ sitemap: false
 </style>
 
 <div id="submit-app" data-endpoint="{{ site.submit_endpoint }}"><p>Loading…</p></div>
-<script src="/assets/submit/submit.js?v=1"></script>
+<script src="/assets/submit/submit.js?v=2"></script>

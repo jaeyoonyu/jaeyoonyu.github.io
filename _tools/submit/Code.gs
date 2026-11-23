@@ -13,7 +13,7 @@
  *   <ID>         one tab per assignment: the latest submission of each student
  *
  * Settings per assignment come from _assignments/<ID>.json in the site repository (read from GitHub; never shown on
- * the students' page): {"code": "...", "closes": "2026-12-03T23:59:00-05:00", "key": {"q1": ["750K", "750,000"], ...}}.
+ * the students' page): {"code": "...", "due": "2026-11-29T23:59:00-05:00" (marks later ones "late"), "closes": "2026-12-03T23:59:00-05:00", "key": {"q1": ["750K", "750,000"], ...}}.
  * A row in the Assignments tab overrides it field by field (Key there as q1=750K|750,000; q2=4).
  * Numbers match if within 0.5%; "$", "," and spaces are ignored; K and M suffixes are read as thousands and millions.
  */
@@ -72,6 +72,7 @@ function doPost(e) {
     var conf = {
       code: String((row0 && row0.Code) || remote.code || '').trim(),
       closes: (row0 && row0.Closes) || remote.closes || '',
+      due: remote.due || '',
       key: (row0 && String(row0.Key).trim()) ? parseKey_(row0.Key) : (remote.key || {})
     };
     if (conf.code && conf.code.toLowerCase() !== String(p.code || '').trim().toLowerCase())
@@ -92,7 +93,7 @@ function doPost(e) {
       if (key[q.id]) { autoMax += q.points || 1; if (matches_(answers[q.id], key[q.id])) auto += q.points || 1; }
     });
     var sh = ss.getSheetByName(id);
-    var head = ['Time', 'Name', 'Email', 'Section'].concat(items.map(function (q) { return q.id; })).concat(['Auto', 'Manual', 'Total']);
+    var head = ['Time', 'Name', 'Email', 'Section'].concat(items.map(function (q) { return q.id; })).concat(['Late', 'Auto', 'Manual', 'Total']);
     if (!sh) {
       sh = ss.insertSheet(id);
       sh.appendRow(head);
@@ -103,6 +104,7 @@ function doPost(e) {
     items.forEach(function (q) {   // a question added later gets its own column before Auto
       if (cols.indexOf(q.id) < 0) { var at = cols.indexOf('Auto') + 1; sh.insertColumnBefore(at); sh.getRange(1, at).setValue(q.id).setFontWeight('bold'); cols = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0]; }
     });
+    if (cols.indexOf('Late') < 0) { var at2 = cols.indexOf('Auto') + 1; sh.insertColumnBefore(at2); sh.getRange(1, at2).setValue('Late').setFontWeight('bold'); cols = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0]; }
     var emailCol = cols.indexOf('Email') + 1;
     var row = 0, n = sh.getLastRow();
     if (n > 1) {
@@ -117,6 +119,7 @@ function doPost(e) {
       if (c === 'Name') return student.Name;
       if (c === 'Email') return email;
       if (c === 'Section') return student.Section;
+      if (c === 'Late') return conf.due && new Date() > new Date(conf.due) ? 'late' : '';
       if (c === 'Auto') return autoMax ? auto : '';
       if (c === 'Manual') return keepManual;
       if (c === 'Total') return '';
