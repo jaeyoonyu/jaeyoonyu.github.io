@@ -96,6 +96,47 @@
      "label": "4"
     }
    ]
+  },
+  {
+   "title": "Feedback on this assignment (optional, not graded)",
+   "questions": [
+    {
+     "id": "fb1",
+     "label": "1",
+     "type": "choice",
+     "points": 0,
+     "choices": [
+      "Very clear",
+      "Mostly clear",
+      "Somewhat confusing",
+      "Very confusing"
+     ],
+     "text": "How clear were the reading and the examples?",
+     "optional": true
+    },
+    {
+     "id": "fb2",
+     "label": "2",
+     "type": "choice",
+     "points": 0,
+     "choices": [
+      "Less than 30 minutes",
+      "30 to 60 minutes",
+      "1 to 2 hours",
+      "More than 2 hours"
+     ],
+     "text": "About how long did this assignment take you?",
+     "optional": true
+    },
+    {
+     "id": "fb3",
+     "label": "3",
+     "type": "text",
+     "points": 0,
+     "text": "What helped you most, and what should I change for the next assignment?",
+     "optional": true
+    }
+   ]
   }
  ],
  "note": "You can still submit here after the due date. There is no need to email me; just submit."
