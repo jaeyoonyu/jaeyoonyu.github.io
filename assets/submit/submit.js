@@ -32,6 +32,9 @@
     if (a.note) form.append(el('p', {class: 'sub-note'}, a.note));
 
     var who = el('div', {class: 'sub-who'});
+    var nm = el('input', {type: 'text', id: 'sub-name', autocomplete: 'name', placeholder: 'First and last name', required: ''});
+    try { nm.value = localStorage.getItem('sub-name') || ''; } catch (e) {}
+    who.append(el('label', {for: 'sub-name'}, 'Name'), nm);
     var em = el('input', {type: 'email', id: 'sub-email', autocomplete: 'email', placeholder: 'yourid@cmich.edu', required: ''});
     try { em.value = localStorage.getItem('sub-email') || ''; } catch (e) {}
     var l1 = el('label', {for: 'sub-email'}, 'CMU email'); who.append(l1, em);
@@ -66,13 +69,16 @@
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
       if (!endpoint) { msg.className = 'sub-msg bad'; msg.textContent = 'Submissions are not open yet.'; return; }
+      var name = nm.value.trim();
+      if (!name) { msg.className = 'sub-msg bad'; msg.textContent = 'Enter your name.'; nm.focus(); return; }
       var email = em.value.trim();
       if (!/^\S+@\S+\.\S+$/.test(email)) { msg.className = 'sub-msg bad'; msg.textContent = 'Enter your CMU email.'; em.focus(); return; }
       var answers = {}, blank = 0;
       qs.forEach(function (x) { answers[x.q.id] = x.inp.value.trim(); if (!answers[x.q.id] && !x.q.optional) blank++; });
-      try { localStorage.setItem('sub-email', email); } catch (e) {}
+      try { localStorage.setItem('sub-email', email); localStorage.setItem('sub-name', name); } catch (e) {}
       btn.disabled = true; msg.className = 'sub-msg'; msg.textContent = 'Sending\u2026';
-      var body = {assignment: a.id, title: a.title, email: email, code: code ? code.value.trim() : '', answers: answers,
+      answers._name = name;   // kept in the Log tab even by an older script
+      var body = {assignment: a.id, title: a.title, name: name, email: email, code: code ? code.value.trim() : '', answers: answers,
         questions: qs.map(function (x) { return {id: x.q.id, text: x.q.text, type: x.q.type, points: x.q.points || 0}; })};
       fetch(endpoint, {method: 'POST', headers: {'Content-Type': 'text/plain;charset=utf-8'}, body: JSON.stringify(body)})
         .then(function (r) { return r.json(); })
