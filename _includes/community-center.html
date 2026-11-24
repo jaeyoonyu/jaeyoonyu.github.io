@@ -208,12 +208,14 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
       head += `<div class="md-hd ${isToday ? "today" : ""}">${dn}<small>${isToday ? "Today" : `${dates[d].getMonth() + 1}/${dates[d].getDate()}`}</small></div>`;
       const bars = a.lanes.flatMap(l => {
         const idx = (l.rows || [l.row || l.n]).map(k => cols.indexOf(k)), c0 = Math.min(...idx), span = idx.length;
+        // Bars are narrower than their column: about 15% of the column is left empty on each side.
+        const sw = 100 / cols.length, pad = sw * 0.15;
         return slots(l, d).map(s => {
           const cls = s.off ? "off" : isToday && nowH >= s.r[1] ? "past" : "";
           const i = tips.push(tip(d, l, s)) - 1;
           const txt = s.off ? "<span>off</span>" : `<span>${cshort(s.r[0])}${s.note === "*" ? "*" : ""}</span><span>${cshort(s.r[1])}</span>`;
           return `<div class="md-bar ${cls}${i === sel ? " sel" : ""}" data-t="${i}" style="top:${y(s.r[0])}%;height:${y(s.r[1]) - y(s.r[0])}%;`
-            + `left:calc(${c0 * 100 / cols.length}% + 1px);width:calc(${span * 100 / cols.length}% - 2px);--c:${l.c}">${txt}</div>`;
+            + `left:${c0 * sw + pad}%;width:${span * sw - 2 * pad}%;--c:${l.c}">${txt}</div>`;
         });
       }).join("");
       const closed = `<div class="md-closed" style="top:0;height:${y(b[0])}%"></div><div class="md-closed" style="top:${y(b[1])}%;bottom:0"></div>`;
