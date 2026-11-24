@@ -30,32 +30,30 @@
    split each day into sub-columns (Swim: lap | rec / open). Built to fit a phone screen without scrolling sideways. */
 .md-cal { --hh: 34px; display: grid; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
 @media (min-width: 700px) { .md-cal { --hh: 38px; } }
-.md-hd { text-align: center; padding: 5px 0 4px; font-weight: 800; font-size: 17px; line-height: 1.15;
-  border-left: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--th-bg); }
-.md-hd small { display: block; font-weight: 600; font-size: 13.5px; color: var(--muted); }
+.md-hd { text-align: center; padding: 6px 0 5px; font-weight: 800; font-size: 19px; line-height: 1.15;
+  border-left: 2px solid rgba(128,128,128,.45); border-bottom: 1px solid var(--line); background: var(--th-bg); }
+.md-hd small { display: block; font-weight: 600; font-size: 14.5px; color: var(--muted); }
 .md-hd.today { background: var(--accent); color: #fff; border-color: var(--accent); }
 .md-hd.today small { color: rgba(255,255,255,.92); font-weight: 700; }
 .md-hd.gut { border-left: 0; }
 .md-gut, .md-col { position: relative; height: calc(var(--hours) * var(--hh)); }
-.md-gut { font-size: 13px; font-weight: 700; color: var(--muted); }
+.md-gut { font-size: 14.5px; font-weight: 700; color: var(--muted); }
 .md-gut span { position: absolute; right: 3px; transform: translateY(-50%); white-space: nowrap; }
 .md-gut span:first-child { transform: none; }
-.md-col { border-left: 1px solid var(--line);
+.md-col { border-left: 2px solid rgba(128,128,128,.45);
   background-image: repeating-linear-gradient(180deg, rgba(128,128,128,.16) 0 1px, transparent 1px var(--hh)); }
 .md-col.today { background-color: var(--today-col); box-shadow: inset 2px 0 0 var(--accent), inset -2px 0 0 var(--accent); }
 .md-closed { position: absolute; left: 0; right: 0; background: repeating-linear-gradient(135deg, rgba(128,128,128,.14) 0 3px, transparent 3px 7px); }
-/* A bar is a thin stem in the series color with its start and end times as chips at the two ends.
-   The chips sit above the now line, so the line never hides a time. */
-.md-bar { position: absolute; color: #fff; font-size: 13px; font-weight: 700; line-height: 1.2; letter-spacing: -.02em;
-  display: flex; flex-direction: column; justify-content: space-between; align-items: center;
-  white-space: nowrap; font-variant-numeric: tabular-nums; cursor: pointer; }
-.md-bar::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 6px; margin-left: -3px;
-  border-radius: 3px; background: var(--c); }
-.md-cal.narrow .md-bar { font-size: 11.5px; letter-spacing: -.05em; }
-.md-bar span { position: relative; z-index: 5; background: var(--c); border-radius: 4px; padding: 0 1px; }
+/* A bar is a filled block in the series color, start time at its top and end time at its bottom.
+   The times sit above the now line, so the line never hides one. */
+.md-bar { position: absolute; color: #fff; background: var(--c); border-radius: 5px; font-size: 14px; font-weight: 700;
+  line-height: 1.2; letter-spacing: -.02em; display: flex; flex-direction: column; justify-content: space-between;
+  align-items: center; padding: 2px 0; white-space: nowrap; font-variant-numeric: tabular-nums; cursor: pointer; overflow: visible; }
+.md-cal.narrow .md-bar { font-size: 12px; letter-spacing: -.05em; }
+.md-cal.narrow3 .md-bar { font-size: 10.5px; letter-spacing: -.06em; }
+.md-bar span { position: relative; z-index: 5; }
 .md-bar.past { opacity: .35; }
-.md-bar.off::before { background: none; border-left: 2px dashed var(--muted); width: 0; margin-left: -1px; border-radius: 0; }
-.md-bar.off span { background: var(--th-bg); color: var(--muted); border: 1px dashed var(--muted); }
+.md-bar.off { background: transparent; border: 2px dashed var(--muted); color: var(--muted); }
 .md-bar.sel span { outline: 2px solid var(--accent); outline-offset: 1px; }
 /* Now: a bold red line across today's column, a faint dashed one on the other days, and the time on the gutter. */
 .md-nowline { position: absolute; left: 0; right: 0; height: 3px; margin-top: -1.5px; background: #ff3b30; z-index: 4;
@@ -126,12 +124,10 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
       { n: "Adult", c: "#b5541c", s: [[MF, [5.5, 8]], [MF, [11.25, 13]]] },
       { n: "Youth", c: "#e8a33d", s: [[MF, [15, 17]], [[5], [12, 16], "*"]] },
       { n: "Adult & youth", rows: ["Adult", "Youth"], c: "#7a4fd0", s: [[MF, [17, 21], "*"], [[5], [16, 20]], [[6], [13, 17.5], "*"]] }] },
-    { id: "childwatch", n: "Child Watch", sub: "ages 3 months – 9 years", c: "#1a7a5e", lanes: [
-      { n: "Child Watch", c: "#1a7a5e", s: [[MF, [8, 12]], [[0, 1, 2], [16.5, 19.5]], [[3], [17.5, 19.5]], [[5], [8, 12]]] }] },
-    { id: "zone", n: "The Zone", sub: "ages 6–12 · Activity Room 1", c: "#2e9e74", lanes: [
-      { n: "The Zone", c: "#2e9e74", s: [[[0, 1, 2], [16.5, 19.5]], [[5], [8, 12]]] }] },
-    { id: "junglegym", n: "Jungle Gym", sub: "ages 6 & under, with a parent or guardian", c: "#5a9e3a", lanes: [
-      { n: "Jungle Gym", c: "#5a9e3a", s: [[[0, 2, 4], [10, 12]], [[5], [16, 18]]] }] },
+    { id: "children", n: "Children", c: "#1a7a5e", lanes: [
+      { n: "Child Watch", sub: "3 months – 9 years", c: "#1a7a5e", s: [[MF, [8, 12]], [[0, 1, 2], [16.5, 19.5]], [[3], [17.5, 19.5]], [[5], [8, 12]]] },
+      { n: "The Zone", sub: "6–12, Activity Room 1", c: "#c98a00", s: [[[0, 1, 2], [16.5, 19.5]], [[5], [8, 12]]] },
+      { n: "Jungle Gym", sub: "6 & under, with a parent", c: "#c2185b", s: [[[0, 2, 4], [10, 12]], [[5], [16, 18]]] }] },
   ];
   const T0 = 5, T1 = 21;  // axis 5 AM – 9 PM
   const DAYN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -175,7 +171,8 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
     return { open: false, html: "" };
   }
 
-  let cur = ACTS.findIndex(a => a.id === location.hash.slice(1).replace(/^center\/?/, ""));
+  const hid = location.hash.slice(1).replace(/^center\/?/, "");
+  let cur = ACTS.findIndex(a => a.id === (["childwatch", "zone", "junglegym"].includes(hid) ? "children" : hid));
   if (cur < 0) cur = 0;
 
   function renderButtons() {
@@ -223,8 +220,8 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
       const nowline = showNow ? `<div class="md-nowline${isToday ? "" : " ghost"}" style="top:${y(nowH)}%"></div>` : "";
       body += `<div class="md-col ${isToday ? "today" : ""}">${closed}${bars}${nowline}</div>`;
     });
-    const tmpl = `36px repeat(7, minmax(0, 1fr))`;
-    $("md-week").innerHTML = `<div class="md-cal${cols.length > 1 ? " narrow" : ""}" style="grid-template-columns:${tmpl}">${head}${body}</div>`;
+    const tmpl = `40px repeat(7, minmax(0, 1fr))`;
+    $("md-week").innerHTML = `<div class="md-cal${cols.length > 2 ? " narrow3" : cols.length > 1 ? " narrow" : ""}" style="grid-template-columns:${tmpl}">${head}${body}</div>`;
     if (sel >= tips.length) sel = -1;
     $("md-info").innerHTML = sel >= 0 ? tips[sel] : `<span style="color:var(--muted)">Tap a bar for details.</span>`;
   }
