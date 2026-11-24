@@ -46,6 +46,7 @@
     var qs = [];
     (a.sections || [{questions: a.questions}]).forEach(function (s) {
       if (s.title) form.append(el('h3', {}, s.title));
+      if (s.intro) form.append(el('p', {class: 'sub-intro'}, s.intro));
       var ol = el('ol', {class: 'sub-q'});
       s.questions.forEach(function (q) {
         var li = el('li'); var pq = el('p'); if (q.label) { li.className = 'lab'; pq.append(el('b', {}, q.label + '. ')); } pq.append(document.createTextNode(q.text)); li.append(pq); var inp;
