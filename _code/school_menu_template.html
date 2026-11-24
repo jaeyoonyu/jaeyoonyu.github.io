@@ -51,9 +51,7 @@
 .sm-ew { grid-column: 1 / -1; margin-top: 4px; font-size: 15px; color: var(--muted); }
 .sm-es .sm-it { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 8px; align-content: start; }
 .sm-es .sm-it .sm-th { grid-row: span 2; float: none; margin: 0; width: 64px; height: 64px; cursor: zoom-in; }
-}
 .sm-es .sm-w .sm-s, .sm-es .sm-ew .sm-s { font-size: 16px; }
-/* Day view: the five numbers sit side by side at their own width, not spread over the whole column. */
 /* Day view: the numbers sit beside the photo, under the name, and wrap to a second line when the column is narrow. */
 .sm-es .sm-nums { clear: none; display: flex; flex-wrap: wrap; gap: 3px 13px; font-size: 15.5px; }
 .sm-es .sm-nums i { font-size: 12px; }
@@ -61,6 +59,8 @@
 .sm-es .sm-eside .sm-it { padding: 4px 0; border-bottom: 1px dashed var(--line); margin: 0; }
 .sm-es .sm-eside .sm-s { font-size: 17px; font-weight: 400; }
 .sm-es .sm-nums { margin-top: 4px; }
+.sm-es .sm-nums span { display: flex; flex-direction: column; min-width: 2.3em; }
+.sm-es .sm-nums i { display: block; line-height: 1.1; }
 /* Phone width: a little smaller so photo, name and numbers fit the narrow column. */
 @media (max-width: 520px) {
   .sm-ed > img { width: 78px; height: 78px; }
@@ -69,6 +69,7 @@
   .sm-es .sm-eside .sm-s { font-size: 15.5px; }
   .sm-es .sm-nums { font-size: 14px; gap: 2px 9px; }
   .sm-es .sm-nums i { font-size: 11px; }
+}
 
 /* week pills */
 .sm-top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
@@ -221,6 +222,28 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
 .sm-t td.na { color: var(--muted); }
 .sm { --th-bg: #fff; }
 @media (prefers-color-scheme: dark) { .sm { --th-bg: #1d1f23; } }
+/* A phone showing the "desktop site" draws the page about 980 px wide and shrinks it to fit,
+   so the Day view gets full-width cards and much larger type there (class set by the script). */
+html.pd .sm-es { max-width: none; }
+html.pd .sm-ecol { grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr); gap: 18px; }
+html.pd .sm-etitle { font-size: 38px; }
+html.pd .sm-em h3 { font-size: 26px; }
+html.pd .sm-eh { font-size: 22px; }
+html.pd .sm-ed { column-gap: 16px; padding: 10px 12px; border-left-width: 6px; }
+html.pd .sm-ed > img { width: 170px; height: 170px; border-radius: 12px; }
+html.pd .sm-ed .nm { font-size: 36px; line-height: 1.2; }
+html.pd .sm-es .sm-nums { font-size: 27px; gap: 6px 14px; margin-top: 8px; }
+html.pd .sm-es .sm-nums span { min-width: 1.9em; }
+html.pd .sm-es .sm-nums i { font-size: 20px; }
+html.pd .sm-es .sm-it { column-gap: 12px; }
+html.pd .sm-es .sm-it .sm-th { width: 110px; height: 110px; border-radius: 10px; }
+html.pd .sm-es .sm-eside .sm-it { padding: 10px 0; }
+html.pd .sm-es .sm-eside .sm-s, html.pd .sm-es .sm-ew .sm-s { font-size: 32px; }
+html.pd .sm-ew { font-size: 26px; }
+html.pd .sm-views button { font-size: 30px; padding: 12px 24px; }
+html.pd .sm-dnav button { font-size: 26px; padding: 8px 18px; }
+html.pd .sm-key { font-size: 20px; }
+html.pd .sm-badge { font-size: 20px; }
 </style>
 
 <div class="sm" id="sm">
@@ -271,6 +294,10 @@ table.sm-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; fo
 <script>
 (() => {
   const WEEKS = __DATA__;
+  // A phone in "desktop site" mode: touch screen, small physical screen, but a wide (about 980 px) page.
+  const pd = () => document.documentElement.classList.toggle("pd",
+    matchMedia("(pointer: coarse)").matches && screen.width < 700 && innerWidth >= 700);
+  pd(); addEventListener("resize", pd);
   const $ = id => document.getElementById(id);
   const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
   const parse = s => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };

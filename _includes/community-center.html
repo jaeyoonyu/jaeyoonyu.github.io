@@ -28,7 +28,7 @@
 
 /* week view, vertical: one column per day (today outlined in the accent color), time running down; multi-lane activities
    split each day into sub-columns (Swim: lap | rec / open). Built to fit a phone screen without scrolling sideways. */
-.md-cal { --hh: 34px; display: grid; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.md-cal { --hh: 34px; display: grid; column-gap: 5px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
 @media (min-width: 700px) { .md-cal { --hh: 38px; } }
 .md-hd { text-align: center; padding: 6px 0 5px; font-weight: 800; font-size: 19px; line-height: 1.15;
   border-left: 2px solid rgba(128,128,128,.45); border-bottom: 1px solid var(--line); background: var(--th-bg); }
