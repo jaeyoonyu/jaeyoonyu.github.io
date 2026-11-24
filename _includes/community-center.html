@@ -75,6 +75,24 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
 .md-t .today { background: var(--today); }
 .md-t td small { color: var(--muted); }
 .md-foot { color: var(--muted); font-size: 11.5px; margin-top: 12px; line-height: 1.7; }
+/* A phone showing the "desktop site" draws the page about 980 px wide and shrinks it to fit,
+   so everything a reader scans gets larger there (class set by the script). */
+html.pd .md-sub { font-size: 19px; }
+html.pd .md-acts button { font-size: 24px; padding: 10px 20px; }
+html.pd .md-head h3 { font-size: 32px; }
+html.pd .md-head span { font-size: 20px; }
+html.pd .md-status { font-size: 23px; }
+html.pd .md-legend { font-size: 21px; gap: 10px 22px; }
+html.pd .md-sw { width: 20px; height: 13px; }
+html.pd .md-cal { --hh: 58px; }
+html.pd .md-hd { font-size: 31px; padding: 8px 0 6px; }
+html.pd .md-hd small { font-size: 22px; }
+html.pd .md-gut { font-size: 22px; }
+html.pd .md-gut span.md-nowpill { font-size: 19px; line-height: 24px; padding: 0 5px; }
+html.pd .md-bar { font-size: 21px; }
+html.pd .md-cal.narrow .md-bar { font-size: 18px; }
+html.pd .md-cal.narrow3 .md-bar { font-size: 15px; }
+html.pd .md-info { font-size: 21px; }
 </style>
 
 <div class="md" id="md">
@@ -103,6 +121,8 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
 
 <script>
 (() => {
+  // A phone in "desktop site" mode: touch screen, small physical screen, but a wide (about 980 px) page.
+  document.documentElement.classList.toggle("pd", matchMedia("(pointer: coarse)").matches && screen.width < 700 && innerWidth >= 700);
   // Days: 0 = Mon … 6 = Sun. Times are hours (13.25 = 1:15 PM).
   // Each activity has one or more lanes (Swim: lap / rec / open); each lane lists [days, [start, end], note].
   const MF = [0, 1, 2, 3, 4];
@@ -222,7 +242,7 @@ table.md-t { border-collapse: separate; border-spacing: 0; font-size: 12.5px; wi
       const nowline = showNow ? `<div class="md-nowline${isToday ? "" : " ghost"}" style="top:${y(nowH)}%"></div>` : "";
       body += `<div class="md-col ${isToday ? "today" : ""}">${closed}${bars}${nowline}</div>`;
     });
-    const tmpl = `40px repeat(7, minmax(0, 1fr))`;
+    const tmpl = `${document.documentElement.classList.contains("pd") ? 64 : 40}px repeat(7, minmax(0, 1fr))`;
     $("md-week").innerHTML = `<div class="md-cal${cols.length > 2 ? " narrow3" : cols.length > 1 ? " narrow" : ""}" style="grid-template-columns:${tmpl}">${head}${body}</div>`;
     if (sel >= tips.length) sel = -1;
     $("md-info").innerHTML = sel >= 0 ? tips[sel] : `<span style="color:var(--muted)">Tap a bar for details.</span>`;
