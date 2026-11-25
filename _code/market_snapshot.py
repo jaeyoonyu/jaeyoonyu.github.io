@@ -43,6 +43,7 @@ def stats(symbol):
         high=high, high_day=high_day, drawdown=last / high - 1, days=(last_day - high_day).days,
         # Maximum drawdown: the largest fall from a running closing high, over the fund's whole history.
         mdd=float((close / close.cummax() - 1).min()),
+        mdd_day=(close / close.cummax() - 1).idxmin(),  # the trough: when the largest fall bottomed out
         ytd=ret(pd.Timestamp(last_day.year - 1, 12, 31)),
         y1=ret(last_day - pd.DateOffset(years=1)),
         ann={n: ret(last_day - pd.DateOffset(years=n), n) for n in YEARS},
@@ -69,7 +70,7 @@ def main():
             f'<tr><th title="{label}">{symbol}</th>'
             f'<td>{s["last"]:,.2f}</td><td class="{up(s["change"])}">{pct(s["change"])}</td>'
             f'<td class="g">{s["high"]:,.2f}</td><td>{h.month}/{h.day}/{h.year % 100:02d}</td>'
-            f'<td class="g {up(s["drawdown"] + 0.0005)}">{pct(s["drawdown"])}</td><td class="dn">{pct(s["mdd"])}</td>'
+            f'<td class="g {up(s["drawdown"] + 0.0005)}">{pct(s["drawdown"])}</td><td class="dn">{pct(s["mdd"])}</td><td>{s["mdd_day"].month}/{s["mdd_day"].year % 100:02d}</td>'
             + "".join(f'<td class="{"g " if k < 2 else ""}{up(v)}">{pct(v)}</td>'
                       for k, v in enumerate([s["ytd"], s["y1"]] + [s["ann"][n] for n in YEARS]))
             + "</tr>")
@@ -95,24 +96,24 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
 .mkt small {{ display: block; font-size: .85em; font-weight: 400; opacity: .7; }}
 .mkt .dn {{ color: #c0392b; }}
 .mkt .up {{ color: #1a7a5e; }}
-@media (max-width: 640px) {{ table.mkt {{ font-size: .56em; }} .mkt th, .mkt td {{ padding: .2em .12em; }}
-  .mkt .g {{ padding-left: .5em; }} }}
+@media (max-width: 640px) {{ table.mkt {{ font-size: .545em; }} .mkt th, .mkt td {{ padding: .2em .06em; }}
+  .mkt .g {{ padding-left: .3em; }} }}
 .mkt-note {{ font-size: .72em; opacity: .7; margin: 0 0 1.2em; }}
 </style>
 <table class="mkt">
 <thead>
 <tr><th rowspan="2"></th><th colspan="2">Close</th><th colspan="2" class="g">All-time high</th>
-<th colspan="2" class="g">Drawdown</th><th rowspan="2" class="g">YTD</th>
+<th colspan="3" class="g">Drawdown</th><th rowspan="2" class="g">YTD</th>
 <th colspan="{1 + len(YEARS)}" class="g">Annualized return</th></tr>
 <tr><th>P</th><th>1D</th><th class="g">P</th><th>Day</th>
-<th class="g" title="From the all-time high">Now</th><th title="Largest fall from a high since the fund began">MDD</th>
+<th class="g" title="From the all-time high">Now</th><th title="Largest fall from a high since the fund began">MDD</th><th title="Month the largest fall bottomed out">When</th>
 <th class="g">1Y</th>{"".join(f"<th>{n}Y</th>" for n in YEARS)}</tr>
 </thead>
 <tbody>
 {chr(10).join(rows)}
 </tbody>
 </table>
-<p class="mkt-note">Closing prices; returns include dividends; MDD = largest fall from a high since the fund began; Yahoo Finance, updated weekdays after the 4 pm ET close.</p>
+<p class="mkt-note">Closing prices; returns include dividends; MDD = largest fall from a high since the fund began, and the month it bottomed; Yahoo Finance, updated weekdays after the 4 pm ET close.</p>
 """
     out = ROOT / "_includes" / "market-snapshot.html"
     out.write_text(html, encoding="utf-8")
