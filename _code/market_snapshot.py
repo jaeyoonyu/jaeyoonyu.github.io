@@ -140,7 +140,7 @@ def main():
     sub_events = "".join(f'<th class="ev{" g" if k == 0 else ""}">{n}</th>' for k, (n, _, _) in enumerate(EVENTS))
     # Two small rows above the funds: when SPY's fall in each sell-off began (its high) and ended (its low).
     cells = {"From": [f"{a.year} {a:%b} {a.day}" for a, _ in spy_days],  # e.g. 2000 Oct 9
-             "To": [f"{b.year} {b:%b} {b.day}" for _, b in spy_days],
+             "To": [f"~{b.year} {b:%b} {b.day}" for _, b in spy_days],
              "Length": [f"{(b - a).days:,} days" for a, b in spy_days]}
     period_rows = "".join(f'<tr class="per"><th>{label}</th><td></td>'
                           + "".join(f'<td{" class=g" if k == 0 else ""}>{c}</td>' for k, c in enumerate(v)) + "</tr>"
