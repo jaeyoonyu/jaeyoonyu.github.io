@@ -130,7 +130,7 @@ def main():
     # Two small rows above the funds: when SPY's fall in each sell-off began (its high) and ended (its low).
     period_rows = "".join(
         f'<tr class="per"><th>{label}</th><td></td>'
-        + "".join(f"<td>{d[k]:%y%m%d}</td>" for d in spy_days) + "<td></td><td></td></tr>"
+        + "".join(f"<td>{d[k]:%Y/%m/%d}</td>" for d in spy_days) + "<td></td><td></td></tr>"
         for k, label in ((0, "From"), (1, "To")))
     # The theme gives every table display:inline-block and a forced scrollbar; undo that here.
     html = f"""<!-- Written by _code/market_snapshot.py; do not edit by hand. Last run {stamp}. -->
@@ -159,7 +159,8 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
 .mkt td.ht {{ text-align: center; border-top: 1px solid var(--bg, #fff) !important; }}  /* heatmap cells */
 .mkt .up {{ color: #1a7a5e; }}
 @media (max-width: 640px) {{ table.mkt {{ font-size: .53em; }} .mkt th, .mkt td {{ padding: .2em .06em; }}
-  .mkt .g {{ padding-left: .3em; }} .mkt th.ev {{ width: 4.5em; }} }}
+  .mkt .g {{ padding-left: .3em; }} .mkt th.ev {{ width: 4.5em; }}
+  .mkt tr.per th, .mkt tr.per td {{ font-size: .68em; }} }}
 .mkt-note {{ font-size: .72em; opacity: .7; margin: 0 0 1.2em; }}
 </style>
 <table class="mkt">
