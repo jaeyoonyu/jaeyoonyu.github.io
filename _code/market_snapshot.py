@@ -143,7 +143,9 @@ def main():
     period_rows = "".join(f'<tr class="per"><th>{label}</th><td></td>' + "".join(f"<td>{c}</td>" for c in v) + "</tr>"
                           for label, v in cells.items())
     # The theme gives every table display:inline-block and a forced scrollbar; undo that here.
+    # One <div> around everything, so the page's markdown treats the snapshot as a single HTML block.
     html = f"""<!-- Written by _code/market_snapshot.py; do not edit by hand. Last run {stamp}. -->
+<div class="mkt-box" markdown="0">
 <h2 id="market-snapshot">📈 Market Snapshot (as of {day(as_of, True)})</h2>
 <style>
 table.mkt {{ display: table !important; overflow: visible !important; width: auto !important; max-width: 100%;
@@ -195,6 +197,7 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
 </tbody>
 </table>
 <p class="mkt-note">Daily closes; returns include dividends; MDD = largest fall since launch (all) or in the last 15 years (15Y); From/To/Length = SPY's high, low, and days between in each sell-off; — = not yet launched. Yahoo Finance, updated weekdays after the 4 pm ET close.</p>
+</div>
 """
     out = ROOT / "_includes" / "market-snapshot.html"
     out.write_text(html, encoding="utf-8")
