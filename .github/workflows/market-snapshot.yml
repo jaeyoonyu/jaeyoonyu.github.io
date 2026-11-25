@@ -1,0 +1,32 @@
+name: Refresh market snapshot
+
+on:
+  schedule:
+    - cron: "0 22 * * 1-5"   # weekdays 22:00 UTC: after the 4 pm Eastern close (5 or 6 pm Eastern)
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet finance-datareader
+      - run: python _code/market_snapshot.py
+      - name: Commit if the numbers changed
+        run: |
+          # The "updated" stamp changes every run; only commit when the numbers did (not on market holidays).
+          if git diff --quiet -I 'updated [0-9-]* [0-9:]* UTC' -- _includes/market-snapshot.html; then
+            echo "No changes"; exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add _includes/market-snapshot.html
+          git commit -m "Refresh market snapshot"
+          git pull --rebase
+          git push

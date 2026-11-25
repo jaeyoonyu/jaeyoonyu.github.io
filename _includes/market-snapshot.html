@@ -1,0 +1,20 @@
+<!-- Written by _code/market_snapshot.py; do not edit by hand. -->
+<style>
+.mkt { border-collapse: collapse; font-size: .88em; margin: .4em 0 .2em; width: auto; }
+.mkt th, .mkt td { padding: .3em .8em; text-align: right; white-space: nowrap; vertical-align: top; }
+.mkt thead th { font-weight: 600; border-bottom: 1px solid rgba(128,128,128,.4); }
+.mkt tbody th { text-align: left; }
+.mkt small { display: block; font-size: .8em; opacity: .65; }
+.mkt .dn { color: #c0392b; }
+.mkt .up { color: #1a7a5e; }
+.mkt-note { font-size: .78em; opacity: .7; margin: 0 0 1.2em; }
+</style>
+<table class="mkt">
+<thead><tr><th></th><th>Last close</th><th>1 day</th><th>All-time high (close)</th><th>Drawdown</th><th>YTD</th><th>52-week range</th></tr></thead>
+<tbody>
+<tr><th>S&P 500</th><td>7,201.09<small>Nov 24</small></td><td class="dn">−0.5%</td><td>7,818.93<small>Oct 6, 2026</small></td><td class="dn">−7.9%<small>49 days since the high</small></td><td class="up">+5.2%</td><td>6,343.72 – 7,818.93</td></tr>
+<tr><th>QQQ (Nasdaq-100 ETF)</th><td>638.10<small>Nov 24</small></td><td class="dn">−2.0%</td><td>759.66<small>Oct 6, 2026</small></td><td class="dn">−16.0%<small>49 days since the high</small></td><td class="up">+3.9%</td><td>558.28 – 759.66</td></tr>
+</tbody>
+</table>
+<p class="mkt-note">Drawdown = last close ÷ all-time closing high − 1.<br>
+Closing prices from Yahoo Finance via FinanceDataReader; updated 2026-11-25 14:44 UTC, each weekday after the US market close.</p>

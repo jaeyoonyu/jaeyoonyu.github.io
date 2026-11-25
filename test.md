@@ -3,6 +3,10 @@ layout: page
 title: "Test"
 ---
 
+## 📈 Market snapshot
+
+{% include market-snapshot.html %}
+
 Materials being tested before they move to a course page.
 
 ## 🏢 Real-Company Cases (ACC250)
