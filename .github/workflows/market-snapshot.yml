@@ -3,9 +3,11 @@ name: Refresh market snapshot
 on:
   schedule:
     # 4:10 pm Eastern, right after the close. Cron runs in UTC, so both 20:10 (summer, EDT) and
-    # 21:10 (winter, EST) are listed; the run that falls before 4 pm Eastern keeps the previous close
-    # and so commits nothing.
-    - cron: "10 20,21 * * 1-5"
+    # 21:10 (winter, EST) are listed; a run before 4 pm Eastern keeps the previous close and commits
+    # nothing. GitHub may delay or skip scheduled runs (it did during the Nov 25, 2026 outage), so
+    # later runs that evening are backups; each commits only if the numbers changed.
+    - cron: "10 20,21,22,23 * * 1-5"
+    - cron: "10 1 * * 2-6"
   workflow_dispatch:
 
 permissions:
