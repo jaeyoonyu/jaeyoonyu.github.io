@@ -54,8 +54,8 @@ def day(d, year=False):
 
 
 def pct(v):
-    """Percent without the % sign (the header says %), with a real minus sign."""
-    return "—" if v is None else f"{v * 100:+.1f}".replace("-", "−")
+    """Percent with its sign and a real minus sign."""
+    return "—" if v is None else f"{v * 100:+.1f}%".replace("-", "−")
 
 
 def main():
@@ -87,22 +87,24 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
   border: 0; box-shadow: none !important; }}
 .mkt tr:nth-child(odd) td, .mkt tr:hover td {{ background: none; }}
 .mkt thead th {{ font-weight: 600; vertical-align: bottom; }}
+.mkt thead tr:last-child th {{ border-bottom: 1px solid rgba(128,128,128,.45); }}
+.mkt tbody tr + tr th, .mkt tbody tr + tr td {{ border-top: 1px solid rgba(128,128,128,.15); }}
 .mkt thead tr:first-child th {{ text-align: center; }}
 .mkt .g {{ padding-left: .9em; }}  /* a gap, not a line, between column groups */
 .mkt tbody th {{ text-align: left; }}
 .mkt small {{ display: block; font-size: .85em; font-weight: 400; opacity: .7; }}
 .mkt .dn {{ color: #c0392b; }}
 .mkt .up {{ color: #1a7a5e; }}
-@media (max-width: 640px) {{ table.mkt {{ font-size: .6em; }} .mkt th, .mkt td {{ padding: .2em .12em; }}
+@media (max-width: 640px) {{ table.mkt {{ font-size: .56em; }} .mkt th, .mkt td {{ padding: .2em .12em; }}
   .mkt .g {{ padding-left: .5em; }} }}
 .mkt-note {{ font-size: .72em; opacity: .7; margin: 0 0 1.2em; }}
 </style>
 <table class="mkt">
 <thead>
 <tr><th rowspan="2"></th><th colspan="2">Close</th><th colspan="2" class="g">All-time high</th>
-<th colspan="2" class="g">Drawdown (%)</th><th rowspan="2" class="g">YTD<br>(%)</th>
-<th colspan="{1 + len(YEARS)}" class="g">Annualized return (%)</th></tr>
-<tr><th>P</th><th>1D %</th><th class="g">P</th><th>Day</th>
+<th colspan="2" class="g">Drawdown</th><th rowspan="2" class="g">YTD</th>
+<th colspan="{1 + len(YEARS)}" class="g">Annualized return</th></tr>
+<tr><th>P</th><th>1D</th><th class="g">P</th><th>Day</th>
 <th class="g" title="From the all-time high">Now</th><th title="Largest fall from a high since the fund began">MDD</th>
 <th class="g">1Y</th>{"".join(f"<th>{n}Y</th>" for n in YEARS)}</tr>
 </thead>
