@@ -1,4 +1,4 @@
-<!-- Written by _code/market_snapshot.py; do not edit by hand. Last run 2026-11-25 15:41 UTC. -->
+<!-- Written by _code/market_snapshot.py; do not edit by hand. Last run 2026-11-25 15:45 UTC. -->
 <h2 id="market-snapshot">📈 Market Snapshot (as of Nov 24, 2026)</h2>
 <style>
 table.mkt { display: table !important; overflow: visible !important; width: auto !important; max-width: 100%;
@@ -12,6 +12,10 @@ table.mkt { display: table !important; overflow: visible !important; width: auto
 .mkt tbody tr + tr th, .mkt tbody tr + tr td { border-top: 1px solid rgba(128,128,128,.15); }
 .mkt thead tr:first-child th { text-align: center; }
 .mkt thead small { line-height: 1.15; }
+.mkt th.ev { width: 4.9em; text-align: center; }  /* sell-off and MDD columns: one width */
+.mkt tr.per th, .mkt tr.per td { font-size: .78em; font-weight: 400; opacity: .7; text-align: center; padding-top: 0; padding-bottom: 0; }
+.mkt tr.per th { text-align: left; }
+.mkt tbody tr.per + tr.per th, .mkt tbody tr.per + tr.per td { border-top: 0; }
 .mkt .g { padding-left: .9em; }  /* a gap, not a line, between column groups */
 .mkt tbody th { text-align: left; }
 .mkt small { display: block; font-size: .85em; font-weight: 400; opacity: .7; }
@@ -20,7 +24,7 @@ table.mkt { display: table !important; overflow: visible !important; width: auto
 .mkt td.ht { text-align: center; border-top: 1px solid var(--bg, #fff) !important; }  /* heatmap cells */
 .mkt .up { color: #1a7a5e; }
 @media (max-width: 640px) { table.mkt { font-size: .53em; } .mkt th, .mkt td { padding: .2em .06em; }
-  .mkt .g { padding-left: .3em; } .mkt thead small { font-size: .74em; } }
+  .mkt .g { padding-left: .3em; } .mkt th.ev { width: 4.5em; } }
 .mkt-note { font-size: .72em; opacity: .7; margin: 0 0 1.2em; }
 </style>
 <table class="mkt">
@@ -40,9 +44,10 @@ table.mkt { display: table !important; overflow: visible !important; width: auto
 <thead>
 <tr><th rowspan="2"></th><th rowspan="2" title="First trading year">Since</th><th colspan="6" class="g">Drawdown in major sell-offs</th>
 <th colspan="2" class="g" title="Largest fall from a high since the fund began">MDD</th></tr>
-<tr><th>Dot-com<small>000324-021009</small></th><th>GFC<small>071009-090309</small></th><th>Q4 2018<small>180920-181224</small></th><th>COVID<small>200219-200323</small></th><th>Bear 2022<small>220103-221012</small></th><th>Tariffs<small>250219-250408</small></th><th>%</th><th title="The sell-off (or month) in which the largest fall bottomed out">When</th></tr>
+<tr><th class="ev">Dot-com</th><th class="ev">GFC</th><th class="ev">Q4 2018</th><th class="ev">COVID</th><th class="ev">Bear 2022</th><th class="ev">Tariffs</th><th class="ev">%</th><th title="The sell-off (or month) in which the largest fall bottomed out">When</th></tr>
 </thead>
 <tbody>
+<tr class="per"><th>From</th><td></td><td>000324</td><td>071009</td><td>180920</td><td>200219</td><td>220103</td><td>250219</td><td></td><td></td></tr><tr class="per"><th>To</th><td></td><td>021009</td><td>090309</td><td>181224</td><td>200323</td><td>221012</td><td>250408</td><td></td><td></td></tr>
 <tr><th title="S&P 500">SPY</th><td>1993</td><td class="ht" style="background:rgba(192,57,43,0.42);color:inherit">−49.1%</td><td class="ht" style="background:rgba(192,57,43,0.48);color:#fff">−56.5%</td><td class="ht" style="background:rgba(192,57,43,0.17);color:inherit">−20.2%</td><td class="ht" style="background:rgba(192,57,43,0.29);color:inherit">−34.1%</td><td class="ht" style="background:rgba(192,57,43,0.22);color:inherit">−25.4%</td><td class="ht" style="background:rgba(192,57,43,0.16);color:inherit">−19.0%</td><td class="ht" style="background:rgba(192,57,43,0.48);color:#fff">−56.5%</td><td>GFC</td></tr>
 <tr><th title="Nasdaq-100">QQQ</th><td>1999</td><td class="ht" style="background:rgba(192,57,43,0.71);color:#fff">−83.0%</td><td class="ht" style="background:rgba(192,57,43,0.46);color:#fff">−53.6%</td><td class="ht" style="background:rgba(192,57,43,0.19);color:inherit">−22.9%</td><td class="ht" style="background:rgba(192,57,43,0.24);color:inherit">−28.6%</td><td class="ht" style="background:rgba(192,57,43,0.30);color:inherit">−35.6%</td><td class="ht" style="background:rgba(192,57,43,0.19);color:inherit">−22.9%</td><td class="ht" style="background:rgba(192,57,43,0.71);color:#fff">−83.0%</td><td>Dot-com</td></tr>
 <tr><th title="Nasdaq-100, 3× daily">TQQQ</th><td>2010</td><td class="ht">—</td><td class="ht">—</td><td class="ht" style="background:rgba(192,57,43,0.49);color:#fff">−57.5%</td><td class="ht" style="background:rgba(192,57,43,0.59);color:#fff">−69.9%</td><td class="ht" style="background:rgba(192,57,43,0.69);color:#fff">−81.8%</td><td class="ht" style="background:rgba(192,57,43,0.48);color:#fff">−57.0%</td><td class="ht" style="background:rgba(192,57,43,0.69);color:#fff">−81.8%</td><td>Bear 2022</td></tr>
@@ -50,4 +55,4 @@ table.mkt { display: table !important; overflow: visible !important; width: auto
 <tr><th title="Semiconductors, 3× daily">SOXL</th><td>2010</td><td class="ht">—</td><td class="ht">—</td><td class="ht" style="background:rgba(192,57,43,0.52);color:#fff">−61.0%</td><td class="ht" style="background:rgba(192,57,43,0.68);color:#fff">−80.4%</td><td class="ht" style="background:rgba(192,57,43,0.77);color:#fff">−90.5%</td><td class="ht" style="background:rgba(192,57,43,0.63);color:#fff">−74.0%</td><td class="ht" style="background:rgba(192,57,43,0.77);color:#fff">−90.5%</td><td>Bear 2022</td></tr>
 </tbody>
 </table>
-<p class="mkt-note">Daily closes; returns include dividends; MDD = largest fall since launch; sell-off dates = SPY's high and low; — = not yet launched. Yahoo Finance, updated weekdays after the 4 pm ET close.</p>
+<p class="mkt-note">Daily closes; returns include dividends; MDD = largest fall since launch; From/To = SPY's high and low in each sell-off; — = not yet launched. Yahoo Finance, updated weekdays after the 4 pm ET close.</p>

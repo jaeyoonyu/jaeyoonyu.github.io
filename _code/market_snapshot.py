@@ -107,7 +107,7 @@ def main():
         since = f'<td>{s["since"].year}</td>'
         events = "".join(heat(v) for v, _, _ in s["events"])
         if symbol == "SPY":
-            spans = [f"{a:%y%m%d}-{b:%y%m%d}" for _, a, b in s["events"]]  # SPY's high day - low day
+            spy_days = [(a, b) for _, a, b in s["events"]]  # SPY's high day and low day in each sell-off
         main_cells = (
             f'<td>{s["last"]:,.2f}</td><td class="{up(s["change"])}">{pct(s["change"])}</td>'
             f'<td class="g">{s["high"]:,.2f}</td><td>{h.month}/{h.day}/{h.year % 100:02d}</td>'
@@ -126,7 +126,12 @@ def main():
                 '<th rowspan="2" class="g" title="Last close vs. the all-time high">Draw-<br>down</th>'
                 '<th rowspan="2" class="g">YTD</th>'
                 f'<th colspan="{1 + len(YEARS)}" class="g">Annualized return</th>')
-    sub_events = "".join(f'<th>{n}<small>{span}</small></th>' for (n, _, _), span in zip(EVENTS, spans))
+    sub_events = "".join(f'<th class="ev">{n}</th>' for n, _, _ in EVENTS)
+    # Two small rows above the funds: when SPY's fall in each sell-off began (its high) and ended (its low).
+    period_rows = "".join(
+        f'<tr class="per"><th>{label}</th><td></td>'
+        + "".join(f"<td>{d[k]:%y%m%d}</td>" for d in spy_days) + "<td></td><td></td></tr>"
+        for k, label in ((0, "From"), (1, "To")))
     # The theme gives every table display:inline-block and a forced scrollbar; undo that here.
     html = f"""<!-- Written by _code/market_snapshot.py; do not edit by hand. Last run {stamp}. -->
 <h2 id="market-snapshot">📈 Market Snapshot (as of {day(as_of, True)})</h2>
@@ -142,6 +147,10 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
 .mkt tbody tr + tr th, .mkt tbody tr + tr td {{ border-top: 1px solid rgba(128,128,128,.15); }}
 .mkt thead tr:first-child th {{ text-align: center; }}
 .mkt thead small {{ line-height: 1.15; }}
+.mkt th.ev {{ width: 4.9em; text-align: center; }}  /* sell-off and MDD columns: one width */
+.mkt tr.per th, .mkt tr.per td {{ font-size: .78em; font-weight: 400; opacity: .7; text-align: center; padding-top: 0; padding-bottom: 0; }}
+.mkt tr.per th {{ text-align: left; }}
+.mkt tbody tr.per + tr.per th, .mkt tbody tr.per + tr.per td {{ border-top: 0; }}
 .mkt .g {{ padding-left: .9em; }}  /* a gap, not a line, between column groups */
 .mkt tbody th {{ text-align: left; }}
 .mkt small {{ display: block; font-size: .85em; font-weight: 400; opacity: .7; }}
@@ -150,7 +159,7 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
 .mkt td.ht {{ text-align: center; border-top: 1px solid var(--bg, #fff) !important; }}  /* heatmap cells */
 .mkt .up {{ color: #1a7a5e; }}
 @media (max-width: 640px) {{ table.mkt {{ font-size: .53em; }} .mkt th, .mkt td {{ padding: .2em .06em; }}
-  .mkt .g {{ padding-left: .3em; }} .mkt thead small {{ font-size: .74em; }} }}
+  .mkt .g {{ padding-left: .3em; }} .mkt th.ev {{ width: 4.5em; }} }}
 .mkt-note {{ font-size: .72em; opacity: .7; margin: 0 0 1.2em; }}
 </style>
 <table class="mkt">
@@ -166,13 +175,14 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
 <thead>
 <tr><th rowspan="2"></th><th rowspan="2" title="First trading year">Since</th><th colspan="{len(EVENTS)}" class="g">Drawdown in major sell-offs</th>
 <th colspan="2" class="g" title="Largest fall from a high since the fund began">MDD</th></tr>
-<tr>{sub_events}<th>%</th><th title="The sell-off (or month) in which the largest fall bottomed out">When</th></tr>
+<tr>{sub_events}<th class="ev">%</th><th title="The sell-off (or month) in which the largest fall bottomed out">When</th></tr>
 </thead>
 <tbody>
+{period_rows}
 {chr(10).join(ev_rows)}
 </tbody>
 </table>
-<p class="mkt-note">Daily closes; returns include dividends; MDD = largest fall since launch; sell-off dates = SPY's high and low; — = not yet launched. Yahoo Finance, updated weekdays after the 4 pm ET close.</p>
+<p class="mkt-note">Daily closes; returns include dividends; MDD = largest fall since launch; From/To = SPY's high and low in each sell-off; — = not yet launched. Yahoo Finance, updated weekdays after the 4 pm ET close.</p>
 """
     out = ROOT / "_includes" / "market-snapshot.html"
     out.write_text(html, encoding="utf-8")
