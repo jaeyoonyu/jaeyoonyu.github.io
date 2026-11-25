@@ -1,4 +1,4 @@
-<!-- Written by _code/market_snapshot.py; do not edit by hand. Last run 2026-11-25 15:35 UTC. -->
+<!-- Written by _code/market_snapshot.py; do not edit by hand. Last run 2026-11-25 15:41 UTC. -->
 <h2 id="market-snapshot">📈 Market Snapshot (as of Nov 24, 2026)</h2>
 <style>
 table.mkt { display: table !important; overflow: visible !important; width: auto !important; max-width: 100%;
@@ -17,9 +17,10 @@ table.mkt { display: table !important; overflow: visible !important; width: auto
 .mkt small { display: block; font-size: .85em; font-weight: 400; opacity: .7; }
 .mkt td { font-size: .88em; }  /* numbers a step smaller than the labels */
 .mkt .dn { color: #c0392b; }
+.mkt td.ht { text-align: center; border-top: 1px solid var(--bg, #fff) !important; }  /* heatmap cells */
 .mkt .up { color: #1a7a5e; }
 @media (max-width: 640px) { table.mkt { font-size: .53em; } .mkt th, .mkt td { padding: .2em .06em; }
-  .mkt .g { padding-left: .3em; } }
+  .mkt .g { padding-left: .3em; } .mkt thead small { font-size: .74em; } }
 .mkt-note { font-size: .72em; opacity: .7; margin: 0 0 1.2em; }
 </style>
 <table class="mkt">
@@ -39,14 +40,14 @@ table.mkt { display: table !important; overflow: visible !important; width: auto
 <thead>
 <tr><th rowspan="2"></th><th rowspan="2" title="First trading year">Since</th><th colspan="6" class="g">Drawdown in major sell-offs</th>
 <th colspan="2" class="g" title="Largest fall from a high since the fund began">MDD</th></tr>
-<tr><th class=g>Dot-com<small>20000324~<br>20021009</small></th><th>GFC<small>20071009~<br>20090309</small></th><th>Q4 2018<small>20180920~<br>20181224</small></th><th>COVID<small>20200219~<br>20200323</small></th><th>Bear 2022<small>20220103~<br>20221012</small></th><th>Tariffs<small>20250219~<br>20250408</small></th><th class="g">%</th><th title="Month the largest fall bottomed out">When</th></tr>
+<tr><th>Dot-com<small>000324-021009</small></th><th>GFC<small>071009-090309</small></th><th>Q4 2018<small>180920-181224</small></th><th>COVID<small>200219-200323</small></th><th>Bear 2022<small>220103-221012</small></th><th>Tariffs<small>250219-250408</small></th><th>%</th><th title="The sell-off (or month) in which the largest fall bottomed out">When</th></tr>
 </thead>
 <tbody>
-<tr><th title="S&P 500">SPY</th><td>1993</td><td class="g dn">−49.1%</td><td class="dn">−56.5%</td><td class="dn">−20.2%</td><td class="dn">−34.1%</td><td class="dn">−25.4%</td><td class="dn">−19.0%</td><td class="g dn">−56.5%</td><td>2009Mar</td></tr>
-<tr><th title="Nasdaq-100">QQQ</th><td>1999</td><td class="g dn">−83.0%</td><td class="dn">−53.6%</td><td class="dn">−22.9%</td><td class="dn">−28.6%</td><td class="dn">−35.6%</td><td class="dn">−22.9%</td><td class="g dn">−83.0%</td><td>2002Oct</td></tr>
-<tr><th title="Nasdaq-100, 3× daily">TQQQ</th><td>2010</td><td class="g up">—</td><td class="up">—</td><td class="dn">−57.5%</td><td class="dn">−69.9%</td><td class="dn">−81.8%</td><td class="dn">−57.0%</td><td class="g dn">−81.8%</td><td>2022Dec</td></tr>
-<tr><th title="Semiconductors">SMH</th><td>2000</td><td class="g up">—</td><td class="dn">−64.2%</td><td class="dn">−26.2%</td><td class="dn">−33.6%</td><td class="dn">−45.3%</td><td class="dn">−30.2%</td><td class="g dn">−85.9%</td><td>2008Nov</td></tr>
-<tr><th title="Semiconductors, 3× daily">SOXL</th><td>2010</td><td class="g up">—</td><td class="up">—</td><td class="dn">−61.0%</td><td class="dn">−80.4%</td><td class="dn">−90.5%</td><td class="dn">−74.0%</td><td class="g dn">−90.5%</td><td>2022Oct</td></tr>
+<tr><th title="S&P 500">SPY</th><td>1993</td><td class="ht" style="background:rgba(192,57,43,0.42);color:inherit">−49.1%</td><td class="ht" style="background:rgba(192,57,43,0.48);color:#fff">−56.5%</td><td class="ht" style="background:rgba(192,57,43,0.17);color:inherit">−20.2%</td><td class="ht" style="background:rgba(192,57,43,0.29);color:inherit">−34.1%</td><td class="ht" style="background:rgba(192,57,43,0.22);color:inherit">−25.4%</td><td class="ht" style="background:rgba(192,57,43,0.16);color:inherit">−19.0%</td><td class="ht" style="background:rgba(192,57,43,0.48);color:#fff">−56.5%</td><td>GFC</td></tr>
+<tr><th title="Nasdaq-100">QQQ</th><td>1999</td><td class="ht" style="background:rgba(192,57,43,0.71);color:#fff">−83.0%</td><td class="ht" style="background:rgba(192,57,43,0.46);color:#fff">−53.6%</td><td class="ht" style="background:rgba(192,57,43,0.19);color:inherit">−22.9%</td><td class="ht" style="background:rgba(192,57,43,0.24);color:inherit">−28.6%</td><td class="ht" style="background:rgba(192,57,43,0.30);color:inherit">−35.6%</td><td class="ht" style="background:rgba(192,57,43,0.19);color:inherit">−22.9%</td><td class="ht" style="background:rgba(192,57,43,0.71);color:#fff">−83.0%</td><td>Dot-com</td></tr>
+<tr><th title="Nasdaq-100, 3× daily">TQQQ</th><td>2010</td><td class="ht">—</td><td class="ht">—</td><td class="ht" style="background:rgba(192,57,43,0.49);color:#fff">−57.5%</td><td class="ht" style="background:rgba(192,57,43,0.59);color:#fff">−69.9%</td><td class="ht" style="background:rgba(192,57,43,0.69);color:#fff">−81.8%</td><td class="ht" style="background:rgba(192,57,43,0.48);color:#fff">−57.0%</td><td class="ht" style="background:rgba(192,57,43,0.69);color:#fff">−81.8%</td><td>Bear 2022</td></tr>
+<tr><th title="Semiconductors">SMH</th><td>2000</td><td class="ht">—</td><td class="ht" style="background:rgba(192,57,43,0.55);color:#fff">−64.2%</td><td class="ht" style="background:rgba(192,57,43,0.22);color:inherit">−26.2%</td><td class="ht" style="background:rgba(192,57,43,0.29);color:inherit">−33.6%</td><td class="ht" style="background:rgba(192,57,43,0.39);color:inherit">−45.3%</td><td class="ht" style="background:rgba(192,57,43,0.26);color:inherit">−30.2%</td><td class="ht" style="background:rgba(192,57,43,0.73);color:#fff">−85.9%</td><td>GFC</td></tr>
+<tr><th title="Semiconductors, 3× daily">SOXL</th><td>2010</td><td class="ht">—</td><td class="ht">—</td><td class="ht" style="background:rgba(192,57,43,0.52);color:#fff">−61.0%</td><td class="ht" style="background:rgba(192,57,43,0.68);color:#fff">−80.4%</td><td class="ht" style="background:rgba(192,57,43,0.77);color:#fff">−90.5%</td><td class="ht" style="background:rgba(192,57,43,0.63);color:#fff">−74.0%</td><td class="ht" style="background:rgba(192,57,43,0.77);color:#fff">−90.5%</td><td>Bear 2022</td></tr>
 </tbody>
 </table>
 <p class="mkt-note">Daily closes; returns include dividends; MDD = largest fall since launch; sell-off dates = SPY's high and low; — = not yet launched. Yahoo Finance, updated weekdays after the 4 pm ET close.</p>

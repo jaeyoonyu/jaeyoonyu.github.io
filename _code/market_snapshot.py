@@ -74,6 +74,23 @@ def day(d, year=False):
     return f"{d:%b} {d.day}" + (f", {d.year}" if year else "")  # no %-d: it fails on Windows
 
 
+def heat(v):
+    """A drawdown cell shaded red by depth (heatmap): 0% clear, -100% darkest."""
+    if v is None:
+        return '<td class="ht">—</td>'
+    a = min(abs(v), 1) * 0.85
+    ink = "#fff" if a > 0.45 else "inherit"
+    return f'<td class="ht" style="background:rgba(192,57,43,{a:.2f});color:{ink}">{pct(v)}</td>'
+
+
+def era(day):
+    """Name of the sell-off a date falls in (MDD trough), else the month, e.g. 2009Mar."""
+    for name, start, end in EVENTS:
+        if pd.Timestamp(start) <= day <= pd.Timestamp(end):
+            return name
+    return f"{day.year}{day:%b}"
+
+
 def pct(v):
     """Percent with its sign and a real minus sign."""
     return "—" if v is None else f"{v * 100:+.1f}%".replace("-", "−")
@@ -88,10 +105,9 @@ def main():
         h = s["high_day"]
         name = f'<th title="{label}">{symbol}</th>'
         since = f'<td>{s["since"].year}</td>'
-        events = "".join(f'<td class="{"g " if k == 0 else ""}{up(v)}">{pct(v)}</td>'
-                         for k, (v, _, _) in enumerate(s["events"]))
+        events = "".join(heat(v) for v, _, _ in s["events"])
         if symbol == "SPY":
-            spans = [f"{a:%Y%m%d}~<br>{b:%Y%m%d}" for _, a, b in s["events"]]  # SPY's high day ~ low day
+            spans = [f"{a:%y%m%d}-{b:%y%m%d}" for _, a, b in s["events"]]  # SPY's high day - low day
         main_cells = (
             f'<td>{s["last"]:,.2f}</td><td class="{up(s["change"])}">{pct(s["change"])}</td>'
             f'<td class="g">{s["high"]:,.2f}</td><td>{h.month}/{h.day}/{h.year % 100:02d}</td>'
@@ -99,7 +115,7 @@ def main():
             + "".join(f'<td class="{"g " if k < 2 else ""}{up(v)}">{pct(v)}</td>'
                       for k, v in enumerate([s["ytd"], s["y1"]] + [s["ann"][n] for n in YEARS])))
         rows.append(f"<tr>{name}{main_cells}</tr>")
-        mdd = f'<td class="g dn">{pct(s["mdd"])}</td><td>{s["mdd_day"].year}{s["mdd_day"]:%b}</td>'
+        mdd = f'{heat(s["mdd"])}<td>{era(s["mdd_day"])}</td>'
         ev_rows.append(f"<tr>{name}{since}{events}{mdd}</tr>")
         print(symbol, f'{s["last"]:.2f}', s["last_day"].date(), "high", f'{s["high"]:.2f}', h.date(),
               "drawdown", pct(s["drawdown"]))
@@ -110,8 +126,7 @@ def main():
                 '<th rowspan="2" class="g" title="Last close vs. the all-time high">Draw-<br>down</th>'
                 '<th rowspan="2" class="g">YTD</th>'
                 f'<th colspan="{1 + len(YEARS)}" class="g">Annualized return</th>')
-    sub_events = "".join(f'<th{" class=g" if k == 0 else ""}>{n}<small>{span}</small></th>'
-                         for k, ((n, _, _), span) in enumerate(zip(EVENTS, spans)))
+    sub_events = "".join(f'<th>{n}<small>{span}</small></th>' for (n, _, _), span in zip(EVENTS, spans))
     # The theme gives every table display:inline-block and a forced scrollbar; undo that here.
     html = f"""<!-- Written by _code/market_snapshot.py; do not edit by hand. Last run {stamp}. -->
 <h2 id="market-snapshot">📈 Market Snapshot (as of {day(as_of, True)})</h2>
@@ -132,9 +147,10 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
 .mkt small {{ display: block; font-size: .85em; font-weight: 400; opacity: .7; }}
 .mkt td {{ font-size: .88em; }}  /* numbers a step smaller than the labels */
 .mkt .dn {{ color: #c0392b; }}
+.mkt td.ht {{ text-align: center; border-top: 1px solid var(--bg, #fff) !important; }}  /* heatmap cells */
 .mkt .up {{ color: #1a7a5e; }}
 @media (max-width: 640px) {{ table.mkt {{ font-size: .53em; }} .mkt th, .mkt td {{ padding: .2em .06em; }}
-  .mkt .g {{ padding-left: .3em; }} }}
+  .mkt .g {{ padding-left: .3em; }} .mkt thead small {{ font-size: .74em; }} }}
 .mkt-note {{ font-size: .72em; opacity: .7; margin: 0 0 1.2em; }}
 </style>
 <table class="mkt">
@@ -150,7 +166,7 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
 <thead>
 <tr><th rowspan="2"></th><th rowspan="2" title="First trading year">Since</th><th colspan="{len(EVENTS)}" class="g">Drawdown in major sell-offs</th>
 <th colspan="2" class="g" title="Largest fall from a high since the fund began">MDD</th></tr>
-<tr>{sub_events}<th class="g">%</th><th title="Month the largest fall bottomed out">When</th></tr>
+<tr>{sub_events}<th>%</th><th title="The sell-off (or month) in which the largest fall bottomed out">When</th></tr>
 </thead>
 <tbody>
 {chr(10).join(ev_rows)}
