@@ -17,13 +17,15 @@ ROOT = Path(__file__).resolve().parent.parent
 SERIES = [("SPY", "S&P 500"), ("QQQ", "Nasdaq-100"), ("TQQQ", "Nasdaq-100, 3× daily"),
           ("SMH", "Semiconductors"), ("SOXL", "Semiconductors, 3× daily")]
 YEARS = [3, 5, 10, 20]  # annualized return horizons
-# Major sell-offs: (name, years shown, window). Drawdown = largest fall from a high to a low inside the
-# window; "—" when the fund did not exist yet at the window's start.
-EVENTS = [("Dot-com", "2000-02", "2000-01-01", "2002-12-31"),
-          ("GFC", "2007-09", "2007-07-01", "2009-06-30"),
-          ("COVID", "2020", "2020-02-01", "2020-04-30"),
-          ("Bear", "2022", "2021-11-01", "2022-12-31"),
-          ("Tariffs", "2025", "2025-02-01", "2025-05-31")]
+# Major sell-offs, the deepest S&P 500 falls since 1993 (daily closes): (name, window). Drawdown =
+# largest fall from a high to a low inside the window; "—" when the fund did not exist at its start.
+# The header shows when SPY went from high to low in each.
+EVENTS = [("Dot-com", "2000-01-01", "2002-12-31"),
+          ("GFC", "2007-07-01", "2009-06-30"),
+          ("Q4 2018", "2018-09-01", "2018-12-31"),
+          ("COVID", "2020-02-01", "2020-04-30"),
+          ("Bear 2022", "2021-11-01", "2022-12-31"),
+          ("Tariffs", "2025-02-01", "2025-05-31")]
 
 
 def stats(symbol):
@@ -46,14 +48,17 @@ def stats(symbol):
         return (a_last / float(before.iloc[-1])) ** (1 / years) - 1
 
     def event_dd(start, end):
+        """(fall, high day, low day) inside the window, or (None, None, None) before the fund's launch."""
         w = close[(close.index >= start) & (close.index <= end)]
         if close.index[0] > pd.Timestamp(start) or not len(w):
-            return None
-        return float((w / w.cummax() - 1).min())
+            return None, None, None
+        dd = w / w.cummax() - 1
+        low_day = dd.idxmin()
+        return float(dd.min()), w[:low_day].idxmax(), low_day
 
     return dict(
         since=close.index[0],
-        events=[event_dd(a, b) for _, _, a, b in EVENTS],
+        events=[event_dd(a, b) for _, a, b in EVENTS],
         last=last, last_day=last_day, change=last / float(close.iloc[-2]) - 1,
         high=high, high_day=high_day, drawdown=last / high - 1, days=(last_day - high_day).days,
         # Maximum drawdown: the largest fall from a running closing high, over the fund's whole history.
@@ -81,26 +86,38 @@ def main():
         s = stats(symbol)
         as_of = s["last_day"]
         h = s["high_day"]
-        rows.append(
-            f'<tr><th title="{label}">{symbol}</th>'
+        name = f'<th title="{label}">{symbol}</th>'
+        since = f'<td>{s["since"].year}</td>'
+        events = "".join(f'<td class="{"g " if k == 0 else ""}{up(v)}">{pct(v)}</td>'
+                         for k, (v, _, _) in enumerate(s["events"]))
+        if symbol == "SPY":
+            spans = [f"{a:%Y%m%d}~<br>{b:%Y%m%d}" for _, a, b in s["events"]]  # SPY's high day ~ low day
+        main_cells = (
             f'<td>{s["last"]:,.2f}</td><td class="{up(s["change"])}">{pct(s["change"])}</td>'
             f'<td class="g">{s["high"]:,.2f}</td><td>{h.month}/{h.day}/{h.year % 100:02d}</td>'
-            f'<td class="g {up(s["drawdown"] + 0.0005)}">{pct(s["drawdown"])}</td><td class="dn">{pct(s["mdd"])}</td><td>{s["mdd_day"].year}{s["mdd_day"]:%b}</td>'
+            f'<td class="g {up(s["drawdown"] + 0.0005)}">{pct(s["drawdown"])}</td>'
             + "".join(f'<td class="{"g " if k < 2 else ""}{up(v)}">{pct(v)}</td>'
-                      for k, v in enumerate([s["ytd"], s["y1"]] + [s["ann"][n] for n in YEARS]))
-            + "</tr>")
-        ev_rows.append(f'<tr><th title="{label}">{symbol}</th><td>{s["since"].year}</td>'
-                       + "".join(f'<td class="{"g " if k == 0 else ""}{up(v)}">{pct(v)}</td>'
-                                 for k, v in enumerate(s["events"])) + "</tr>")
+                      for k, v in enumerate([s["ytd"], s["y1"]] + [s["ann"][n] for n in YEARS])))
+        rows.append(f"<tr>{name}{main_cells}</tr>")
+        mdd = f'<td class="g dn">{pct(s["mdd"])}</td><td>{s["mdd_day"].year}{s["mdd_day"]:%b}</td>'
+        ev_rows.append(f"<tr>{name}{since}{events}{mdd}</tr>")
         print(symbol, f'{s["last"]:.2f}', s["last_day"].date(), "high", f'{s["high"]:.2f}', h.date(),
               "drawdown", pct(s["drawdown"]))
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    sub_main = ('<th class="g">P</th><th>Day</th>'
+                '<th class="g">1Y</th>' + "".join(f"<th>{n}Y</th>" for n in YEARS))
+    top_main = ('<th colspan="2" class="g">All-time high</th>'
+                '<th rowspan="2" class="g" title="Last close vs. the all-time high">Draw-<br>down</th>'
+                '<th rowspan="2" class="g">YTD</th>'
+                f'<th colspan="{1 + len(YEARS)}" class="g">Annualized return</th>')
+    sub_events = "".join(f'<th{" class=g" if k == 0 else ""}>{n}<small>{span}</small></th>'
+                         for k, ((n, _, _), span) in enumerate(zip(EVENTS, spans)))
     # The theme gives every table display:inline-block and a forced scrollbar; undo that here.
     html = f"""<!-- Written by _code/market_snapshot.py; do not edit by hand. Last run {stamp}. -->
 <h2 id="market-snapshot">📈 Market Snapshot (as of {day(as_of, True)})</h2>
 <style>
 table.mkt {{ display: table !important; overflow: visible !important; width: auto !important; max-width: 100%;
-  border: 0; border-collapse: collapse; font-size: .9em; line-height: 1.25; margin: .3em 0 .2em;
+  border: 0; border-collapse: collapse; font-size: .9em; line-height: 1.25; margin: .3em 0 0;
   box-shadow: none !important; border-radius: 0; }}
 .mkt th, .mkt td {{ padding: .25em .3em; text-align: right; white-space: nowrap; vertical-align: top;
   border: 0; box-shadow: none !important; }}
@@ -109,9 +126,11 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
 .mkt thead tr:last-child th {{ border-bottom: 1px solid rgba(128,128,128,.45); }}
 .mkt tbody tr + tr th, .mkt tbody tr + tr td {{ border-top: 1px solid rgba(128,128,128,.15); }}
 .mkt thead tr:first-child th {{ text-align: center; }}
+.mkt thead small {{ line-height: 1.15; }}
 .mkt .g {{ padding-left: .9em; }}  /* a gap, not a line, between column groups */
 .mkt tbody th {{ text-align: left; }}
 .mkt small {{ display: block; font-size: .85em; font-weight: 400; opacity: .7; }}
+.mkt td {{ font-size: .88em; }}  /* numbers a step smaller than the labels */
 .mkt .dn {{ color: #c0392b; }}
 .mkt .up {{ color: #1a7a5e; }}
 @media (max-width: 640px) {{ table.mkt {{ font-size: .53em; }} .mkt th, .mkt td {{ padding: .2em .06em; }}
@@ -120,12 +139,8 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
 </style>
 <table class="mkt">
 <thead>
-<tr><th rowspan="2"></th><th colspan="2">Close</th><th colspan="2" class="g">All-time high</th>
-<th colspan="3" class="g">Drawdown</th><th rowspan="2" class="g">YTD</th>
-<th colspan="{1 + len(YEARS)}" class="g">Annualized return</th></tr>
-<tr><th>P</th><th>1D</th><th class="g">P</th><th>Day</th>
-<th class="g" title="From the all-time high">Now</th><th title="Largest fall from a high since the fund began">MDD</th><th title="Month the largest fall bottomed out">When</th>
-<th class="g">1Y</th>{"".join(f"<th>{n}Y</th>" for n in YEARS)}</tr>
+<tr><th rowspan="2"></th><th colspan="2">Close</th>{top_main}</tr>
+<tr><th>P</th><th>1D</th>{sub_main}</tr>
 </thead>
 <tbody>
 {chr(10).join(rows)}
@@ -133,14 +148,15 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
 </table>
 <table class="mkt">
 <thead>
-<tr><th rowspan="2"></th><th rowspan="2" title="First trading year">Since</th><th colspan="{len(EVENTS)}" class="g">Drawdown in major sell-offs</th></tr>
-<tr>{"".join(f'<th{" class=g" if k == 0 else ""}>{n}<small>{y}</small></th>' for k, (n, y, _, _) in enumerate(EVENTS))}</tr>
+<tr><th rowspan="2"></th><th rowspan="2" title="First trading year">Since</th><th colspan="{len(EVENTS)}" class="g">Drawdown in major sell-offs</th>
+<th colspan="2" class="g" title="Largest fall from a high since the fund began">MDD</th></tr>
+<tr>{sub_events}<th class="g">%</th><th title="Month the largest fall bottomed out">When</th></tr>
 </thead>
 <tbody>
 {chr(10).join(ev_rows)}
 </tbody>
 </table>
-<p class="mkt-note">Closing prices; returns include dividends; MDD = largest fall from a high since the fund began, and the month it bottomed; sell-offs = high-to-low fall within each episode, — = fund not yet launched; Yahoo Finance, updated weekdays after the 4 pm ET close.</p>
+<p class="mkt-note">Daily closes; returns include dividends; MDD = largest fall since launch; sell-off dates = SPY's high and low; — = not yet launched. Yahoo Finance, updated weekdays after the 4 pm ET close.</p>
 """
     out = ROOT / "_includes" / "market-snapshot.html"
     out.write_text(html, encoding="utf-8")

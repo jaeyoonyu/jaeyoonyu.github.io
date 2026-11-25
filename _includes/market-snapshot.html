@@ -1,8 +1,8 @@
-<!-- Written by _code/market_snapshot.py; do not edit by hand. Last run 2026-11-25 15:26 UTC. -->
+<!-- Written by _code/market_snapshot.py; do not edit by hand. Last run 2026-11-25 15:35 UTC. -->
 <h2 id="market-snapshot">📈 Market Snapshot (as of Nov 24, 2026)</h2>
 <style>
 table.mkt { display: table !important; overflow: visible !important; width: auto !important; max-width: 100%;
-  border: 0; border-collapse: collapse; font-size: .9em; line-height: 1.25; margin: .3em 0 .2em;
+  border: 0; border-collapse: collapse; font-size: .9em; line-height: 1.25; margin: .3em 0 0;
   box-shadow: none !important; border-radius: 0; }
 .mkt th, .mkt td { padding: .25em .3em; text-align: right; white-space: nowrap; vertical-align: top;
   border: 0; box-shadow: none !important; }
@@ -11,9 +11,11 @@ table.mkt { display: table !important; overflow: visible !important; width: auto
 .mkt thead tr:last-child th { border-bottom: 1px solid rgba(128,128,128,.45); }
 .mkt tbody tr + tr th, .mkt tbody tr + tr td { border-top: 1px solid rgba(128,128,128,.15); }
 .mkt thead tr:first-child th { text-align: center; }
+.mkt thead small { line-height: 1.15; }
 .mkt .g { padding-left: .9em; }  /* a gap, not a line, between column groups */
 .mkt tbody th { text-align: left; }
 .mkt small { display: block; font-size: .85em; font-weight: 400; opacity: .7; }
+.mkt td { font-size: .88em; }  /* numbers a step smaller than the labels */
 .mkt .dn { color: #c0392b; }
 .mkt .up { color: #1a7a5e; }
 @media (max-width: 640px) { table.mkt { font-size: .53em; } .mkt th, .mkt td { padding: .2em .06em; }
@@ -22,32 +24,29 @@ table.mkt { display: table !important; overflow: visible !important; width: auto
 </style>
 <table class="mkt">
 <thead>
-<tr><th rowspan="2"></th><th colspan="2">Close</th><th colspan="2" class="g">All-time high</th>
-<th colspan="3" class="g">Drawdown</th><th rowspan="2" class="g">YTD</th>
-<th colspan="5" class="g">Annualized return</th></tr>
-<tr><th>P</th><th>1D</th><th class="g">P</th><th>Day</th>
-<th class="g" title="From the all-time high">Now</th><th title="Largest fall from a high since the fund began">MDD</th><th title="Month the largest fall bottomed out">When</th>
-<th class="g">1Y</th><th>3Y</th><th>5Y</th><th>10Y</th><th>20Y</th></tr>
+<tr><th rowspan="2"></th><th colspan="2">Close</th><th colspan="2" class="g">All-time high</th><th rowspan="2" class="g" title="Last close vs. the all-time high">Draw-<br>down</th><th rowspan="2" class="g">YTD</th><th colspan="5" class="g">Annualized return</th></tr>
+<tr><th>P</th><th>1D</th><th class="g">P</th><th>Day</th><th class="g">1Y</th><th>3Y</th><th>5Y</th><th>10Y</th><th>20Y</th></tr>
 </thead>
 <tbody>
-<tr><th title="S&P 500">SPY</th><td>718.78</td><td class="dn">−0.5%</td><td class="g">779.09</td><td>10/6/26</td><td class="g dn">−7.7%</td><td class="dn">−56.5%</td><td>2009Mar</td><td class="g up">+6.2%</td><td class="g up">+8.6%</td><td class="up">+17.9%</td><td class="up">+10.4%</td><td class="up">+14.3%</td><td class="up">+10.5%</td></tr>
-<tr><th title="Nasdaq-100">QQQ</th><td>638.10</td><td class="dn">−2.0%</td><td class="g">759.66</td><td>10/6/26</td><td class="g dn">−16.0%</td><td class="dn">−83.0%</td><td>2002Oct</td><td class="g up">+4.2%</td><td class="g up">+5.9%</td><td class="up">+18.6%</td><td class="up">+10.5%</td><td class="up">+19.1%</td><td class="up">+15.1%</td></tr>
-<tr><th title="Nasdaq-100, 3× daily">TQQQ</th><td>46.19</td><td class="dn">−5.9%</td><td class="g">87.22</td><td>6/2/26</td><td class="g dn">−47.0%</td><td class="dn">−81.8%</td><td>2022Dec</td><td class="g dn">−11.9%</td><td class="g dn">−8.9%</td><td class="up">+29.3%</td><td class="up">+2.7%</td><td class="up">+33.9%</td><td class="up">—</td></tr>
-<tr><th title="Semiconductors">SMH</th><td>426.75</td><td class="dn">−7.3%</td><td class="g">668.91</td><td>6/22/26</td><td class="g dn">−36.2%</td><td class="dn">−85.9%</td><td>2008Nov</td><td class="g up">+18.5%</td><td class="g up">+26.2%</td><td class="up">+38.8%</td><td class="up">+23.3%</td><td class="up">+29.3%</td><td class="up">+18.2%</td></tr>
-<tr><th title="Semiconductors, 3× daily">SOXL</th><td>32.60</td><td class="dn">−24.6%</td><td class="g">300.77</td><td>6/22/26</td><td class="g dn">−89.2%</td><td class="dn">−90.5%</td><td>2022Oct</td><td class="g dn">−22.4%</td><td class="g dn">−9.0%</td><td class="up">+12.8%</td><td class="dn">−12.8%</td><td class="up">+25.1%</td><td class="up">—</td></tr>
+<tr><th title="S&P 500">SPY</th><td>718.78</td><td class="dn">−0.5%</td><td class="g">779.09</td><td>10/6/26</td><td class="g dn">−7.7%</td><td class="g up">+6.2%</td><td class="g up">+8.6%</td><td class="up">+17.9%</td><td class="up">+10.4%</td><td class="up">+14.3%</td><td class="up">+10.5%</td></tr>
+<tr><th title="Nasdaq-100">QQQ</th><td>638.10</td><td class="dn">−2.0%</td><td class="g">759.66</td><td>10/6/26</td><td class="g dn">−16.0%</td><td class="g up">+4.2%</td><td class="g up">+5.9%</td><td class="up">+18.6%</td><td class="up">+10.5%</td><td class="up">+19.1%</td><td class="up">+15.1%</td></tr>
+<tr><th title="Nasdaq-100, 3× daily">TQQQ</th><td>46.19</td><td class="dn">−5.9%</td><td class="g">87.22</td><td>6/2/26</td><td class="g dn">−47.0%</td><td class="g dn">−11.9%</td><td class="g dn">−8.9%</td><td class="up">+29.3%</td><td class="up">+2.7%</td><td class="up">+33.9%</td><td class="up">—</td></tr>
+<tr><th title="Semiconductors">SMH</th><td>426.75</td><td class="dn">−7.3%</td><td class="g">668.91</td><td>6/22/26</td><td class="g dn">−36.2%</td><td class="g up">+18.5%</td><td class="g up">+26.2%</td><td class="up">+38.8%</td><td class="up">+23.3%</td><td class="up">+29.3%</td><td class="up">+18.2%</td></tr>
+<tr><th title="Semiconductors, 3× daily">SOXL</th><td>32.60</td><td class="dn">−24.6%</td><td class="g">300.77</td><td>6/22/26</td><td class="g dn">−89.2%</td><td class="g dn">−22.4%</td><td class="g dn">−9.0%</td><td class="up">+12.8%</td><td class="dn">−12.8%</td><td class="up">+25.1%</td><td class="up">—</td></tr>
 </tbody>
 </table>
 <table class="mkt">
 <thead>
-<tr><th rowspan="2"></th><th rowspan="2" title="First trading year">Since</th><th colspan="5" class="g">Drawdown in major sell-offs</th></tr>
-<tr><th class=g>Dot-com<small>2000-02</small></th><th>GFC<small>2007-09</small></th><th>COVID<small>2020</small></th><th>Bear<small>2022</small></th><th>Tariffs<small>2025</small></th></tr>
+<tr><th rowspan="2"></th><th rowspan="2" title="First trading year">Since</th><th colspan="6" class="g">Drawdown in major sell-offs</th>
+<th colspan="2" class="g" title="Largest fall from a high since the fund began">MDD</th></tr>
+<tr><th class=g>Dot-com<small>20000324~<br>20021009</small></th><th>GFC<small>20071009~<br>20090309</small></th><th>Q4 2018<small>20180920~<br>20181224</small></th><th>COVID<small>20200219~<br>20200323</small></th><th>Bear 2022<small>20220103~<br>20221012</small></th><th>Tariffs<small>20250219~<br>20250408</small></th><th class="g">%</th><th title="Month the largest fall bottomed out">When</th></tr>
 </thead>
 <tbody>
-<tr><th title="S&P 500">SPY</th><td>1993</td><td class="g dn">−49.1%</td><td class="dn">−56.5%</td><td class="dn">−34.1%</td><td class="dn">−25.4%</td><td class="dn">−19.0%</td></tr>
-<tr><th title="Nasdaq-100">QQQ</th><td>1999</td><td class="g dn">−83.0%</td><td class="dn">−53.6%</td><td class="dn">−28.6%</td><td class="dn">−35.6%</td><td class="dn">−22.9%</td></tr>
-<tr><th title="Nasdaq-100, 3× daily">TQQQ</th><td>2010</td><td class="g up">—</td><td class="up">—</td><td class="dn">−69.9%</td><td class="dn">−81.8%</td><td class="dn">−57.0%</td></tr>
-<tr><th title="Semiconductors">SMH</th><td>2000</td><td class="g up">—</td><td class="dn">−64.2%</td><td class="dn">−33.6%</td><td class="dn">−45.3%</td><td class="dn">−30.2%</td></tr>
-<tr><th title="Semiconductors, 3× daily">SOXL</th><td>2010</td><td class="g up">—</td><td class="up">—</td><td class="dn">−80.4%</td><td class="dn">−90.5%</td><td class="dn">−74.0%</td></tr>
+<tr><th title="S&P 500">SPY</th><td>1993</td><td class="g dn">−49.1%</td><td class="dn">−56.5%</td><td class="dn">−20.2%</td><td class="dn">−34.1%</td><td class="dn">−25.4%</td><td class="dn">−19.0%</td><td class="g dn">−56.5%</td><td>2009Mar</td></tr>
+<tr><th title="Nasdaq-100">QQQ</th><td>1999</td><td class="g dn">−83.0%</td><td class="dn">−53.6%</td><td class="dn">−22.9%</td><td class="dn">−28.6%</td><td class="dn">−35.6%</td><td class="dn">−22.9%</td><td class="g dn">−83.0%</td><td>2002Oct</td></tr>
+<tr><th title="Nasdaq-100, 3× daily">TQQQ</th><td>2010</td><td class="g up">—</td><td class="up">—</td><td class="dn">−57.5%</td><td class="dn">−69.9%</td><td class="dn">−81.8%</td><td class="dn">−57.0%</td><td class="g dn">−81.8%</td><td>2022Dec</td></tr>
+<tr><th title="Semiconductors">SMH</th><td>2000</td><td class="g up">—</td><td class="dn">−64.2%</td><td class="dn">−26.2%</td><td class="dn">−33.6%</td><td class="dn">−45.3%</td><td class="dn">−30.2%</td><td class="g dn">−85.9%</td><td>2008Nov</td></tr>
+<tr><th title="Semiconductors, 3× daily">SOXL</th><td>2010</td><td class="g up">—</td><td class="up">—</td><td class="dn">−61.0%</td><td class="dn">−80.4%</td><td class="dn">−90.5%</td><td class="dn">−74.0%</td><td class="g dn">−90.5%</td><td>2022Oct</td></tr>
 </tbody>
 </table>
-<p class="mkt-note">Closing prices; returns include dividends; MDD = largest fall from a high since the fund began, and the month it bottomed; sell-offs = high-to-low fall within each episode, — = fund not yet launched; Yahoo Finance, updated weekdays after the 4 pm ET close.</p>
+<p class="mkt-note">Daily closes; returns include dividends; MDD = largest fall since launch; sell-off dates = SPY's high and low; — = not yet launched. Yahoo Finance, updated weekdays after the 4 pm ET close.</p>
