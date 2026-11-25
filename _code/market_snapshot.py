@@ -136,7 +136,7 @@ def main():
     # Two small rows above the funds: when SPY's fall in each sell-off began (its high) and ended (its low).
     period_rows = "".join(
         f'<tr class="per"><th>{label}</th><td></td>'
-        + "".join(f"<td>{d[k]:%Y/%m/%d}</td>" for d in spy_days) + "<td></td>" * 4 + "</tr>"
+        + "".join(f"<td>{d[k].year} {d[k]:%b} {d[k].day}</td>" for d in spy_days)  # e.g. 2000 Oct 9 + "<td></td>" * 4 + "</tr>"
         for k, label in ((0, "From"), (1, "To")))
     # The theme gives every table display:inline-block and a forced scrollbar; undo that here.
     html = f"""<!-- Written by _code/market_snapshot.py; do not edit by hand. Last run {stamp}. -->
