@@ -43,8 +43,34 @@ function setup() {
   ss.setActiveSheet(ss.getSheetByName('Gradebook'));
 }
 
-function doGet() {
-  return json_({ok: true, message: 'Submission service is running.'});
+// Read side for the instructor's local course report (2026-11-24). The web app URL is public, so the read needs the key kept in
+// Script properties (Project Settings > Script properties > READ_KEY); without it the answer is only "service is running".
+//   <exec URL>?action=submissions&key=<READ_KEY>&callback=<fn>   (JSONP: a report opened from disk can load it)
+// Answer: {fetched, assignments: [{id, title, due, closes}], rows: [{id, email, name, section, time, late, total}]},
+// one row per student per assignment (the latest submission); test rows (@example.com) are left out.
+function doGet(e) {
+  var p = (e && e.parameter) || {};
+  var want = PropertiesService.getScriptProperties().getProperty('READ_KEY');
+  if (p.action !== 'submissions' || !want || p.key !== want) return json_({ok: true, message: 'Submission service is running.'});
+  var ss = SpreadsheetApp.getActive();
+  var tz = ss.getSpreadsheetTimeZone();
+  var stamp = function (d) { return d instanceof Date ? Utilities.formatDate(d, tz, "yyyy-MM-dd'T'HH:mm") : String(d || ''); };
+  var out = {fetched: Utilities.formatDate(new Date(), tz, 'yyyy-MM-dd HH:mm'), assignments: [], rows: []};
+  rows_(ss.getSheetByName('Assignments')).forEach(function (r) {
+    var id = String(r.ID).trim();
+    if (!id || !ss.getSheetByName(id)) return;
+    var remote = remoteConf_(id);
+    out.assignments.push({id: id, title: r.Title || id, due: remote.due || '', closes: stamp(r.Closes || remote.closes)});
+    rows_(ss.getSheetByName(id)).forEach(function (s) {
+      var email = String(s.Email || '').trim().toLowerCase();
+      if (!email || /@example\.com$/.test(email)) return;
+      out.rows.push({id: id, email: email, name: s.Name || s.name || '', section: s.Section || '', time: stamp(s.Time), late: s.Late || '', total: s.Total});
+    });
+  });
+  var body = JSON.stringify(out);
+  if (p.callback && /^[A-Za-z_$][\w$]*$/.test(p.callback))
+    return ContentService.createTextOutput(p.callback + '(' + body + ');').setMimeType(ContentService.MimeType.JAVASCRIPT);
+  return ContentService.createTextOutput(body).setMimeType(ContentService.MimeType.JSON);
 }
 
 function doPost(e) {

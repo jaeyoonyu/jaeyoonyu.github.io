@@ -31,3 +31,9 @@ Nothing to do in the Sheet. A filled-in row in the Assignments tab (ID | Title |
 - **<assignment id> tab**: each student's latest answers, `Auto` score, a `Manual` column you fill in, `Total`.
 - **Questions**: the exact question text students answered. **Log**: every submission, resubmissions included.
 - To rebuild the Gradebook after editing the roster: Apps Script > run `rebuildGradebook`.
+
+## Reading the answers from the course report (optional)
+`doGet` answers `?action=submissions&key=<READ_KEY>` with every student's latest submission per assignment (JSONP with `&callback=`).
+1. Apps Script > Project Settings > Script properties > add `READ_KEY` with a long random value (keep it out of this repository).
+2. Deploy > Manage deployments > edit > New version.
+Without the right key the answer is only "Submission service is running."
