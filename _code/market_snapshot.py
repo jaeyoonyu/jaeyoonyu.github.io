@@ -127,12 +127,12 @@ def main():
         print(symbol, f'{s["last"]:.2f}', s["last_day"].date(), "high", f'{s["high"]:.2f}', h.date(),
               "drawdown", pct(s["drawdown"]))
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-    when = '<th title="The sell-off (or month) in which the fall bottomed out">When</th>'
     sub_main = ('<th class="g">P</th><th>Day</th>'
                 '<th class="g">1Y</th>' + "".join(f"<th>{n}Y</th>" for n in YEARS)
                 + '<th class="g" title="Last close vs. the all-time high">Now</th>'
-                f'<th class="g" title="Largest fall from a high since the fund began">MDD<br>all</th>{when}'
-                f'<th class="g" title="Largest fall from a high in the last 15 years">MDD<br>15Y</th>{when}')
+                # each MDD heading spans its two columns: the fall and the sell-off it bottomed in
+                '<th colspan="2" class="g" title="Largest fall from a high since the fund began">MDD, all</th>'
+                '<th colspan="2" class="g" title="Largest fall from a high in the last 15 years">MDD, 15Y</th>')
     top_main = ('<th colspan="2" class="g">All-time high</th>'
                 '<th rowspan="2" class="g">YTD</th>'
                 f'<th colspan="{1 + len(YEARS)}" class="g">Annualized return</th>'
@@ -160,7 +160,7 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
 .mkt thead th {{ font-weight: 600; vertical-align: bottom; }}
 .mkt thead tr:last-child th {{ border-bottom: 1px solid rgba(128,128,128,.45); }}
 .mkt tbody tr + tr th, .mkt tbody tr + tr td {{ border-top: 1px solid rgba(128,128,128,.15); }}
-.mkt thead tr:first-child th {{ text-align: center; }}
+.mkt thead tr:first-child th, .mkt thead th[colspan] {{ text-align: center; }}
 .mkt thead small {{ line-height: 1.15; }}
 .mkt th.ev {{ width: 4.9em; text-align: center; }}  /* sell-off and MDD columns: one width */
 .mkt tr.per th, .mkt tr.per td {{ font-size: .78em; font-weight: 400; opacity: .7; text-align: center; padding-top: 0; padding-bottom: 0; }}

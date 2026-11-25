@@ -1,4 +1,4 @@
-<!-- Written by _code/market_snapshot.py; do not edit by hand. Last run 2026-11-25 16:11 UTC. -->
+<!-- Written by _code/market_snapshot.py; do not edit by hand. Last run 2026-11-25 16:12 UTC. -->
 <div class="mkt-box" markdown="0">
 <h2 id="market-snapshot">📈 Market Snapshot (as of Nov 24, 2026)</h2>
 <style>
@@ -11,7 +11,7 @@ table.mkt { display: table !important; overflow: visible !important; width: auto
 .mkt thead th { font-weight: 600; vertical-align: bottom; }
 .mkt thead tr:last-child th { border-bottom: 1px solid rgba(128,128,128,.45); }
 .mkt tbody tr + tr th, .mkt tbody tr + tr td { border-top: 1px solid rgba(128,128,128,.15); }
-.mkt thead tr:first-child th { text-align: center; }
+.mkt thead tr:first-child th, .mkt thead th[colspan] { text-align: center; }
 .mkt thead small { line-height: 1.15; }
 .mkt th.ev { width: 4.9em; text-align: center; }  /* sell-off and MDD columns: one width */
 .mkt tr.per th, .mkt tr.per td { font-size: .78em; font-weight: 400; opacity: .7; text-align: center; padding-top: 0; padding-bottom: 0; }
@@ -33,7 +33,7 @@ table.mkt { display: table !important; overflow: visible !important; width: auto
 <table class="mkt">
 <thead>
 <tr><th rowspan="2"></th><th colspan="2">Close</th><th colspan="2" class="g">All-time high</th><th rowspan="2" class="g">YTD</th><th colspan="5" class="g">Annualized return</th><th colspan="5" class="g">Drawdown</th></tr>
-<tr><th>P</th><th>1D</th><th class="g">P</th><th>Day</th><th class="g">1Y</th><th>3Y</th><th>5Y</th><th>10Y</th><th>20Y</th><th class="g" title="Last close vs. the all-time high">Now</th><th class="g" title="Largest fall from a high since the fund began">MDD<br>all</th><th title="The sell-off (or month) in which the fall bottomed out">When</th><th class="g" title="Largest fall from a high in the last 15 years">MDD<br>15Y</th><th title="The sell-off (or month) in which the fall bottomed out">When</th></tr>
+<tr><th>P</th><th>1D</th><th class="g">P</th><th>Day</th><th class="g">1Y</th><th>3Y</th><th>5Y</th><th>10Y</th><th>20Y</th><th class="g" title="Last close vs. the all-time high">Now</th><th colspan="2" class="g" title="Largest fall from a high since the fund began">MDD, all</th><th colspan="2" class="g" title="Largest fall from a high in the last 15 years">MDD, 15Y</th></tr>
 </thead>
 <tbody>
 <tr><th title="S&P 500">SPY</th><td>718.78</td><td class="dn">−0.5%</td><td class="g">779.09</td><td>10/6/26</td><td class="g up">+6.2%</td><td class="g up">+8.6%</td><td class="up">+17.9%</td><td class="up">+10.4%</td><td class="up">+14.3%</td><td class="up">+10.5%</td><td class="g dn">−7.7%</td><td class="g dn">−56.5%</td><td class="wh">GFC</td><td class="g dn">−34.1%</td><td class="wh">COVID</td></tr>
