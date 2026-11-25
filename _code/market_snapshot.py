@@ -80,8 +80,8 @@ def main():
     html = f"""<!-- Written by _code/market_snapshot.py; do not edit by hand. Last run {stamp}. -->
 <h2 id="market-snapshot">📈 Market Snapshot (as of {day(as_of, True)})</h2>
 <style>
-table.mkt {{ display: table !important; overflow: visible !important; width: 100% !important; max-width: 100%;
-  border: 0; border-collapse: collapse; font-size: .8em; line-height: 1.2; margin: .3em 0 .2em;
+table.mkt {{ display: table !important; overflow: visible !important; width: auto !important; max-width: 100%;
+  border: 0; border-collapse: collapse; font-size: .9em; line-height: 1.25; margin: .3em 0 .2em;
   box-shadow: none !important; border-radius: 0; }}
 .mkt th, .mkt td {{ padding: .25em .3em; text-align: right; white-space: nowrap; vertical-align: top;
   border: 0; box-shadow: none !important; }}
