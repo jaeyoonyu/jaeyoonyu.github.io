@@ -79,13 +79,14 @@ def day(d, year=False):
     return f"{d:%b} {d.day}" + (f", {d.year}" if year else "")  # no %-d: it fails on Windows
 
 
-def heat(v):
+def heat(v, first=False):
     """A drawdown cell shaded red by depth (heatmap): 0% clear, -100% darkest."""
+    g = " g" if first else ""
     if v is None:
-        return '<td class="ht">—</td>'
+        return f'<td class="ht{g}">—</td>'
     a = min(abs(v), 1) * 0.85
     ink = "#fff" if a > 0.45 else "inherit"
-    return f'<td class="ht" style="background:rgba(192,57,43,{a:.2f});color:{ink}">{pct(v)}</td>'
+    return f'<td class="ht{g}" style="background:rgba(192,57,43,{a:.2f});color:{ink}">{pct(v)}</td>'
 
 
 def era(day):
@@ -110,16 +111,17 @@ def main():
         h = s["high_day"]
         name = f'<th title="{label}">{symbol}</th>'
         since = f'<td>{s["since"].year}</td>'
-        events = "".join(heat(v) for v, _, _ in s["events"])
+        events = "".join(heat(v, first=k == 0) for k, (v, _, _) in enumerate(s["events"]))
         if symbol == "SPY":
             spy_days = [(a, b) for _, a, b in s["events"]]  # SPY's high day and low day in each sell-off
         main_cells = (
             f'<td>{s["last"]:,.2f}</td><td class="{up(s["change"])}">{pct(s["change"])}</td>'
             f'<td class="g">{s["high"]:,.2f}</td><td>{h.month}/{h.day}/{h.year % 100:02d}</td>'
-            f'<td class="g {up(s["drawdown"] + 0.0005)}">{pct(s["drawdown"])}</td>'
-            f'{heat(s["mdd"])}<td class="wh">{era(s["mdd_day"])}</td>{heat(s["mdd15"])}<td class="wh">{era(s["mdd15_day"])}</td>'
             + "".join(f'<td class="{"g " if k < 2 else ""}{up(v)}">{pct(v)}</td>'
-                      for k, v in enumerate([s["ytd"], s["y1"]] + [s["ann"][n] for n in YEARS])))
+                      for k, v in enumerate([s["ytd"], s["y1"]] + [s["ann"][n] for n in YEARS]))
+            + f'<td class="g {up(s["drawdown"] + 0.0005)}">{pct(s["drawdown"])}</td>'
+            f'<td class="g dn">{pct(s["mdd"])}</td><td class="wh">{era(s["mdd_day"])}</td>'
+            f'<td class="g dn">{pct(s["mdd15"])}</td><td class="wh">{era(s["mdd15_day"])}</td>')
         rows.append(f"<tr>{name}{main_cells}</tr>")
         ev_rows.append(f"<tr>{name}{since}{events}</tr>")
         print(symbol, f'{s["last"]:.2f}', s["last_day"].date(), "high", f'{s["high"]:.2f}', h.date(),
@@ -127,20 +129,21 @@ def main():
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     when = '<th title="The sell-off (or month) in which the fall bottomed out">When</th>'
     sub_main = ('<th class="g">P</th><th>Day</th>'
-                '<th class="g" title="Last close vs. the all-time high">Now</th>'
-                f'<th class="ev" title="Largest fall from a high since the fund began">MDD<br>all</th>{when}'
-                f'<th class="ev" title="Largest fall from a high in the last 15 years">MDD<br>15Y</th>{when}'
-                '<th class="g">1Y</th>' + "".join(f"<th>{n}Y</th>" for n in YEARS))
+                '<th class="g">1Y</th>' + "".join(f"<th>{n}Y</th>" for n in YEARS)
+                + '<th class="g" title="Last close vs. the all-time high">Now</th>'
+                f'<th class="g" title="Largest fall from a high since the fund began">MDD<br>all</th>{when}'
+                f'<th class="g" title="Largest fall from a high in the last 15 years">MDD<br>15Y</th>{when}')
     top_main = ('<th colspan="2" class="g">All-time high</th>'
-                '<th colspan="5" class="g">Drawdown</th>'
                 '<th rowspan="2" class="g">YTD</th>'
-                f'<th colspan="{1 + len(YEARS)}" class="g">Annualized return</th>')
-    sub_events = "".join(f'<th class="ev">{n}</th>' for n, _, _ in EVENTS)
+                f'<th colspan="{1 + len(YEARS)}" class="g">Annualized return</th>'
+                '<th colspan="5" class="g">Drawdown</th>')
+    sub_events = "".join(f'<th class="ev{" g" if k == 0 else ""}">{n}</th>' for k, (n, _, _) in enumerate(EVENTS))
     # Two small rows above the funds: when SPY's fall in each sell-off began (its high) and ended (its low).
     cells = {"From": [f"{a.year} {a:%b} {a.day}" for a, _ in spy_days],  # e.g. 2000 Oct 9
              "To": [f"{b.year} {b:%b} {b.day}" for _, b in spy_days],
              "Length": [f"{(b - a).days:,} days" for a, b in spy_days]}
-    period_rows = "".join(f'<tr class="per"><th>{label}</th><td></td>' + "".join(f"<td>{c}</td>" for c in v) + "</tr>"
+    period_rows = "".join(f'<tr class="per"><th>{label}</th><td></td>'
+                          + "".join(f'<td{" class=g" if k == 0 else ""}>{c}</td>' for k, c in enumerate(v)) + "</tr>"
                           for label, v in cells.items())
     # The theme gives every table display:inline-block and a forced scrollbar; undo that here.
     # One <div> around everything, so the page's markdown treats the snapshot as a single HTML block.
@@ -163,7 +166,7 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
 .mkt tr.per th, .mkt tr.per td {{ font-size: .78em; font-weight: 400; opacity: .7; text-align: center; padding-top: 0; padding-bottom: 0; }}
 .mkt tr.per th {{ text-align: left; }}
 .mkt tbody tr.per + tr.per th, .mkt tbody tr.per + tr.per td {{ border-top: 0; }}
-.mkt .g {{ padding-left: .9em; }}  /* a gap, not a line, between column groups */
+.mkt .g {{ padding-left: .7em; border-left: 1px solid rgba(128,128,128,.35) !important; }}  /* a line between column groups */
 .mkt tbody th {{ text-align: left; }}
 .mkt small {{ display: block; font-size: .85em; font-weight: 400; opacity: .7; }}
 .mkt td {{ font-size: .88em; }}  /* numbers a step smaller than the labels */
@@ -171,7 +174,7 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
 .mkt td.ht {{ text-align: center; border-top: 1px solid var(--bg, #fff) !important; }}  /* heatmap cells */
 .mkt .up {{ color: #1a7a5e; }}
 @media (max-width: 640px) {{ table.mkt {{ font-size: .53em; }} .mkt th, .mkt td {{ padding: .2em .06em; }}
-  .mkt .g {{ padding-left: .3em; }} .mkt th.ev {{ width: 4em; }}
+  .mkt .g {{ padding-left: .25em; }} .mkt th.ev {{ width: 4em; }}
   .mkt tr.per th, .mkt tr.per td {{ font-size: .68em; }}
   .mkt td.wh {{ white-space: normal; }} }}  /* "Bear 2022" on two lines on phones */
 .mkt-note {{ font-size: .72em; opacity: .7; margin: 0 0 1.2em; }}
