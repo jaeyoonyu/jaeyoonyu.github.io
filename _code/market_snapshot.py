@@ -56,6 +56,8 @@ def stats(symbol):
         low_day = dd.idxmin()
         return float(dd.min()), w[:low_day].idxmax(), low_day
 
+    recent = close[close.index > last_day - pd.DateOffset(years=15)]
+
     return dict(
         since=close.index[0],
         events=[event_dd(a, b) for _, a, b in EVENTS],
@@ -64,6 +66,9 @@ def stats(symbol):
         # Maximum drawdown: the largest fall from a running closing high, over the fund's whole history.
         mdd=float((close / close.cummax() - 1).min()),
         mdd_day=(close / close.cummax() - 1).idxmin(),  # the trough: when the largest fall bottomed out
+        # The same over the last 15 years only, so funds launched in 2010 compare on one period.
+        mdd15=float((recent / recent.cummax() - 1).min()),
+        mdd15_day=(recent / recent.cummax() - 1).idxmin(),
         ytd=ret(pd.Timestamp(last_day.year - 1, 12, 31)),
         y1=ret(last_day - pd.DateOffset(years=1)),
         ann={n: ret(last_day - pd.DateOffset(years=n), n) for n in YEARS},
@@ -115,7 +120,8 @@ def main():
             + "".join(f'<td class="{"g " if k < 2 else ""}{up(v)}">{pct(v)}</td>'
                       for k, v in enumerate([s["ytd"], s["y1"]] + [s["ann"][n] for n in YEARS])))
         rows.append(f"<tr>{name}{main_cells}</tr>")
-        mdd = f'{heat(s["mdd"])}<td>{era(s["mdd_day"])}</td>'
+        mdd = (f'{heat(s["mdd"])}<td>{era(s["mdd_day"])}</td>'
+               f'{heat(s["mdd15"])}<td>{era(s["mdd15_day"])}</td>')
         ev_rows.append(f"<tr>{name}{since}{events}{mdd}</tr>")
         print(symbol, f'{s["last"]:.2f}', s["last_day"].date(), "high", f'{s["high"]:.2f}', h.date(),
               "drawdown", pct(s["drawdown"]))
@@ -130,7 +136,7 @@ def main():
     # Two small rows above the funds: when SPY's fall in each sell-off began (its high) and ended (its low).
     period_rows = "".join(
         f'<tr class="per"><th>{label}</th><td></td>'
-        + "".join(f"<td>{d[k]:%Y/%m/%d}</td>" for d in spy_days) + "<td></td><td></td></tr>"
+        + "".join(f"<td>{d[k]:%Y/%m/%d}</td>" for d in spy_days) + "<td></td>" * 4 + "</tr>"
         for k, label in ((0, "From"), (1, "To")))
     # The theme gives every table display:inline-block and a forced scrollbar; undo that here.
     html = f"""<!-- Written by _code/market_snapshot.py; do not edit by hand. Last run {stamp}. -->
@@ -159,7 +165,7 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
 .mkt td.ht {{ text-align: center; border-top: 1px solid var(--bg, #fff) !important; }}  /* heatmap cells */
 .mkt .up {{ color: #1a7a5e; }}
 @media (max-width: 640px) {{ table.mkt {{ font-size: .53em; }} .mkt th, .mkt td {{ padding: .2em .06em; }}
-  .mkt .g {{ padding-left: .3em; }} .mkt th.ev {{ width: 4.5em; }}
+  .mkt .g {{ padding-left: .3em; }} .mkt th.ev {{ width: 4em; }}
   .mkt tr.per th, .mkt tr.per td {{ font-size: .68em; }} }}
 .mkt-note {{ font-size: .72em; opacity: .7; margin: 0 0 1.2em; }}
 </style>
@@ -175,15 +181,17 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
 <table class="mkt">
 <thead>
 <tr><th rowspan="2"></th><th rowspan="2" title="First trading year">Since</th><th colspan="{len(EVENTS)}" class="g">Drawdown in major sell-offs</th>
-<th colspan="2" class="g" title="Largest fall from a high since the fund began">MDD</th></tr>
-<tr>{sub_events}<th class="ev">%</th><th title="The sell-off (or month) in which the largest fall bottomed out">When</th></tr>
+<th colspan="2" class="g" title="Largest fall from a high since the fund began">MDD, all</th>
+<th colspan="2" class="g" title="Largest fall from a high in the last 15 years">MDD, 15Y</th></tr>
+<tr>{sub_events}<th class="ev">%</th><th title="The sell-off (or month) in which the fall bottomed out">When</th>
+<th class="ev">%</th><th title="The sell-off (or month) in which the fall bottomed out">When</th></tr>
 </thead>
 <tbody>
 {period_rows}
 {chr(10).join(ev_rows)}
 </tbody>
 </table>
-<p class="mkt-note">Daily closes; returns include dividends; MDD = largest fall since launch; From/To = SPY's high and low in each sell-off; — = not yet launched. Yahoo Finance, updated weekdays after the 4 pm ET close.</p>
+<p class="mkt-note">Daily closes; returns include dividends; MDD = largest fall since launch (all) or in the last 15 years (15Y); From/To = SPY's high and low in each sell-off; — = not yet launched. Yahoo Finance, updated weekdays after the 4 pm ET close.</p>
 """
     out = ROOT / "_includes" / "market-snapshot.html"
     out.write_text(html, encoding="utf-8")
