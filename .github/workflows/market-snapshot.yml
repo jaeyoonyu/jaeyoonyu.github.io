@@ -24,7 +24,7 @@ jobs:
       - name: Commit if the numbers changed
         run: |
           # The "updated" stamp changes every run; only commit when the numbers did (not on market holidays).
-          if git diff --quiet -I 'last run [0-9-]* [0-9:]* UTC' -- _includes/market-snapshot.html; then
+          if git diff --quiet -I 'Last run [0-9-]* [0-9:]* UTC' -- _includes/market-snapshot.html; then
             echo "No changes"; exit 0
           fi
           git config user.name "github-actions[bot]"
