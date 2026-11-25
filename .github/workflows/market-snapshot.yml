@@ -2,7 +2,10 @@ name: Refresh market snapshot
 
 on:
   schedule:
-    - cron: "0 22 * * 1-5"   # weekdays 22:00 UTC: after the 4 pm Eastern close (5 or 6 pm Eastern)
+    # 4:10 pm Eastern, right after the close. Cron runs in UTC, so both 20:10 (summer, EDT) and
+    # 21:10 (winter, EST) are listed; the run that falls before 4 pm Eastern keeps the previous close
+    # and so commits nothing.
+    - cron: "10 20,21 * * 1-5"
   workflow_dispatch:
 
 permissions:
@@ -21,7 +24,7 @@ jobs:
       - name: Commit if the numbers changed
         run: |
           # The "updated" stamp changes every run; only commit when the numbers did (not on market holidays).
-          if git diff --quiet -I 'updated [0-9-]* [0-9:]* UTC' -- _includes/market-snapshot.html; then
+          if git diff --quiet -I 'last run [0-9-]* [0-9:]* UTC' -- _includes/market-snapshot.html; then
             echo "No changes"; exit 0
           fi
           git config user.name "github-actions[bot]"

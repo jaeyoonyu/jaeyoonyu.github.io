@@ -59,47 +59,70 @@ def pct(v, sign=True):
 
 
 def main():
-    rows = []
+    rows, price_rows, ret_rows, as_of = [], [], [], None
     for symbol, label in SERIES:
         s = stats(symbol)
-        cls = "dn" if s["drawdown"] < -0.0005 else "up"
-        rows.append(
-            f'<tr><th>{symbol}<small>{label}</small></th>'
-            f'<td>{s["last"]:,.2f}<small>{day(s["last_day"])}</small></td>'
-            f'<td class="{"dn" if s["change"] < 0 else "up"}">{pct(s["change"])}</td>'
-            f'<td>{s["high"]:,.2f}<small>{day(s["high_day"], True)}</small></td>'
-            f'<td class="{cls}">{pct(s["drawdown"])}<small>{s["days"]} days since the high</small></td>'
-            + "".join(f'<td class="{"dn" if (v or 0) < 0 else "up"}{" sep" if k == 0 else ""}">{pct(v)}</td>'
-                      for k, v in enumerate([s["ytd"], s["y1"]] + [s["ann"][n] for n in YEARS]))
-            + "</tr>"
-        )
+        as_of = s["last_day"]
+        up = lambda v: "dn" if (v or 0) < 0 else "up"
+        name = f'<th>{symbol}<small>{label}</small></th>'
+        prices = (f'<td>{s["last"]:,.2f}<small class="{up(s["change"])}">{pct(s["change"])}</small></td>'
+                  f'<td>{s["high"]:,.2f}<small>{day(s["high_day"], True)}</small></td>'
+                  f'<td class="{up(s["drawdown"] + 0.0005)}">{pct(s["drawdown"])}<small>{s["days"]} days</small></td>')
+        rets = "".join(f'<td class="{up(v)}{" sep" if k == 0 else ""}">{pct(v)}</td>'
+                       for k, v in enumerate([s["ytd"], s["y1"]] + [s["ann"][n] for n in YEARS]))
+        rows.append(f"<tr>{name}{prices}{rets}</tr>")
+        price_rows.append(f"<tr>{name}{prices}</tr>")
+        ret_rows.append(f"<tr>{name}{rets.replace(' sep', '')}</tr>")
         print(symbol, f'{s["last"]:.2f}', s["last_day"].date(), "high", f'{s["high"]:.2f}', s["high_day"].date(),
               "drawdown", pct(s["drawdown"]))
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    price_head = "<th>Close<small>1 day</small></th><th>All-time high<small>date</small></th><th>Drawdown<small>since high</small></th>"
+    ret_head = "".join(f"<th>{n}Y</th>" for n in YEARS)
+    # The theme gives every table display:inline-block and a forced scrollbar; undo that here.
     html = f"""<!-- Written by _code/market_snapshot.py; do not edit by hand. -->
+<h2 id="market-snapshot">📈 Market Snapshot (as of {day(as_of, True)})</h2>
 <style>
-.mkt {{ border-collapse: collapse; font-size: .88em; margin: .4em 0 .2em; width: auto; }}
-.mkt th, .mkt td {{ padding: .3em .8em; text-align: right; white-space: nowrap; vertical-align: top; }}
-.mkt thead th {{ font-weight: 600; border-bottom: 1px solid rgba(128,128,128,.4); }}
+table.mkt {{ display: table !important; overflow: visible !important; width: 100% !important; max-width: 100%;
+  border-collapse: collapse; font-size: .78em; line-height: 1.25; margin: .3em 0 .2em; box-shadow: none; }}
+.mkt th, .mkt td {{ padding: .25em .35em; text-align: right; white-space: nowrap; vertical-align: top; box-shadow: none; }}
+.mkt tr:nth-child(odd) td, .mkt tr:hover td {{ background: none; }}
+.mkt thead th {{ font-weight: 600; border-bottom: 1px solid rgba(128,128,128,.4); vertical-align: bottom; }}
+.mkt tbody tr + tr th, .mkt tbody tr + tr td {{ border-top: 1px solid rgba(128,128,128,.15); }}
 .mkt tbody th {{ text-align: left; }}
-.mkt small {{ display: block; font-size: .8em; opacity: .65; }}
+.mkt small {{ display: block; font-size: .82em; font-weight: 400; opacity: .7; }}
 .mkt .dn {{ color: #c0392b; }}
 .mkt .up {{ color: #1a7a5e; }}
 .mkt .sep {{ border-left: 1px solid rgba(128,128,128,.35); }}
-.mkt-wrap {{ overflow-x: auto; }}
-.mkt-note {{ font-size: .78em; opacity: .7; margin: 0 0 1.2em; }}
+table.mkt.mkt-phone {{ display: none !important; }}
+@media (max-width: 640px) {{  /* phones: prices and returns as two tables */
+  table.mkt.mkt-desk {{ display: none !important; }}
+  table.mkt.mkt-phone {{ display: table !important; }}
+  table.mkt {{ font-size: .74em; }}
+}}
+.mkt-note {{ font-size: .72em; opacity: .7; margin: 0 0 1.2em; line-height: 1.4; }}
 </style>
-<div class="mkt-wrap"><table class="mkt">
-<thead><tr><th></th><th>Last close</th><th>1 day</th><th>All-time high (close)</th><th>Drawdown</th>
-<th class="sep">YTD</th><th>1 year</th>{"".join(f"<th>{n} years<small>per year</small></th>" for n in YEARS)}</tr></thead>
+<table class="mkt mkt-desk">
+<thead><tr><th></th>{price_head}<th class="sep">YTD</th><th>1Y</th>{ret_head}</tr></thead>
 <tbody>
 {chr(10).join(rows)}
 </tbody>
-</table></div>
-<p class="mkt-note">Drawdown = last close ÷ all-time closing high − 1.<br>
-Returns are total returns (dividends reinvested); 3-20 years are annualized; — = the fund is younger than that.<br>
-TQQQ and SOXL aim for 3× the daily move, so their long-run returns differ a lot from 3× the index.<br>
-Closing prices from Yahoo Finance via FinanceDataReader; updated {stamp}, each weekday after the US market close.</p>
+</table>
+<table class="mkt mkt-phone">
+<thead><tr><th></th>{price_head}</tr></thead>
+<tbody>
+{chr(10).join(price_rows)}
+</tbody>
+</table>
+<table class="mkt mkt-phone">
+<thead><tr><th></th><th>YTD</th><th>1Y</th>{ret_head}</tr></thead>
+<tbody>
+{chr(10).join(ret_rows)}
+</tbody>
+</table>
+<p class="mkt-note">Drawdown = close ÷ all-time closing high − 1.<br>
+Total returns (dividends reinvested); 3Y-20Y are per year; — = the fund is younger.<br>
+TQQQ and SOXL aim for 3× the daily move, not 3× the long-run return.<br>
+Yahoo Finance closes via FinanceDataReader; updated each weekday after the 4 pm Eastern close (last run {stamp}).</p>
 """
     out = ROOT / "_includes" / "market-snapshot.html"
     out.write_text(html, encoding="utf-8")
