@@ -7,14 +7,22 @@
 .mkt small { display: block; font-size: .8em; opacity: .65; }
 .mkt .dn { color: #c0392b; }
 .mkt .up { color: #1a7a5e; }
+.mkt .sep { border-left: 1px solid rgba(128,128,128,.35); }
+.mkt-wrap { overflow-x: auto; }
 .mkt-note { font-size: .78em; opacity: .7; margin: 0 0 1.2em; }
 </style>
-<table class="mkt">
-<thead><tr><th></th><th>Last close</th><th>1 day</th><th>All-time high (close)</th><th>Drawdown</th><th>YTD</th><th>52-week range</th></tr></thead>
+<div class="mkt-wrap"><table class="mkt">
+<thead><tr><th></th><th>Last close</th><th>1 day</th><th>All-time high (close)</th><th>Drawdown</th>
+<th class="sep">YTD</th><th>1 year</th><th>3 years<small>per year</small></th><th>5 years<small>per year</small></th><th>10 years<small>per year</small></th><th>20 years<small>per year</small></th></tr></thead>
 <tbody>
-<tr><th>S&P 500</th><td>7,201.09<small>Nov 24</small></td><td class="dn">−0.5%</td><td>7,818.93<small>Oct 6, 2026</small></td><td class="dn">−7.9%<small>49 days since the high</small></td><td class="up">+5.2%</td><td>6,343.72 – 7,818.93</td></tr>
-<tr><th>QQQ (Nasdaq-100 ETF)</th><td>638.10<small>Nov 24</small></td><td class="dn">−2.0%</td><td>759.66<small>Oct 6, 2026</small></td><td class="dn">−16.0%<small>49 days since the high</small></td><td class="up">+3.9%</td><td>558.28 – 759.66</td></tr>
+<tr><th>SPY<small>S&P 500</small></th><td>718.78<small>Nov 24</small></td><td class="dn">−0.5%</td><td>779.09<small>Oct 6, 2026</small></td><td class="dn">−7.7%<small>49 days since the high</small></td><td class="up sep">+6.2%</td><td class="up">+8.6%</td><td class="up">+17.9%</td><td class="up">+10.4%</td><td class="up">+14.3%</td><td class="up">+10.5%</td></tr>
+<tr><th>QQQ<small>Nasdaq-100</small></th><td>638.10<small>Nov 24</small></td><td class="dn">−2.0%</td><td>759.66<small>Oct 6, 2026</small></td><td class="dn">−16.0%<small>49 days since the high</small></td><td class="up sep">+4.2%</td><td class="up">+5.9%</td><td class="up">+18.6%</td><td class="up">+10.5%</td><td class="up">+19.1%</td><td class="up">+15.1%</td></tr>
+<tr><th>SMH<small>Semiconductors</small></th><td>426.75<small>Nov 24</small></td><td class="dn">−7.3%</td><td>668.91<small>Jun 22, 2026</small></td><td class="dn">−36.2%<small>155 days since the high</small></td><td class="up sep">+18.5%</td><td class="up">+26.2%</td><td class="up">+38.8%</td><td class="up">+23.3%</td><td class="up">+29.3%</td><td class="up">+18.2%</td></tr>
+<tr><th>TQQQ<small>Nasdaq-100, 3× daily</small></th><td>46.19<small>Nov 24</small></td><td class="dn">−5.9%</td><td>87.22<small>Jun 2, 2026</small></td><td class="dn">−47.0%<small>175 days since the high</small></td><td class="dn sep">−11.9%</td><td class="dn">−8.9%</td><td class="up">+29.3%</td><td class="up">+2.7%</td><td class="up">+33.9%</td><td class="up">—</td></tr>
+<tr><th>SOXL<small>Semiconductors, 3× daily</small></th><td>32.60<small>Nov 24</small></td><td class="dn">−24.6%</td><td>300.77<small>Jun 22, 2026</small></td><td class="dn">−89.2%<small>155 days since the high</small></td><td class="dn sep">−22.4%</td><td class="dn">−9.0%</td><td class="up">+12.8%</td><td class="dn">−12.8%</td><td class="up">+25.1%</td><td class="up">—</td></tr>
 </tbody>
-</table>
+</table></div>
 <p class="mkt-note">Drawdown = last close ÷ all-time closing high − 1.<br>
-Closing prices from Yahoo Finance via FinanceDataReader; updated 2026-11-25 14:44 UTC, each weekday after the US market close.</p>
+Returns are total returns (dividends reinvested); 3-20 years are annualized; — = the fund is younger than that.<br>
+TQQQ and SOXL aim for 3× the daily move, so their long-run returns differ a lot from 3× the index.<br>
+Closing prices from Yahoo Finance via FinanceDataReader; updated 2026-11-25 14:46 UTC, each weekday after the US market close.</p>
