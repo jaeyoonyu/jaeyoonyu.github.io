@@ -20,12 +20,14 @@ from halving_strategy import TBILL  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "assets" / "data" / "halving-lab.json"
-# symbol: (what it tracks, 1x fund to rebuild it from before launch, yearly fee)
+# symbol: (what it tracks, 1x fund(s) to rebuild it from before launch, yearly fee)
+# SOXL follows the semiconductor index SOXX tracked (PHLX SOX until 2021), so it is rebuilt from
+# SOXX; SMH (a different, more concentrated index) only fills the year before SOXX began in Jul 2001.
 FUNDS = {"SPY": ("S&P 500", None, None),
          "QQQ": ("Nasdaq-100", None, None),
-         "TQQQ": ("Nasdaq-100, 3× daily", "QQQ", 0.0095),
+         "TQQQ": ("Nasdaq-100, 3× daily", ("QQQ",), 0.0095),
          "SMH": ("Semiconductors", None, None),
-         "SOXL": ("Semiconductors, 3× daily", "SMH", 0.0075)}
+         "SOXL": ("Semiconductors, 3× daily", ("SOXX", "SMH"), 0.0075)}
 
 
 def load(symbol):
@@ -61,15 +63,21 @@ def synthetic(base, real, fee):
     return out, spread, gap
 
 
+def chain(main, filler):
+    """main's daily moves, with filler's moves for the days before main began."""
+    early = filler[filler.index <= main.index[0]]
+    return pd.concat([early.iloc[:-1] / early.iloc[-1] * main.iloc[0], main])
+
+
 def sig(v):
     return float(f"{v:.5g}")
 
 
 def main():
     adj, raw = {}, {}
-    for s in FUNDS:
+    for s in list(FUNDS) + ["SOXX"]:
         adj[s], raw[s] = load(s)
-    days = sorted(set().union(*[a.index for a in adj.values()]))
+    days = sorted(set().union(*[adj[s].index for s in FUNDS]))
     days = pd.DatetimeIndex(days)
     t0 = days[0]
     out = {"asof": f"{days[-1]:%Y-%m-%d}", "start": f"{t0:%Y-%m-%d}",
@@ -77,8 +85,12 @@ def main():
     for s, (label, base, fee) in FUNDS.items():
         series, info = adj[s], {}
         if base:
-            series, spread, gap = synthetic(adj[base], adj[s], fee)
-            info = {"rebuilt_from": base, "fee": fee, "spread": round(spread, 4), "gap": round(gap, 3)}
+            src = adj[base[0]] if len(base) == 1 else chain(adj[base[0]], adj[base[1]])
+            series, spread, gap = synthetic(src, adj[s], fee)
+            info = {"rebuilt_from": base[0], "fee": fee, "spread": round(spread, 4), "gap": round(gap, 3)}
+            if len(base) > 1:
+                info["filled_from"] = base[1]
+                info["filled_until"] = f"{adj[base[0]].index[0]:%Y-%m-%d}"
         series = series.reindex(days)
         first = int(days.get_loc(series.first_valid_index()))
         vals = series.iloc[first:].ffill()

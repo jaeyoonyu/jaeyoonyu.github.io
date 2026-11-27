@@ -255,7 +255,7 @@ function render() {
   last = { p, v, i0, F, legs, eps };
   const reb = F.rebuilt_from && p.rb;
   $('rbWrap').style.display = F.rebuilt_from ? '' : 'none';
-  $('rbTxt').textContent = F.rebuilt_from ? `Include rebuilt history before launch (${ymd(F.real_first).slice(0, 4)}), from 3× ${F.rebuilt_from}` : '';
+  $('rbTxt').textContent = F.rebuilt_from ? `Include rebuilt history before launch (${ymd(F.real_first).slice(0, 4)}), from 3× ${F.rebuilt_from}` + (F.filled_from ? ` (${F.filled_from} before ${F.filled_until.slice(0, 4)})` : '') : '';
   $('levels').innerHTML = legs.map((l, k) => `<span class="lv">${k + 1}. ${lvl(l.f)} → ${fmt$(l.amt)}</span>`).join('')
     + `<span class="lv" style="color:var(--text2);border-color:var(--bdr);background:none">up to ${fmt$(total)} per sell-off</span>`;
 
@@ -407,10 +407,11 @@ function method(p, F, reb) {
     + `A buy happens at the close of the first day the fund is at or below a level; a gap down can fill a level below it. A sell-off ends at the first close back at the high it fell from. `
     + `The high is counted from the start date, so a fund that never regained an old high gives no new signal until it does. No taxes, trading costs or interest on waiting cash.</p>`);
   if (F.rebuilt_from) {
-    t.push(`<p><b>Rebuilt history (${p.fund} before ${ymd(F.real_first).slice(0, 4)}).</b> Each day's ${F.rebuilt_from} return × 3, minus the ${(F.fee * 100).toFixed(2)}% fee and the cost of borrowing twice the money `
+    const fill = F.filled_from ? ` (${F.filled_from}'s before ${F.rebuilt_from} began in ${F.filled_until.slice(0, 7)})` : '';
+    t.push(`<p><b>Rebuilt history (${p.fund} before ${ymd(F.real_first).slice(0, 4)}).</b> Each day's ${F.rebuilt_from} return${fill} × 3, minus the ${(F.fee * 100).toFixed(2)}% fee and the cost of borrowing twice the money `
       + `(that year's 3-month T-bill rate + ${(F.spread * 100).toFixed(2)}%, the spread that makes the rebuild match ${p.fund}'s total return since launch). `
       + `Over that period the rebuild and the real fund drift up to ${Math.round(F.gap * 100)}% apart`
-      + (F.gap > 0.2 ? ` — ${p.fund} tracks a different semiconductor index than ${F.rebuilt_from}, so treat its rebuilt years as rough.` : '.')
+      + (F.gap > 0.15 ? ` — the index ${p.fund} follows is close to ${F.rebuilt_from}'s but not the same, so treat its rebuilt years as approximate.` : '.')
       + ` It is an estimate, not a fund you could have bought.${reb ? '' : ' (Off now: only the real fund is used.)'}</p>`);
   }
   t.push(`<p>A backward look at a handful of sell-offs, not advice. Data as of ${D.asof}; written by <code>_code/halving_data.py</code>.</p>`);
