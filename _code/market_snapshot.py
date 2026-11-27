@@ -17,6 +17,8 @@ ROOT = Path(__file__).resolve().parent.parent
 SERIES = [("SPY", "S&P 500"), ("QQQ", "Nasdaq-100"), ("TQQQ", "Nasdaq-100, 3× daily"),
           ("SMH", "Semiconductors"), ("SOXL", "Semiconductors, 3× daily")]
 YEARS = [3, 5, 10, 20]  # annualized return horizons
+# Funds whose name in the top table links to a detail page (written by _code/halving_strategy.py)
+DETAIL = {"QQQ": "/halving-qqq/", "TQQQ": "/halving-tqqq/"}
 # Major sell-offs, the deepest S&P 500 falls since 1993 (daily closes): (name, window). Drawdown =
 # largest fall from a high to a low inside the window; "—" when the fund did not exist at its start.
 # The header shows when SPY went from high to low in each.
@@ -110,6 +112,8 @@ def main():
         as_of = s["last_day"]
         h = s["high_day"]
         name = f'<th title="{label}">{symbol}</th>'
+        link = (f'<th title="{label}: what if you bought each time it halved?"><a href="{DETAIL[symbol]}">{symbol}</a></th>'
+                if symbol in DETAIL else name)
         since = f'<td>{s["since"].year}</td>'
         events = "".join(heat(v, first=k == 0) for k, (v, _, _) in enumerate(s["events"]))
         if symbol == "SPY":
@@ -122,7 +126,7 @@ def main():
             + f'<td class="g {up(s["drawdown"] + 0.0005)}">{pct(s["drawdown"])}</td>'
             f'<td class="g dn">{pct(s["mdd"])}</td><td class="wh">{era(s["mdd_day"])}</td>'
             f'<td class="g dn">{pct(s["mdd15"])}</td><td class="wh">{era(s["mdd15_day"])}</td>')
-        rows.append(f"<tr>{name}{main_cells}</tr>")
+        rows.append(f"<tr>{link}{main_cells}</tr>")
         ev_rows.append(f"<tr>{name}{since}{events}</tr>")
         print(symbol, f'{s["last"]:.2f}', s["last_day"].date(), "high", f'{s["high"]:.2f}', h.date(),
               "drawdown", pct(s["drawdown"]))
@@ -178,6 +182,7 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
   .mkt tr.per th, .mkt tr.per td {{ font-size: .68em; }}
   .mkt td.wh {{ white-space: normal; }} }}  /* "Bear 2022" on two lines on phones */
 .mkt-note {{ font-size: .72em; opacity: .7; margin: 0 0 1.2em; }}
+.mkt th a {{ color: inherit; text-decoration: underline dotted; text-underline-offset: 2px; }}
 </style>
 <table class="mkt">
 <thead>
@@ -199,7 +204,7 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
 {chr(10).join(ev_rows)}
 </tbody>
 </table>
-<p class="mkt-note">Daily closes; returns include dividends; MDD = largest fall since launch (all) or in the last 15 years (15Y); From/To/Length = SPY's high, low, and days between in each sell-off; — = not yet launched. Yahoo Finance, updated weekdays after the 4 pm ET close.</p>
+<p class="mkt-note">Daily closes; returns include dividends; MDD = largest fall since launch (all) or in the last 15 years (15Y); From/To/Length = SPY's high, low, and days between in each sell-off; — = not yet launched. Click QQQ or TQQQ in the first table: buying each time it halves. Yahoo Finance, updated weekdays after the 4 pm ET close.</p>
 </div>
 """
     out = ROOT / "_includes" / "market-snapshot.html"
