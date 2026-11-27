@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Halving Lab</title>
+<!-- Data: /assets/data/halving-lab.json, written by _code/halving_data.py. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0f1e2e; --bg2: #172639; --bg3: #1e3350;
+  --c0: #19caca; --c1: #f0b429; --red: #f87171; --green: #34d399;
+  --text: #e2eaf3; --text2: #9dbad3; --text3: #5d86a6;
+  --bdr: rgba(25,202,202,.18); --bdr2: rgba(255,255,255,.08); --r: 12px;
+}
+body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; font-size: 15px; line-height: 1.5; }
+.page { max-width: 1100px; margin: 0 auto; padding: 24px 16px 60px; display: flex; flex-direction: column; gap: 20px; }
+h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -.03em; }
+h1 span { color: var(--c0); }
+h2 { font-size: 1rem; font-weight: 700; margin-bottom: 10px; }
+.sub { color: var(--text2); font-size: .88rem; margin-top: 4px; }
+.card { background: var(--bg2); border: 1px solid var(--bdr2); border-radius: var(--r); padding: 16px; }
+/* controls */
+.ctrl { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px 18px; }
+.ctrl label { display: block; font-size: .72rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text3); margin-bottom: 5px; }
+.ctrl select, .ctrl input[type=number], .ctrl input[type=date] {
+  width: 100%; background: var(--bg3); color: var(--text); border: 1px solid var(--bdr); border-radius: 8px;
+  padding: 7px 9px; font: inherit; font-size: .92rem; }
+.ctrl input[type=range] { width: 100%; accent-color: var(--c0); }
+.ctrl .row { display: flex; align-items: center; gap: 8px; }
+.ctrl .row input[type=number] { width: 78px; flex: none; }
+.ctrl .hint { font-size: .74rem; color: var(--text3); margin-top: 4px; }
+.chk { display: flex; gap: 7px; align-items: flex-start; font-size: .84rem; color: var(--text2); margin-top: 8px; }
+.chk input { margin-top: 3px; accent-color: var(--c0); }
+.presets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.presets button { background: var(--bg3); color: var(--text2); border: 1px solid var(--bdr); border-radius: 999px; padding: 4px 11px; font: inherit; font-size: .78rem; cursor: pointer; }
+.presets button:hover { color: var(--text); border-color: var(--c0); }
+.levels { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.lv { background: rgba(240,180,41,.1); border: 1px solid rgba(240,180,41,.3); color: var(--c1); border-radius: 6px; padding: 3px 8px; font-size: .78rem; font-weight: 600; white-space: nowrap; }
+/* now box + kpis */
+.now { border-left: 4px solid var(--c0); background: rgba(25,202,202,.06); padding: 10px 14px; border-radius: 6px; font-size: .88rem; color: var(--text2); }
+.now b { color: var(--text); }
+.kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+.kpi { background: var(--bg2); border: 1px solid var(--bdr2); border-radius: var(--r); padding: 12px 14px; }
+.kpi .k { font-size: .7rem; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--text3); }
+.kpi .v { font-size: 1.35rem; font-weight: 800; letter-spacing: -.02em; margin-top: 2px; }
+.kpi .s { font-size: .76rem; color: var(--text2); }
+.up { color: var(--green); } .dn { color: var(--red); }
+.chart { position: relative; height: 380px; }
+.chart.sm { height: 280px; }
+/* tables */
+.tw { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .82rem; }
+th, td { padding: 7px 8px; text-align: right; white-space: nowrap; border-bottom: 1px solid var(--bdr2); vertical-align: top; }
+th:first-child, td:first-child { text-align: left; }
+thead th { color: var(--text3); font-size: .7rem; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; vertical-align: bottom; }
+td small { display: block; color: var(--text3); font-size: .74rem; }
+tbody tr.ep { cursor: pointer; }
+tbody tr.ep:hover td { background: rgba(255,255,255,.03); }
+tbody tr.sel td { background: rgba(25,202,202,.09); }
+.note { font-size: .76rem; color: var(--text3); }
+.note p + p { margin-top: 6px; }
+.empty { color: var(--text2); font-size: .9rem; padding: 8px 0; }
+@media (max-width: 640px) { .chart { height: 300px; } .chart.sm { height: 230px; } table { font-size: .74rem; } th, td { padding: 6px 5px; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+<div>
+  <h1>Halving <span>Lab</span></h1>
+  <p class="sub">Buy a fund only after it falls far below its all-time high, buy more each time it falls further, and hold until it is back at that high. Change the rule and see every sell-off it would have bought.</p>
+</div>
+
+<div class="card">
+  <div class="ctrl">
+    <div>
+      <label for="fund">Fund</label>
+      <select id="fund"></select>
+      <div class="chk" id="rbWrap"><input type="checkbox" id="rb"><span id="rbTxt">Include rebuilt history before launch</span></div>
+    </div>
+    <div>
+      <label for="from">Start watching on</label>
+      <input type="date" id="from">
+      <div class="hint">The all-time high is counted from this day. Try 2003-01-01 to skip the dot-com bust.</div>
+    </div>
+    <div>
+      <label for="first">First buy: fall from the high</label>
+      <div class="row"><input type="range" id="firstR" min="10" max="90" step="1"><input type="number" id="first" min="5" max="95" step="1"><span>%</span></div>
+    </div>
+    <div>
+      <label for="step">Next buy: each further fall of</label>
+      <div class="row"><input type="range" id="stepR" min="10" max="90" step="1"><input type="number" id="step" min="5" max="95" step="1"><span>%</span></div>
+      <div class="hint">50% = each time the price halves again from the last buy level.</div>
+    </div>
+    <div>
+      <label for="n">Number of buys (at most)</label>
+      <div class="row"><input type="range" id="nR" min="1" max="8" step="1"><input type="number" id="n" min="1" max="8" step="1"></div>
+    </div>
+    <div>
+      <label for="amt">First buy ($)</label>
+      <input type="number" id="amt" min="1" step="100">
+    </div>
+    <div>
+      <label for="mult">Each next buy ×</label>
+      <input type="number" id="mult" min="0.1" max="10" step="0.5">
+      <div class="hint">2 = double the money each time; 1 = the same amount.</div>
+    </div>
+  </div>
+  <div class="presets">
+    <button data-p="first=50&step=50&n=2&mult=2">Halve ×2 buys</button>
+    <button data-p="first=50&step=50&n=3&mult=2">Halve ×3 buys</button>
+    <button data-p="first=50&step=50&n=4&mult=2">Halve ×4 buys</button>
+    <button data-p="first=30&step=30&n=4&mult=2">−30% steps</button>
+    <button data-p="first=20&step=20&n=5&mult=1">−20% steps, equal amounts</button>
+  </div>
+  <div class="levels" id="levels"></div>
+</div>
+
+<div class="now" id="now"></div>
+
+<div class="kpis" id="kpis"></div>
+
+<div class="card">
+  <h2 id="c1t">Price and buys</h2>
+  <div class="chart"><canvas id="c1"></canvas></div>
+  <p class="note" style="margin-top:8px">▼ buys (bigger = more money) · ★ back at the old high · dashed = all-time high · dotted = buy levels. Log scale; total return (dividends reinvested), 100 = first day shown.</p>
+</div>
+
+<div class="card">
+  <h2>Every sell-off that triggered the rule <span class="note" style="font-weight:400">(click a row to see that position below)</span></h2>
+  <div class="tw" id="eps"></div>
+</div>
+
+<div class="card">
+  <h2 id="c2t">Position</h2>
+  <div class="chart sm"><canvas id="c2"></canvas></div>
+</div>
+
+<div class="card">
+  <h2>Same levels, different amounts</h2>
+  <p class="note" style="margin-bottom:8px">Each row stops after k buys; the last row puts all the money in at the first level. Value at the old high, or today for a sell-off that has not ended.</p>
+  <div class="tw" id="cmp"></div>
+</div>
+
+<div class="card note" id="method"></div>
+
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const DAY = 864e5;
+let D, T0, charts = {}, sel = null, last = null;
+
+const fmt$ = v => '$' + Math.round(v).toLocaleString('en-US');
+const fmtP = (v, d) => {
+  if (d === undefined) d = v < -0.99 ? 2 : 1;
+  return (v >= 0 ? '+' : '−') + Math.abs(v * 100).toFixed(d) + '%';
+};
+const lvl = f => '−' + (+(f * 100).toFixed(2)) + '%';
+const date = i => new Date(T0 + D.days[i] * DAY);
+const ym = i => date(i).toLocaleDateString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+const ymd = i => date(i).toISOString().slice(0, 10);
+const yrs = (a, b) => (D.days[b] - D.days[a]) / 365.25;
+const cls = v => v < 0 ? 'dn' : 'up';
+
+// ---------------------------------------------------------------- the rule
+function legsFor(p) {
+  return Array.from({ length: p.n }, (_, k) => ({
+    f: 1 - (1 - p.first) * Math.pow(1 - p.step, k), amt: p.amt * Math.pow(p.mult, k) }));
+}
+
+// Every episode: from the first close at or below the first level to the first close back at the
+// high it fell from (or the last day). Buys at the close of the first day each level is reached.
+function run(v, i0, legs) {
+  const n = v.length, eps = [];
+  let ath = -Infinity, athI = i0, k = i0;
+  while (k < n) {
+    if (v[k] > ath) { ath = v[k]; athI = k; }
+    if (v[k] > ath * (1 - legs[0].f)) { k++; continue; }
+    const peak = ath, peakI = athI, buys = [], path = [];
+    let sh = 0, inv = 0, leg = 0, j = k, low = Infinity, lowI = k, worst = Infinity, worstI = k, lastUnder = null, under = 0;
+    for (; j < n; j++) {
+      const p = v[j];
+      while (leg < legs.length && p <= peak * (1 - legs[leg].f)) {
+        sh += legs[leg].amt / p; inv += legs[leg].amt; buys.push({ i: j, p, amt: legs[leg].amt, f: legs[leg].f }); leg++;
+      }
+      const val = sh * p;
+      path.push([j, val, inv]);
+      if (p < low) { low = p; lowI = j; }
+      if (val / inv < worst) { worst = val / inv; worstI = j; }
+      if (val < inv) { lastUnder = j; under++; }
+      if (p >= peak) break;
+    }
+    const rec = j < n, end = rec ? j : n - 1;
+    eps.push({ peakI, peak, buys, path, inv, sh, rec, end, endVal: sh * v[end], nowVal: sh * v[n - 1],
+               low: Math.min(low, peak) / peak - 1, lowI, worst: worst - 1, worstI, lastUnder,
+               underFrac: under / path.length, first: buys[0].i });
+    if (rec) { ath = v[j]; athI = j; }
+    k = end + 1;
+  }
+  return eps;
+}
+
+// ---------------------------------------------------------------- state
+function params() {
+  return { fund: $('fund').value, rb: $('rb').checked, from: $('from').value,
+           first: +$('first').value / 100, step: +$('step').value / 100, n: Math.round(+$('n').value),
+           amt: +$('amt').value, mult: +$('mult').value };
+}
+function series(p) {
+  const F = D.funds[p.fund];
+  const start = p.rb || F.real_first === F.first ? F.first : F.real_first;
+  const v = new Array(D.days.length).fill(null);
+  F.v.forEach((x, k) => { v[F.first + k] = x; });
+  // first index on or after the chosen date
+  let i0 = start;
+  if (p.from) {
+    const t = (Date.parse(p.from) - T0) / DAY;
+    while (i0 < D.days.length - 1 && D.days[i0] < t) i0++;
+  }
+  return { v, i0, start, F };
+}
+function save(p) {
+  const q = new URLSearchParams({ fund: p.fund, rb: p.rb ? 1 : 0, from: p.from, first: Math.round(p.first * 100),
+    step: Math.round(p.step * 100), n: p.n, amt: p.amt, mult: p.mult });
+  history.replaceState(null, '', '?' + q);
+}
+function load() {
+  const q = new URLSearchParams(location.search);
+  $('fund').value = D.funds[q.get('fund')] ? q.get('fund') : 'TQQQ';
+  $('rb').checked = q.get('rb') !== '0';
+  setFrom(q.get('from'));
+  set('first', q.get('first') || 50); set('step', q.get('step') || 50); set('n', q.get('n') || 4);
+  $('amt').value = q.get('amt') || 1000; $('mult').value = q.get('mult') || 2;
+}
+function set(id, v) { $(id).value = v; if ($(id + 'R')) $(id + 'R').value = v; }
+function setFrom(v) {
+  const p = { fund: $('fund').value, rb: $('rb').checked }, F = D.funds[p.fund];
+  const s = p.rb ? F.first : F.real_first;
+  $('from').min = ymd(s); $('from').max = D.asof;
+  $('from').value = v && v >= ymd(s) ? v : ymd(s);
+}
+
+// ---------------------------------------------------------------- render
+function render() {
+  const p = params();
+  if (!(p.first > 0 && p.first < 1 && p.step > 0 && p.step < 1 && p.n >= 1 && p.amt > 0 && p.mult > 0)) return;
+  save(p);
+  const { v, i0, F } = series(p);
+  const legs = legsFor(p), total = legs.reduce((a, l) => a + l.amt, 0);
+  const eps = run(v, i0, legs);
+  last = { p, v, i0, F, legs, eps };
+  const reb = F.rebuilt_from && p.rb;
+  $('rbWrap').style.display = F.rebuilt_from ? '' : 'none';
+  $('rbTxt').textContent = F.rebuilt_from ? `Include rebuilt history before launch (${ymd(F.real_first).slice(0, 4)}), from 3× ${F.rebuilt_from}` : '';
+  $('levels').innerHTML = legs.map((l, k) => `<span class="lv">${k + 1}. ${lvl(l.f)} → ${fmt$(l.amt)}</span>`).join('')
+    + `<span class="lv" style="color:var(--text2);border-color:var(--bdr);background:none">up to ${fmt$(total)} per sell-off</span>`;
+
+  // where the fund is now
+  // always from the fund's own closing high (not the start date): the lowest close since then
+  const hT = (Date.parse(F.high_day + 'T00:00:00Z') - T0) / DAY;
+  let hI = F.first; while (hI < v.length - 1 && D.days[hI] < hT) hI++;
+  let mn = Infinity; for (let k = hI + 1; k < v.length; k++) mn = Math.min(mn, v[k] / v[hI]);
+  const hit = legs.filter(l => mn <= 1 - l.f);
+  const nxt = legs.find(l => mn > 1 - l.f);
+  const hd = new Date(F.high_day + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+  $('now').innerHTML = `<b>${p.fund} now</b> (${new Date(D.asof + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' })}): `
+    + `$${F.last.toFixed(2)}, <b class="${cls(F.last / F.high - 1)}">${fmtP(F.last / F.high - 1)}</b> from its closing high of $${F.high.toFixed(2)} (${hd}). `
+    + `Buy levels from that high: ${legs.map(l => `${lvl(l.f)} = <b>$${(F.high * (1 - l.f)).toFixed(2)}</b>`).join(' · ')}. `
+    + (hit.length ? `Already hit: ${hit.map(l => lvl(l.f)).join(', ')}.` : 'No level hit yet.')
+    + (nxt ? ` Next: ${lvl(nxt.f)} (${fmt$(nxt.amt)}).` : '');
+
+  // KPIs
+  const done = eps.filter(e => e.rec), inv = eps.reduce((a, e) => a + e.inv, 0), val = eps.reduce((a, e) => a + e.endVal, 0);
+  const worst = eps.length ? eps.reduce((a, e) => e.worst < a.worst ? e : a) : null;
+  const longest = eps.length ? eps.reduce((a, e) => yrs(e.first, e.end) > yrs(a.first, a.end) ? e : a) : null;
+  const nb = k => eps.filter(e => e.buys.length >= k).length;
+  $('kpis').innerHTML = [
+    ['Sell-offs that triggered', eps.length, legs.slice(1).map((l, k) => `${k + 2}${['nd', 'rd'][k] || 'th'} buy: ${nb(k + 2)}`).join(' · ') || '&nbsp;'],
+    ['Money put in', fmt$(inv), `${done.length} ended, ${eps.length - done.length} still open`],
+    ['Worth (at old high / today)', fmt$(val), inv ? `<span class="${cls(val / inv - 1)}">×${(val / inv).toFixed(2)}</span> on all sell-offs` : '&nbsp;'],
+    ['Worst fall below cost', worst ? `<span class="dn">${fmtP(worst.worst)}</span>` : '—', worst ? `${fmt$(worst.inv * (1 + worst.worst))} of ${fmt$(worst.inv)}, ${ym(worst.worstI)}` : '&nbsp;'],
+    ['Longest wait for the high', longest ? `${yrs(longest.first, longest.end).toFixed(1)}${longest.rec ? '' : '+'} yrs` : '—', longest ? (longest.rec ? `from ${ym(longest.first)} to ${ym(longest.end)}` : `from ${ym(longest.first)}, not back yet`) : '&nbsp;'],
+  ].map(([k, v, s]) => `<div class="kpi"><div class="k">${k}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join('');
+
+  table(eps);
+  compare(p, v, i0, legs, eps, total);
+  method(p, F, reb);
+  // the position chart opens on the sell-off with the most buys (the latest of those)
+  sel = eps.reduce((a, e) => (!a || e.buys.length >= a.buys.length ? e : a), null);
+  markSel();
+  try { chartPrice(p, v, i0, legs, eps, reb ? F.real_first : null); chartPos(); }
+  catch (err) { $('c1t').textContent = 'Chart could not load (' + err.message + '); the tables below still work.'; }
+}
+
+function table(eps) {
+  if (!eps.length) { $('eps').innerHTML = '<p class="empty">No close fell that far below its high in this period. Try a smaller first fall or an earlier start.</p>'; return; }
+  const rows = eps.map((e, k) => {
+    const m = e.endVal / e.inv;
+    const good = e.rec ? (e.lastUnder === null ? 'at once' : ym(Math.min(e.lastUnder + 1, D.days.length - 1))) : (e.endVal < e.inv ? 'not yet' : 'above now');
+    return `<tr class="ep" data-k="${k}"><td><b>${ym(e.peakI)}</b><small>high</small></td>`
+      + `<td class="dn">${fmtP(e.low)}<small>${ym(e.lowI)}</small></td>`
+      + `<td>${e.buys.map(b => `${fmt$(b.amt)} ${ym(b.i)}`).join('<br>')}</td><td>${fmt$(e.inv)}</td>`
+      + (e.worst > -0.0005 ? '<td>never below cost</td>' : `<td class="dn">${fmtP(e.worst)}<small>${fmt$(e.inv * (1 + e.worst))} · ${ym(e.worstI)}</small></td>`)
+      + `<td>${good}</td><td>${e.rec ? ym(e.end) : 'not yet'}<small>${yrs(e.first, e.end).toFixed(1)}${e.rec ? '' : '+'} yrs</small></td>`
+      + `<td>${fmt$(e.endVal)}<small class="${cls(m - 1)}">×${m.toFixed(2)}${e.rec ? '' : ' today'}</small></td><td>${fmt$(e.nowVal)}</td></tr>`;
+  });
+  $('eps').innerHTML = `<table><thead><tr><th>Sell-off</th><th>Low</th><th>Buys</th><th>Put in</th><th>Worst</th>`
+    + `<th>Above cost<br>for good</th><th>Back at high<br><small>after 1st buy</small></th><th>Worth then</th><th>Held to<br>today</th></tr></thead>`
+    + `<tbody>${rows.join('')}</tbody></table>`;
+  document.querySelectorAll('tr.ep').forEach(r => r.onclick = () => { sel = last.eps[+r.dataset.k]; markSel(); try { chartPos(); } catch (e) {} });
+}
+function markSel() {
+  document.querySelectorAll('tr.ep').forEach(r => r.classList.toggle('sel', last.eps[+r.dataset.k] === sel));
+}
+
+const tick = { color: '#7da8c8', font: { size: 11 } }, grid = { color: 'rgba(255,255,255,.06)' };
+const yearTicks = { ...tick, callback: x => new Date(T0 + x * DAY).getUTCFullYear(), maxTicksLimit: 10 };
+const LEVEL = ['#f0b429', '#f59e5b', '#f87171', '#e0567a', '#c0479e', '#9b4dca', '#6d5bd0', '#4f6bd8'];
+
+function chartPrice(p, v, i0, legs, eps, realFirst) {
+  const pts = [], athL = [], lvL = legs.map(() => []);
+  let ath = -Infinity;
+  for (let k = i0; k < v.length; k++) {
+    ath = Math.max(ath, v[k]);
+    const x = D.days[k];
+    pts.push({ x, y: v[k] }); athL.push({ x, y: ath });
+    legs.forEach((l, j) => lvL[j].push({ x, y: ath * (1 - l.f) }));
+  }
+  const mx = Math.max(...legs.map(l => l.amt));
+  const buys = eps.flatMap(e => e.buys.map(b => ({ x: D.days[b.i], y: b.p, amt: b.amt })));
+  const recs = eps.filter(e => e.rec).map(e => ({ x: D.days[e.end], y: v[e.end] }));
+  const ds = [
+    { label: p.fund, data: pts, borderColor: '#e2eaf3', borderWidth: 1.1, pointRadius: 0, order: 1,
+      segment: realFirst ? { borderColor: c => c.p0.parsed.x < D.days[realFirst] ? '#f87171' : '#e2eaf3' } : undefined },
+    { label: 'All-time high', data: athL, borderColor: 'rgba(157,186,211,.55)', borderDash: [5, 4], borderWidth: 1, pointRadius: 0, order: 2 },
+    ...lvL.map((d, j) => ({ label: `${lvl(legs[j].f)} → ${fmt$(legs[j].amt)}`, data: d, borderColor: LEVEL[j % LEVEL.length] + 'aa', borderDash: [2, 3], borderWidth: 1, pointRadius: 0, order: 3 })),
+    { type: 'scatter', label: 'Buys', data: buys, pointStyle: 'triangle', rotation: 180, backgroundColor: '#f0b429', borderColor: '#0f1e2e', borderWidth: 1,
+      pointRadius: buys.map(b => 4 + 7 * Math.sqrt(b.amt / mx)), order: 0 },
+    { type: 'scatter', label: 'Back at the high', data: recs, pointStyle: 'star', borderColor: '#34d399', backgroundColor: '#34d399', borderWidth: 2, pointRadius: 8, order: 0 },
+  ];
+  if (charts.c1) charts.c1.destroy();
+  charts.c1 = new Chart($('c1'), {
+    type: 'line', data: { datasets: ds },
+    options: { responsive: true, maintainAspectRatio: false, animation: false, parsing: false, normalized: true,
+      interaction: { mode: 'nearest', intersect: false, axis: 'x' },
+      plugins: { decimation: { enabled: true, algorithm: 'min-max' },
+        legend: { labels: { color: '#9dbad3', boxWidth: 14, font: { size: 11 }, } },
+        tooltip: { callbacks: { title: it => new Date(T0 + it[0].parsed.x * DAY).toISOString().slice(0, 10),
+          label: c => c.dataset.label === 'Buys' ? `Buy ${fmt$(c.raw.amt)}` : `${c.dataset.label}: ${c.parsed.y.toPrecision(4)}` } } },
+      scales: { x: { type: 'linear', min: D.days[i0], max: D.days[D.days.length - 1], ticks: yearTicks, grid },
+                y: { type: 'logarithmic', ticks: { ...tick, callback: y => { const l = Math.log10(y); return Math.abs(l - Math.round(l)) < 1e-9 ? (+y.toPrecision(1)).toString() : ''; } }, grid } } }
+  });
+  $('c1t').textContent = `${p.fund}: price and buys` + (realFirst && i0 < realFirst ? ` (red = rebuilt before ${ymd(realFirst).slice(0, 4)})` : '');
+}
+
+function chartPos() {
+  if (charts.c2) charts.c2.destroy();
+  if (!sel) { $('c2t').textContent = 'Position'; return; }
+  const e = sel;
+  const val = e.path.map(([i, v]) => ({ x: D.days[i], y: v })), inv = e.path.map(([i, , c]) => ({ x: D.days[i], y: c }));
+  const span = D.days[e.path[e.path.length - 1][0]] - D.days[e.path[0][0]];
+  const logY = Math.max(...val.map(p => p.y)) / Math.max(1e-9, Math.min(...val.map(p => p.y))) > 50;
+  charts.c2 = new Chart($('c2'), {
+    type: 'line',
+    data: { datasets: [
+      { label: 'Worth', data: val, borderColor: '#19caca', borderWidth: 1.4, pointRadius: val.length < 40 ? 2 : 0,
+        fill: { target: 1, above: 'rgba(52,211,153,.15)', below: 'rgba(248,113,113,.18)' } },
+      { label: 'Money put in', data: inv, borderColor: '#e2eaf3', borderWidth: 1.2, stepped: true, pointRadius: 0 } ] },
+    options: { responsive: true, maintainAspectRatio: false, animation: false, parsing: false,
+      interaction: { mode: 'nearest', intersect: false, axis: 'x' },
+      plugins: { legend: { labels: { color: '#9dbad3', boxWidth: 14, font: { size: 11 } } },
+        tooltip: { callbacks: { title: it => new Date(T0 + it[0].parsed.x * DAY).toISOString().slice(0, 10), label: c => `${c.dataset.label}: ${fmt$(c.parsed.y)}` } } },
+      scales: { x: { type: 'linear', ticks: span > 800 ? yearTicks : { ...tick, maxTicksLimit: 7, callback: x => new Date(T0 + x * DAY).toLocaleDateString('en-US', { month: 'short', year: '2-digit', timeZone: 'UTC' }) }, grid },
+                y: { type: logY ? 'logarithmic' : 'linear', ticks: { ...tick, callback: y => logY && !/^[1]0*$/.test(String(Math.round(y))) ? '' : fmt$(y) }, grid } } }
+  });
+  const m = e.endVal / e.inv;
+  $('c2t').innerHTML = `Position from the ${ym(e.peakI)} high: ${fmt$(e.inv)} in, `
+    + (e.worst > -0.0005 ? 'never below cost' : `worst <span class="dn">${fmtP(e.worst)}</span>`) + '; '
+    + (e.rec ? `back at the high ${ym(e.end)}: ${fmt$(e.endVal)} (×${m.toFixed(2)})` : `not back yet; today ${fmt$(e.endVal)} (×${m.toFixed(2)})`);
+}
+
+function compare(p, v, i0, legs, eps, total) {
+  if (!eps.length) { $('cmp').innerHTML = '<p class="empty">Nothing to compare.</p>'; return; }
+  const variants = legs.map((_, k) => ({ name: `${k + 1} buy${k ? 's' : ''}${k === legs.length - 1 ? ' (the rule)' : ''}`,
+    desc: legs.slice(0, k + 1).map(l => `${fmt$(l.amt)} at ${lvl(l.f)}`).join(' · '), legs: legs.slice(0, k + 1) }));
+  variants.push({ name: 'Lump sum', desc: `all ${fmt$(total)} at ${lvl(legs[0].f)}`, legs: [{ f: legs[0].f, amt: total }] });
+  let cols = eps.filter(e => e.buys.length > 1);
+  if (cols.length < 1) cols = eps;
+  cols = cols.slice(-6);
+  const res = variants.map(vr => { const r = run(v, i0, vr.legs); const by = new Map(r.map(e => [e.peakI, e])); return { vr, r, by }; });
+  const cell = e => e ? `${fmt$(e.inv)} → ${fmt$(e.endVal)} <span class="${cls(e.endVal / e.inv - 1)}">(×${(e.endVal / e.inv).toFixed(2)})</span><small>worst ${fmtP(e.worst)}</small>` : '—';
+  const rows = res.map(({ vr, r, by }) => {
+    const ti = r.reduce((a, e) => a + e.inv, 0), tv = r.reduce((a, e) => a + e.endVal, 0);
+    return `<tr><td><b>${vr.name}</b><small>${vr.desc}</small></td>${cols.map(c => `<td>${cell(by.get(c.peakI))}</td>`).join('')}`
+      + `<td>${fmt$(ti)} → ${fmt$(tv)} <span class="${cls(tv / ti - 1)}">(×${(tv / ti).toFixed(2)})</span></td></tr>`;
+  });
+  $('cmp').innerHTML = `<table><thead><tr><th>Rule</th>${cols.map(c => `<th>${ym(c.peakI)} high</th>`).join('')}<th>All sell-offs</th></tr></thead><tbody>${rows.join('')}</tbody></table>`;
+}
+
+function method(p, F, reb) {
+  const t = [];
+  t.push(`<p><b>How it works.</b> Daily total-return closes (dividends reinvested) from Yahoo Finance, ${ymd(F.first).slice(0, 4)}–${D.asof}. `
+    + `A buy happens at the close of the first day the fund is at or below a level; a gap down can fill a level below it. A sell-off ends at the first close back at the high it fell from. `
+    + `The high is counted from the start date, so a fund that never regained an old high gives no new signal until it does. No taxes, trading costs or interest on waiting cash.</p>`);
+  if (F.rebuilt_from) {
+    t.push(`<p><b>Rebuilt history (${p.fund} before ${ymd(F.real_first).slice(0, 4)}).</b> Each day's ${F.rebuilt_from} return × 3, minus the ${(F.fee * 100).toFixed(2)}% fee and the cost of borrowing twice the money `
+      + `(that year's 3-month T-bill rate + ${(F.spread * 100).toFixed(2)}%, the spread that makes the rebuild match ${p.fund}'s total return since launch). `
+      + `Over that period the rebuild and the real fund drift up to ${Math.round(F.gap * 100)}% apart`
+      + (F.gap > 0.2 ? ` — ${p.fund} tracks a different semiconductor index than ${F.rebuilt_from}, so treat its rebuilt years as rough.` : '.')
+      + ` It is an estimate, not a fund you could have bought.${reb ? '' : ' (Off now: only the real fund is used.)'}</p>`);
+  }
+  t.push(`<p>A backward look at a handful of sell-offs, not advice. Data as of ${D.asof}; written by <code>_code/halving_data.py</code>.</p>`);
+  $('method').innerHTML = t.join('');
+}
+
+// ---------------------------------------------------------------- wire up
+fetch('/assets/data/halving-lab.json', { cache: 'no-cache' }).then(r => r.json()).then(d => {
+  D = d; T0 = Date.parse(d.start + 'T00:00:00Z');
+  $('fund').innerHTML = Object.entries(d.funds).map(([s, f]) => `<option value="${s}">${s} — ${f.label}</option>`).join('');
+  load();
+  for (const id of ['first', 'step', 'n']) {
+    $(id + 'R').oninput = () => { $(id).value = $(id + 'R').value; render(); };
+    $(id).oninput = () => { $(id + 'R').value = $(id).value; render(); };
+  }
+  for (const id of ['amt', 'mult', 'from']) $(id).oninput = render;
+  $('fund').onchange = () => { setFrom(null); render(); };
+  $('rb').onchange = () => { setFrom(null); render(); };
+  document.querySelectorAll('.presets button').forEach(b => b.onclick = () => {
+    new URLSearchParams(b.dataset.p).forEach((v, k) => set(k, v)); render();
+  });
+  render();
+}).catch(err => {
+  document.querySelector('.page').insertAdjacentHTML('beforeend', `<p class="empty">Could not load the data: ${err.message}</p>`);
+});
+</script>
+</body>
+</html>
