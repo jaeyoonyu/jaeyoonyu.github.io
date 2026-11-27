@@ -112,8 +112,8 @@ def main():
         as_of = s["last_day"]
         h = s["high_day"]
         name = f'<th title="{label}">{symbol}</th>'
-        link = (f'<th title="{label}: what if you bought each time it halved?"><a href="{DETAIL[symbol]}">{symbol}</a></th>'
-                if symbol in DETAIL else name)
+        detail = (f'<td class="g dt"><a href="{DETAIL[symbol]}" title="What if you bought each time {symbol} halved?">Halvings ↗</a></td>'
+                  if symbol in DETAIL else '<td class="g dt"></td>')
         since = f'<td>{s["since"].year}</td>'
         events = "".join(heat(v, first=k == 0) for k, (v, _, _) in enumerate(s["events"]))
         if symbol == "SPY":
@@ -125,8 +125,8 @@ def main():
                       for k, v in enumerate([s["ytd"], s["y1"]] + [s["ann"][n] for n in YEARS]))
             + f'<td class="g {up(s["drawdown"] + 0.0005)}">{pct(s["drawdown"])}</td>'
             f'<td class="g dn">{pct(s["mdd"])}</td><td class="wh">{era(s["mdd_day"])}</td>'
-            f'<td class="g dn">{pct(s["mdd15"])}</td><td class="wh">{era(s["mdd15_day"])}</td>')
-        rows.append(f"<tr>{link}{main_cells}</tr>")
+            f'<td class="g dn">{pct(s["mdd15"])}</td><td class="wh">{era(s["mdd15_day"])}</td>' + detail)
+        rows.append(f"<tr>{name}{main_cells}</tr>")
         ev_rows.append(f"<tr>{name}{since}{events}</tr>")
         print(symbol, f'{s["last"]:.2f}', s["last_day"].date(), "high", f'{s["high"]:.2f}', h.date(),
               "drawdown", pct(s["drawdown"]))
@@ -140,7 +140,8 @@ def main():
     top_main = ('<th colspan="2" class="g">All-time high</th>'
                 '<th rowspan="2" class="g">YTD</th>'
                 f'<th colspan="{1 + len(YEARS)}" class="g">Annualized return</th>'
-                '<th colspan="5" class="g">Drawdown</th>')
+                '<th colspan="5" class="g">Drawdown</th>'
+                '<th rowspan="2" class="g" title="Detail pages"><small style="display:inline;font-size:.8em;opacity:1">Detail</small></th>')
     sub_events = "".join(f'<th class="ev{" g" if k == 0 else ""}">{n}</th>' for k, (n, _, _) in enumerate(EVENTS))
     # Two small rows above the funds: when SPY's fall in each sell-off began (its high) and ended (its low).
     cells = {"From": [f"{a.year} {a:%b} {a.day}" for a, _ in spy_days],  # e.g. 2000 Oct 9
@@ -182,7 +183,8 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
   .mkt tr.per th, .mkt tr.per td {{ font-size: .68em; }}
   .mkt td.wh {{ white-space: normal; }} }}  /* "Bear 2022" on two lines on phones */
 .mkt-note {{ font-size: .72em; opacity: .7; margin: 0 0 1.2em; }}
-.mkt th a {{ color: inherit; text-decoration: underline dotted; text-underline-offset: 2px; }}
+.mkt td.dt {{ text-align: left; font-size: .8em; }}
+.mkt td.dt a {{ text-decoration: none; }}
 </style>
 <table class="mkt">
 <thead>
@@ -204,7 +206,7 @@ table.mkt {{ display: table !important; overflow: visible !important; width: aut
 {chr(10).join(ev_rows)}
 </tbody>
 </table>
-<p class="mkt-note">Daily closes; returns include dividends; MDD = largest fall since launch (all) or in the last 15 years (15Y); From/To/Length = SPY's high, low, and days between in each sell-off; — = not yet launched. Click QQQ or TQQQ in the first table: buying each time it halves. Yahoo Finance, updated weekdays after the 4 pm ET close.</p>
+<p class="mkt-note">Daily closes; returns include dividends; MDD = largest fall since launch (all) or in the last 15 years (15Y); From/To/Length = SPY's high, low, and days between in each sell-off; — = not yet launched. Detail = what if you bought each time the fund halved. Yahoo Finance, updated weekdays after the 4 pm ET close.</p>
 </div>
 """
     out = ROOT / "_includes" / "market-snapshot.html"
