@@ -5,7 +5,7 @@ title: "Test"
 
 {% include market-snapshot.html %}
 
-<p><a href="/assets/tools/halving-lab.html?v=5b066650" target="_blank" rel="noopener" style="display:inline-block;padding:.45em 1em;border-radius:8px;background:#19caca;color:#0f1e2e;font-weight:700;text-decoration:none">🧪 Open the Halving Lab ↗</a>
+<p><a href="/assets/tools/halving-lab.html?v=118021f5" target="_blank" rel="noopener" style="display:inline-block;padding:.45em 1em;border-radius:8px;background:#19caca;color:#0f1e2e;font-weight:700;text-decoration:none">🧪 Open the Halving Lab ↗</a>
 <span style="font-size:.8em;opacity:.75">&nbsp;Pick a fund, how far it must fall, how many buys and how much: see every sell-off the rule would have bought.</span></p>
 
 Materials being tested before they move to a course page.
