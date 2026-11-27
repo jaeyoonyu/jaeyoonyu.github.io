@@ -17,6 +17,10 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from halving_strategy import TBILL  # noqa: E402
+from market_snapshot import EVENTS  # noqa: E402  (the sell-offs in the snapshot's second table)
+
+# Sell-offs the lab summarizes: the snapshot's list plus the one under way (window end None = today)
+LAB_EVENTS = [(n, a, b) for n, a, b in EVENTS] + [("2026", "2026-05-01", None)]
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "assets" / "data" / "halving-lab.json"
@@ -81,7 +85,8 @@ def main():
     days = pd.DatetimeIndex(days)
     t0 = days[0]
     out = {"asof": f"{days[-1]:%Y-%m-%d}", "start": f"{t0:%Y-%m-%d}",
-           "days": [int((d - t0).days) for d in days], "funds": {}}
+           "days": [int((d - t0).days) for d in days], "funds": {},
+           "events": [dict(name=n, start=a, end=b or f"{days[-1]:%Y-%m-%d}") for n, a, b in LAB_EVENTS]}
     for s, (label, base, fee) in FUNDS.items():
         series, info = adj[s], {}
         if base:
